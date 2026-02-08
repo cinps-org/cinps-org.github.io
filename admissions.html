@@ -2,19 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admissions | CINPS</title>
+    <title>Admissions | Chandidas Institute of Nursing & Paramedical Science</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Admissions process and eligibility for CINPS paramedical courses.">
+    <meta name="description" content="Admissions open at Chandidas Institute of Nursing and Paramedical Science. Learn about eligibility, selection process, counseling, and seat confirmation.">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        /* Page-specific polish */
+        .hero-admission{
+            background: linear-gradient(180deg, #ffffff, #eef3ff);
+            padding: 50px 0;
+        }
+        .hero-admission h1{
+            color:#004aad;
+            margin-bottom:8px;
+        }
+        .hero-admission p{
+            max-width:800px;
+            color:#444;
+        }
+
+        .admission-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:24px;
+            margin-top:40px;
+        }
+
+        .admission-card{
+            background:#fff;
+            padding:24px;
+            border-radius:12px;
+            box-shadow:0 8px 22px rgba(0,0,0,0.05);
+        }
+
+        .admission-card h3{
+            color:#004aad;
+            margin-bottom:10px;
+        }
+
+        .admission-card ul,
+        .admission-card ol{
+            margin-left:18px;
+        }
+
+        .note-box{
+            background:#f9fbff;
+            border-left:4px solid #004aad;
+            padding:18px;
+            margin-top:40px;
+            border-radius:8px;
+        }
+
+        .cta-box{
+            background:#004aad;
+            color:#fff;
+            padding:30px;
+            border-radius:14px;
+            text-align:center;
+            margin-top:40px;
+        }
+
+        .cta-box a{
+            display:inline-block;
+            margin-top:14px;
+            background:#fff;
+            color:#004aad;
+            padding:12px 20px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        @media(max-width:900px){
+            .admission-grid{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="site-header">
     <div class="container header-inner">
-        <div class="brand"><a href="index.html">CINPS</a></div>
+
+        <!-- LOGO -->
+        <div class="brand">
+            <a href="index.html">
+                <img src="assets/images/logo.png"
+                     alt="Chandidas Institute of Nursing & Paramedical Science Logo">
+            </a>
+        </div>
+
+        <!-- NAVIGATION -->
         <nav class="nav">
-            <button class="nav-toggle">☰</button>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
@@ -23,35 +107,121 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
+
     </div>
 </header>
 
-<section class="section highlight">
+<!-- ===== HERO SECTION ===== -->
+<section class="hero-admission">
     <div class="container">
-        <h2>Admissions Open</h2>
+        <h1>🎓 Admissions Open</h1>
+        <p><strong>Begin your journey toward a respected healthcare career</strong></p>
+
         <p>
-            Admissions are open for a limited number of seats.
-            Selection is based on eligibility criteria and seat availability.
+            Admissions are now open at <strong>Chandidas Institute of Nursing and Paramedical Science</strong>
+            for the upcoming academic session. Seats are strictly limited to ensure focused training,
+            personalized mentorship, and high-quality practical exposure for every student.
         </p>
 
-        <ul class="features">
-            <li>Minimum eligibility as per course requirement</li>
-            <li>Document verification</li>
-            <li>Seat confirmation after admission process</li>
-        </ul>
+        <p>
+            We invite motivated learners who aspire to build a meaningful and stable career in the
+            healthcare sector to apply early and secure their place.
+        </p>
     </div>
 </section>
 
+<!-- ===== SELECTION PROCESS ===== -->
+<section class="section">
+    <div class="container">
+
+        <h2>🔍 Selection Process</h2>
+        <p>
+            Admission is granted through a transparent and merit-focused process,
+            designed to maintain academic standards and professional integrity.
+        </p>
+
+        <div class="admission-grid">
+
+            <div class="admission-card">
+                <h3>1. Eligibility Assessment</h3>
+                <ul>
+                    <li>Candidates must meet the minimum educational qualification specified for the chosen course.</li>
+                    <li>Eligibility varies by program (10th / 10+2 with Science or Arts, as applicable).</li>
+                </ul>
+            </div>
+
+            <div class="admission-card">
+                <h3>2. Application & Document Verification</h3>
+                <ul>
+                    <li>Submission of completed application form.</li>
+                    <li>Verification of academic certificates, identity proof, photographs, and required documents.</li>
+                    <li>Prior medical or healthcare experience (if applicable) is given due consideration.</li>
+                </ul>
+            </div>
+
+            <div class="admission-card">
+                <h3>3. Counseling & Career Guidance</h3>
+                <ul>
+                    <li>One-to-one counseling to explain course structure, clinical training, and internships.</li>
+                    <li>Parents and guardians are welcome to participate in the counseling process.</li>
+                </ul>
+            </div>
+
+            <div class="admission-card">
+                <h3>4. Seat Allotment & Confirmation</h3>
+                <ul>
+                    <li>Seats allotted based on eligibility, document verification, and availability.</li>
+                    <li>Admission confirmed after completion of formalities and payment of prescribed fees.</li>
+                    <li>Official admission confirmation and receipt are issued for transparency.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- WHY APPLY EARLY -->
+        <div class="admission-card" style="margin-top:40px;">
+            <h3>⭐ Why Apply Early?</h3>
+            <ul>
+                <li>Limited seats for quality-focused batches</li>
+                <li>Priority access to preferred courses</li>
+                <li>Early academic orientation and guidance</li>
+                <li>Better planning for internships and career pathways</li>
+            </ul>
+        </div>
+
+        <!-- IMPORTANT NOTE -->
+        <div class="note-box">
+            <h3>📌 Important Note</h3>
+            <p>
+                Admission at <strong>Chandidas Institute of Nursing and Paramedical Science</strong>
+                is conducted in a fair, ethical, and student-centric manner.
+                We do not encourage shortcuts—only genuine eligibility, commitment,
+                and passion for healthcare.
+            </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <h2>Take the first confident step toward a future in healthcare</h2>
+            <p>Apply early. Train professionally. Serve with purpose.</p>
+            <a href="contact.html">Contact Admissions</a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
     <div class="container">
-        <p>© <span id="year"></span> CINPS. All rights reserved.</p>
+        <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
     </div>
 </footer>
 
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
-document.querySelector('.nav-toggle').onclick = () =>
+document.querySelector('.nav-toggle').onclick = function () {
     document.querySelector('.nav-menu').classList.toggle('show');
+};
 </script>
 
 </body>
