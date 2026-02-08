@@ -17,6 +17,31 @@
 <body>
 
     <!-- =========================
+         HEADER & NAVIGATION (STEP 9.1)
+    ========================== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <!-- Logo can be added later -->
+                <a href="index.html">CINPS</a>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="admissions.html">Admissions</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- =========================
          HERO SECTION
     ========================== -->
     <section class="hero">
@@ -116,10 +141,19 @@
     </footer>
 
     <!-- =========================
-         SMALL JS (OPTIONAL)
+         JS: YEAR + MOBILE MENU
     ========================== -->
     <script>
+        // Footer year
         document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Mobile navigation toggle
+        const toggle = document.querySelector('.nav-toggle');
+        const menu = document.querySelector('.nav-menu');
+
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('show');
+        });
     </script>
 
 </body>
