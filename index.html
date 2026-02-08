@@ -1,11 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CINPS</title>
+    <meta charset="UTF-8">
+    <title>Chandidas Institute of Nursing & Paramedical Science</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chandidas Institute of Nursing & Paramedical Science (CINPS) – shaping future healthcare professionals with excellence.">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 90vh;
+            background: url("assets/images/hero.jpg") center center / cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+        }
+
+        .hero-content {
+            position: relative;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            max-width: 900px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons a {
+            display: inline-block;
+            text-decoration: none;
+            background: #0b5ed7;
+            color: #ffffff;
+            padding: 12px 28px;
+            margin: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .hero-buttons a.secondary {
+            background: transparent;
+            border: 2px solid #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: 80vh;
+            }
+
+            .hero-content h1 {
+                font-size: 1.9rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
-  <p>GitHub Pages user site is LIVE.</p>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Shaping Future Healthcare Professionals with Excellence</h1>
+            <p>
+                Chandidas Institute of Nursing &amp; Paramedical Science (CINPS)<br>
+                Career-focused education • Practical training • Trusted guidance
+            </p>
+
+            <div class="hero-buttons">
+                <a href="courses.html">Explore Courses</a>
+                <a href="admissions.html" class="secondary">Admissions Open</a>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
