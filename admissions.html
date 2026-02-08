@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admissions | CINPS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admissions process and eligibility for CINPS paramedical courses.">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="brand"><a href="index.html">CINPS</a></div>
+        <nav class="nav">
+            <button class="nav-toggle">☰</button>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="admissions.html" class="active">Admissions</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="section highlight">
+    <div class="container">
+        <h2>Admissions Open</h2>
+        <p>
+            Admissions are open for a limited number of seats.
+            Selection is based on eligibility criteria and seat availability.
+        </p>
+
+        <ul class="features">
+            <li>Minimum eligibility as per course requirement</li>
+            <li>Document verification</li>
+            <li>Seat confirmation after admission process</li>
+        </ul>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <p>© <span id="year"></span> CINPS. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+document.querySelector('.nav-toggle').onclick = () =>
+    document.querySelector('.nav-menu').classList.toggle('show');
+</script>
+
+</body>
+</html>
