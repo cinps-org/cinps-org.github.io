@@ -190,10 +190,14 @@ ul {
 
 /* Brand / Logo */
 .brand a {
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #0b5ed7;
+}
+
+.brand img {
+    height: 52px;   /* adjust if needed */
+    width: auto;
 }
 
 /* Navigation */
