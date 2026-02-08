@@ -169,6 +169,10 @@ ul {
     .section p {
         font-size: 0.95rem;
     }
+/* Mobile logo size refinement */
+    .brand img {
+        height: 44px;
+    }
 }
 /* =========================
    HEADER & NAVIGATION
