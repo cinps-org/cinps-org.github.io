@@ -1,11 +1,27 @@
 /* =========================
-   GLOBAL STYLES
+   CSS RESET
 ========================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6;
     color: #222;
+}
+
+h1, h2, h3, h4, h5, h6,
+p {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+ul {
+    margin: 0;
+    padding-left: 20px;
 }
 
 /* =========================
@@ -66,20 +82,6 @@ body {
 }
 
 /* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-    .hero {
-        height: 80vh;
-    }
-
-    .hero-content h1 {
-        font-size: 1.9rem;
-    }
-
-    .hero-content p {
-        font-size: 1rem;
-/* =========================
    LAYOUT CONTAINER
 ========================= */
 .container {
@@ -89,7 +91,7 @@ body {
 }
 
 /* =========================
-   SECTION SPACING
+   SECTIONS
 ========================= */
 .section {
     padding: 60px 0;
@@ -104,17 +106,15 @@ body {
     max-width: 800px;
 }
 
-/* Light background section */
+/* Section Variants */
 .section.light {
     background: #f7f9fc;
 }
 
-/* Highlight / CTA section */
 .section.highlight {
     background: #eef4ff;
 }
 
-/* Intro section slight emphasis */
 .section.intro {
     background: #ffffff;
 }
@@ -135,7 +135,7 @@ body {
 ========================= */
 .footer {
     background: #111;
-    color: #fff;
+    color: #ffffff;
     padding: 30px 0;
     text-align: center;
 }
@@ -146,9 +146,22 @@ body {
 }
 
 /* =========================
-   MOBILE REFINEMENTS
+   RESPONSIVE (MOBILE)
 ========================= */
 @media (max-width: 768px) {
+
+    .hero {
+        height: 80vh;
+    }
+
+    .hero-content h1 {
+        font-size: 1.9rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
     .section {
         padding: 40px 0;
     }
