@@ -79,5 +79,81 @@ body {
 
     .hero-content p {
         font-size: 1rem;
+/* =========================
+   LAYOUT CONTAINER
+========================= */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================
+   SECTION SPACING
+========================= */
+.section {
+    padding: 60px 0;
+}
+
+.section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.section p {
+    max-width: 800px;
+}
+
+/* Light background section */
+.section.light {
+    background: #f7f9fc;
+}
+
+/* Highlight / CTA section */
+.section.highlight {
+    background: #eef4ff;
+}
+
+/* Intro section slight emphasis */
+.section.intro {
+    background: #ffffff;
+}
+
+/* =========================
+   FEATURES LIST
+========================= */
+.features {
+    padding-left: 18px;
+}
+
+.features li {
+    margin-bottom: 10px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    background: #111;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   MOBILE REFINEMENTS
+========================= */
+@media (max-width: 768px) {
+    .section {
+        padding: 40px 0;
+    }
+
+    .section p {
+        font-size: 0.95rem;
     }
 }
