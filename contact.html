@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="assets/css/style.css">
 
 <style>
-/* ===== BASIC RESET ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{
     font-family: Arial, Helvetica, sans-serif;
@@ -17,54 +16,22 @@ body{
     color:#222;
     line-height:1.6;
 }
-
-/* ===== CONTAINER ===== */
-.container{
-    width:92%;
-    max-width:1200px;
-    margin:auto;
-}
-
-/* ===== HEADER ===== */
+.container{width:92%;max-width:1200px;margin:auto}
 .site-header{
     background:#fff;
     border-bottom:1px solid #e6e6e6;
-    position:sticky;
-    top:0;
-    z-index:1000;
+    position:sticky;top:0;z-index:1000;
 }
 .header-inner{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    display:flex;justify-content:space-between;align-items:center;
     padding:12px 0;
 }
-.brand img{
-    height:56px;
-}
-.nav-menu{
-    list-style:none;
-    display:flex;
-    gap:22px;
-}
-.nav-menu a{
-    text-decoration:none;
-    color:#222;
-    font-weight:500;
-}
-.nav-menu a.active,
-.nav-menu a:hover{
-    color:#004aad;
-}
-.nav-toggle{
-    display:none;
-    font-size:26px;
-    background:none;
-    border:none;
-    cursor:pointer;
-}
+.brand img{height:56px}
+.nav-menu{list-style:none;display:flex;gap:22px}
+.nav-menu a{text-decoration:none;color:#222;font-weight:500}
+.nav-menu a.active,.nav-menu a:hover{color:#004aad}
+.nav-toggle{display:none;font-size:26px;background:none;border:none;cursor:pointer}
 
-/* ===== HERO ===== */
 .hero{
     background:linear-gradient(180deg,#ffffff,#eef3ff);
     padding:50px 0;
@@ -74,121 +41,50 @@ body{
     grid-template-columns:1fr 420px;
     gap:30px;
 }
-.hero h1{
-    color:#004aad;
-    font-size:30px;
-}
-.hero p{
-    margin-top:12px;
-    color:#444;
-}
-.hero-buttons{
-    margin-top:20px;
-}
+.hero h1{color:#004aad;font-size:30px}
+.hero p{margin-top:12px;color:#444}
+.hero-buttons{margin-top:20px}
 .btn{
-    padding:12px 18px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:600;
-    display:inline-block;
+    padding:12px 18px;border-radius:8px;
+    text-decoration:none;font-weight:600;display:inline-block
 }
-.btn-primary{
-    background:#004aad;
-    color:#fff;
-}
-.btn-outline{
-    border:2px solid #004aad;
-    color:#004aad;
-    margin-left:10px;
-}
+.btn-primary{background:#004aad;color:#fff}
+.btn-outline{border:2px solid #004aad;color:#004aad;margin-left:10px}
 
-/* ===== CARDS ===== */
 .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-    margin-top:40px;
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:24px;margin-top:40px
 }
 .card{
-    background:#fff;
-    border-radius:12px;
-    padding:22px;
-    box-shadow:0 8px 22px rgba(0,0,0,0.05);
+    background:#fff;border-radius:12px;
+    padding:22px;box-shadow:0 8px 22px rgba(0,0,0,0.05)
 }
-.card h3{
-    color:#004aad;
-    margin-bottom:10px;
-}
+.card h3{color:#004aad;margin-bottom:10px}
 
-/* ===== MAP ===== */
-.map iframe{
-    width:100%;
-    height:320px;
-    border:none;
-    border-radius:10px;
-}
+.map iframe{width:100%;height:320px;border:none;border-radius:10px}
 
-/* ===== FOOTER ===== */
 .footer{
-    background:#111;
-    color:#fff;
-    padding:18px 0;
-    text-align:center;
-    margin-top:40px;
+    background:#111;color:#fff;
+    padding:18px 0;text-align:center;margin-top:40px
 }
 
-/* ===== MODAL ===== */
+/* ===== MODALS ===== */
 .modal-bg{
-    position:fixed;
-    inset:0;
+    position:fixed;inset:0;
     background:rgba(0,0,0,0.45);
-    display:none;
-    align-items:center;
-    justify-content:center;
+    display:none;align-items:center;justify-content:center;
     z-index:2000;
 }
 .modal{
-    background:#fff;
-    width:100%;
-    max-width:650px;
-    border-radius:12px;
-    padding:22px;
+    background:#fff;width:100%;
+    max-width:650px;border-radius:12px;padding:22px
 }
-.modal h3{
-    color:#004aad;
-    margin-bottom:10px;
+.modal h3{color:#004aad;margin-bottom:10px}
+.modal input,.modal textarea{
+    width:100%;padding:10px;border-radius:8px;
+    border:1px solid #ddd;margin-bottom:12px
 }
-.modal input,
-.modal textarea,
-.modal select{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ddd;
-    margin-bottom:12px;
-}
-.modal-actions{
-    text-align:right;
-}
-
-/* ===== WHATSAPP FLOAT ===== */
-#whatsapp{
-    position:fixed;
-    bottom:18px;
-    right:18px;
-    width:56px;
-    height:56px;
-    background:#25d366;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:26px;
-    text-decoration:none;
-    box-shadow:0 8px 20px rgba(0,0,0,0.2);
-    z-index:3000;
-}
+.modal-actions{text-align:right}
 
 /* ===== MOBILE ===== */
 @media(max-width:900px){
@@ -197,14 +93,9 @@ body{
 }
 @media(max-width:600px){
     .nav-menu{
-        display:none;
-        position:absolute;
-        top:100%;
-        right:0;
-        background:#fff;
-        flex-direction:column;
-        width:200px;
-        border:1px solid #ddd;
+        display:none;position:absolute;top:100%;right:0;
+        background:#fff;flex-direction:column;
+        width:200px;border:1px solid #ddd
     }
     .nav-menu.show{display:flex}
     .nav-toggle{display:block}
@@ -217,13 +108,11 @@ body{
 
 <header class="site-header">
 <div class="container header-inner">
-
 <div class="brand">
 <a href="index.html">
 <img src="assets/images/logo.png" alt="Chandidas Institute Logo">
 </a>
 </div>
-
 <nav>
 <button class="nav-toggle">☰</button>
 <ul class="nav-menu">
@@ -234,66 +123,44 @@ body{
 <li><a href="contact.html" class="active">Contact</a></li>
 </ul>
 </nav>
-
 </div>
 </header>
 
 <section class="hero">
 <div class="container hero-grid">
-
 <div>
 <h1>Chandidas Institute of Nursing and Paramedical Science</h1>
 <p><strong>We’re here to guide your journey into healthcare</strong></p>
-<p>
-Whether you are a prospective student, a parent, or a healthcare professional,
-our admissions and academic support team is always ready to assist you clearly,
-patiently, and professionally.
-</p>
-
+<p>Our admissions and academic support team is always ready to assist you.</p>
 <div class="hero-buttons">
 <a href="#visit" class="btn btn-primary">Visit Us</a>
 <a href="javascript:void(0)" class="btn btn-outline" onclick="openModal()">Contact Us!</a>
 </div>
 </div>
-
 <div class="card">
 <h3>Get in Touch</h3>
 <p><strong>Call:</strong> +91 8101579839 / +91 8436474659</p>
 <p><strong>Email:</strong> cinp.official@gmail.com</p>
 <p><strong>Office Hours:</strong><br>Monday – Sunday, 10:00 AM – 5:00 PM</p>
-
-<hr style="margin:14px 0">
-
-<h3>Stay Connected</h3>
-<p>
-<a href="https://www.youtube.com/@cinps5325/videos" target="_blank">YouTube</a> |
-<a href="https://www.facebook.com/profile.php?id=100083086334655" target="_blank">Facebook</a> |
-<a href="https://www.instagram.com/cinps9" target="_blank">Instagram</a>
-</p>
 </div>
-
 </div>
 </section>
 
 <section class="container grid" id="visit">
-
 <div class="card">
 <h3>Our Locations</h3>
 <p><strong>Head Office</strong><br>Hospital Road, Nanoor, West Bengal – 731301</p>
 <p><strong>Branch Office</strong><br>Megher Palak Building, Pali More, Sainthia, West Bengal – 731234</p>
 <p><strong>Tie-Up Partner</strong><br>Mayurakshi Gramin College, Ranishwar, Dumka, Jharkhand – 814148</p>
 </div>
-
 <div class="card">
 <h3>Visit Us Personally</h3>
 <ul>
-<li>Available courses and career prospects</li>
 <li>Admission procedures & documentation</li>
-<li>Training facilities & hospital internships</li>
+<li>Training facilities & internships</li>
+<li>Career guidance</li>
 </ul>
-<p><strong>Pro tip:</strong> Bring original documents for faster admission.</p>
 </div>
-
 </section>
 
 <section class="container map" style="margin-top:40px">
@@ -304,19 +171,18 @@ patiently, and professionally.
 </section>
 
 <footer class="footer">
-<p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
+<p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science</p>
 </footer>
 
 <!-- CONTACT MODAL -->
 <div class="modal-bg" id="modal">
 <div class="modal">
 <h3>Contact Admissions</h3>
-<form onsubmit="sendMail(event)">
-<input type="text" id="name" placeholder="Your Name" required>
-<input type="text" id="phone" placeholder="Phone Number" required>
-<input type="email" id="email" placeholder="Email" required>
-<textarea id="message" placeholder="Your Message"></textarea>
-
+<form id="contactForm">
+<input type="text" name="name" placeholder="Your Name" required>
+<input type="text" name="phone" placeholder="Phone Number" required>
+<input type="text" name="subject" placeholder="Subject" required>
+<textarea name="message" placeholder="Your Message" required></textarea>
 <div class="modal-actions">
 <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
 <button type="submit" class="btn btn-primary">Send</button>
@@ -325,24 +191,111 @@ patiently, and professionally.
 </div>
 </div>
 
-<a id="whatsapp" href="https://wa.me/918101579839" target="_blank">🟢</a>
+<!-- SUCCESS POPUP -->
+<div class="modal-bg" id="successPopup">
+<div class="modal" style="max-width:420px;text-align:center">
+<h3>Thanks for Contacting Us</h3>
+<p>We received your message.<br>Our representative will contact you soon.</p>
+<div class="modal-actions">
+<button class="btn btn-primary" onclick="closeSuccess()">Done</button>
+</div>
+</div>
+</div>
+
+<!-- ===== CINPS PULSE AI – Floating Chat Widget ===== -->
+<style>
+#cinps-chat-btn{
+  position:fixed;bottom:18px;right:18px;
+  background:linear-gradient(135deg,#0b6efd,#0a58ca);
+  color:#fff;border-radius:50%;
+  width:56px;height:56px;font-size:26px;
+  border:none;cursor:pointer;z-index:999999;
+  animation:cinpsPulse 2s infinite
+}
+@keyframes cinpsPulse{
+  0%{box-shadow:0 0 0 0 rgba(11,110,253,.7)}
+  70%{box-shadow:0 0 0 14px rgba(11,110,253,0)}
+  100%{box-shadow:0 0 0 0 rgba(11,110,253,0)}
+}
+#cinps-chat-box{
+  position:fixed;bottom:90px;right:18px;
+  width:340px;max-height:480px;
+  background:#f5f7fb;border-radius:16px;
+  box-shadow:0 12px 32px rgba(0,0,0,.28);
+  display:none;flex-direction:column;
+  z-index:999999
+}
+#cinps-chat-header{
+  background:linear-gradient(135deg,#0b6efd,#0a58ca);
+  color:#fff;padding:14px;font-weight:700
+}
+#cinps-chat-messages{
+  padding:12px;flex:1;overflow-y:auto;font-size:14px
+}
+.cinps-msg{
+  max-width:85%;margin-bottom:10px;
+  padding:10px 12px;border-radius:14px
+}
+.cinps-msg.user{margin-left:auto;background:#dff0d8}
+.cinps-msg.bot{background:#fff;color:#0b6efd}
+#cinps-chat-input{
+  display:flex;gap:6px;padding:10px;
+  background:#fff;border-top:1px solid #ddd
+}
+#cinps-chat-input input{
+  flex:1;padding:10px;border-radius:10px;border:1px solid #ccc
+}
+#cinps-chat-input button{
+  background:#0b6efd;color:#fff;
+  border:none;padding:0 16px;border-radius:10px
+}
+</style>
+
+<button id="cinps-chat-btn">🧠</button>
+
+<div id="cinps-chat-box">
+<div id="cinps-chat-header">CINPS Pulse AI</div>
+<div id="cinps-chat-messages">
+<div class="cinps-msg bot">
+👋 Welcome to <b>CINPS Pulse AI</b><br><br>
+Admissions • Courses • Fees • Internship • Career Guidance<br>
+আপনি বাংলা, हिंदी या English এ প্রশ্ন করতে পারেন।
+</div>
+</div>
+<div id="cinps-chat-input">
+<input type="text" id="cinps-user-input" placeholder="Ask CINPS Pulse AI…" />
+<button id="cinps-send-btn">SEND</button>
+</div>
+</div>
 
 <script>
 document.getElementById("year").textContent=new Date().getFullYear();
+document.querySelector(".nav-toggle").onclick=()=>document.querySelector(".nav-menu").classList.toggle("show");
 
-document.querySelector(".nav-toggle").onclick=()=>{
-document.querySelector(".nav-menu").classList.toggle("show");
+function openModal(){modal.style.display="flex"}
+function closeModal(){modal.style.display="none"}
+function closeSuccess(){successPopup.style.display="none"}
+
+const FORM_API="https://script.google.com/macros/s/AKfycbx238EEzhTfcYGngAQD6CeXZIYqt0KqKp7_3iiR3ZVffUeO-Sik8dqmoXE7daNBcTxZlQ/exec";
+contactForm.onsubmit=e=>{
+e.preventDefault();
+fetch(FORM_API,{method:"POST",body:new FormData(contactForm)})
+.then(()=>{closeModal();successPopup.style.display="flex";contactForm.reset()})
+.catch(()=>alert("Submission failed"));
 };
 
-function openModal(){document.getElementById("modal").style.display="flex";}
-function closeModal(){document.getElementById("modal").style.display="none";}
-
-function sendMail(e){
-e.preventDefault();
-let body=`Name: ${name.value}%0DPhone: ${phone.value}%0DEmail: ${email.value}%0D%0DMessage:%0D${message.value}`;
-window.location.href=`mailto:cinp.official@gmail.com?subject=Admission Enquiry&body=${body}`;
-closeModal();
-}
+const CHAT_API="https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+cinps-chat-btn.onclick=()=>cinps-chat-box.style.display=
+cinps-chat-box.style.display==="flex"?"none":"flex";
+cinps-send-btn.onclick=()=>{
+let msg=cinps-user-input.value.trim();if(!msg)return;
+cinps-chat-messages.innerHTML+=`<div class="cinps-msg user">${msg}</div>`;
+cinps-user-input.value="";
+fetch(CHAT_API,{method:"POST",body:JSON.stringify({message:msg})})
+.then(r=>r.json())
+.then(d=>cinps-chat-messages.innerHTML+=`<div class="cinps-msg bot">${d.reply}</div>`)
+.catch(()=>cinps-chat-messages.innerHTML+=`<div class="cinps-msg bot">Please contact CINPS office.</div>`);
+};
 </script>
 
 </body>
