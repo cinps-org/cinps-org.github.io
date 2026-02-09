@@ -12,150 +12,318 @@
 
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- ===== CINPS PULSE AI STYLES ===== -->
+    <style>
+    #cinps-chat-btn{
+        position:fixed;
+        bottom:20px;
+        right:20px;
+        width:58px;
+        height:58px;
+        border-radius:50%;
+        background:linear-gradient(135deg,#0b6efd,#0a58ca);
+        color:#fff;
+        font-size:26px;
+        border:none;
+        cursor:pointer;
+        z-index:999999;
+        animation:pulse 2s infinite;
+    }
+    @keyframes pulse{
+        0%{box-shadow:0 0 0 0 rgba(11,110,253,.6)}
+        70%{box-shadow:0 0 0 14px rgba(11,110,253,0)}
+        100%{box-shadow:0 0 0 0 rgba(11,110,253,0)}
+    }
+    #cinps-chat-box{
+        position:fixed;
+        bottom:90px;
+        right:20px;
+        width:340px;
+        max-height:480px;
+        background:#f5f7fb;
+        border-radius:16px;
+        box-shadow:0 12px 32px rgba(0,0,0,.28);
+        display:none;
+        flex-direction:column;
+        overflow:hidden;
+        z-index:999999;
+        font-family:system-ui,Arial,sans-serif;
+    }
+    #cinps-chat-header{
+        background:linear-gradient(135deg,#0b6efd,#0a58ca);
+        color:#fff;
+        padding:14px;
+        font-weight:700;
+    }
+    #cinps-chat-messages{
+        padding:12px;
+        flex:1;
+        overflow-y:auto;
+        font-size:14px;
+    }
+    .cinps-msg{
+        max-width:85%;
+        margin-bottom:10px;
+        padding:10px 12px;
+        border-radius:14px;
+        line-height:1.45;
+    }
+    .cinps-msg.user{
+        margin-left:auto;
+        background:#dff0d8;
+    }
+    .cinps-msg.bot{
+        background:#fff;
+        color:#0b6efd;
+    }
+    #cinps-chat-input{
+        display:flex;
+        gap:6px;
+        padding:10px;
+        background:#fff;
+        border-top:1px solid #ddd;
+    }
+    #cinps-chat-input input{
+        flex:1;
+        padding:10px;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:15px;
+    }
+    #cinps-chat-input button{
+        background:#0b6efd;
+        color:#fff;
+        border:none;
+        padding:0 16px;
+        border-radius:10px;
+        font-weight:600;
+        cursor:pointer;
+    }
+    @media(max-width:600px){
+        #cinps-chat-box{
+            left:10px;
+            right:10px;
+            width:auto;
+            max-height:75vh;
+        }
+    }
+    </style>
 </head>
 
 <body>
 
-    <!-- =========================
-         HEADER & NAVIGATION (STEP 9.1)
-    ========================== -->
-    <header class="site-header">
-        <div class="container header-inner">
-           <div class="brand">
-    <a href="index.html">
-        <img src="assets/images/logo.png"
-             alt="Chandidas Institute of Nursing & Paramedical Science Logo">
-    </a>
-</div>
-            <nav class="nav">
-                <button class="nav-toggle" aria-label="Toggle navigation">
-                    ☰
-                </button>
-                <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="courses.html">Courses</a></li>
-                    <li><a href="admissions.html">Admissions</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
+<!-- =========================
+     HEADER & NAVIGATION
+========================== -->
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="brand">
+            <a href="index.html">
+                <img src="assets/images/logo.png"
+                     alt="Chandidas Institute of Nursing & Paramedical Science Logo">
+            </a>
         </div>
-    </header>
-
-    <!-- =========================
-         HERO SECTION
-    ========================== -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>
-                Shaping Future Healthcare Professionals<br>
-                with Excellence
-            </h1>
-
-            <p>
-                Chandidas Institute of Nursing &amp; Paramedical Science (CINPS)<br>
-                Career-focused education • Practical training • Trusted guidance
-            </p>
-
-            <div class="hero-buttons">
-                <a href="courses.html">Explore Courses</a>
-                <a href="admissions.html" class="secondary">Admissions Open</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- =========================
-         INTRO SECTION
-    ========================== -->
-    <section class="section intro">
-        <div class="container">
-            <h2>Welcome to CINPS</h2>
-            <p>
-                Chandidas Institute of Nursing &amp; Paramedical Science (CINPS) is committed to
-                providing high-quality paramedical and healthcare education. Our mission is to
-                prepare skilled, ethical, and confident healthcare professionals through
-                strong academic foundations and hands-on practical training.
-            </p>
-        </div>
-    </section>
-
-    <!-- =========================
-         WHY CHOOSE US
-    ========================== -->
-    <section class="section light">
-        <div class="container">
-            <h2>Why Choose CINPS</h2>
-            <ul class="features">
-                <li>Industry-oriented paramedical courses</li>
-                <li>Experienced faculty and practical trainers</li>
-                <li>Focus on hands-on clinical exposure</li>
-                <li>Student-centric academic guidance</li>
-                <li>Affordable and transparent fee structure</li>
+        <nav class="nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="admissions.html">Admissions</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- =========================
+     HERO SECTION
+========================== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>
+            Shaping Future Healthcare Professionals<br>
+            with Excellence
+        </h1>
+
+        <p>
+            Chandidas Institute of Nursing &amp; Paramedical Science (CINPS)<br>
+            Career-focused education • Practical training • Trusted guidance
+        </p>
+
+        <div class="hero-buttons">
+            <a href="courses.html">Explore Courses</a>
+            <a href="admissions.html" class="secondary">Admissions Open</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- =========================
-         COURSES PREVIEW
-    ========================== -->
-    <section class="section">
-        <div class="container">
-            <h2>Our Courses</h2>
-            <p>
-                CINPS offers diploma and certificate courses in various paramedical disciplines
-                designed to meet current healthcare industry requirements.
-            </p>
+<!-- =========================
+     INTRO SECTION
+========================== -->
+<section class="section intro">
+    <div class="container">
+        <h2>Welcome to CINPS</h2>
+        <p>
+            Chandidas Institute of Nursing &amp; Paramedical Science (CINPS) is committed to
+            providing high-quality paramedical and healthcare education. Our mission is to
+            prepare skilled, ethical, and confident healthcare professionals through
+            strong academic foundations and hands-on practical training.
+        </p>
+    </div>
+</section>
 
-            <div class="hero-buttons">
-                <a href="courses.html">View All Courses</a>
-            </div>
+<!-- =========================
+     WHY CHOOSE US
+========================== -->
+<section class="section light">
+    <div class="container">
+        <h2>Why Choose CINPS</h2>
+        <ul class="features">
+            <li>Industry-oriented paramedical courses</li>
+            <li>Experienced faculty and practical trainers</li>
+            <li>Focus on hands-on clinical exposure</li>
+            <li>Student-centric academic guidance</li>
+            <li>Affordable and transparent fee structure</li>
+        </ul>
+    </div>
+</section>
+
+<!-- =========================
+     COURSES PREVIEW
+========================== -->
+<section class="section">
+    <div class="container">
+        <h2>Our Courses</h2>
+        <p>
+            CINPS offers diploma and certificate courses in various paramedical disciplines
+            designed to meet current healthcare industry requirements.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="courses.html">View All Courses</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- =========================
-         ADMISSIONS CTA
-    ========================== -->
-    <section class="section highlight">
-        <div class="container">
-            <h2>Admissions Open</h2>
-            <p>
-                Admissions are currently open for a limited number of seats.
-                Start your journey towards a rewarding healthcare career today.
-            </p>
+<!-- =========================
+     ADMISSIONS CTA
+========================== -->
+<section class="section highlight">
+    <div class="container">
+        <h2>Admissions Open</h2>
+        <p>
+            Admissions are currently open for a limited number of seats.
+            Start your journey towards a rewarding healthcare career today.
+        </p>
 
-            <div class="hero-buttons">
-                <a href="admissions.html">Apply for Admission</a>
-            </div>
+        <div class="hero-buttons">
+            <a href="admissions.html">Apply for Admission</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
-    <footer class="footer">
-        <div class="container">
-            <p>
-                © <span id="year"></span> Chandidas Institute of Nursing &amp; Paramedical Science (CINPS)<br>
-                All rights reserved.
-            </p>
+<!-- =========================
+     FOOTER
+========================== -->
+<footer class="footer">
+    <div class="container">
+        <p>
+            © <span id="year"></span> Chandidas Institute of Nursing &amp; Paramedical Science (CINPS)<br>
+            All rights reserved.
+        </p>
+    </div>
+</footer>
+
+<!-- =========================
+     CINPS PULSE AI
+========================== -->
+<button id="cinps-chat-btn">🧠</button>
+
+<div id="cinps-chat-box">
+    <div id="cinps-chat-header">CINPS Pulse AI</div>
+
+    <div id="cinps-chat-messages">
+        <div class="cinps-msg bot">
+            👋 Welcome to <b>CINPS Pulse AI</b><br><br>
+            • Admissions & Courses<br>
+            • Fees & Eligibility<br>
+            • Certificates & Diplomas<br>
+            • Career Guidance<br><br>
+            আপনি বাংলা, हिंदी বা English এ প্রশ্ন করতে পারেন।
         </div>
-    </footer>
+    </div>
 
-    <!-- =========================
-         JS: YEAR + MOBILE MENU
-    ========================== -->
-    <script>
-        // Footer year
-        document.getElementById("year").textContent = new Date().getFullYear();
+    <div id="cinps-chat-input">
+        <input id="cinps-user-input" placeholder="Ask CINPS Pulse AI…" />
+        <button id="cinps-send-btn">SEND</button>
+    </div>
+</div>
 
-        // Mobile navigation toggle
-        const toggle = document.querySelector('.nav-toggle');
-        const menu = document.querySelector('.nav-menu');
+<!-- =========================
+     JS
+========================== -->
+<script>
+/* Footer year */
+document.getElementById("year").textContent = new Date().getFullYear();
 
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('show');
-        });
-    </script>
+/* Mobile navigation */
+const toggle = document.querySelector('.nav-toggle');
+const menu = document.querySelector('.nav-menu');
+toggle.addEventListener('click', () => menu.classList.toggle('show'));
+
+/* Pulse AI */
+const CHAT_API =
+"https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+
+const chatBtn = document.getElementById("cinps-chat-btn");
+const chatBox = document.getElementById("cinps-chat-box");
+const messages = document.getElementById("cinps-chat-messages");
+const input = document.getElementById("cinps-user-input");
+const sendBtn = document.getElementById("cinps-send-btn");
+
+chatBtn.onclick = () => {
+    chatBox.style.display =
+        chatBox.style.display === "flex" ? "none" : "flex";
+};
+
+sendBtn.onclick = sendMsg;
+input.addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMsg();
+});
+
+function addMsg(text, cls){
+    const d = document.createElement("div");
+    d.className = "cinps-msg " + cls;
+    d.innerHTML = text;
+    messages.appendChild(d);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function sendMsg(){
+    const msg = input.value.trim();
+    if(!msg) return;
+
+    addMsg(msg,"user");
+    input.value="";
+    addMsg("🧠 Thinking…","bot");
+
+    fetch(CHAT_API,{
+        method:"POST",
+        body:JSON.stringify({message:msg})
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        messages.lastChild.remove();
+        addMsg(d.reply || "Please contact CINPS office.","bot");
+    })
+    .catch(()=>{
+        messages.lastChild.remove();
+        addMsg("📞 Call CINPS at +91 8101579839","bot");
+    });
+}
+</script>
 
 </body>
 </html>
