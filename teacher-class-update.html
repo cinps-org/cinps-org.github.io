@@ -2,102 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<!-- CRITICAL: prevents tiny UI on mobile -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Teacher Class Update</title>
 
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <style>
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-}
-body{
-  margin:0;
-  padding:14px;
-  background:#f2f4f7;
-  color:#111;
-}
-.header{
-  text-align:center;
-  margin-bottom:16px;
-}
-.header h1{
-  font-size:20px;
-  margin:0;
-}
-.header p{
-  margin:4px 0 0;
-  font-size:14px;
-  color:#555;
-}
-.card{
-  background:#fff;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
-}
-.card h3{
-  font-size:16px;
-  margin:0 0 14px;
-  padding-bottom:8px;
-  border-bottom:1px solid #eee;
-}
-label{
-  display:block;
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-input, select, textarea{
-  width:100%;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  margin-bottom:14px;
-  background:#fff;
-}
-input[readonly]{
-  background:#f5f6f8;
-}
-textarea{
-  min-height:120px;
-  resize:vertical;
-}
-.time-row{
-  display:flex;
-  gap:10px;
-  margin-bottom:14px;
-}
-.time-row select{
-  flex:1;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
-}
-button{
-  width:100%;
-  font-size:18px;
-  padding:18px;
-  border-radius:14px;
-  background:#0a4fd8;
-  color:#fff;
-  border:none;
-  font-weight:600;
-  cursor:pointer;
-}
-#status{
-  text-align:center;
-  font-size:15px;
-  margin-top:12px;
-}
-@media(min-width:900px){
-  body{ display:flex; justify-content:center; }
-  .container{ width:900px; }
-}
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{margin:0;padding:14px;background:#f2f4f7;color:#111}
+.header{text-align:center;margin-bottom:16px}
+.header h1{font-size:20px;margin:0}
+.header p{margin:4px 0 0;font-size:14px;color:#555}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.card h3{font-size:16px;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid #eee}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+input,select,textarea{width:100%;font-size:17px;padding:16px;border-radius:12px;border:1px solid #ccc;margin-bottom:14px;background:#fff}
+input[readonly]{background:#f5f6f8}
+textarea{min-height:120px;resize:vertical}
+.time-row{display:flex;gap:10px;margin-bottom:14px}
+.time-row select{flex:1}
+button{width:100%;font-size:18px;padding:18px;border-radius:14px;background:#0a4fd8;color:#fff;border:none;font-weight:600;cursor:pointer}
+button:disabled{background:#9bb6f0}
+#status{text-align:center;font-size:15px;margin-top:12px}
+.login-box{text-align:center;margin-bottom:14px}
+@media(min-width:900px){body{display:flex;justify-content:center}.container{width:900px}}
 </style>
 </head>
 
@@ -110,9 +40,29 @@ button{
   <p>Chandidas Institute of Nursing & Paramedical Science</p>
 </div>
 
+<!-- 🔐 GOOGLE LOGIN -->
+<div class="login-box" id="loginBox">
+  <div id="g_id_onload"
+       data-client_id="880919546311-js43d7b2h0eq5lm29pg9mb80ilc53s4v.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false">
+  </div>
+
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="pill">
+  </div>
+
+  <p style="font-size:13px;color:#666;margin-top:8px;">
+    Please sign in with Google to continue
+  </p>
+</div>
+
 <form id="classUpdateForm">
 
-<!-- CLASS INFO -->
 <div class="card">
   <h3>Class Information</h3>
 
@@ -122,8 +72,9 @@ button{
   <label>Day</label>
   <input type="text" id="day" name="day" readonly>
 
-  <label>Instructor (Auto-Verified)</label>
+  <label>Instructor (Verified)</label>
   <input type="text" id="instructor" readonly>
+  <input type="hidden" name="instructor">
   <input type="hidden" name="instructorEmail" id="instructorEmail">
 
   <label>Start Time</label>
@@ -135,7 +86,6 @@ button{
       <option>07</option><option>08</option><option>09</option>
       <option>10</option><option>11</option><option>12</option>
     </select>
-
     <select name="startMinute" required>
       <option value="">MM</option>
       <option>00</option><option>05</option><option>10</option>
@@ -143,7 +93,6 @@ button{
       <option>30</option><option>35</option><option>40</option>
       <option>45</option><option>50</option><option>55</option>
     </select>
-
     <select name="startPeriod" required>
       <option value="">AM / PM</option>
       <option>AM</option>
@@ -157,127 +106,84 @@ button{
   <input type="text" id="endTime" name="endTime" readonly>
 </div>
 
-<!-- COURSE INFO -->
 <div class="card">
   <h3>Course Details</h3>
 
   <label>Mode of Class</label>
   <select name="mode" required>
-    <option value="">Select Mode</option>
+    <option value="">Select</option>
     <option>Offline</option>
     <option>Online</option>
   </select>
 
   <label>Course Type</label>
   <select name="courseType" required>
-    <option value="">Select Course Type</option>
+    <option value="">Select</option>
     <option>Two-Year Diploma</option>
     <option>One-Year Diploma</option>
     <option>Certificate</option>
   </select>
 
-  <label>Select Course</label>
+  <label>Course</label>
   <select name="course" required>
-    <option value="">Select Course</option>
-    <option>OTT</option>
-    <option>MLT</option>
-    <option>EMT</option>
-    <option>ICU</option>
-    <option>MRT</option>
-    <option>ECG</option>
-    <option>PT</option>
-    <option>RMP</option>
-    <option>CMS & ED</option>
-    <option>NA</option>
+    <option value="">Select</option>
+    <option>OTT</option><option>MLT</option><option>EMT</option>
+    <option>ICU</option><option>MRT</option><option>ECG</option>
+    <option>PT</option><option>RMP</option><option>CMS & ED</option><option>NA</option>
   </select>
 </div>
 
-<!-- TOPIC -->
 <div class="card">
   <h3>Topic Taught</h3>
-  <textarea name="topic" placeholder="Enter topic covered in today’s class" required></textarea>
+  <textarea name="topic" required></textarea>
 </div>
 
-<!-- SUBMIT -->
 <div class="card">
-  <button type="submit">Submit Class Update</button>
+  <button type="submit" id="submitBtn" disabled>Submit Class Update</button>
   <div id="status"></div>
 </div>
 
 </form>
-
 </div>
 
 <script>
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwM90TNYTr_8YRkVvO5tXAZKNKFHkUkE3OSmBNpzPSOqu0XZVGq8gMPN44iFQVHFEBx/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwM90TNYTr_8YRkVvO5tXAZKNKFHkUkE3OSmBNpzPSOqu0XZVGq8gMPN44iFQVHFEBx/exec";
 
-// ===== AUTO DATE / DAY / END TIME =====
+// Auto date/day/end time
 const now = new Date();
 date.value = now.toLocaleDateString("en-GB");
-day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
-endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
+day.value = now.toLocaleDateString("en-US",{weekday:"long"});
+endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-// ===== 🔐 INSTRUCTOR AUTO-LOGIN =====
-fetch(SCRIPT_URL)
-  .then(r => r.json())
-  .then(d => {
-    instructor.value = d.instructorName || "Login required";
-    instructorEmail.value = d.instructorEmail || "";
-  })
-  .catch(() => {
-    instructor.value = "Unable to verify login";
-  });
+// Google login handler
+function handleCredentialResponse(response){
+  const data = JSON.parse(atob(response.credential.split('.')[1]));
+  instructor.value = data.name;
+  document.querySelector('[name="instructor"]').value = data.name;
+  instructorEmail.value = data.email;
+  loginBox.style.display = "none";
+  submitBtn.disabled = false;
+}
 
-// ===== COMBINE START TIME =====
+// Combine start time
 function combineStartTime(){
   const h = document.querySelector('[name="startHour"]').value;
   const m = document.querySelector('[name="startMinute"]').value;
   const p = document.querySelector('[name="startPeriod"]').value;
-  if(h && m && p){
-    startTime.value = `${h}:${m} ${p}`;
-  }
+  if(h && m && p) startTime.value = `${h}:${m} ${p}`;
 }
-document.querySelectorAll(
-  '[name="startHour"],[name="startMinute"],[name="startPeriod"]'
-).forEach(el => el.addEventListener("change", combineStartTime));
+document.querySelectorAll('[name="startHour"],[name="startMinute"],[name="startPeriod"]')
+  .forEach(el=>el.addEventListener("change",combineStartTime));
 
-// ===== SUBMIT =====
-classUpdateForm.addEventListener("submit", e => {
+// Submit
+classUpdateForm.addEventListener("submit",e=>{
   e.preventDefault();
-
-  if(!startTime.value){
-    alert("Please select complete Start Time");
-    return;
-  }
-
-  status.innerText = "Submitting…";
-
-  fetch(SCRIPT_URL, {
-    method:"POST",
-    body:new FormData(classUpdateForm)
-  })
-  .then(r => r.json())
-  .then(res => {
-    if(res.status === "success"){
-      status.innerText = "✅ Class update submitted successfully";
-      classUpdateForm.reset();
-
-      // Restore locked fields
-      date.value = now.toLocaleDateString("en-GB");
-      day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
-      endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
-      fetch(SCRIPT_URL).then(r=>r.json()).then(d=>{
-        instructor.value=d.instructorName||"Login required";
-        instructorEmail.value=d.instructorEmail||"";
-      });
-    } else {
-      status.innerText = "❌ Submission failed";
-    }
-  })
-  .catch(()=>{
-    status.innerText = "⚠️ Network error";
-  });
+  if(!startTime.value){alert("Please select start time");return;}
+  status.innerText="Submitting…";
+  fetch(SCRIPT_URL,{method:"POST",body:new FormData(classUpdateForm)})
+    .then(r=>r.json())
+    .then(()=>status.innerText="✅ Class update submitted successfully")
+    .catch(()=>status.innerText="❌ Submission failed");
 });
 </script>
 
