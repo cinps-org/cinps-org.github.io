@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CINPS Admission Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#0a4fd8;
+  --border:#e0e0e0;
+  --bg:#f4f6f9;
+  --card:#ffffff;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:"Segoe UI", Roboto, Arial, sans-serif;
+  background:var(--bg);
+  padding:20px;
+  color:#222;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:5px;
+  font-size:28px;
+}
+
+h2{
+  text-align:center;
+  margin-top:0;
+  font-size:20px;
+  color:#555;
+}
+
+h3{
+  margin-top:0;
+  margin-bottom:15px;
+  font-size:18px;
+  border-bottom:2px solid var(--border);
+  padding-bottom:6px;
+}
+
+form{
+  max-width:1000px;
+  margin:auto;
+}
+
+/* CARD */
+.form-section{
+  background:var(--card);
+  border-radius:8px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* GRID */
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.grid-3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:15px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+label{
+  font-weight:600;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+input, select{
+  padding:10px 12px;
+  font-size:14px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+input:focus, select:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 2px rgba(10,79,216,.15);
+}
+
+input[type="file"]{
+  padding:8px;
+}
+
+/* SIGNATURES */
+.signatures{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+/* TERMS */
+.terms{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-size:14px;
+}
+
+/* BUTTON */
+button{
+  background:var(--primary);
+  color:#fff;
+  padding:14px 40px;
+  font-size:16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#083da9;
+}
+
+#status{
+  margin-top:15px;
+  font-weight:600;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  body{ padding:12px; }
+  h1{ font-size:22px; }
+  h2{ font-size:16px; }
+  .grid-2, .grid-3, .signatures{ grid-template-columns:1fr; }
+  button{ width:100%; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Chandidas Institute of Nursing & Paramedical Science</h1>
+<h2>Application Form for Admission</h2>
+
+<form id="admissionForm" enctype="multipart/form-data">
+
+<!-- PERSONAL DETAILS -->
+<div class="form-section">
+<h3>Personal Details</h3>
+<div class="grid-3">
+  <div class="form-group"><label>First Name</label><input type="text" name="firstName" required></div>
+  <div class="form-group"><label>Middle Name</label><input type="text" name="middleName"></div>
+  <div class="form-group"><label>Last Name</label><input type="text" name="lastName" required></div>
+</div>
+
+<div class="grid-3">
+  <div class="form-group"><label>Date of Birth</label><input type="date" name="dob" required></div>
+  <div class="form-group"><label>Last Qualification</label><input type="text" name="education" required></div>
+  <div class="form-group"><label>Father's Name</label><input type="text" name="fatherName" required></div>
+</div>
+
+<div class="grid-2">
+  <div class="form-group"><label>Mother's Name</label><input type="text" name="motherName" required></div>
+</div>
+</div>
+
+<!-- CONTACT DETAILS -->
+<div class="form-section">
+<h3>Contact Details</h3>
+<div class="grid-2">
+  <div class="form-group"><label>Address</label><input type="text" name="address" required></div>
+  <div class="form-group"><label>District</label><input type="text" name="district" required></div>
+</div>
+
+<div class="grid-3">
+  <div class="form-group">
+    <label>State</label>
+    <select name="state" required>
+      <option value="">Select State</option>
+      <option>West Bengal</option>
+      <option>Jharkhand</option>
+      <option>Bihar</option>
+      <option>Odisha</option>
+      <option>Uttar Pradesh</option>
+    </select>
+  </div>
+  <div class="form-group"><label>PIN Code</label><input type="text" name="pin" pattern="[0-9]{6}" required></div>
+  <div class="form-group"><label>Mobile Number</label><input type="tel" name="mobile" pattern="[0-9]{10}" required></div>
+</div>
+
+<div class="grid-2">
+  <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+  <div class="form-group"><label>Guardian Contact</label><input type="tel" name="guardianContact" pattern="[0-9]{10}" required></div>
+</div>
+</div>
+
+<!-- COURSE DETAILS -->
+<div class="form-section">
+<h3>Course Details</h3>
+<div class="grid-2">
+  <div class="form-group">
+    <label>Course Name</label>
+    <select name="courseName" required>
+      <option value="">Select Course</option>
+      <option>Medical Laboratory Technology</option>
+      <option>Operation Theatre Technology</option>
+      <option>ICU Technology</option>
+      <option>Emergency Medical Technician</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Course Duration</label>
+    <select name="courseDuration" required>
+      <option value="">Select Duration</option>
+      <option>Two Year Diploma</option>
+      <option>One Year Diploma</option>
+      <option>Certificate Course</option>
+    </select>
+  </div>
+</div>
+</div>
+
+<!-- DOCUMENTS -->
+<div class="form-section">
+<h3>Upload Documents</h3>
+<div class="grid-3">
+  <div class="form-group"><label>Identity Proof</label><input type="file" name="identityProof" accept=".pdf,image/*" required></div>
+  <div class="form-group"><label>Educational Documents</label><input type="file" name="educationDocs" accept=".pdf,image/*" required></div>
+  <div class="form-group"><label>Photo</label><input type="file" name="photo" accept="image/*" required></div>
+</div>
+</div>
+
+<!-- SIGNATURES -->
+<div class="form-section">
+<h3>Signatures</h3>
+<div class="signatures">
+  <div class="form-group"><label>Applicant Signature</label><input type="file" name="applicantSignature" accept="image/*" required></div>
+  <div class="form-group"><label>Guardian Signature</label><input type="file" name="guardianSignature" accept="image/*" required></div>
+</div>
+</div>
+
+<!-- TERMS -->
+<div class="form-section">
+<div class="terms">
+  <input type="checkbox" name="agreeTerms" required>
+  <label>
+    I agree to the
+    <a href="https://cinps-org.github.io/legal/terms-and-conditions.html" target="_blank">
+      Terms & Conditions
+    </a>
+  </label>
+</div>
+
+<p style="font-size:13px;color:#555;margin-top:10px;">
+Submission of this form does not guarantee admission. Admission is subject to
+eligibility verification, document validation, and seat availability.
+</p>
+</div>
+
+<!-- SUBMIT -->
+<div class="form-section" style="text-align:center;">
+<button type="submit">Submit Application</button>
+<div id="status"></div>
+</div>
+
+</form>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxBr9OiogTJ83m-x19UvFSaKf85bReSMEVksn8IcswQF1guO2iROmg82QkjBJFIqo48/exec";
+
+document.getElementById("admissionForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const status = document.getElementById("status");
+  status.innerHTML = "⏳ Submitting...";
+
+  fetch(scriptURL, { method:"POST", body:new FormData(this) })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success"){
+      status.innerHTML = "✅ Application submitted successfully. Our team will contact you soon.";
+      this.reset();
+    } else {
+      status.innerHTML = "❌ Submission failed. Please try again.";
+    }
+  })
+  .catch(() => {
+    status.innerHTML = "⚠️ Network error. Please try later.";
+  });
+});
+</script>
+
+</body>
+</html>
