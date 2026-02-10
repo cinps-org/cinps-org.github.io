@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!-- CRITICAL FOR MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Teacher Class Update</title>
+
+<style>
+/* ===== BASE RESET ===== */
+*{
+  box-sizing:border-box;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+body{
+  margin:0;
+  background:#f2f4f7;
+  padding:14px;
+  color:#111;
+}
+
+/* ===== HEADER ===== */
+.header{
+  text-align:center;
+  padding:12px 6px 18px;
+}
+
+.header h1{
+  font-size:20px;
+  margin:0;
+}
+
+.header p{
+  margin:4px 0 0;
+  font-size:14px;
+  color:#555;
+}
+
+/* ===== CARD ===== */
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+}
+
+.card h3{
+  font-size:16px;
+  margin:0 0 14px;
+  border-bottom:1px solid #eee;
+  padding-bottom:8px;
+}
+
+/* ===== LABELS & INPUTS ===== */
+label{
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+input, select, textarea{
+  width:100%;
+  font-size:17px;
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  margin-bottom:14px;
+  background:#fff;
+}
+
+textarea{
+  resize:vertical;
+  min-height:120px;
+}
+
+input[readonly]{
+  background:#f5f6f8;
+}
+
+/* ===== BUTTON ===== */
+button{
+  width:100%;
+  font-size:18px;
+  padding:18px;
+  border-radius:14px;
+  background:#0a4fd8;
+  color:#fff;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ===== STATUS ===== */
+#status{
+  text-align:center;
+  font-size:15px;
+  margin-top:12px;
+}
+
+/* ===== DESKTOP ENHANCEMENT ===== */
+@media(min-width:900px){
+  body{
+    display:flex;
+    justify-content:center;
+  }
+  .container{
+    width:900px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <h1>Teacher Class Update</h1>
+  <p>Chandidas Institute of Nursing & Paramedical Science</p>
+</div>
+
+<form id="classUpdateForm">
+
+<!-- CLASS INFO -->
+<div class="card">
+  <h3>Class Information</h3>
+
+  <label>Date</label>
+  <input type="text" id="date" name="date" readonly>
+
+  <label>Instructor Name</label>
+  <input type="text" id="instructor" name="instructor" readonly>
+
+  <label>Start Time</label>
+  <input type="time" name="startTime" required>
+
+  <label>End Time</label>
+  <input type="text" id="endTime" name="endTime" readonly>
+</div>
+
+<!-- COURSE INFO -->
+<div class="card">
+  <h3>Course Details</h3>
+
+  <select name="courseType" required>
+    <option value="">Course Type</option>
+    <option>Two-Year Diploma</option>
+    <option>One-Year Diploma</option>
+    <option>Certificate</option>
+  </select>
+
+  <select name="course" required>
+    <option value="">Select Course</option>
+    <option>OTT</option>
+    <option>MLT</option>
+    <option>EMT</option>
+    <option>ICU</option>
+    <option>MRT</option>
+    <option>ECG</option>
+    <option>PT</option>
+    <option>RMP</option>
+    <option>CMS & ED</option>
+    <option>NA</option>
+  </select>
+</div>
+
+<!-- TOPIC -->
+<div class="card">
+  <h3>Topic Taught</h3>
+  <textarea name="topic" placeholder="Enter topic covered in today’s class" required></textarea>
+</div>
+
+<!-- SUBMIT -->
+<div class="card">
+  <button type="submit">Submit Class Update</button>
+  <div id="status"></div>
+</div>
+
+</form>
+
+</div>
+
+<script>
+/* ===== AUTO CAPTURE ===== */
+const now = new Date();
+
+// Date (not changeable)
+document.getElementById("date").value =
+  now.toLocaleDateString("en-GB");
+
+// End Time (not changeable)
+document.getElementById("endTime").value =
+  now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+
+// Instructor Name (AUTO – change value as needed)
+document.getElementById("instructor").value = "Instructor Name";
+
+/* ===== SUBMIT HANDLER (READY FOR APPS SCRIPT) ===== */
+document.getElementById("classUpdateForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  document.getElementById("status").innerText =
+    "✅ Class update recorded successfully";
+
+  e.target.reset();
+
+  // Re-apply auto fields after reset
+  document.getElementById("date").value =
+    now.toLocaleDateString("en-GB");
+  document.getElementById("endTime").value =
+    now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  document.getElementById("instructor").value =
+    "Instructor Name";
+});
+</script>
+
+</body>
+</html>
