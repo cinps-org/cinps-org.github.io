@@ -2,128 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<!-- 🔴 CRITICAL: prevents tiny mobile UI -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Teacher Class Update</title>
 
 <style>
-/* ===== RESET ===== */
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-}
-
-body{
-  margin:0;
-  padding:14px;
-  background:#f2f4f7;
-  color:#111;
-}
-
-/* ===== HEADER ===== */
-.header{
-  text-align:center;
-  margin-bottom:16px;
-}
-.header h1{
-  font-size:20px;
-  margin:0;
-}
-.header p{
-  margin:4px 0 0;
-  font-size:14px;
-  color:#555;
-}
-
-/* ===== CARD ===== */
-.card{
-  background:#fff;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
-}
-.card h3{
-  font-size:16px;
-  margin:0 0 14px;
-  padding-bottom:8px;
-  border-bottom:1px solid #eee;
-}
-
-/* ===== LABELS ===== */
-label{
-  display:block;
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-
-/* ===== INPUTS ===== */
-input, select, textarea{
-  width:100%;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  margin-bottom:14px;
-  background:#fff;
-}
-
-input[readonly]{
-  background:#f5f6f8;
-}
-
-/* ===== START TIME (AM/PM) ===== */
-.time-row{
-  display:flex;
-  gap:10px;
-  margin-bottom:14px;
-}
-.time-row select{
-  flex:1;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
-}
-
-/* ===== TEXTAREA ===== */
-textarea{
-  min-height:120px;
-  resize:vertical;
-}
-
-/* ===== BUTTON ===== */
-button{
-  width:100%;
-  font-size:18px;
-  padding:18px;
-  border-radius:14px;
-  background:#0a4fd8;
-  color:#fff;
-  border:none;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* ===== STATUS ===== */
-#status{
-  text-align:center;
-  font-size:15px;
-  margin-top:12px;
-}
-
-/* ===== DESKTOP ENHANCEMENT ===== */
-@media(min-width:900px){
-  body{
-    display:flex;
-    justify-content:center;
-  }
-  .container{
-    width:900px;
-  }
-}
+*{ box-sizing:border-box; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+body{ margin:0; padding:14px; background:#f2f4f7; color:#111; }
+.header{ text-align:center; margin-bottom:16px; }
+.header h1{ font-size:20px; margin:0; }
+.header p{ margin:4px 0 0; font-size:14px; color:#555; }
+.card{ background:#fff; border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 6px 16px rgba(0,0,0,.06); }
+.card h3{ font-size:16px; margin:0 0 14px; border-bottom:1px solid #eee; padding-bottom:8px; }
+label{ display:block; font-size:14px; font-weight:600; margin-bottom:6px; }
+input, select, textarea{ width:100%; font-size:17px; padding:16px; border-radius:12px; border:1px solid #ccc; margin-bottom:14px; background:#fff; }
+input[readonly]{ background:#f5f6f8; }
+textarea{ min-height:120px; resize:vertical; }
+.time-row{ display:flex; gap:10px; margin-bottom:14px; }
+.time-row select{ flex:1; font-size:17px; padding:16px; border-radius:12px; }
+button{ width:100%; font-size:18px; padding:18px; border-radius:14px; background:#0a4fd8; color:#fff; border:none; font-weight:600; cursor:pointer; }
+#status{ text-align:center; font-size:15px; margin-top:12px; }
+@media(min-width:900px){ body{ display:flex; justify-content:center; } .container{ width:900px; } }
 </style>
 </head>
 
@@ -138,7 +37,6 @@ button{
 
 <form id="classUpdateForm">
 
-<!-- CLASS INFO -->
 <div class="card">
   <h3>Class Information</h3>
 
@@ -154,25 +52,15 @@ button{
   <label>Start Time</label>
   <div class="time-row">
     <select name="startHour" required>
-      <option value="">HH</option>
-      <option>01</option><option>02</option><option>03</option>
-      <option>04</option><option>05</option><option>06</option>
-      <option>07</option><option>08</option><option>09</option>
-      <option>10</option><option>11</option><option>12</option>
+      <option value="">HH</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option>
     </select>
 
     <select name="startMinute" required>
-      <option value="">MM</option>
-      <option>00</option><option>05</option><option>10</option>
-      <option>15</option><option>20</option><option>25</option>
-      <option>30</option><option>35</option><option>40</option>
-      <option>45</option><option>50</option><option>55</option>
+      <option value="">MM</option><option>00</option><option>05</option><option>10</option><option>15</option><option>20</option><option>25</option><option>30</option><option>35</option><option>40</option><option>45</option><option>50</option><option>55</option>
     </select>
 
     <select name="startPeriod" required>
-      <option value="">AM / PM</option>
-      <option>AM</option>
-      <option>PM</option>
+      <option value="">AM / PM</option><option>AM</option><option>PM</option>
     </select>
   </div>
 
@@ -182,48 +70,30 @@ button{
   <input type="text" id="endTime" name="endTime" readonly>
 </div>
 
-<!-- COURSE INFO -->
 <div class="card">
-  <h3>Course Details</h3>
+  <h3>Course & Mode</h3>
 
   <label>Mode of Class</label>
   <select name="mode" required>
-    <option value="">Select Mode</option>
-    <option>Offline</option>
-    <option>Online</option>
+    <option value="">Select Mode</option><option>Offline</option><option>Online</option>
   </select>
 
   <label>Course Type</label>
   <select name="courseType" required>
-    <option value="">Select Course Type</option>
-    <option>Two-Year Diploma</option>
-    <option>One-Year Diploma</option>
-    <option>Certificate</option>
+    <option value="">Select Course Type</option><option>Two-Year Diploma</option><option>One-Year Diploma</option><option>Certificate</option>
   </select>
 
   <label>Select Course</label>
   <select name="course" required>
-    <option value="">Select Course</option>
-    <option>OTT</option>
-    <option>MLT</option>
-    <option>EMT</option>
-    <option>ICU</option>
-    <option>MRT</option>
-    <option>ECG</option>
-    <option>PT</option>
-    <option>RMP</option>
-    <option>CMS & ED</option>
-    <option>NA</option>
+    <option value="">Select Course</option><option>OTT</option><option>MLT</option><option>EMT</option><option>ICU</option><option>MRT</option><option>ECG</option><option>PT</option><option>RMP</option><option>CMS & ED</option><option>NA</option>
   </select>
 </div>
 
-<!-- TOPIC -->
 <div class="card">
   <h3>Topic Taught</h3>
-  <textarea name="topic" placeholder="Enter topic covered in today’s class" required></textarea>
+  <textarea name="topic" placeholder="Topic covered in today’s class" required></textarea>
 </div>
 
-<!-- SUBMIT -->
 <div class="card">
   <button type="submit">Submit Class Update</button>
   <div id="status"></div>
@@ -234,17 +104,18 @@ button{
 </div>
 
 <script>
-/* ===== AUTO CAPTURE FIELDS ===== */
+// ========== AUTO CAPTURE FIELDS ==========
 const now = new Date();
 
+// Date / Day / End Time
 date.value = now.toLocaleDateString("en-GB");
 day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
 endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
 
-// Instructor name (replace later with login-based value)
+// Instructor — (Replace with logged-in user later)
 instructor.value = "Instructor Name";
 
-/* ===== COMBINE START TIME ===== */
+// ========== COMBINE START TIME ==========
 function combineStartTime(){
   const h = document.querySelector('[name="startHour"]').value;
   const m = document.querySelector('[name="startMinute"]').value;
@@ -261,23 +132,38 @@ document.querySelectorAll(
   el.addEventListener("change", combineStartTime);
 });
 
-/* ===== SUBMIT ===== */
-classUpdateForm.addEventListener("submit", e=>{
+// ========== SUBMIT FORM ==========
+classUpdateForm.addEventListener("submit", e => {
   e.preventDefault();
-
   if(!startTime.value){
-    alert("Please select complete Start Time");
+    alert("Please complete Start Time");
     return;
   }
 
-  status.innerText = "✅ Class update submitted successfully";
-  classUpdateForm.reset();
+  status.innerText = "Submitting…";
 
-  // Restore auto fields after reset
-  date.value = now.toLocaleDateString("en-GB");
-  day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
-  endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
-  instructor.value = "Instructor Name";
+  fetch("https://script.google.com/macros/s/AKfycbxkbo2y8jHs40GN2057YtiNueaTwDlQ7L3xUBs7y1kL0w74U7D0FHDvq0hcA2SonHdH/exec", {
+    method:"POST",
+    body:new FormData(classUpdateForm)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success"){
+      status.innerText = "✅ Class update submitted successfully";
+      classUpdateForm.reset();
+
+      // Restore auto fields
+      date.value = now.toLocaleDateString("en-GB");
+      day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
+      endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
+      instructor.value = "Instructor Name";
+    } else {
+      status.innerText = "❌ Submission failed!";
+    }
+  })
+  .catch(() => {
+    status.innerText = "⚠️ Network error!";
+  });
 });
 </script>
 
