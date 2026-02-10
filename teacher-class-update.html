@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- CRITICAL FOR MOBILE -->
+<!-- 🔴 CRITICAL: prevents tiny mobile UI -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Teacher Class Update</title>
 
 <style>
-/* ===== BASE RESET ===== */
+/* ===== RESET ===== */
 *{
   box-sizing:border-box;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
 body{
   margin:0;
-  background:#f2f4f7;
   padding:14px;
+  background:#f2f4f7;
   color:#111;
 }
 
 /* ===== HEADER ===== */
 .header{
   text-align:center;
-  padding:12px 6px 18px;
+  margin-bottom:16px;
 }
 
 .header h1{
@@ -51,11 +51,11 @@ body{
 .card h3{
   font-size:16px;
   margin:0 0 14px;
-  border-bottom:1px solid #eee;
   padding-bottom:8px;
+  border-bottom:1px solid #eee;
 }
 
-/* ===== LABELS & INPUTS ===== */
+/* ===== LABELS ===== */
 label{
   display:block;
   font-size:14px;
@@ -63,6 +63,7 @@ label{
   margin-bottom:6px;
 }
 
+/* ===== INPUTS ===== */
 input, select, textarea{
   width:100%;
   font-size:17px;
@@ -73,13 +74,27 @@ input, select, textarea{
   background:#fff;
 }
 
-textarea{
-  resize:vertical;
-  min-height:120px;
-}
-
 input[readonly]{
   background:#f5f6f8;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+/* ===== START TIME (AM/PM) ===== */
+.time-row{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.time-row select{
+  flex:1;
+  padding:16px;
+  font-size:17px;
+  border-radius:12px;
 }
 
 /* ===== BUTTON ===== */
@@ -137,13 +152,38 @@ button{
   <input type="text" id="instructor" name="instructor" readonly>
 
   <label>Start Time</label>
-  <input type="time" name="startTime" required>
+  <div class="time-row">
+    <select name="startHour" required>
+      <option value="">HH</option>
+      <option>01</option><option>02</option><option>03</option>
+      <option>04</option><option>05</option><option>06</option>
+      <option>07</option><option>08</option><option>09</option>
+      <option>10</option><option>11</option><option>12</option>
+    </select>
+
+    <select name="startMinute" required>
+      <option value="">MM</option>
+      <option>00</option><option>05</option><option>10</option>
+      <option>15</option><option>20</option><option>25</option>
+      <option>30</option><option>35</option><option>40</option>
+      <option>45</option><option>50</option><option>55</option>
+    </select>
+
+    <select name="startPeriod" required>
+      <option value="">AM/PM</option>
+      <option>AM</option>
+      <option>PM</option>
+    </select>
+  </div>
+
+  <!-- Combined start time -->
+  <input type="hidden" name="startTime" id="startTime">
 
   <label>End Time</label>
   <input type="text" id="endTime" name="endTime" readonly>
 </div>
 
-<!-- COURSE INFO -->
+<!-- COURSE DETAILS -->
 <div class="card">
   <h3>Course Details</h3>
 
@@ -186,35 +226,51 @@ button{
 </div>
 
 <script>
-/* ===== AUTO CAPTURE ===== */
+/* ===== AUTO FIELDS ===== */
 const now = new Date();
 
-// Date (not changeable)
-document.getElementById("date").value =
-  now.toLocaleDateString("en-GB");
+// Date (locked)
+date.value = now.toLocaleDateString("en-GB");
 
-// End Time (not changeable)
-document.getElementById("endTime").value =
-  now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+// End Time (locked)
+endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-// Instructor Name (AUTO – change value as needed)
-document.getElementById("instructor").value = "Instructor Name";
+// Instructor (auto – change later to login-based)
+instructor.value = "Instructor Name";
 
-/* ===== SUBMIT HANDLER (READY FOR APPS SCRIPT) ===== */
-document.getElementById("classUpdateForm").addEventListener("submit", e=>{
+/* ===== COMBINE START TIME ===== */
+function combineStartTime(){
+  const h = document.querySelector('[name="startHour"]').value;
+  const m = document.querySelector('[name="startMinute"]').value;
+  const p = document.querySelector('[name="startPeriod"]').value;
+
+  if(h && m && p){
+    startTime.value = `${h}:${m} ${p}`;
+  }
+}
+
+document.querySelectorAll(
+  '[name="startHour"],[name="startMinute"],[name="startPeriod"]'
+).forEach(el=>{
+  el.addEventListener("change", combineStartTime);
+});
+
+/* ===== SUBMIT ===== */
+classUpdateForm.addEventListener("submit", e=>{
   e.preventDefault();
-  document.getElementById("status").innerText =
-    "✅ Class update recorded successfully";
 
-  e.target.reset();
+  if(!startTime.value){
+    alert("Please select complete Start Time");
+    return;
+  }
 
-  // Re-apply auto fields after reset
-  document.getElementById("date").value =
-    now.toLocaleDateString("en-GB");
-  document.getElementById("endTime").value =
-    now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
-  document.getElementById("instructor").value =
-    "Instructor Name";
+  status.innerText = "✅ Class update recorded successfully";
+  classUpdateForm.reset();
+
+  // Restore locked fields after reset
+  date.value = now.toLocaleDateString("en-GB");
+  endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  instructor.value = "Instructor Name";
 });
 </script>
 
