@@ -3,222 +3,184 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 🔴 CRITICAL: fixes tiny mobile issue -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!-- THIS FIXES THE TINY ISSUE -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>CINPS Attendance Form</title>
+<title>CINPS Attendance</title>
 
 <style>
-/* ===== MOBILE FIRST BASE ===== */
-html{
-  font-size:16px;
+/* ===== RESET ===== */
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
 
 body{
   margin:0;
-  padding:14px;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:#f4f6f9;
-  color:#222;
+  background:#f2f4f7;
+  padding:12px;
+  color:#111;
 }
 
-/* ===== HEADINGS ===== */
-h1{
+/* ===== HEADER ===== */
+.header{
   text-align:center;
-  font-size:22px;
-  margin-bottom:4px;
+  padding:12px 8px 18px;
 }
-h2{
-  text-align:center;
-  font-size:15px;
+
+.header h1{
+  font-size:20px;
+  margin:0;
+}
+
+.header p{
+  margin:4px 0 0;
+  font-size:14px;
   color:#555;
-  margin-top:0;
-  margin-bottom:16px;
 }
 
-/* ===== FORM ===== */
-form{
-  width:100%;
-  max-width:100%;
-  margin:0 auto;
-}
-
-/* ===== SECTIONS ===== */
-.form-section{
+/* ===== CARD ===== */
+.card{
   background:#fff;
+  border-radius:14px;
   padding:16px;
-  margin-bottom:16px;
-  border-radius:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  margin-bottom:14px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
 }
 
-h3{
+.card h3{
   font-size:16px;
-  margin:0 0 12px;
-  padding-bottom:6px;
-  border-bottom:2px solid #e0e0e0;
+  margin:0 0 14px;
+  border-bottom:1px solid #eee;
+  padding-bottom:8px;
 }
 
-/* ===== LABELS ===== */
+/* ===== FORM ELEMENTS ===== */
 label{
+  display:block;
   font-size:14px;
   font-weight:600;
   margin-bottom:6px;
-  display:block;
 }
 
-/* ===== INPUTS (BIG & READABLE) ===== */
 input, select{
   width:100%;
-  font-size:16px;
-  padding:14px;
-  border-radius:10px;
+  font-size:17px;
+  padding:16px;
+  border-radius:12px;
   border:1px solid #ccc;
-  min-height:48px;
+  margin-bottom:14px;
+  background:#fff;
 }
 
 input[readonly]{
-  background:#f1f3f6;
+  background:#f5f6f8;
 }
 
-/* ===== GRID (MOBILE = SINGLE COLUMN) ===== */
-.grid-2, .grid-3{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-
-/* ===== REVIEW UI ===== */
-.review-cards{
+/* ===== REVIEW BUTTONS ===== */
+.review{
   display:flex;
   gap:10px;
-  justify-content:space-between;
 }
 
-.review-card{
+.review label{
   flex:1;
-  text-align:center;
-  padding:16px 10px;
-  border-radius:14px;
   border:2px solid #ddd;
+  border-radius:14px;
+  padding:14px 8px;
+  text-align:center;
+  font-size:15px;
   cursor:pointer;
 }
 
-.review-card input{ display:none; }
+.review input{ display:none; }
 
-.review-card .emoji{
-  font-size:30px;
+.review .emoji{
+  font-size:28px;
   display:block;
 }
-.review-card .text{
-  font-size:14px;
-  font-weight:700;
-}
 
-.review-card.good{ border-color:#2ecc71; }
-.review-card.medium{ border-color:#f1c40f; }
-.review-card.bad{ border-color:#e74c3c; }
+.review .good{ border-color:#2ecc71; }
+.review .medium{ border-color:#f1c40f; }
+.review .bad{ border-color:#e74c3c; }
 
-.review-card.good input:checked ~ *{
-  background:#2ecc71; color:#fff;
-}
-.review-card.medium input:checked ~ *{
-  background:#f1c40f; color:#fff;
-}
-.review-card.bad input:checked ~ *{
-  background:#e74c3c; color:#fff;
+.review input:checked + span{
+  color:#fff;
+  background:#2ecc71;
+  border-radius:10px;
+  padding:6px 0;
 }
 
 /* ===== BUTTON ===== */
 button{
   width:100%;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
+  font-size:18px;
+  padding:18px;
+  border-radius:14px;
   background:#0a4fd8;
   color:#fff;
   border:none;
-  cursor:pointer;
+  font-weight:600;
 }
 
+/* ===== STATUS ===== */
 #status{
-  margin-top:12px;
   text-align:center;
-  font-weight:700;
+  font-size:15px;
+  margin-top:12px;
 }
 
-/* ===== DESKTOP UPGRADE ===== */
-@media(min-width:768px){
-  body{ padding:24px; }
-
-  form{ max-width:900px; }
-
-  .grid-2{
-    grid-template-columns:1fr 1fr;
+/* ===== DESKTOP ENHANCEMENT ===== */
+@media(min-width:900px){
+  body{
+    display:flex;
+    justify-content:center;
   }
-
-  .grid-3{
-    grid-template-columns:1fr 1fr 1fr;
+  .container{
+    width:900px;
   }
-
-  h1{ font-size:28px; }
 }
 </style>
 </head>
 
 <body>
 
-<h1>Chandidas Institute of Nursing & Paramedical Science</h1>
-<h2>Attendance Form</h2>
+<div class="container">
+
+<div class="header">
+  <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
+  <p>Attendance Form</p>
+</div>
 
 <form id="attendanceForm">
 
-<!-- Hidden GPS -->
-<input type="hidden" name="gpsLat" id="gpsLat">
-<input type="hidden" name="gpsLng" id="gpsLng">
-<input type="hidden" name="gpsStatus" id="gpsStatus">
+<div class="card">
+  <h3>Class Details</h3>
 
-<!-- CLASS DETAILS -->
-<div class="form-section">
-<h3>Class Details</h3>
+  <label>Date</label>
+  <input type="text" id="date" readonly>
 
-<div class="grid-3">
-  <div>
-    <label>Date</label>
-    <input type="text" id="date" readonly>
-  </div>
-  <div>
-    <label>Day</label>
-    <input type="text" id="day" readonly>
-  </div>
-  <div>
-    <label>Class End Time</label>
-    <input type="text" id="endTime" readonly>
-  </div>
+  <label>Day</label>
+  <input type="text" id="day" readonly>
+
+  <label>Class Start Time</label>
+  <input type="time" name="startTime" required>
+
+  <label>Class End Time</label>
+  <input type="text" id="endTime" readonly>
+
+  <label>Branch</label>
+  <select name="branch" required>
+    <option value="">Select Branch</option>
+    <option>Nanoor</option>
+    <option>Sainthia</option>
+    <option>Other</option>
+  </select>
 </div>
 
-<div class="grid-2" style="margin-top:14px;">
-  <div>
-    <label>Class Start Time</label>
-    <input type="time" name="startTime" required>
-  </div>
-  <div>
-    <label>Branch</label>
-    <select name="branch" id="branch" required>
-      <option value="">Select Branch</option>
-      <option>Nanoor</option>
-      <option>Sainthia</option>
-      <option>Other</option>
-    </select>
-  </div>
-</div>
-</div>
+<div class="card">
+  <h3>Course Details</h3>
 
-<!-- COURSE DETAILS -->
-<div class="form-section">
-<h3>Course Details</h3>
-
-<div class="grid-3">
   <select name="courseType" required>
     <option value="">Course Type</option>
     <option>Two-Year Diploma</option>
@@ -245,9 +207,7 @@ button{
     <option>First Year</option>
     <option>Second Year</option>
   </select>
-</div>
 
-<div style="margin-top:14px;">
   <select name="classType" required>
     <option value="">Class Type</option>
     <option>Theory</option>
@@ -255,50 +215,48 @@ button{
     <option>Other</option>
   </select>
 </div>
+
+<div class="card">
+  <h3>Class Review</h3>
+
+  <div class="review">
+    <label class="good">
+      <input type="radio" name="review" value="Good" required>
+      <span>
+        <span class="emoji">😀</span>Good
+      </span>
+    </label>
+
+    <label class="medium">
+      <input type="radio" name="review" value="Medium">
+      <span>
+        <span class="emoji">😐</span>Medium
+      </span>
+    </label>
+
+    <label class="bad">
+      <input type="radio" name="review" value="Bad">
+      <span>
+        <span class="emoji">😞</span>Bad
+      </span>
+    </label>
+  </div>
 </div>
 
-<!-- REVIEW -->
-<div class="form-section">
-<h3>Class Review</h3>
+<div class="card">
+  <h3>Student</h3>
 
-<div class="review-cards">
-  <label class="review-card good">
-    <input type="radio" name="review" value="Good" required>
-    <span class="emoji">😀</span>
-    <span class="text">Good</span>
-  </label>
-
-  <label class="review-card medium">
-    <input type="radio" name="review" value="Medium">
-    <span class="emoji">😐</span>
-    <span class="text">Medium</span>
-  </label>
-
-  <label class="review-card bad">
-    <input type="radio" name="review" value="Bad">
-    <span class="emoji">😞</span>
-    <span class="text">Bad</span>
-  </label>
-</div>
-</div>
-
-<!-- STUDENT -->
-<div class="form-section">
-<h3>Student Information</h3>
-
-<div class="grid-2">
   <input type="text" name="studentName" placeholder="Full Name" required>
   <input type="text" name="studentId" placeholder="Student ID No." required>
 </div>
-</div>
 
-<!-- SUBMIT -->
-<div class="form-section">
-<button type="submit">Submit Attendance</button>
-<div id="status"></div>
+<div class="card">
+  <button type="submit">Submit Attendance</button>
+  <div id="status"></div>
 </div>
 
 </form>
+</div>
 
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbyyM_ebdCh27Zq3vkqli-Lu8bR0cZiucs0N7DGU64lBpZWWBCMRpvwzw0IhIl1PWZDx/exec";
@@ -309,20 +267,21 @@ date.value = now.toLocaleDateString("en-GB");
 day.value = now.toLocaleDateString("en-US",{weekday:"long"});
 endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-attendanceForm.addEventListener("submit",function(e){
+attendanceForm.addEventListener("submit",e=>{
   e.preventDefault();
-  status.innerHTML="⏳ Submitting...";
+  status.innerText="Submitting...";
 
-  const fd = new FormData(this);
-
-  fetch(scriptURL,{method:"POST",body:fd})
+  fetch(scriptURL,{
+    method:"POST",
+    body:new FormData(attendanceForm)
+  })
   .then(r=>r.json())
-  .then(d=>{
-    status.innerHTML="✅ Attendance submitted successfully";
+  .then(()=>{
+    status.innerText="✅ Attendance submitted successfully";
     attendanceForm.reset();
   })
   .catch(()=>{
-    status.innerHTML="❌ Submission failed";
+    status.innerText="❌ Submission failed";
   });
 });
 </script>
