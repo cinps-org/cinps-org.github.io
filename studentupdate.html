@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>CINPS Attendance Form</title>
-
 <style>
 :root{
   --primary:#0a4fd8;
@@ -15,56 +9,63 @@
   --bad:#e74c3c;
 }
 
-*{ box-sizing:border-box; }
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 body{
   margin:0;
-  padding:20px;
-  font-family:Segoe UI, Roboto, Arial, sans-serif;
+  padding:16px;
+  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background:var(--bg);
+  color:#222;
 }
 
 h1{
   text-align:center;
-  margin-bottom:5px;
+  font-size:clamp(20px, 4vw, 28px);
+  margin-bottom:4px;
 }
 h2{
   text-align:center;
-  font-size:16px;
+  font-size:clamp(14px, 3vw, 16px);
   color:#555;
   margin-top:0;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 form{
-  max-width:900px;
+  max-width:880px;
   margin:auto;
 }
 
 .form-section{
   background:var(--card);
-  padding:20px;
-  margin-bottom:20px;
-  border-radius:10px;
-  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  padding:18px;
+  margin-bottom:18px;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
 }
 
 h3{
-  margin-top:0;
+  margin:0 0 14px;
+  font-size:16px;
   border-bottom:2px solid var(--border);
   padding-bottom:6px;
 }
 
+/* GRID SYSTEM */
 .grid-2{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
 }
 
 .grid-3{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:15px;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
 }
 
 .form-group{
@@ -74,37 +75,44 @@ h3{
 
 label{
   font-weight:600;
-  font-size:14px;
+  font-size:13px;
   margin-bottom:6px;
 }
 
 input, select{
-  padding:11px;
-  border-radius:6px;
+  padding:12px;
+  border-radius:8px;
   border:1px solid #ccc;
-  font-size:14px;
+  font-size:15px;
+  min-height:44px;
+}
+
+input:focus, select:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 2px rgba(10,79,216,.15);
 }
 
 input[readonly]{
   background:#f1f3f6;
 }
 
-/* ===== REVIEW UI ===== */
+/* REVIEW CARDS */
 .review-cards{
   display:flex;
-  gap:18px;
   justify-content:center;
+  gap:14px;
   flex-wrap:wrap;
 }
 
 .review-card{
   cursor:pointer;
   border:2px solid #ddd;
-  border-radius:14px;
-  padding:16px 20px;
-  min-width:120px;
+  border-radius:16px;
+  padding:14px 18px;
+  min-width:110px;
   text-align:center;
-  transition:all .25s ease;
+  transition:.2s ease;
   background:#fff;
   display:flex;
   flex-direction:column;
@@ -112,306 +120,64 @@ input[readonly]{
   gap:6px;
 }
 
-.review-card input{
-  display:none;
-}
+.review-card input{ display:none; }
 
-.review-card .emoji{
-  font-size:34px;
-}
-
-.review-card .text{
-  font-size:15px;
-  font-weight:700;
-}
+.review-card .emoji{ font-size:34px; }
+.review-card .text{ font-size:14px; font-weight:700; }
 
 .review-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 22px rgba(0,0,0,.12);
-}
-
-/* Selected states */
-.review-card.good input:checked ~ *{
-  background:var(--good);
-  color:#fff;
-}
-.review-card.medium input:checked ~ *{
-  background:var(--medium);
-  color:#fff;
-}
-.review-card.bad input:checked ~ *{
-  background:var(--bad);
-  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
 }
 
 .review-card.good{ border-color:var(--good); }
 .review-card.medium{ border-color:var(--medium); }
 .review-card.bad{ border-color:var(--bad); }
 
+.review-card.good input:checked ~ *{
+  background:var(--good); color:#fff;
+}
+.review-card.medium input:checked ~ *{
+  background:var(--medium); color:#fff;
+}
+.review-card.bad input:checked ~ *{
+  background:var(--bad); color:#fff;
+}
+
 /* BUTTON */
 button{
+  width:100%;
   background:var(--primary);
   color:#fff;
   padding:14px;
   font-size:16px;
   border:none;
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
 }
 
-button:hover{
-  background:#083da9;
+button:active{
+  transform:scale(.98);
 }
 
 #status{
-  margin-top:15px;
+  margin-top:12px;
   font-weight:700;
   text-align:center;
 }
 
-/* MOBILE */
+/* MOBILE OPTIMIZATION */
 @media(max-width:768px){
-  .grid-2,.grid-3{ grid-template-columns:1fr; }
   body{ padding:12px; }
+  .grid-2,.grid-3{ grid-template-columns:1fr; }
+  .form-section{ padding:16px; }
+}
+
+/* VERY SMALL SCREENS */
+@media(max-width:360px){
+  .review-card{
+    min-width:90px;
+    padding:12px;
+  }
 }
 </style>
-</head>
-
-<body>
-
-<h1>Chandidas Institute of Nursing & Paramedical Science</h1>
-<h2>Attendance Form</h2>
-
-<form id="attendanceForm">
-
-<!-- GPS hidden -->
-<input type="hidden" name="gpsLat" id="gpsLat">
-<input type="hidden" name="gpsLng" id="gpsLng">
-<input type="hidden" name="gpsStatus" id="gpsStatus">
-
-<!-- CLASS DETAILS -->
-<div class="form-section">
-<h3>Class Details</h3>
-
-<div class="grid-3">
-  <div class="form-group">
-    <label>Date</label>
-    <input type="text" id="date" readonly>
-  </div>
-  <div class="form-group">
-    <label>Day</label>
-    <input type="text" id="day" readonly>
-  </div>
-  <div class="form-group">
-    <label>Class End Time</label>
-    <input type="text" id="endTime" readonly>
-  </div>
-</div>
-
-<div class="grid-2" style="margin-top:15px;">
-  <div class="form-group">
-    <label>Class Start Time</label>
-    <input type="time" name="startTime" required>
-  </div>
-  <div class="form-group">
-    <label>Branch</label>
-    <select name="branch" id="branch" required>
-      <option value="">Select Branch</option>
-      <option value="Nanoor">Nanoor</option>
-      <option value="Sainthia">Sainthia</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-</div>
-</div>
-
-<!-- COURSE DETAILS -->
-<div class="form-section">
-<h3>Course Details</h3>
-
-<div class="grid-3">
-  <div class="form-group">
-    <label>Course Type</label>
-    <select name="courseType" required>
-      <option value="">Select</option>
-      <option>Two-Year Diploma</option>
-      <option>One-Year Diploma</option>
-      <option>Certificate</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Course</label>
-    <select name="course" required>
-      <option value="">Select</option>
-      <option>OTT</option>
-      <option>MLT</option>
-      <option>EMT</option>
-      <option>ICU</option>
-      <option>MRT</option>
-      <option>ECG</option>
-      <option>PT</option>
-      <option>RMP</option>
-      <option>CMS & ED</option>
-      <option>NA</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Year</label>
-    <select name="year" required>
-      <option value="">Select</option>
-      <option>First Year</option>
-      <option>Second Year</option>
-    </select>
-  </div>
-</div>
-
-<div class="form-group" style="margin-top:15px;">
-  <label>Class Type</label>
-  <select name="classType" required>
-    <option value="">Select</option>
-    <option>Theory</option>
-    <option>Practical</option>
-    <option>Other</option>
-  </select>
-</div>
-</div>
-
-<!-- REVIEW -->
-<div class="form-section">
-<h3>Class Review</h3>
-
-<div class="review-cards">
-  <label class="review-card good">
-    <input type="radio" name="review" value="Good" required>
-    <span class="emoji">😀</span>
-    <span class="text">Good</span>
-  </label>
-
-  <label class="review-card medium">
-    <input type="radio" name="review" value="Medium">
-    <span class="emoji">😐</span>
-    <span class="text">Medium</span>
-  </label>
-
-  <label class="review-card bad">
-    <input type="radio" name="review" value="Bad">
-    <span class="emoji">😞</span>
-    <span class="text">Bad</span>
-  </label>
-</div>
-</div>
-
-<!-- STUDENT INFO -->
-<div class="form-section">
-<h3>Student Information</h3>
-
-<div class="grid-2">
-  <div class="form-group">
-    <label>Full Name</label>
-    <input type="text" name="studentName" required>
-  </div>
-
-  <div class="form-group">
-    <label>Student ID No.</label>
-    <input type="text" name="studentId" required>
-  </div>
-</div>
-</div>
-
-<!-- SUBMIT -->
-<div class="form-section">
-<button type="submit">Submit Attendance</button>
-<div id="status"></div>
-</div>
-
-</form>
-
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbyyM_ebdCh27Zq3vkqli-Lu8bR0cZiucs0N7DGU64lBpZWWBCMRpvwzw0IhIl1PWZDx/exec";
-
-// Auto date / day / time
-const now = new Date();
-date.value = now.toLocaleDateString("en-GB");
-day.value = now.toLocaleDateString("en-US",{ weekday:'long' });
-endTime.value = now.toLocaleTimeString("en-US",{ hour:'2-digit', minute:'2-digit' });
-
-// Branch GPS data
-const BRANCH_LOCATIONS = {
-  Nanoor:{ lat:23.3319, lng:87.8965, radius:300 },
-  Sainthia:{ lat:23.9467, lng:87.6802, radius:300 }
-};
-
-// Distance formula
-function getDistance(a,b,c,d){
-  const R=6371e3;
-  const φ1=a*Math.PI/180, φ2=c*Math.PI/180;
-  const Δφ=(c-a)*Math.PI/180, Δλ=(d-b)*Math.PI/180;
-  const x=Math.sin(Δφ/2)**2+
-          Math.cos(φ1)*Math.cos(φ2)*
-          Math.sin(Δλ/2)**2;
-  return R*(2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x)));
-}
-
-attendanceForm.addEventListener("submit", function(e){
-  e.preventDefault();
-  status.innerHTML = "⏳ Submitting...";
-
-  navigator.geolocation.getCurrentPosition(pos => {
-    gpsLat.value = pos.coords.latitude;
-    gpsLng.value = pos.coords.longitude;
-
-    const branchVal = branch.value;
-
-    if(branchVal === "Other"){
-      gpsStatus.value = "Manual Branch";
-      submitToSheet();
-      return;
-    }
-
-    const b=BRANCH_LOCATIONS[branchVal];
-    const dist=getDistance(
-      pos.coords.latitude,
-      pos.coords.longitude,
-      b.lat,b.lng
-    );
-
-    if(dist<=b.radius){
-      gpsStatus.value="Verified";
-      submitToSheet();
-    }else{
-      gpsStatus.value="Rejected";
-      alert("❌ Outside campus area");
-      status.innerHTML="";
-    }
-  }, ()=>{
-    alert("❌ Location denied");
-    status.innerHTML="";
-  });
-});
-
-function submitToSheet(){
-  const formData = new FormData(attendanceForm);
-
-  fetch(scriptURL,{
-    method:"POST",
-    body:formData
-  })
-  .then(res=>res.json())
-  .then(data=>{
-    if(data.status==="success"){
-      status.innerHTML="✅ Attendance submitted!";
-      attendanceForm.reset();
-    } else {
-      status.innerHTML="❌ Error, try again";
-    }
-  })
-  .catch(()=>{
-    status.innerHTML="⚠️ Network error";
-  });
-}
-</script>
-
-</body>
-</html>
