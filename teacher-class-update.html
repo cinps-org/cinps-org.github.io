@@ -27,12 +27,10 @@ body{
   text-align:center;
   margin-bottom:16px;
 }
-
 .header h1{
   font-size:20px;
   margin:0;
 }
-
 .header p{
   margin:4px 0 0;
   font-size:14px;
@@ -47,7 +45,6 @@ body{
   margin-bottom:14px;
   box-shadow:0 6px 16px rgba(0,0,0,.06);
 }
-
 .card h3{
   font-size:16px;
   margin:0 0 14px;
@@ -78,23 +75,23 @@ input[readonly]{
   background:#f5f6f8;
 }
 
-textarea{
-  min-height:120px;
-  resize:vertical;
-}
-
 /* ===== START TIME (AM/PM) ===== */
 .time-row{
   display:flex;
   gap:10px;
   margin-bottom:14px;
 }
-
 .time-row select{
   flex:1;
-  padding:16px;
   font-size:17px;
+  padding:16px;
   border-radius:12px;
+}
+
+/* ===== TEXTAREA ===== */
+textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
 /* ===== BUTTON ===== */
@@ -148,6 +145,9 @@ button{
   <label>Date</label>
   <input type="text" id="date" name="date" readonly>
 
+  <label>Day</label>
+  <input type="text" id="day" name="day" readonly>
+
   <label>Instructor Name</label>
   <input type="text" id="instructor" name="instructor" readonly>
 
@@ -170,30 +170,38 @@ button{
     </select>
 
     <select name="startPeriod" required>
-      <option value="">AM/PM</option>
+      <option value="">AM / PM</option>
       <option>AM</option>
       <option>PM</option>
     </select>
   </div>
 
-  <!-- Combined start time -->
   <input type="hidden" name="startTime" id="startTime">
 
   <label>End Time</label>
   <input type="text" id="endTime" name="endTime" readonly>
 </div>
 
-<!-- COURSE DETAILS -->
+<!-- COURSE INFO -->
 <div class="card">
   <h3>Course Details</h3>
 
+  <label>Mode of Class</label>
+  <select name="mode" required>
+    <option value="">Select Mode</option>
+    <option>Offline</option>
+    <option>Online</option>
+  </select>
+
+  <label>Course Type</label>
   <select name="courseType" required>
-    <option value="">Course Type</option>
+    <option value="">Select Course Type</option>
     <option>Two-Year Diploma</option>
     <option>One-Year Diploma</option>
     <option>Certificate</option>
   </select>
 
+  <label>Select Course</label>
   <select name="course" required>
     <option value="">Select Course</option>
     <option>OTT</option>
@@ -226,16 +234,14 @@ button{
 </div>
 
 <script>
-/* ===== AUTO FIELDS ===== */
+/* ===== AUTO CAPTURE FIELDS ===== */
 const now = new Date();
 
-// Date (locked)
 date.value = now.toLocaleDateString("en-GB");
+day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
+endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
 
-// End Time (locked)
-endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
-
-// Instructor (auto – change later to login-based)
+// Instructor name (replace later with login-based value)
 instructor.value = "Instructor Name";
 
 /* ===== COMBINE START TIME ===== */
@@ -264,12 +270,13 @@ classUpdateForm.addEventListener("submit", e=>{
     return;
   }
 
-  status.innerText = "✅ Class update recorded successfully";
+  status.innerText = "✅ Class update submitted successfully";
   classUpdateForm.reset();
 
-  // Restore locked fields after reset
+  // Restore auto fields after reset
   date.value = now.toLocaleDateString("en-GB");
-  endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  day.value = now.toLocaleDateString("en-US",{ weekday:"long" });
+  endTime.value = now.toLocaleTimeString("en-US",{ hour:"2-digit", minute:"2-digit" });
   instructor.value = "Instructor Name";
 });
 </script>
