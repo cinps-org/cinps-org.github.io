@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Teacher Class Update</title>
 
 <!-- Google Identity Services -->
@@ -73,8 +72,10 @@ button:disabled{background:#9bb6f0}
   <input type="text" id="day" name="day" readonly>
 
   <label>Instructor (Verified)</label>
-  <input type="text" id="instructor" readonly>
-  <input type="hidden" name="instructor">
+  <input type="text" id="instructorDisplay" readonly>
+
+  <!-- Hidden fields sent to Apps Script -->
+  <input type="hidden" name="instructorName" id="instructorName">
   <input type="hidden" name="instructorEmail" id="instructorEmail">
 
   <label>Start Time</label>
@@ -86,6 +87,7 @@ button:disabled{background:#9bb6f0}
       <option>07</option><option>08</option><option>09</option>
       <option>10</option><option>11</option><option>12</option>
     </select>
+
     <select name="startMinute" required>
       <option value="">MM</option>
       <option>00</option><option>05</option><option>10</option>
@@ -93,6 +95,7 @@ button:disabled{background:#9bb6f0}
       <option>30</option><option>35</option><option>40</option>
       <option>45</option><option>50</option><option>55</option>
     </select>
+
     <select name="startPeriod" required>
       <option value="">AM / PM</option>
       <option>AM</option>
@@ -139,7 +142,9 @@ button:disabled{background:#9bb6f0}
 </div>
 
 <div class="card">
-  <button type="submit" id="submitBtn" disabled>Submit Class Update</button>
+  <button type="submit" id="submitBtn" disabled>
+    Submit Class Update
+  </button>
   <div id="status"></div>
 </div>
 
@@ -151,18 +156,20 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwM90TNYTr_8YRkVvO5t
 
 // Auto date/day/end time
 const now = new Date();
-date.value = now.toLocaleDateString("en-GB");
-day.value = now.toLocaleDateString("en-US",{weekday:"long"});
-endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+document.getElementById("date").value = now.toLocaleDateString("en-GB");
+document.getElementById("day").value = now.toLocaleDateString("en-US",{weekday:"long"});
+document.getElementById("endTime").value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-// Google login handler
+// ✅ Google login handler (ONLY ONE)
 function handleCredentialResponse(response){
   const data = JSON.parse(atob(response.credential.split('.')[1]));
-  instructor.value = data.name;
-  document.querySelector('[name="instructor"]').value = data.name;
-  instructorEmail.value = data.email;
-  loginBox.style.display = "none";
-  submitBtn.disabled = false;
+
+  document.getElementById("instructorDisplay").value = data.name;
+  document.getElementById("instructorName").value = data.name;
+  document.getElementById("instructorEmail").value = data.email;
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("submitBtn").disabled = false;
 }
 
 // Combine start time
@@ -170,20 +177,36 @@ function combineStartTime(){
   const h = document.querySelector('[name="startHour"]').value;
   const m = document.querySelector('[name="startMinute"]').value;
   const p = document.querySelector('[name="startPeriod"]').value;
-  if(h && m && p) startTime.value = `${h}:${m} ${p}`;
+  if(h && m && p){
+    document.getElementById("startTime").value = `${h}:${m} ${p}`;
+  }
 }
+
 document.querySelectorAll('[name="startHour"],[name="startMinute"],[name="startPeriod"]')
   .forEach(el=>el.addEventListener("change",combineStartTime));
 
 // Submit
-classUpdateForm.addEventListener("submit",e=>{
+document.getElementById("classUpdateForm").addEventListener("submit",function(e){
   e.preventDefault();
-  if(!startTime.value){alert("Please select start time");return;}
-  status.innerText="Submitting…";
-  fetch(SCRIPT_URL,{method:"POST",body:new FormData(classUpdateForm)})
-    .then(r=>r.json())
-    .then(()=>status.innerText="✅ Class update submitted successfully")
-    .catch(()=>status.innerText="❌ Submission failed");
+
+  if(!document.getElementById("startTime").value){
+    alert("Please select start time");
+    return;
+  }
+
+  document.getElementById("status").innerText="Submitting…";
+
+  fetch(SCRIPT_URL,{
+    method:"POST",
+    body:new FormData(this)
+  })
+  .then(r=>r.json())
+  .then(()=>{
+    document.getElementById("status").innerText="✅ Class update submitted successfully";
+  })
+  .catch(()=>{
+    document.getElementById("status").innerText="❌ Submission failed";
+  });
 });
 </script>
 
