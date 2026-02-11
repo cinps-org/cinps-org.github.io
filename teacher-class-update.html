@@ -11,6 +11,7 @@
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 body{margin:0;padding:16px;background:#f2f4f7;color:#111}
 .container{max-width:900px;margin:auto}
+
 .header{text-align:center;margin-bottom:18px}
 .header h1{font-size:22px;margin:0}
 .header p{margin:5px 0 0;font-size:14px;color:#555}
@@ -43,7 +44,6 @@ input,select,textarea{
 }
 
 input[readonly]{background:#f5f6f8}
-
 textarea{min-height:120px;resize:vertical}
 
 .time-row{display:flex;gap:10px;margin-bottom:14px}
@@ -63,14 +63,41 @@ button{
 
 button:disabled{background:#9bb6f0}
 
-#status{text-align:center;margin-top:12px;font-size:15px}
-
 .login-box{text-align:center;margin-bottom:16px}
 
-/* Success Animation */
-.success-box{text-align:center;padding:20px}
-.checkmark-circle{width:90px;height:90px;margin:auto}
-.checkmark-circle svg{width:90px;height:90px}
+/* ================= POPUP ================= */
+
+.popup-overlay{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.popup{
+  background:#fff;
+  padding:30px 25px;
+  border-radius:18px;
+  text-align:center;
+  width:90%;
+  max-width:350px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.popup h3{margin:15px 0 8px;font-size:18px}
+.popup p{margin:0;font-size:14px;color:#555}
+
+/* Animated Check */
+.checkmark-circle{
+  width:90px;height:90px;margin:auto
+}
+.checkmark-circle svg{
+  width:90px;height:90px
+}
 .checkmark-circle circle{
   stroke:#28a745;
   stroke-width:5;
@@ -89,6 +116,17 @@ button:disabled{background:#9bb6f0}
 }
 @keyframes draw-circle{to{stroke-dashoffset:0}}
 @keyframes draw-check{to{stroke-dashoffset:0}}
+
+.loader{
+  border:5px solid #f3f3f3;
+  border-top:5px solid #0a4fd8;
+  border-radius:50%;
+  width:50px;height:50px;
+  margin:auto;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{100%{transform:rotate(360deg)}}
+
 </style>
 </head>
 
@@ -100,7 +138,6 @@ button:disabled{background:#9bb6f0}
   <p>Chandidas Institute of Nursing & Paramedical Science</p>
 </div>
 
-<!-- Google Login -->
 <div class="login-box" id="loginBox">
   <div id="g_id_onload"
        data-client_id="880919546311-js43d7b2h0eq5lm29pg9mb80ilc53s4v.apps.googleusercontent.com"
@@ -113,9 +150,6 @@ button:disabled{background:#9bb6f0}
        data-theme="outline"
        data-shape="pill">
   </div>
-  <p style="font-size:13px;color:#666;margin-top:8px">
-    Please sign in with Google to continue
-  </p>
 </div>
 
 <form id="classUpdateForm">
@@ -168,98 +202,86 @@ button:disabled{background:#9bb6f0}
 <div class="card">
 <h3>Course Details</h3>
 
-<label>Mode of Class</label>
 <select name="mode" required>
-<option value="">Select</option>
+<option value="">Mode of Class</option>
 <option>Offline</option>
 <option>Online</option>
 </select>
 
-<label>Course Type</label>
 <select name="courseType" required>
-<option value="">Select</option>
+<option value="">Course Type</option>
 <option>Two-Year Diploma</option>
 <option>One-Year Diploma</option>
 <option>Certificate</option>
 </select>
 
-<label>Course</label>
 <select name="course" required>
-<option value="">Select</option>
+<option value="">Course</option>
 <option>OTT</option><option>MLT</option><option>EMT</option>
 <option>ICU</option><option>MRT</option><option>ECG</option>
 <option>PT</option><option>RMP</option><option>CMS & ED</option><option>NA</option>
 </select>
 
+<textarea name="topic" placeholder="Topic Taught" required></textarea>
 </div>
 
 <div class="card">
-<h3>Topic Taught</h3>
-<textarea name="topic" required></textarea>
-</div>
-
-<div class="card">
-<button type="submit" id="submitBtn" disabled>
-Submit Class Update
-</button>
-<div id="status"></div>
+<button type="submit" id="submitBtn" disabled>Submit Class Update</button>
 </div>
 
 </form>
 </div>
 
+<!-- POPUP -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup" id="popupContent"></div>
+</div>
+
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyHpuX4WLBGDImZdmBOSWLyRaQa6EBFBNYwlD7pvIjpKR7D-TZ4wDPTSfCA_MhDMzPugw/exec";
 
-// Auto date/day/end time
 const now=new Date();
-document.getElementById("date").value=now.toLocaleDateString("en-GB");
-document.getElementById("day").value=now.toLocaleDateString("en-US",{weekday:"long"});
-document.getElementById("endTime").value=now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+date.value=now.toLocaleDateString("en-GB");
+day.value=now.toLocaleDateString("en-US",{weekday:"long"});
+endTime.value=now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-// Google Login
 function handleCredentialResponse(response){
 const data=JSON.parse(atob(response.credential.split('.')[1]));
-document.getElementById("instructorDisplay").value=data.name;
-document.getElementById("instructorName").value=data.name;
-document.getElementById("instructorEmail").value=data.email;
-document.getElementById("loginBox").style.display="none";
-document.getElementById("submitBtn").disabled=false;
+instructorDisplay.value=data.name;
+instructorName.value=data.name;
+instructorEmail.value=data.email;
+loginBox.style.display="none";
+submitBtn.disabled=false;
 }
 
-// Submit Form
-document.getElementById("classUpdateForm").addEventListener("submit",function(e){
-e.preventDefault();
-const btn=document.getElementById("submitBtn");
-btn.disabled=true;
-document.getElementById("status").innerText="Please wait... Submitting your class update...";
+function showLoading(){
+popupOverlay.style.display="flex";
+popupContent.innerHTML=`
+<div class="loader"></div>
+<h3>Please wait...</h3>
+<p>Submitting your class update...</p>`;
+}
 
-fetch(SCRIPT_URL,{
-method:"POST",
-body:new FormData(this)
-})
-.then(r=>r.json())
-.then(()=>{
-document.getElementById("status").innerHTML=`
-<div class="success-box">
+function showSuccess(){
+popupContent.innerHTML=`
 <div class="checkmark-circle">
 <svg viewBox="0 0 100 100">
 <circle cx="50" cy="50" r="40"/>
 <path d="M30 52 L45 65 L70 38"/>
 </svg>
 </div>
-<div style="color:#28a745;font-weight:600;margin-top:12px">
-Your class update submission is now completed DON
-</div>
-</div>
-`;
-this.reset();
-btn.disabled=false;
-})
-.catch(()=>{
-document.getElementById("status").innerText="❌ Submission failed";
-btn.disabled=false;
-});
+<h3>Submission Completed</h3>
+<p>Your class update is now successfully recorded.</p>`;
+setTimeout(()=>{popupOverlay.style.display="none"},3000);
+}
+
+classUpdateForm.addEventListener("submit",function(e){
+e.preventDefault();
+showLoading();
+fetch(SCRIPT_URL,{method:"POST",body:new FormData(this)})
+.then(r=>r.json())
+.then(()=>{showSuccess();this.reset();})
+.catch(()=>{popupContent.innerHTML="<h3>❌ Submission Failed</h3>";});
 });
 </script>
 
