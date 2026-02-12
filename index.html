@@ -5,14 +5,14 @@
 <title>CINPS | Chandidas Institute of Nursing & Paramedical Science</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
-content="CINPS – A leading paramedical institute offering diploma & certificate courses with strong practical training, RPL certification, scholarships, and career-focused healthcare education.">
+content="CINPS – Structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance. Skill-focused healthcare education.">
 <meta name="robots" content="index, follow">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* =============================
-   BRAND VARIABLES
-============================= */
+/* ================= ROOT ================= */
 
 :root{
 --brand-blue:#0d3b8e;
@@ -20,15 +20,17 @@ content="CINPS – A leading paramedical institute offering diploma & certificat
 --soft-bg:#f4f6fb;
 --section-light:#f9fbff;
 --dark:#1e2a38;
+--shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-font-family:'Segoe UI',sans-serif;
+font-family:'Poppins',sans-serif;
 background:var(--soft-bg);
 color:#333;
-line-height:1.7;
+line-height:1.8;
+overflow-x:hidden;
 }
 
 .container{
@@ -37,106 +39,102 @@ max-width:1150px;
 margin:auto;
 }
 
-/* =============================
-   HEADER
-============================= */
+/* ================= HEADER ================= */
 
 .site-header{
 background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+box-shadow:var(--shadow);
 position:sticky;
 top:0;
-z-index:999;
+z-index:1000;
 }
 
 .header-inner{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:12px 0;
+padding:15px 0;
+}
+
+.logo{
+height:50px;
 }
 
 .logo-wrap{
 display:flex;
 align-items:center;
 text-decoration:none;
-}
-
-.logo{
-width:55px;
-margin-right:10px;
-}
-
-.brand-name{
-font-size:14px;
-font-weight:600;
+gap:10px;
 color:var(--brand-blue);
 }
 
-.brand-sub{
+.brand-text{
 font-size:13px;
-color:#333;
+font-weight:600;
+line-height:1.2;
+display:flex;
+flex-direction:column;
 }
 
 .nav-menu{
 list-style:none;
 display:flex;
-gap:20px;
+gap:25px;
 }
 
 .nav-menu a{
 text-decoration:none;
-color:#333;
-font-weight:500;
-}
-
-.nav-menu a:hover{
 color:var(--brand-blue);
+font-weight:500;
+font-size:14px;
 }
 
 .nav-toggle{
 display:none;
+font-size:22px;
 background:none;
 border:none;
-font-size:24px;
+cursor:pointer;
 }
 
-/* =============================
-   HERO
-============================= */
+/* ================= HERO ================= */
 
 .hero{
-background:var(--brand-blue);
+background:linear-gradient(rgba(13,59,142,0.85),rgba(13,59,142,0.85)),
+url('assets/images/hero.jpg') center/cover no-repeat;
 color:#fff;
 text-align:center;
-padding:80px 20px;
+padding:120px 20px;
 }
 
 .hero h1{
-font-size:34px;
+font-size:38px;
+font-weight:700;
 margin-bottom:20px;
 }
 
 .hero p{
 font-size:17px;
+opacity:0.95;
 margin-bottom:30px;
 }
 
 .hero-buttons{
 display:flex;
-justify-content:center;
 gap:15px;
+justify-content:center;
 flex-wrap:wrap;
 }
 
 .hero-buttons a{
-padding:12px 24px;
+padding:13px 28px;
 border-radius:6px;
 text-decoration:none;
 font-weight:600;
+font-size:14px;
 background:#fff;
 color:var(--brand-blue);
-transition:.3s;
+transition:0.3s;
 }
 
 .hero-buttons a.secondary{
@@ -145,118 +143,105 @@ border:2px solid #fff;
 color:#fff;
 }
 
-.hero-buttons a:hover{
-transform:translateY(-3px);
+/* ================= SECTIONS ================= */
+
+.section{
+padding:80px 0;
 }
 
-/* =============================
-   SECTIONS
-============================= */
+.section.light{
+background:var(--section-light);
+}
 
-.section{padding:70px 0;}
-.section.light{background:var(--section-light);}
-.section.highlight{background:var(--brand-blue);color:#fff;}
+.section.highlight{
+background:var(--brand-blue);
+color:#fff;
+text-align:center;
+}
 
-.section.highlight h2,
-.section.highlight p{color:#fff;}
-
-h2{
+.section h2{
 color:var(--brand-blue);
-margin-bottom:15px;
+margin-bottom:20px;
+font-size:28px;
 }
 
-p{margin-bottom:15px;font-size:16px;}
+.section.highlight h2{
+color:#fff;
+}
 
-.features{list-style:none;margin-top:10px;}
+.section p{
+max-width:900px;
+margin:auto;
+margin-bottom:20px;
+}
+
+.content-block{
+max-width:950px;
+margin:auto;
+margin-bottom:35px;
+}
+
+.features{
+list-style:none;
+max-width:800px;
+margin:20px auto;
+text-align:left;
+}
+
 .features li{
-padding-left:24px;
+margin-bottom:12px;
+padding-left:25px;
 position:relative;
-margin-bottom:8px;
 }
+
 .features li::before{
 content:"✔";
 position:absolute;
 left:0;
-color:var(--brand-blue);
+color:var(--light-blue);
 font-weight:bold;
 }
 
-/* =============================
-   FOOTER
-============================= */
+/* ================= FOOTER ================= */
 
 .footer{
 background:var(--brand-blue);
 color:#fff;
 text-align:center;
-padding:20px;
+padding:25px 10px;
 font-size:14px;
 }
 
-/* =============================
-   FLOATING FOOTER BAR (Mobile)
-============================= */
-
-.mobile-bar{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#fff;
-box-shadow:0 -2px 10px rgba(0,0,0,.15);
-display:none;
-justify-content:space-around;
-padding:10px;
-z-index:999;
-}
-
-.mobile-bar a{
-flex:1;
-margin:0 5px;
-text-align:center;
-padding:10px;
-border-radius:6px;
-text-decoration:none;
-font-weight:600;
-font-size:14px;
-}
-
-.call-btn{background:#28a745;color:#fff;}
-.apply-btn{background:var(--brand-blue);color:#fff;}
-
-/* =============================
-   CINPS PULSE AI
-============================= */
+/* ================= PULSE AI ================= */
 
 #cinps-chat-btn{
 position:fixed;
-bottom:80px;
+bottom:20px;
 right:20px;
+background:var(--brand-blue);
+color:#fff;
+border:none;
 width:60px;
 height:60px;
 border-radius:50%;
-background:var(--brand-blue);
-color:#fff;
-font-size:26px;
-border:none;
+font-size:22px;
 cursor:pointer;
-box-shadow:0 8px 20px rgba(0,0,0,.3);
-z-index:9999;
+box-shadow:var(--shadow);
+z-index:2000;
 }
 
 #cinps-chat-box{
 position:fixed;
-bottom:150px;
+bottom:95px;
 right:20px;
-width:340px;
-max-height:450px;
+width:320px;
 background:#fff;
-border-radius:16px;
-box-shadow:0 15px 35px rgba(0,0,0,.3);
+border-radius:10px;
+box-shadow:var(--shadow);
 display:none;
 flex-direction:column;
 overflow:hidden;
-z-index:9999;
+z-index:2000;
 }
 
 #cinps-chat-header{
@@ -264,82 +249,78 @@ background:var(--brand-blue);
 color:#fff;
 padding:12px;
 font-weight:600;
+text-align:center;
 }
 
 #cinps-chat-messages{
-padding:12px;
-flex:1;
+padding:15px;
+height:250px;
 overflow-y:auto;
 font-size:14px;
-background:#f8faff;
 }
-
-.cinps-msg{
-margin-bottom:8px;
-padding:8px 10px;
-border-radius:10px;
-max-width:85%;
-}
-
-.cinps-msg.bot{background:#fff;color:var(--brand-blue);}
-.cinps-msg.user{background:#d4edda;margin-left:auto;}
 
 #cinps-chat-input{
 display:flex;
-padding:10px;
-border-top:1px solid #ddd;
+border-top:1px solid #eee;
 }
 
 #cinps-chat-input input{
 flex:1;
-padding:8px;
-border-radius:8px;
-border:1px solid #ccc;
+border:none;
+padding:10px;
+font-size:14px;
+outline:none;
 }
 
 #cinps-chat-input button{
 background:var(--brand-blue);
 color:#fff;
 border:none;
-padding:8px 14px;
-border-radius:8px;
-margin-left:6px;
+padding:10px 15px;
+cursor:pointer;
 }
 
-/* =============================
-   MOBILE OPTIMIZATION
-============================= */
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
-.hero h1{font-size:24px;}
-.hero p{font-size:15px;}
-.section{padding:50px 0;}
-h2{font-size:22px;}
-p{font-size:15px;}
-
 .nav-menu{
-display:none;
-flex-direction:column;
 position:absolute;
-top:60px;
-right:15px;
+top:70px;
+right:0;
 background:#fff;
-padding:15px;
-box-shadow:0 8px 20px rgba(0,0,0,.2);
-border-radius:8px;
+flex-direction:column;
+width:220px;
+padding:20px;
+display:none;
+box-shadow:var(--shadow);
 }
 
-.nav-menu.show{display:flex;}
-.nav-toggle{display:block;}
+.nav-menu.show{
+display:flex;
+}
 
-.mobile-bar{display:flex;}
+.nav-toggle{
+display:block;
+}
+
+.hero{
+padding:90px 15px;
+}
+
+.hero h1{
+font-size:24px;
+}
+
+.section{
+padding:60px 0;
+}
 
 #cinps-chat-box{
-left:10px;
-right:10px;
-width:auto;
+width:90%;
+right:5%;
 }
+
 }
 
 </style>
@@ -350,20 +331,21 @@ width:auto;
 <header class="site-header">
 <div class="container header-inner">
 <a href="index.html" class="logo-wrap">
-<img src="assets/images/logo.png" class="logo">
-<div>
-<div class="brand-name">Chandidas Institute of Nursing</div>
-<div class="brand-sub">and Paramedical Science</div>
+<img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
+<div class="brand-text">
+<span>Chandidas Institute of Nursing</span>
+<span>and Paramedical Science</span>
 </div>
 </a>
+
 <nav>
 <button class="nav-toggle">☰</button>
 <ul class="nav-menu">
-<li><a href="#">Home</a></li>
-<li><a href="#">About</a></li>
-<li><a href="#">Courses</a></li>
-<li><a href="#">Admissions</a></li>
-<li><a href="#">Contact</a></li>
+<li><a href="index.html">Home</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="courses.html">Courses</a></li>
+<li><a href="admissions.html">Admissions</a></li>
+<li><a href="contact.html">Contact</a></li>
 </ul>
 </nav>
 </div>
@@ -371,46 +353,96 @@ width:auto;
 
 <section class="hero">
 <div class="container">
-<h1>Where Healthcare Careers Begin with Confidence</h1>
-<p>Skill-based learning • Structured practical exposure • Ethical healthcare education</p>
+<h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
+<p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals</p>
 <div class="hero-buttons">
-<a href="#">View Courses</a>
-<a href="#" class="secondary">Apply Now</a>
+<a href="courses.html">Explore Courses</a>
+<a href="admissions.html" class="secondary">Apply Now</a>
 </div>
 </div>
 </section>
 
+<!-- MAIN CONTENT -->
 <section class="section">
 <div class="container">
-<h2>Welcome to CINPS</h2>
-<p>CINPS is committed to developing skilled and ethical paramedical professionals through structured learning, practical training, and clinical exposure.</p>
+
+<div class="content-block">
+<h2>About CINPS</h2>
+<p>
+Chandidas Institute of Nursing and Paramedical Science (CINPS) is a professionally managed healthcare education institute dedicated to developing skilled, disciplined, and employment-ready paramedical professionals. The institution focuses on structured diploma and certificate programs designed to meet the practical demands of hospitals, diagnostic centers, emergency units, operation theatres, and intensive care settings.
+</p>
+
+<p>
+With a strong academic framework and a career-oriented approach, CINPS integrates theoretical knowledge, practical skill development, and professional discipline into a unified training system. The objective is to produce competent healthcare professionals who are technically sound, ethically responsible, and confident in real clinical environments.
+</p>
+</div>
+
+<div class="content-block">
+<h2>A Distinctive Approach to Paramedical Education</h2>
+<ul class="features">
+<li><strong>Skill-Centric Training System:</strong> Hands-on competency development including equipment handling, patient assistance, infection control, documentation, and emergency response.</li>
+<li><strong>Outcome-Based Academic Evaluation:</strong> Certification reflects verified competence through written exams, practical assessments, viva, and behavioral monitoring.</li>
+<li><strong>Ethical & Professional Discipline:</strong> Accountability, teamwork, punctuality, and professional ethics are core institutional values.</li>
+<li><strong>Industry-Relevant Curriculum:</strong> Programs aligned with modern medical technologies and healthcare operational standards.</li>
+</ul>
+</div>
+
+<div class="content-block">
+<h2>100% Internship Assurance</h2>
+<p>CINPS ensures structured internship opportunities for all eligible students.</p>
+<ul class="features">
+<li>Real-time clinical exposure</li>
+<li>Hands-on patient care experience</li>
+<li>Professional workplace training</li>
+<li>Documentation and reporting systems practice</li>
+</ul>
+</div>
+
+<div class="content-block">
+<h2>100% Job Placement Assistance</h2>
+<ul class="features">
+<li>Career counseling & role guidance</li>
+<li>Interview preparation & communication training</li>
+<li>Resume development support</li>
+<li>Professional grooming sessions</li>
+<li>Coordination with healthcare organizations</li>
+</ul>
+</div>
+
+<div class="content-block">
+<h2>Comprehensive Student Qualification Process</h2>
+<ul class="features">
+<li>Strong theoretical foundation</li>
+<li>Intensive practical skill development</li>
+<li>Continuous internal evaluation</li>
+<li>Professional readiness verification</li>
+</ul>
+</div>
+
+<div class="content-block">
+<h2>Commitment to Excellence</h2>
+<p>
+CINPS stands as a disciplined, career-focused, and performance-oriented healthcare education institute. With assured internship opportunities and dedicated job placement assistance, the institution remains committed to transforming aspiring students into competent, ethical, and employment-ready paramedical professionals.
+</p>
+</div>
+
 </div>
 </section>
 
 <footer class="footer">
-© <span id="year"></span> CINPS | All Rights Reserved
+<p>© <span id="year"></span> CINPS | All Rights Reserved</p>
 </footer>
 
-<!-- Floating Mobile Footer -->
-<div class="mobile-bar">
-<a href="tel:+918101579839" class="call-btn">Call Now</a>
-<a href="#" class="apply-btn">Apply</a>
-</div>
-
-<!-- CINPS PULSE AI -->
 <button id="cinps-chat-btn">🧠</button>
 
 <div id="cinps-chat-box">
 <div id="cinps-chat-header">CINPS Pulse AI</div>
 <div id="cinps-chat-messages">
-<div class="cinps-msg bot">
-👋 Ask about admissions, courses, RPL or scholarships.<br>
-বাংলা / हिंदी / English supported.
-</div>
+<div>👋 Ask about admissions, courses, scholarships.<br>বাংলা / हिंदी / English supported.</div>
 </div>
 <div id="cinps-chat-input">
-<input id="cinps-user-input" placeholder="Ask something..." />
-<button id="cinps-send-btn">Send</button>
+<input placeholder="Ask CINPS Pulse AI...">
+<button>Send</button>
 </div>
 </div>
 
@@ -418,9 +450,9 @@ width:auto;
 document.getElementById("year").textContent=new Date().getFullYear();
 document.querySelector('.nav-toggle').onclick=()=>document.querySelector('.nav-menu').classList.toggle('show');
 
-const chatBtn=document.getElementById("cinps-chat-btn");
-const chatBox=document.getElementById("cinps-chat-box");
-chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==="flex"?"none":"flex";
+const chatBtn=document.getElementById('cinps-chat-btn');
+const chatBox=document.getElementById('cinps-chat-box');
+chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==='flex'?'none':'flex';
 </script>
 
 </body>
