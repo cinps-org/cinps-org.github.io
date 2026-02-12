@@ -21,7 +21,7 @@ body{
     margin:auto;
 }
 .section{
-    padding:60px 0;
+    padding:70px 0;
 }
 h1,h2{
     text-align:center;
@@ -35,6 +35,9 @@ p{
 .site-header{
     background:#0b3d91;
     padding:12px 0;
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 .header-inner{
     display:flex;
@@ -44,11 +47,9 @@ p{
 .brand img{
     height:50px;
 }
-
-/* NAV */
 .nav-toggle{
     display:none;
-    font-size:24px;
+    font-size:26px;
     color:#fff;
     background:none;
     border:none;
@@ -70,14 +71,14 @@ p{
     background:linear-gradient(to right,#0b3d91,#1e5fd1);
     color:#fff;
     text-align:center;
-    padding:70px 15px;
+    padding:80px 20px;
 }
 .page-hero h1{
-    font-size:30px;
+    font-size:34px;
 }
 .page-hero p{
-    font-size:16px;
-    max-width:600px;
+    font-size:17px;
+    max-width:650px;
     margin:auto;
 }
 
@@ -85,40 +86,59 @@ p{
 .course-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-    margin-top:30px;
+    gap:30px;
+    margin-top:40px;
 }
 
 .course-card{
     background:#fff;
-    padding:22px;
-    border-radius:12px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.08);
     transition:0.3s;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+    position:relative;
+    overflow:hidden;
 }
 .course-card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-6px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.15);
 }
 .course-card h3{
     color:#0b3d91;
-    margin-bottom:8px;
+    margin-bottom:10px;
     font-size:18px;
 }
 .course-meta{
-    font-size:13px;
+    font-size:14px;
     color:#555;
-    margin-bottom:12px;
+    margin-bottom:15px;
 }
 .course-card ul{
     padding-left:18px;
-    font-size:13px;
-    margin-bottom:18px;
+    font-size:14px;
+    margin-bottom:20px;
 }
 
-/* APPLY BUTTON */
+/* ===== RIBBON ===== */
+.ribbon{
+    position:absolute;
+    top:20px;
+    right:-60px;
+    background:#c1121f;
+    color:#fff;
+    padding:8px 70px;
+    font-size:11px;
+    font-weight:600;
+    transform:rotate(45deg);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    box-shadow:0 5px 12px rgba(0,0,0,0.25);
+}
+
+/* ===== APPLY BUTTON ===== */
 .apply-btn{
     background:#0b3d91;
     color:#fff;
@@ -128,6 +148,7 @@ p{
     text-decoration:none;
     font-weight:600;
     display:block;
+    transition:0.3s;
 }
 .apply-btn:hover{
     background:#072c66;
@@ -138,12 +159,12 @@ p{
     background:#111;
     color:#fff;
     text-align:center;
-    padding:18px;
-    margin-top:50px;
+    padding:20px;
+    margin-top:60px;
     font-size:14px;
 }
 
-/* ===== MOBILE NAVIGATION ===== */
+/* ===== MOBILE ===== */
 @media(max-width:768px){
 
     .nav-toggle{
@@ -167,17 +188,17 @@ p{
     }
 
     .nav-menu li{
-        margin:10px 0;
+        margin:12px 0;
     }
 
     .page-hero h1{
         font-size:24px;
     }
 
-    .course-card{
-        padding:18px;
+    .ribbon{
+        right:-70px;
+        padding:8px 75px;
     }
-
 }
 
 </style>
@@ -185,7 +206,6 @@ p{
 
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="site-header">
     <div class="container header-inner">
         <div class="brand">
@@ -206,27 +226,25 @@ p{
     </div>
 </header>
 
-<!-- ===== HERO ===== -->
 <section class="page-hero">
     <h1>Our Career-Focused Programs</h1>
     <p>Industry-aligned paramedical education with strong clinical exposure and internship support.</p>
 </section>
 
-<!-- ===== COURSES ===== -->
 <section class="section">
 <div class="container">
-
 <div class="course-grid">
 
 <!-- DOTT -->
 <div class="course-card">
+    <div class="ribbon">Limited Seats Available</div>
     <div>
         <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
-        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
+        <div class="course-meta">2 Years + 6 Months Internship | Eligibility: 10+2</div>
         <ul>
             <li>Surgical instruments & sterile techniques</li>
             <li>Anaesthesia assistance</li>
-            <li>Perioperative care</li>
+            <li>Perioperative patient care</li>
             <li>Emergency OT protocols</li>
         </ul>
     </div>
@@ -235,14 +253,87 @@ p{
 
 <!-- DMLT -->
 <div class="course-card">
+    <div class="ribbon">Limited Seats Available</div>
     <div>
         <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
-        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
+        <div class="course-meta">2 Years + 6 Months Internship | Eligibility: 10+2</div>
         <ul>
             <li>Clinical biochemistry</li>
             <li>Microbiology & pathology</li>
             <li>Blood banking</li>
             <li>Lab instrumentation</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- ICU 2 Year -->
+<div class="course-card">
+    <div>
+        <h3>Intensive Care Unit Technician (2 Year)</h3>
+        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
+        <ul>
+            <li>Mechanical ventilation</li>
+            <li>Critical monitoring systems</li>
+            <li>Emergency response</li>
+            <li>ICU pharmacology basics</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- EMT -->
+<div class="course-card">
+    <div>
+        <h3>Emergency Medical Technician (EMT)</h3>
+        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
+        <ul>
+            <li>Pre-hospital trauma life support</li>
+            <li>CPR & advanced first aid</li>
+            <li>Ambulance operations</li>
+            <li>Disaster response</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- ICU 1 Year -->
+<div class="course-card">
+    <div>
+        <h3>ICU Technician (1 Year Fast Track)</h3>
+        <div class="course-meta">1 Year + Internship | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Core ICU skills</li>
+            <li>Patient monitoring</li>
+            <li>Emergency response</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- RMP -->
+<div class="course-card">
+    <div>
+        <h3>Registered Medical Practitioner (RMP / DRMP)</h3>
+        <div class="course-meta">1 Year | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Basic clinical assessment</li>
+            <li>Common ailment management</li>
+            <li>Medical record keeping</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- CMS -->
+<div class="course-card">
+    <div>
+        <h3>Community Medical Service & Essential Drugs (CMS & ED)</h3>
+        <div class="course-meta">18–24 Months | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Primary healthcare fundamentals</li>
+            <li>Preventive health education</li>
+            <li>Essential drug management</li>
         </ul>
     </div>
     <a href="/admission-form" class="apply-btn">Apply Now</a>
