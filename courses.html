@@ -1,11 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Courses | Chandidas Institute of Nursing & Paramedical Science</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore diploma and certificate programs at Chandidas Institute of Nursing and Paramedical Science. Industry-aligned paramedical education with hands-on clinical training and strong hospital tie-ups.">
-    <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<title>Courses | Chandidas Institute of Nursing & Paramedical Science</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Explore diploma and certificate programs at Chandidas Institute of Nursing and Paramedical Science. Industry-aligned paramedical education with hands-on clinical training and hospital exposure.">
+
+<style>
+
+/* ===== GLOBAL ===== */
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+.section{
+    padding:70px 0;
+}
+h1,h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+p{
+    line-height:1.6;
+}
+
+/* ===== HEADER ===== */
+.site-header{
+    background:#0b3d91;
+    padding:15px 0;
+}
+.header-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.brand img{
+    height:55px;
+}
+.nav-menu{
+    list-style:none;
+    display:flex;
+    gap:25px;
+}
+.nav-menu a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:500;
+}
+.nav-menu a:hover{
+    text-decoration:underline;
+}
+
+/* ===== HERO ===== */
+.page-hero{
+    background:linear-gradient(to right,#0b3d91,#1e5fd1);
+    color:#fff;
+    text-align:center;
+    padding:80px 20px;
+}
+.page-hero h1{
+    font-size:36px;
+}
+.page-hero p{
+    font-size:18px;
+    max-width:700px;
+    margin:auto;
+}
+
+/* ===== COURSE GRID ===== */
+.course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+    margin-top:40px;
+}
+
+.course-card{
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    transition:0.3s;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+.course-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 28px rgba(0,0,0,0.15);
+}
+.course-card h3{
+    color:#0b3d91;
+    margin-bottom:10px;
+}
+.course-meta{
+    font-size:14px;
+    color:#555;
+    margin-bottom:15px;
+}
+.course-card ul{
+    padding-left:18px;
+    font-size:14px;
+    margin-bottom:20px;
+}
+.apply-btn{
+    background:#0b3d91;
+    color:#fff;
+    text-align:center;
+    padding:10px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+}
+.apply-btn:hover{
+    background:#072c66;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    background:#111;
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    margin-top:60px;
+}
+
+</style>
 </head>
 
 <body>
@@ -13,294 +141,148 @@
 <!-- ===== HEADER ===== -->
 <header class="site-header">
     <div class="container header-inner">
-
         <div class="brand">
             <a href="index.html">
-                <img src="assets/images/logo.png"
-                     alt="Chandidas Institute of Nursing & Paramedical Science Logo">
+                <img src="assets/images/logo.png" alt="CINPS Logo">
             </a>
         </div>
-
-        <nav class="nav">
-            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+        <nav>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="courses.html" class="active">Courses</a></li>
+                <li><a href="courses.html">Courses</a></li>
                 <li><a href="admissions.html">Admissions</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-
     </div>
 </header>
 
-<!-- ===== PAGE INTRO ===== -->
-<section class="section">
-    <div class="container">
-
-        <h1>Chandidas Institute of Nursing and Paramedical Science</h1>
-        <p><strong>Transforming learners into confident healthcare professionals</strong></p>
-
-        <p>
-            At our institute, we blend rigorous academics with hands-on clinical training so graduates leave
-            job-ready, confident, and compassionate. Industry-aligned syllabi, experienced faculty,
-            realistic simulation labs, and strong hospital tie-ups give students the practical edge employers look for.
-        </p>
-
-    </div>
+<!-- ===== HERO ===== -->
+<section class="page-hero">
+    <h1>Our Career-Focused Programs</h1>
+    <p>Industry-aligned paramedical education with strong clinical exposure, simulation labs, and internship support.</p>
 </section>
 
-<!-- ===== SIGNATURE PROGRAMS ===== -->
-<section class="section light">
-    <div class="container">
-
-        <h2>Signature Programs</h2>
-
-        <!-- DOTT -->
-        <div class="course-block">
-            <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
-            <p><strong>Duration:</strong> 2 years (+ 6 months internship)</p>
-
-            <p>
-                A career-focused program for perioperative care and surgical support. Students master sterile technique,
-                instrument handling, anaesthesia assistance, surgical patient preparation and monitoring,
-                and emergency theatre protocols.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10+2 (Science/Arts) or equivalent.</p>
-
-            <p><strong>Key modules:</strong></p>
-            <ul>
-                <li>Surgical anatomy & instruments</li>
-                <li>Anaesthesia fundamentals</li>
-                <li>Asepsis & infection control</li>
-                <li>Perioperative patient care</li>
-                <li>Emergency theatre procedures</li>
-            </ul>
-
-            <p><strong>Clinical training:</strong> Six-month internship in partnered government/private hospitals.</p>
-
-            <p><strong>Career paths:</strong> OT technician, surgical supply coordination, theatre supervision,
-            advanced anaesthesia technology roles.</p>
-        </div>
-
-        <!-- DMLT -->
-        <div class="course-block">
-            <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
-            <p><strong>Duration:</strong> 2 years (+ 6 months internship)</p>
-
-            <p>
-                Designed for students passionate about diagnostic medicine, this program covers clinical biochemistry,
-                microbiology, pathology, hematology, and laboratory quality assurance.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10+2 (Science preferred; Arts considered).</p>
-
-            <p><strong>Key modules:</strong></p>
-            <ul>
-                <li>Clinical biochemistry</li>
-                <li>Medical microbiology</li>
-                <li>Histopathology</li>
-                <li>Blood banking</li>
-                <li>Laboratory instrumentation & automation</li>
-            </ul>
-
-            <p><strong>Clinical training:</strong> Six months in accredited diagnostic laboratories.</p>
-
-            <p><strong>Career paths:</strong> Lab technologist, phlebotomy specialist, quality control,
-            research assistant, higher studies (BSc DMLT).</p>
-        </div>
-
-        <!-- ICU 2 YEAR -->
-        <div class="course-block">
-            <h3>Intensive Care Unit Technician</h3>
-            <p><strong>Duration:</strong> 2 years (+ 6 months internship)</p>
-
-            <p>
-                An advanced program focused on critical care support including ventilators,
-                monitoring systems, emergency response, and ICU protocols.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10+2 (Science/Arts).</p>
-
-            <p><strong>Key modules:</strong></p>
-            <ul>
-                <li>Mechanical ventilation</li>
-                <li>Hemodynamic monitoring</li>
-                <li>Critical care pharmacology</li>
-                <li>Infection prevention in ICU</li>
-            </ul>
-
-            <p><strong>Clinical training:</strong> Hands-on ICU rotations during internship.</p>
-
-            <p><strong>Career paths:</strong> ICU technician, critical care support staff, ER and ambulance support.</p>
-        </div>
-
-        <!-- EMT -->
-        <div class="course-block">
-            <h3>Emergency Medical Technician (EMT)</h3>
-            <p><strong>Duration:</strong> 2 years (+ 6 months internship)</p>
-
-            <p>
-                Designed for frontline lifesavers. Students learn pre-hospital care, trauma management,
-                emergency response, and ambulance transport protocols.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10+2 (Science/Arts).</p>
-
-            <p><strong>Key modules:</strong></p>
-            <ul>
-                <li>Pre-hospital trauma life support</li>
-                <li>CPR & advanced first aid</li>
-                <li>Ambulance operations</li>
-                <li>Disaster response</li>
-            </ul>
-
-            <p><strong>Clinical training:</strong> Ambulance drills and ER internship.</p>
-
-            <p><strong>Career paths:</strong> EMT in ambulance services, disaster-response teams,
-            hospital emergency units.</p>
-        </div>
-
-        <!-- ICU 1 YEAR -->
-        <div class="course-block">
-            <h3>Intensive Care Unit Technician</h3>
-            <p><strong>Duration:</strong> 1 year (+ 6 months internship)</p>
-
-            <p>
-                A compact, high-impact diploma for learners seeking focused ICU skills in a shorter timeframe.
-                Ideal for career changers and motivated 10th-pass candidates.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10th pass (Science/Arts).</p>
-
-            <p><strong>Key modules:</strong> Core ICU skills, emergency response, patient monitoring fundamentals.</p>
-
-            <p><strong>Career paths:</strong> ICU support roles and step-down units; pathway to advanced certifications.</p>
-        </div>
-
-        <!-- RMP -->
-        <div class="course-block">
-            <h3>Registered Medical Practitioner (RMP / DRMP)</h3>
-            <p><strong>Duration:</strong> 1 year</p>
-
-            <p>
-                A practical diploma for community-level medical service providers,
-                designed for candidates with prior field experience or basic clinical exposure.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10th pass or 2–3 years medical field experience (where applicable).</p>
-
-            <p><strong>Key modules:</strong> Basic clinical assessment, common ailment management,
-            legal & ethical boundaries, medical record keeping.</p>
-        </div>
-
-        <!-- CMS -->
-        <div class="course-block">
-            <h3>Community Medical Service & Essential Drugs (CMS & ED)</h3>
-            <p><strong>Duration:</strong> 18–24 months</p>
-
-            <p>
-                Designed to strengthen primary healthcare delivery in rural and underserved communities.
-                Focuses on basic allopathic care, preventive health education, and essential drug management.
-            </p>
-
-            <p><strong>Eligibility:</strong> 10th pass.</p>
-
-            <p><strong>Career paths:</strong> Rural primary care worker, NGO health programs,
-            community health outreach.</p>
-        </div>
-
-    </div>
-</section>
-
-<!-- ===== DIFFERENTIATORS ===== -->
+<!-- ===== COURSES ===== -->
 <section class="section">
-    <div class="container">
+<div class="container">
 
-        <h2>What Sets Our Programs Apart</h2>
+<div class="course-grid">
+
+<!-- DOTT -->
+<div class="course-card">
+    <div>
+        <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
+        <div class="course-meta">Duration: 2 Years + 6 Months Internship | Eligibility: 10+2</div>
         <ul>
-            <li><strong>Real clinical exposure:</strong> Government & private hospital internships.</li>
-            <li><strong>Simulation-first labs:</strong> OT, ICU, and diagnostic lab simulators.</li>
-            <li><strong>Industry-experienced faculty:</strong> Hospital and emergency service professionals.</li>
-            <li><strong>Skill + employability focus:</strong> Communication, documentation, medico-legal awareness.</li>
-            <li><strong>Placement support:</strong> Resume workshops, mock interviews, employer networking.</li>
+            <li>Surgical instruments & sterile techniques</li>
+            <li>Anaesthesia assistance</li>
+            <li>Perioperative patient care</li>
+            <li>Emergency OT protocols</li>
         </ul>
-
     </div>
-</section>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
 
-<!-- ===== INFRASTRUCTURE ===== -->
-<section class="section light">
-    <div class="container">
-
-        <h2>Infrastructure & Student Support</h2>
+<!-- DMLT -->
+<div class="course-card">
+    <div>
+        <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
+        <div class="course-meta">Duration: 2 Years + 6 Months Internship | Eligibility: 10+2</div>
         <ul>
-            <li>Fully equipped OT, ICU, and diagnostic labs with simulation suite</li>
-            <li>Library with updated textbooks, journals, and e-resources</li>
-            <li>Student counselling, mentorship, and career guidance</li>
-            <li>Guest lectures and hands-on workshops with clinicians</li>
+            <li>Clinical biochemistry</li>
+            <li>Microbiology & pathology</li>
+            <li>Blood banking</li>
+            <li>Lab instrumentation</li>
         </ul>
-
     </div>
-</section>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
 
-<!-- ===== ASSESSMENT ===== -->
-<section class="section">
-    <div class="container">
-
-        <h2>Assessment & Certification</h2>
+<!-- ICU 2Y -->
+<div class="course-card">
+    <div>
+        <h3>Intensive Care Unit Technician (2 Year)</h3>
+        <div class="course-meta">Duration: 2 Years + Internship | Eligibility: 10+2</div>
         <ul>
-            <li>Continuous internal assessments and practical demonstrations</li>
-            <li>Final professional examinations and internship certification</li>
-            <li>Guidance for state or national registration/licensing where applicable</li>
+            <li>Mechanical ventilation</li>
+            <li>Critical monitoring systems</li>
+            <li>Emergency response</li>
+            <li>ICU pharmacology basics</li>
         </ul>
-
     </div>
-</section>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
 
-<!-- ===== SCHOLARSHIPS ===== -->
-<section class="section light">
-    <div class="container">
-
-        <h2>Scholarships, Flexibility & Affordability</h2>
-        <p>
-            We offer need-based concessions and merit scholarships for deserving candidates.
-            Flexible schedules and modular learning options are available for working students.
-            Speak with admissions for tailored plans.
-        </p>
-
+<!-- EMT -->
+<div class="course-card">
+    <div>
+        <h3>Emergency Medical Technician (EMT)</h3>
+        <div class="course-meta">Duration: 2 Years + Internship | Eligibility: 10+2</div>
+        <ul>
+            <li>Pre-hospital trauma care</li>
+            <li>CPR & first aid</li>
+            <li>Ambulance operations</li>
+            <li>Disaster management</li>
+        </ul>
     </div>
-</section>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
 
-<!-- ===== HOW TO APPLY ===== -->
-<section class="section">
-    <div class="container">
-
-        <h2>How to Apply</h2>
-        <ol>
-            <li>Prepare academic documents (mark sheets, ID proof, recent photo).</li>
-            <li>Complete the online or in-person application form.</li>
-            <li>Attend the admission interview or skill assessment.</li>
-            <li>Secure your seat by paying the prescribed admission fee.</li>
-        </ol>
-
+<!-- ICU 1Y -->
+<div class="course-card">
+    <div>
+        <h3>ICU Technician (1 Year Fast Track)</h3>
+        <div class="course-meta">Duration: 1 Year | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Core ICU skills</li>
+            <li>Patient monitoring</li>
+            <li>Basic emergency response</li>
+        </ul>
     </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- RMP -->
+<div class="course-card">
+    <div>
+        <h3>Registered Medical Practitioner (RMP)</h3>
+        <div class="course-meta">Duration: 1 Year | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Basic clinical assessment</li>
+            <li>Common ailment management</li>
+            <li>Medical documentation</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+<!-- CMS -->
+<div class="course-card">
+    <div>
+        <h3>Community Medical Service (CMS & ED)</h3>
+        <div class="course-meta">Duration: 18–24 Months | Eligibility: 10th Pass</div>
+        <ul>
+            <li>Primary healthcare basics</li>
+            <li>Essential drug management</li>
+            <li>Community health outreach</li>
+        </ul>
+    </div>
+    <a href="/admission-form" class="apply-btn">Apply Now</a>
+</div>
+
+</div>
+</div>
 </section>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
-    <div class="container">
-        <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
-    </div>
+<p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science</p>
 </footer>
 
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
-document.querySelector('.nav-toggle').onclick = function () {
-    document.querySelector('.nav-menu').classList.toggle('show');
-};
 </script>
 
 </body>
