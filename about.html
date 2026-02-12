@@ -181,7 +181,50 @@ body{
 
   .nav-menu.show{display:flex;}
   .nav-toggle{display:block;}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  text-decoration:none;
 }
+
+.logo{
+  width:55px;
+  height:auto;
+  margin-right:10px;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.brand-name{
+  font-size:14px;
+  font-weight:600;
+  color:var(--brand-blue);
+}
+
+.brand-sub{
+  font-size:13px;
+  color:#333;
+}
+
+/* Mobile Optimization */
+@media(max-width:768px){
+  .brand-name{
+    font-size:12px;
+  }
+
+  .brand-sub{
+    font-size:11px;
+  }
+
+  .logo{
+    width:45px;
+  }
+}
+
 </style>
 </head>
 
@@ -189,9 +232,17 @@ body{
 
 <header class="site-header">
   <div class="container header-inner">
+    
     <div class="brand">
-      <a href="index.html">CINPS</a>
+      <a href="index.html" class="logo-wrap">
+        <img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
+        <div class="brand-text">
+          <span class="brand-name">Chandidas Institute of Nursing</span>
+          <span class="brand-sub">and Paramedical Science</span>
+        </div>
+      </a>
     </div>
+
     <nav>
       <button class="nav-toggle">☰</button>
       <ul class="nav-menu">
@@ -202,8 +253,10 @@ body{
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
+
   </div>
 </header>
+
 
 <section class="hero">
   <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
