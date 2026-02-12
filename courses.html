@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <title>Courses | Chandidas Institute of Nursing & Paramedical Science</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Explore diploma and certificate programs at Chandidas Institute of Nursing and Paramedical Science. Industry-aligned paramedical education with hands-on clinical training and hospital exposure.">
+<meta name="description" content="Explore diploma and certificate programs at Chandidas Institute of Nursing and Paramedical Science.">
 
 <style>
 
 /* ===== GLOBAL ===== */
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family:'Segoe UI', sans-serif;
     background:#f4f7fb;
     color:#222;
 }
 .container{
-    width:90%;
+    width:92%;
     max-width:1200px;
     margin:auto;
 }
 .section{
-    padding:70px 0;
+    padding:60px 0;
 }
 h1,h2{
     text-align:center;
@@ -34,7 +34,7 @@ p{
 /* ===== HEADER ===== */
 .site-header{
     background:#0b3d91;
-    padding:15px 0;
+    padding:12px 0;
 }
 .header-inner{
     display:flex;
@@ -42,20 +42,27 @@ p{
     align-items:center;
 }
 .brand img{
-    height:55px;
+    height:50px;
+}
+
+/* NAV */
+.nav-toggle{
+    display:none;
+    font-size:24px;
+    color:#fff;
+    background:none;
+    border:none;
+    cursor:pointer;
 }
 .nav-menu{
     list-style:none;
     display:flex;
     gap:25px;
 }
-.nav-menu a{
+.nav-menu li a{
     color:#fff;
     text-decoration:none;
     font-weight:500;
-}
-.nav-menu a:hover{
-    text-decoration:underline;
 }
 
 /* ===== HERO ===== */
@@ -63,62 +70,64 @@ p{
     background:linear-gradient(to right,#0b3d91,#1e5fd1);
     color:#fff;
     text-align:center;
-    padding:80px 20px;
+    padding:70px 15px;
 }
 .page-hero h1{
-    font-size:36px;
+    font-size:30px;
 }
 .page-hero p{
-    font-size:18px;
-    max-width:700px;
+    font-size:16px;
+    max-width:600px;
     margin:auto;
 }
 
 /* ===== COURSE GRID ===== */
 .course-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:30px;
-    margin-top:40px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    margin-top:30px;
 }
 
 .course-card{
     background:#fff;
-    padding:25px;
+    padding:22px;
     border-radius:12px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
     transition:0.3s;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
 }
 .course-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 12px 28px rgba(0,0,0,0.15);
+    transform:translateY(-4px);
 }
 .course-card h3{
     color:#0b3d91;
-    margin-bottom:10px;
+    margin-bottom:8px;
+    font-size:18px;
 }
 .course-meta{
-    font-size:14px;
+    font-size:13px;
     color:#555;
-    margin-bottom:15px;
+    margin-bottom:12px;
 }
 .course-card ul{
     padding-left:18px;
-    font-size:14px;
-    margin-bottom:20px;
+    font-size:13px;
+    margin-bottom:18px;
 }
+
+/* APPLY BUTTON */
 .apply-btn{
     background:#0b3d91;
     color:#fff;
     text-align:center;
-    padding:10px;
+    padding:12px;
     border-radius:6px;
     text-decoration:none;
     font-weight:600;
-    transition:0.3s;
+    display:block;
 }
 .apply-btn:hover{
     background:#072c66;
@@ -129,8 +138,46 @@ p{
     background:#111;
     color:#fff;
     text-align:center;
-    padding:20px;
-    margin-top:60px;
+    padding:18px;
+    margin-top:50px;
+    font-size:14px;
+}
+
+/* ===== MOBILE NAVIGATION ===== */
+@media(max-width:768px){
+
+    .nav-toggle{
+        display:block;
+    }
+
+    .nav-menu{
+        position:absolute;
+        top:65px;
+        right:0;
+        background:#0b3d91;
+        width:100%;
+        flex-direction:column;
+        text-align:center;
+        display:none;
+        padding:20px 0;
+    }
+
+    .nav-menu.show{
+        display:flex;
+    }
+
+    .nav-menu li{
+        margin:10px 0;
+    }
+
+    .page-hero h1{
+        font-size:24px;
+    }
+
+    .course-card{
+        padding:18px;
+    }
+
 }
 
 </style>
@@ -146,22 +193,23 @@ p{
                 <img src="assets/images/logo.png" alt="CINPS Logo">
             </a>
         </div>
-        <nav>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="courses.html">Courses</a></li>
-                <li><a href="admissions.html">Admissions</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
+
+        <button class="nav-toggle">☰</button>
+
+        <ul class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="admissions.html">Admissions</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
     </div>
 </header>
 
 <!-- ===== HERO ===== -->
 <section class="page-hero">
     <h1>Our Career-Focused Programs</h1>
-    <p>Industry-aligned paramedical education with strong clinical exposure, simulation labs, and internship support.</p>
+    <p>Industry-aligned paramedical education with strong clinical exposure and internship support.</p>
 </section>
 
 <!-- ===== COURSES ===== -->
@@ -174,11 +222,11 @@ p{
 <div class="course-card">
     <div>
         <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
-        <div class="course-meta">Duration: 2 Years + 6 Months Internship | Eligibility: 10+2</div>
+        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
         <ul>
             <li>Surgical instruments & sterile techniques</li>
             <li>Anaesthesia assistance</li>
-            <li>Perioperative patient care</li>
+            <li>Perioperative care</li>
             <li>Emergency OT protocols</li>
         </ul>
     </div>
@@ -189,7 +237,7 @@ p{
 <div class="course-card">
     <div>
         <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
-        <div class="course-meta">Duration: 2 Years + 6 Months Internship | Eligibility: 10+2</div>
+        <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
         <ul>
             <li>Clinical biochemistry</li>
             <li>Microbiology & pathology</li>
@@ -200,89 +248,20 @@ p{
     <a href="/admission-form" class="apply-btn">Apply Now</a>
 </div>
 
-<!-- ICU 2Y -->
-<div class="course-card">
-    <div>
-        <h3>Intensive Care Unit Technician (2 Year)</h3>
-        <div class="course-meta">Duration: 2 Years + Internship | Eligibility: 10+2</div>
-        <ul>
-            <li>Mechanical ventilation</li>
-            <li>Critical monitoring systems</li>
-            <li>Emergency response</li>
-            <li>ICU pharmacology basics</li>
-        </ul>
-    </div>
-    <a href="/admission-form" class="apply-btn">Apply Now</a>
-</div>
-
-<!-- EMT -->
-<div class="course-card">
-    <div>
-        <h3>Emergency Medical Technician (EMT)</h3>
-        <div class="course-meta">Duration: 2 Years + Internship | Eligibility: 10+2</div>
-        <ul>
-            <li>Pre-hospital trauma care</li>
-            <li>CPR & first aid</li>
-            <li>Ambulance operations</li>
-            <li>Disaster management</li>
-        </ul>
-    </div>
-    <a href="/admission-form" class="apply-btn">Apply Now</a>
-</div>
-
-<!-- ICU 1Y -->
-<div class="course-card">
-    <div>
-        <h3>ICU Technician (1 Year Fast Track)</h3>
-        <div class="course-meta">Duration: 1 Year | Eligibility: 10th Pass</div>
-        <ul>
-            <li>Core ICU skills</li>
-            <li>Patient monitoring</li>
-            <li>Basic emergency response</li>
-        </ul>
-    </div>
-    <a href="/admission-form" class="apply-btn">Apply Now</a>
-</div>
-
-<!-- RMP -->
-<div class="course-card">
-    <div>
-        <h3>Registered Medical Practitioner (RMP)</h3>
-        <div class="course-meta">Duration: 1 Year | Eligibility: 10th Pass</div>
-        <ul>
-            <li>Basic clinical assessment</li>
-            <li>Common ailment management</li>
-            <li>Medical documentation</li>
-        </ul>
-    </div>
-    <a href="/admission-form" class="apply-btn">Apply Now</a>
-</div>
-
-<!-- CMS -->
-<div class="course-card">
-    <div>
-        <h3>Community Medical Service (CMS & ED)</h3>
-        <div class="course-meta">Duration: 18–24 Months | Eligibility: 10th Pass</div>
-        <ul>
-            <li>Primary healthcare basics</li>
-            <li>Essential drug management</li>
-            <li>Community health outreach</li>
-        </ul>
-    </div>
-    <a href="/admission-form" class="apply-btn">Apply Now</a>
-</div>
-
 </div>
 </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer class="footer">
 <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science</p>
 </footer>
 
 <script>
 document.getElementById("year").textContent = new Date().getFullYear();
+
+document.querySelector(".nav-toggle").onclick = function(){
+    document.querySelector(".nav-menu").classList.toggle("show");
+};
 </script>
 
 </body>
