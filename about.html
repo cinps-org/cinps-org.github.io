@@ -366,23 +366,33 @@
     </div>
   </footer>
 
-  <!-- CONTACT MODAL -->
-  <div class="modal-bg" id="modal" aria-hidden="true" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200">
+<!-- ===== CONTACT MODAL ===== -->
+  <div class="modal-bg" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
     <div class="modal" role="document">
-      <h3 style="color:var(--brand-blue)">Contact Admissions</h3>
+      <h3 id="contactModalTitle">Contact Admissions</h3>
       <form id="contactForm">
-        <input name="name" placeholder="Your name" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
-        <input name="phone" placeholder="Phone number" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
-        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
-        <textarea name="message" placeholder="Your message" rows="4" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%"></textarea>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
-          <button type="button" onclick="closeModal()" style="padding:10px 14px;border-radius:8px;border:1px solid #eef2ff;background:#fff">Cancel</button>
-          <button type="submit" style="padding:10px 14px;border-radius:8px;background:var(--brand-blue);color:#fff;border:0">Send</button>
+        <input name="name" placeholder="Your Name" required aria-label="Your name">
+        <input name="phone" placeholder="Phone Number" required aria-label="Phone number">
+        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required aria-label="Subject">
+        <textarea name="message" placeholder="Your Message" rows="4" required aria-label="Your message"></textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- ===== SUCCESS POPUP ===== -->
+  <div class="modal-bg" id="successPopup" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal success-content">
+      <h3>Thanks for contacting us</h3>
+      <p>We received your message. Our representative will contact you soon.</p>
+      <div style="text-align:center;margin-top:14px">
+        <button class="btn btn-primary" onclick="closeSuccess()">Done</button>
+      </div>
+    </div>
+  </div>
   <!-- CINPS PULSE AI (floating) -->
   <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI" aria-expanded="false" style="position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(0,0,0,0.2)">🧠</button>
 
