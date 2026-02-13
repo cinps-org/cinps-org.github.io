@@ -1,546 +1,643 @@
-/* ================= ROOT ================= */
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="CINPS – Structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance.">
+  <title>CINPS | Chandidas Institute of Nursing & Paramedical Science</title>
 
-:root{
---brand-blue:#0d3b8e;
---light-blue:#1f57b8;
---shadow:0 10px 30px rgba(0,0,0,0.08);
-}
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-*{margin:0;padding:0;box-sizing:border-box;}
+  <style>
+    /* ================= ROOT ================= */
+    :root{
+      --brand-blue:#0d3b8e;
+      --light-blue:#1f57b8;
+      --shadow:0 10px 30px rgba(0,0,0,0.08);
+      --muted:#6b7280;
+      --radius:12px;
+      --container-width:1100px;
+    }
 
-body{
-font-family:'Poppins',sans-serif;
-background:#fff;
-color:#333;
-line-height:1.9;
-overflow-x:hidden;
-}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#fff;
+      color:#222;
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.container{
-width:92%;
-max-width:1100px;
-margin:auto;
-}
+    .container{
+      width:92%;
+      max-width:var(--container-width);
+      margin:0 auto;
+    }
 
-/* ================= HEADER ================= */
+    a{color:inherit;}
+    button{font-family:inherit;}
 
-.site-header{
-background:#fff;
-box-shadow:var(--shadow);
-position:sticky;
-top:0;
-z-index:1000;
-}
+    /* ================= HEADER ================= */
+    .site-header{
+      background:#fff;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
 
-.header-inner{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 0;
-}
+    .header-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 0;
+    }
 
-.logo{height:50px;}
+    .logo{height:50px;object-fit:contain;}
 
-.logo-wrap{
-display:flex;
-align-items:center;
-gap:10px;
-text-decoration:none;
-color:var(--brand-blue);
-}
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--brand-blue);
+    }
 
-.brand-text{
-font-size:13px;
-font-weight:600;
-line-height:1.2;
-display:flex;
-flex-direction:column;
-}
+    .brand-text{
+      font-size:13px;
+      font-weight:600;
+      line-height:1.1;
+      display:flex;
+      flex-direction:column;
+    }
 
-.nav-menu{
-list-style:none;
-display:flex;
-gap:25px;
-}
+    .brand-text .title{font-size:15px;font-weight:700;}
+    .brand-text .subtitle{font-size:12px;color:var(--muted);margin-top:2px;}
 
-.nav-menu a{
-text-decoration:none;
-color:var(--brand-blue);
-font-weight:500;
-font-size:14px;
-}
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
 
-.nav-toggle{
-display:none;
-font-size:22px;
-background:none;
-border:none;
-cursor:pointer;
-}
+    .nav-menu{
+      list-style:none;
+      display:flex;
+      gap:22px;
+      align-items:center;
+    }
 
-/* ================= HERO ================= */
+    .nav-menu a{
+      text-decoration:none;
+      color:var(--brand-blue);
+      font-weight:600;
+      font-size:14px;
+      padding:8px 6px;
+      border-radius:8px;
+    }
+    .nav-menu a:focus,
+    .nav-menu a:hover{background:rgba(13,59,142,0.06);outline:none}
 
-.hero{
-background:
-linear-gradient(rgba(13,59,142,0.45),rgba(13,59,142,0.45)),
-url('assets/images/hero.jpg') center/cover no-repeat;
-color:#fff;
-padding:120px 20px;
-min-height:80vh;
-display:flex;
-align-items:center;
-}
+    .nav-toggle{
+      display:none;
+      font-size:22px;
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:8px;
+      border-radius:8px;
+    }
 
-.hero .container{max-width:850px;}
+    /* ================= HERO ================= */
+    .hero{
+      background:
+      linear-gradient(rgba(13,59,142,0.45),rgba(13,59,142,0.45)),
+      url('assets/images/hero.jpg') center/cover no-repeat;
+      color:#fff;
+      padding:110px 20px;
+      min-height:70vh;
+      display:flex;
+      align-items:center;
+    }
 
-.hero h1{
-font-size:42px;
-font-weight:700;
-margin-bottom:18px;
-line-height:1.3;
-}
+    .hero .container{max-width:900px;}
 
-.hero p{
-font-size:18px;
-margin-bottom:30px;
-}
+    .hero h1{
+      font-size:44px;
+      font-weight:800;
+      margin-bottom:14px;
+      line-height:1.15;
+      text-shadow:0 6px 18px rgba(0,0,0,0.25);
+    }
 
-.hero-buttons{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-}
+    .hero p{
+      font-size:18px;
+      margin-bottom:22px;
+      color:rgba(255,255,255,0.92);
+      max-width:640px;
+    }
 
-.hero-buttons a{
-padding:13px 28px;
-border-radius:6px;
-text-decoration:none;
-font-weight:600;
-font-size:14px;
-background:#fff;
-color:var(--brand-blue);
-}
+    .hero-buttons{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-/* ================= SECTIONS ================= */
+    .btn{
+      padding:12px 20px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      cursor:pointer;
+      border:0;
+    }
 
-.section{padding:90px 0;}
+    .btn-primary{
+      background:#fff;
+      color:var(--brand-blue);
+      box-shadow:0 8px 24px rgba(13,59,142,0.12);
+    }
 
-.content-block{
-max-width:850px;
-margin:0 auto 70px auto;
-}
+    .btn-secondary{
+      background:transparent;
+      color:#fff;
+      border:1.5px solid rgba(255,255,255,0.18);
+    }
 
-.section h2{
-font-size:32px;
-font-weight:700;
-color:var(--brand-blue);
-margin-bottom:25px;
-position:relative;
-}
+    /* ================= SECTIONS ================= */
+    .section{padding:80px 0;background:#fff;}
+    .section.alt{background:#fbfbff;}
 
-.section h2::after{
-content:"";
-display:block;
-width:60px;
-height:3px;
-background:var(--brand-blue);
-margin-top:12px;
-}
+    .content-block{
+      max-width:900px;
+      margin:0 auto 60px auto;
+    }
 
-.section h3{
-font-size:20px;
-font-weight:600;
-margin-top:30px;
-margin-bottom:12px;
-color:#1e2a38;
-}
+    .section h2{
+      font-size:28px;
+      font-weight:800;
+      color:var(--brand-blue);
+      margin-bottom:18px;
+      position:relative;
+    }
 
-.content-block p{
-font-size:17px;
-margin-bottom:22px;
-color:#444;
-}
+    .section h2::after{
+      content:"";
+      display:block;
+      width:60px;
+      height:3px;
+      background:var(--brand-blue);
+      margin-top:12px;
+    }
 
-.features{
-list-style:none;
-margin-top:15px;
-}
+    .section h3{
+      font-size:18px;
+      font-weight:700;
+      margin-top:18px;
+      margin-bottom:10px;
+      color:#1e2a38;
+    }
 
-.features li{
-font-size:16px;
-line-height:1.8;
-margin-bottom:14px;
-padding-left:28px;
-position:relative;
-}
+    .content-block p{
+      font-size:16px;
+      margin-bottom:16px;
+      color:#444;
+    }
 
-.features li::before{
-content:"✔";
-position:absolute;
-left:0;
-top:2px;
-color:var(--light-blue);
-font-weight:bold;
-}
+    .features{
+      list-style:none;
+      margin-top:10px;
+      padding-left:0;
+    }
 
-/* ================= FOOTER ================= */
+    .features li{
+      font-size:15px;
+      line-height:1.9;
+      margin-bottom:12px;
+      padding-left:28px;
+      position:relative;
+      color:#333;
+    }
 
-.footer{
-background:var(--brand-blue);
-color:#fff;
-text-align:center;
-padding:30px 10px;
-}
+    .features li::before{
+      content:"✔";
+      position:absolute;
+      left:0;
+      top:0;
+      color:var(--light-blue);
+      font-weight:bold;
+      font-size:14px;
+      line-height:1;
+    }
 
-/* ================= PREMIUM CINPS PULSE AI ================= */
+    /* ================= FOOTER ================= */
+    .footer{
+      background:var(--brand-blue);
+      color:#fff;
+      text-align:center;
+      padding:26px 10px;
+      font-size:14px;
+    }
 
-#cinps-chat-btn{
-position:fixed;
-bottom:25px;
-right:25px;
-width:60px;
-height:60px;
-border-radius:50%;
-background:var(--brand-blue);
-color:#fff;
-border:none;
-font-size:22px;
-cursor:pointer;
-box-shadow:0 15px 35px rgba(0,0,0,0.25);
-display:flex;
-align-items:center;
-justify-content:center;
-transition:0.3s ease;
-z-index:3000;
-}
+    /* ================= CINPS PULSE AI CHAT ================= */
+    #cinps-chat-btn{
+      position:fixed;
+      bottom:22px;
+      right:22px;
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      background:var(--brand-blue);
+      color:#fff;
+      border:none;
+      font-size:22px;
+      cursor:pointer;
+      box-shadow:0 15px 35px rgba(0,0,0,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform .18s ease;
+      z-index:3000;
+    }
 
-#cinps-chat-btn:hover{
-transform:scale(1.08);
-}
+    #cinps-chat-btn:hover{transform:scale(1.06);}
 
-#cinps-chat-box{
-position:fixed;
-bottom:100px;
-right:25px;
-width:360px;
-max-width:95%;
-background:#fff;
-border-radius:16px;
-box-shadow:0 25px 60px rgba(0,0,0,0.25);
-display:flex;
-flex-direction:column;
-overflow:hidden;
-opacity:0;
-transform:translateY(20px);
-pointer-events:none;
-transition:0.3s ease;
-z-index:3000;
-}
+    #cinps-chat-box{
+      position:fixed;
+      bottom:100px;
+      right:22px;
+      width:360px;
+      max-width:calc(100% - 44px);
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 25px 60px rgba(0,0,0,0.25);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      opacity:0;
+      transform:translateY(20px) scale(.98);
+      pointer-events:none;
+      transition:opacity .25s ease,transform .25s ease;
+      z-index:3000;
+    }
 
-#cinps-chat-box.active{
-opacity:1;
-transform:translateY(0);
-pointer-events:auto;
-}
+    #cinps-chat-box.active{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
 
-#cinps-chat-header{
-background:var(--brand-blue);
-color:#fff;
-padding:14px 16px;
-font-weight:600;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:14px;
-}
+    #cinps-chat-header{
+      background:var(--brand-blue);
+      color:#fff;
+      padding:12px 14px;
+      font-weight:700;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:14px;
+    }
 
-#cinps-chat-close{
-cursor:pointer;
-font-size:16px;
-}
+    #cinps-chat-close{cursor:pointer;font-size:18px;background:none;border:0;color:#fff;padding:6px;border-radius:8px}
+    #cinps-chat-messages{
+      padding:14px;
+      height:260px;
+      overflow-y:auto;
+      font-size:14px;
+      line-height:1.6;
+      background:linear-gradient(180deg,#fff,#f9fbff);
+    }
 
-#cinps-chat-messages{
-padding:18px;
-height:260px;
-overflow-y:auto;
-font-size:14px;
-line-height:1.6;
-}
+    .bubble{
+      display:inline-block;
+      max-width:84%;
+      padding:10px 12px;
+      border-radius:12px;
+      margin-bottom:10px;
+      font-size:14px;
+      line-height:1.45;
+    }
 
-#cinps-chat-input{
-display:flex;
-border-top:1px solid #eee;
-}
+    .bot{background:#f1f5ff;color:#06204a;border-radius:12px 12px 12px 4px;}
+    .user{background:var(--brand-blue);color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px;}
 
-#cinps-chat-input input{
-flex:1;
-border:none;
-padding:12px;
-font-size:14px;
-outline:none;
-}
+    #cinps-chat-input{
+      display:flex;
+      border-top:1px solid #eee;
+      gap:8px;
+      padding:8px;
+      align-items:center;
+      background:#fff;
+    }
 
-#cinps-chat-input button{
-background:var(--brand-blue);
-color:#fff;
-border:none;
-padding:0 18px;
-cursor:pointer;
-font-weight:500;
-}
+    #cinps-chat-input input{
+      flex:1;
+      border:none;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+      border-radius:8px;
+      background:#f7f8fb;
+    }
 
-/* ================= MOBILE ================= */
+    #cinps-chat-input button{
+      background:var(--brand-blue);
+      color:#fff;
+      border:none;
+      padding:9px 14px;
+      cursor:pointer;
+      font-weight:600;
+      border-radius:8px;
+    }
 
-@media(max-width:768px){
+    /* ================= ACCESSIBILITY FOCUS ================= */
+    a:focus, button:focus, input:focus{outline:3px solid rgba(13,59,142,0.16); outline-offset:2px;}
 
-.nav-menu{
-position:absolute;
-top:70px;
-right:0;
-background:#fff;
-flex-direction:column;
-width:220px;
-padding:20px;
-display:none;
-box-shadow:var(--shadow);
-}
+    /* ================= MOBILE ================= */
+    @media(max-width:900px){
+      .hero h1{font-size:30px}
+      .hero p{font-size:15px}
+      .section{padding:40px 0}
+      .section h2{font-size:22px}
+      .nav-menu{gap:14px}
+    }
 
-.nav-menu.show{display:flex;}
-.nav-toggle{display:block;}
+    @media(max-width:768px){
+      .nav-menu{
+        position:fixed;
+        top:66px;
+        right:12px;
+        background:#fff;
+        flex-direction:column;
+        width:240px;
+        padding:18px;
+        display:none;
+        box-shadow:var(--shadow);
+        border-radius:12px;
+      }
+      .nav-menu.show{display:flex;}
+      .nav-toggle{display:block;background:transparent;border:0;color:var(--brand-blue)}
+      .nav{gap:10px;}
+      .hero{padding:70px 18px; min-height:58vh}
+      .hero h1{font-size:26px}
+      #cinps-chat-box{right:16px;bottom:84px;width:92%}
+    }
 
-.hero{
-padding:80px 20px;
-min-height:65vh;
-}
-
-.hero h1{font-size:26px;}
-.hero p{font-size:15px;}
-
-.section{padding:60px 0;}
-.section h2{font-size:24px;}
-.section h3{font-size:18px;}
-.content-block p{font-size:15px;}
-.features li{font-size:14.5px;}
-
-#cinps-chat-box{
-width:94%;
-right:3%;
-bottom:90px;
-}
-
-}
-
-</style>
+    /* small screens */
+    @media(max-width:420px){
+      .brand-text .title{font-size:14px;}
+      .logo{height:44px;}
+      .hero h1{font-size:22px}
+      #cinps-chat-messages{height:200px}
+    }
+  </style>
 </head>
 <body>
 
-<header class="site-header">
-<div class="container header-inner">
-<a href="index.html" class="logo-wrap">
-<img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
-<div class="brand-text">
-</div>
-</a>
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
+        <img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
+        <div class="brand-text" aria-hidden="true">
+          <span class="title">Chandidas Institute</span>
+          <span class="subtitle">Nursing & Paramedical Science</span>
+        </div>
+      </a>
 
-<nav>
-<button class="nav-toggle">☰</button>
-<ul class="nav-menu">
-<li><a href="index.html">Home</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="courses.html">Courses</a></li>
-<li><a href="admissions.html">Admissions</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</nav>
-</div>
-</header>
+      <nav class="nav" role="navigation" aria-label="Main Navigation">
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+        <ul class="nav-menu" id="mainNav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="admissions.html">Admissions</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-<section class="hero">
-<div class="container">
-<h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
-<p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals</p>
-<div class="hero-buttons">
-<a href="courses.html">Explore Courses</a>
-<a href="admissions.html" class="secondary">Apply Now</a>
-</div>
-</div>
-</section>
+  <!-- HERO -->
+  <section class="hero" role="region" aria-label="Hero">
+    <div class="container">
+      <h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
+      <p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals — 100% internship & dedicated placement support.</p>
+      <div class="hero-buttons">
+        <a href="courses.html" class="btn btn-primary">Explore Courses</a>
+        <a href="admissions.html" class="btn btn-secondary">Apply Now</a>
+      </div>
+    </div>
+  </section>
 
-<!-- MAIN CONTENT -->
-<section class="section">
-<div class="container">
+  <!-- MAIN CONTENT -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="content-block">
+          <h2>Chandidas Institute of Nursing and Paramedical Science (CINPS)</h2>
+          <p>Chandidas Institute of Nursing and Paramedical Science (CINPS) is a professionally governed paramedical institute committed to delivering structured, skill-driven, and career-oriented healthcare education. The institute focuses on diploma and certificate programs designed to prepare students for responsible roles in hospitals, diagnostic centers, emergency services, operation theatres, and intensive care environments.</p>
 
-<div class="content-block">
-<h2>Chandidas Institute of Nursing and Paramedical Science (CINPS)</h2>
+          <p>CINPS operates with a clear academic vision: to transform aspiring healthcare learners into competent professionals through disciplined training systems, practical exposure, and measurable performance standards. Every academic activity is aligned with real healthcare industry requirements to ensure students graduate with confidence and operational readiness.</p>
+        </div>
 
-<p>
-Chandidas Institute of Nursing and Paramedical Science (CINPS) is a professionally governed paramedical institute committed to delivering structured, skill-driven, and career-oriented healthcare education. The institute focuses on diploma and certificate programs designed to prepare students for responsible roles in hospitals, diagnostic centers, emergency services, operation theatres, and intensive care environments.
-</p>
+        <div class="content-block">
+          <h2>Structured & Career-Focused Academic System</h2>
+          <p>At CINPS, education is not limited to classroom instruction. The academic framework integrates:</p>
+          <ul class="features">
+            <li>Concept-based theoretical learning</li>
+            <li>Procedure-oriented practical training</li>
+            <li>Continuous skill assessment</li>
+            <li>Professional behavior monitoring</li>
+            <li>Outcome-based evaluation methods</li>
+          </ul>
+        </div>
 
-<p>
-CINPS operates with a clear academic vision: to transform aspiring healthcare learners into competent professionals through disciplined training systems, practical exposure, and measurable performance standards. Every academic activity is aligned with real healthcare industry requirements to ensure students graduate with confidence and operational readiness.
-</p>
-</div>
+        <div class="content-block">
+          <h2>100% Internship Assurance</h2>
+          <p>Practical training is a mandatory component of professional qualification. CINPS provides 100% internship opportunities to eligible students as part of its structured academic system.</p>
+          <ul class="features">
+            <li>Gain real-time clinical exposure</li>
+            <li>Apply theoretical concepts in practical settings</li>
+            <li>Develop confidence in equipment handling</li>
+            <li>Understand workplace discipline and documentation standards</li>
+            <li>Strengthen patient interaction skills</li>
+          </ul>
+        </div>
 
-<div class="content-block">
-<h2>Structured & Career-Focused Academic System</h2>
+        <div class="content-block alt">
+          <h2>100% Job Placement Assistance</h2>
+          <p>CINPS supports students beyond academic completion by offering job placement assistance and career development services for qualified candidates.</p>
+          <ul class="features">
+            <li>Career counseling and professional guidance</li>
+            <li>Interview preparation sessions</li>
+            <li>Resume development assistance</li>
+            <li>Professional communication training</li>
+            <li>Coordination with healthcare employers</li>
+          </ul>
+        </div>
 
-<p>At CINPS, education is not limited to classroom instruction. The academic framework integrates:</p>
+        <div class="content-block">
+          <h2>Comprehensive Student Support System</h2>
+          <h3>Academic Support</h3>
+          <ul class="features">
+            <li>Doubt-clearing sessions</li>
+            <li>Structured revision programs</li>
+            <li>Performance feedback discussions</li>
+            <li>Examination preparation assistance</li>
+          </ul>
 
-<ul class="features">
-<li>Concept-based theoretical learning</li>
-<li>Procedure-oriented practical training</li>
-<li>Continuous skill assessment</li>
-<li>Professional behavior monitoring</li>
-<li>Outcome-based evaluation methods</li>
-</ul>
+          <h3>Professional Development Support</h3>
+          <ul class="features">
+            <li>Communication skill enhancement</li>
+            <li>Workplace behavior training</li>
+            <li>Documentation accuracy guidance</li>
+            <li>Time management coaching</li>
+          </ul>
+        </div>
 
-<p>
-The curriculum is carefully designed to ensure that students acquire both medical knowledge and technical proficiency. Each program emphasizes accuracy, patient safety, infection control standards, and responsible clinical conduct.
-</p>
-</div>
+        <div class="content-block">
+          <h2>A Trusted Choice for Students and Parents</h2>
+          <p>Chandidas Institute of Nursing and Paramedical Science maintains a disciplined, transparent, and professionally managed academic environment. With structured programs, assured internships, and dedicated placement assistance, CINPS builds capable, ethical, and employment-ready paramedical professionals.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<div class="content-block">
-<h2>100% Internship Assurance</h2>
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <p>© <span id="year"></span> CINPS | All Rights Reserved</p>
+    </div>
+  </footer>
 
-<p>
-Practical training is a mandatory component of professional qualification. CINPS provides 100% internship opportunities to eligible students as part of its structured academic system.
-</p>
+  <!-- CHAT BUTTON & BOX -->
+  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI">🧠</button>
 
-<p>Internship training enables students to:</p>
+  <div id="cinps-chat-box" role="dialog" aria-label="CINPS Pulse AI" aria-hidden="true">
+    <div id="cinps-chat-header">
+      <span>CINPS Pulse AI</span>
+      <button id="cinps-chat-close" aria-label="Close chat">✕</button>
+    </div>
 
-<ul class="features">
-<li>Gain real-time clinical exposure</li>
-<li>Apply theoretical concepts in practical settings</li>
-<li>Develop confidence in equipment handling</li>
-<li>Understand workplace discipline and documentation standards</li>
-<li>Strengthen patient interaction skills</li>
-</ul>
+    <div id="cinps-chat-messages" aria-live="polite" aria-atomic="false">
+      <div class="bubble bot">👋 Ask about admissions, courses, scholarships. বাংলা / हिंदी / English supported.</div>
+    </div>
 
-<p>
-This ensures that every student transitions from academic learning to professional practice with structured clinical experience.
-</p>
-</div>
+    <div id="cinps-chat-input">
+      <input id="cinps-input" type="text" placeholder="Ask CINPS Pulse AI..." aria-label="Ask CINPS Pulse AI">
+      <button id="cinps-send" aria-label="Send message">Send</button>
+    </div>
+  </div>
 
-<div class="content-block">
-<h2>100% Job Placement Assistance</h2>
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-<p>
-CINPS is committed to supporting students beyond academic completion. The institute provides 100% job placement assistance to qualified and eligible candidates.
-</p>
+    // NAV TOGGLE
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
 
-<p>The placement support framework includes:</p>
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!expanded));
+      mainNav.classList.toggle('show');
+    });
 
-<ul class="features">
-<li>Career counseling and professional guidance</li>
-<li>Interview preparation sessions</li>
-<li>Resume development assistance</li>
-<li>Professional communication training</li>
-<li>Coordination with healthcare employers</li>
-</ul>
+    // Close mobile nav when link clicked (improves UX)
+    mainNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (mainNav.classList.contains('show')) {
+          mainNav.classList.remove('show');
+          navToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
 
-<p>
-The focus is on connecting students with suitable employment opportunities based on their training and competency level. The objective is long-term career development, not just job placement.
-</p>
-</div>
+    // CHAT TOGGLING (uses 'active' class for smooth transitions)
+    const chatBtn = document.getElementById('cinps-chat-btn');
+    const chatBox = document.getElementById('cinps-chat-box');
+    const chatClose = document.getElementById('cinps-chat-close');
+    const chatInput = document.getElementById('cinps-input');
+    const chatMessages = document.getElementById('cinps-chat-messages');
+    const chatSend = document.getElementById('cinps-send');
 
-<div class="content-block">
-<h2>Competency-Based Qualification Process</h2>
+    function openChat() {
+      chatBox.classList.add('active');
+      chatBox.setAttribute('aria-hidden', 'false');
+      chatInput.focus();
+    }
+    function closeChat() {
+      chatBox.classList.remove('active');
+      chatBox.setAttribute('aria-hidden', 'true');
+      chatBtn.focus();
+    }
 
-<h3>Academic Foundation</h3>
-<p>
-Students are trained in medical terminology, basic anatomy and physiology, infection control principles, and healthcare ethics.
-</p>
+    chatBtn.addEventListener('click', () => {
+      if (chatBox.classList.contains('active')) closeChat();
+      else openChat();
+    });
 
-<h3>Practical Skill Development</h3>
-<p>
-Hands-on training includes clinical simulations, procedural demonstrations, supervised practice sessions, and equipment-based exercises.
-</p>
+    chatClose.addEventListener('click', closeChat);
 
-<h3>Continuous Evaluation</h3>
-<p>
-Performance is assessed through written examinations, viva assessments, practical demonstrations, attendance monitoring, and discipline tracking.
-</p>
+    // Basic message append (stub — replace with real AI integration)
+    function appendMessage(text, who='bot') {
+      const div = document.createElement('div');
+      div.className = 'bubble ' + (who === 'user' ? 'user' : 'bot');
+      div.textContent = text;
+      div.style.marginTop = '6px';
+      chatMessages.appendChild(div);
+      // auto scroll
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-<h3>Professional Readiness Assessment</h3>
-<p>
-Before course completion, students undergo structured competency evaluation to confirm their preparedness for healthcare responsibilities.
-</p>
+    function sendMessage() {
+      const val = chatInput.value.trim();
+      if (!val) return;
+      appendMessage(val, 'user');
+      chatInput.value = '';
+      // simple mocked bot response — replace with real API call when ready
+      setTimeout(() => {
+        appendMessage('Thanks — we received your query. For admissions and courses, please visit the Admissions page or call +91 8101579839.', 'bot');
+      }, 700);
+    }
 
-<p>
-The institute’s certification represents validated competence and professional discipline.
-</p>
-</div>
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+      if (e.key === 'Escape') {
+        chatInput.blur();
+      }
+    });
 
-<div class="content-block">
-<h2>Comprehensive Student Support System</h2>
+    // Close chat on outside click (mobile friendly)
+    document.addEventListener('click', (e) => {
+      if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')) {
+        closeChat();
+      }
+    });
 
-<h3>Academic Support</h3>
-<ul class="features">
-<li>Doubt-clearing sessions</li>
-<li>Structured revision programs</li>
-<li>Performance feedback discussions</li>
-<li>Examination preparation assistance</li>
-</ul>
-
-<h3>Professional Development Support</h3>
-<ul class="features">
-<li>Communication skill enhancement</li>
-<li>Workplace behavior training</li>
-<li>Documentation accuracy guidance</li>
-<li>Time management coaching</li>
-</ul>
-
-<h3>Continuous Monitoring & Improvement</h3>
-<p>
-Faculty members actively track progress and provide corrective guidance wherever necessary. The objective is to ensure steady academic improvement and practical excellence.
-</p>
-</div>
-
-<div class="content-block">
-<h2>A Trusted Choice for Students and Parents</h2>
-
-<p>
-Chandidas Institute of Nursing and Paramedical Science maintains a disciplined, transparent, and professionally managed academic environment. With structured programs, assured internship opportunities, and dedicated job placement assistance, CINPS is committed to building capable, ethical, and employment-ready paramedical professionals.
-</p>
-
-<p>
-For families seeking a reliable and career-focused healthcare education pathway, CINPS stands as a responsible and dependable institution dedicated to professional excellence and student success.
-</p>
-</div>
-
-</div>
-</section>
-
-
-</div>
-</section>
-
-<footer class="footer">
-<p>© <span id="year"></span> CINPS | All Rights Reserved</p>
-</footer>
-
-<button id="cinps-chat-btn">🧠</button>
-
-<div id="cinps-chat-box">
-<div id="cinps-chat-header">CINPS Pulse AI</div>
-<div id="cinps-chat-messages">
-<div>👋 Ask about admissions, courses, scholarships.<br>বাংলা / हिंदी / English supported.</div>
-</div>
-<div id="cinps-chat-input">
-<input placeholder="Ask CINPS Pulse AI...">
-<button>Send</button>
-</div>
-</div>
-
-<script>
-document.getElementById("year").textContent=new Date().getFullYear();
-document.querySelector('.nav-toggle').onclick=()=>document.querySelector('.nav-menu').classList.toggle('show');
-
-const chatBtn=document.getElementById('cinps-chat-btn');
-const chatBox=document.getElementById('cinps-chat-box');
-chatBtn.onclick=()=>chatBox.style.display=chatBox.style.display==='flex'?'none':'flex';
-</script>
+    // Improve reduced motion accessibility
+    (function() {
+      const r = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (r && r.matches) {
+        document.documentElement.style.setProperty('scroll-behavior', 'auto');
+      }
+    })();
+  </script>
 
 </body>
 </html>
