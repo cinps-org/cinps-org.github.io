@@ -5,17 +5,22 @@
   <title>About | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Chandidas Institute of Nursing & Paramedical Science (CINPS) — Skill-focused paramedical diploma & certificate programs with strong practical training, 100% internship assurance and placement support.">
+  <meta property="og:title" content="About CINPS — Chandidas Institute of Nursing & Paramedical Science">
+  <meta property="og:description" content="CINPS: Career-focused paramedical education, established 2017. Internship & placement support, simulation labs, industry-aligned curriculum.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts & favicon -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.ico">
+  <link rel="preload" as="image" href="assets/images/banner.jpg">
 
   <style>
     :root{
       --brand-blue:#0d3b8e;
       --light-blue:#1f57b8;
       --muted:#6b7280;
-      --shadow:0 10px 30px rgba(13,59,142,0.10);
-      --glass: rgba(255,255,255,0.85);
+      --shadow:0 10px 30px rgba(13,59,142,0.08);
       --radius:14px;
       --container:1100px;
     }
@@ -59,7 +64,7 @@
       width:320px;
       max-width:92%;
       background:#fff;
-      box-shadow:0 30px 80px rgba(0,0,0,0.3);
+      box-shadow:0 30px 80px rgba(0,0,0,0.28);
       transition:right .28s cubic-bezier(.2,.9,.2,1);
       z-index:1300;
       display:flex;
@@ -78,9 +83,19 @@
     }
     .drawer-backdrop.show{opacity:1;pointer-events:auto}
 
-    /* ================= HERO ================= */
-    .hero{position:relative;color:#fff;padding:90px 20px;min-height:44vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
-    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55);z-index:0}
+    /* ================= HERO with cover image ================= */
+    .hero{
+      position:relative;
+      color:#fff;
+      padding:90px 20px;
+      min-height:44vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+    }
+    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.52);z-index:0}
     .hero-inner{position:relative;z-index:2;max-width:920px}
     .hero h1{font-size:36px;font-weight:800;margin-bottom:8px}
     .hero p{font-size:16px;opacity:0.95;margin-bottom:14px}
@@ -153,7 +168,6 @@
       box-shadow:0 8px 24px rgba(13,59,142,0.12);
     }
 
-    /* decorative floating accent */
     .quote-accent{
       position:absolute;right:-40px;top:-30px;width:140px;height:140px;background:radial-gradient(circle at 30% 30%, rgba(29,89,199,0.12), transparent 40%);transform:rotate(18deg);pointer-events:none
     }
@@ -168,8 +182,8 @@
       .quote-art{width:100%;display:flex;justify-content:flex-start;padding-left:8px}
       .quote-art .avatar{width:68px;height:68px;font-size:20px}
       .scholar-link{align-self:stretch;justify-content:center;width:100%}
+      .hero{padding:60px 18px}
     }
-
   </style>
 </head>
 <body>
@@ -201,7 +215,7 @@
     </div>
   </header>
 
-  <!-- Off-canvas mobile drawer -->
+  <!-- Off-canvas mobile drawer & backdrop -->
   <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
 
   <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
@@ -226,13 +240,9 @@
     </div>
   </aside>
 
-  <!-- HERO -->
+  <!-- HERO (cover image: assets/images/banner.jpg) -->
   <section class="hero" aria-label="About CINPS hero">
-    <picture class="hero-img" aria-hidden="true">
-      <source srcset="assets/images/hero-about-large.jpg" media="(min-width:1200px)">
-      <img src="assets/images/hero-about.jpg" alt="" class="hero-img" />
-    </picture>
-
+    <img src="assets/images/banner.jpg" alt="" class="hero-img" />
     <div class="hero-inner container">
       <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
       <p>Established 2017 — developing competent, ethical and employment-ready paramedical professionals through disciplined, skill-focused training and measurable performance systems.</p>
@@ -275,7 +285,7 @@
 
           <div style="height:18px"></div>
 
-          <!-- attractive quote box -->
+          <!-- attractive quote box with avatar and CTA -->
           <div class="quote-box" role="region" aria-label="Founder's quote">
             <div class="quote-art" aria-hidden="true">
               <div class="avatar">IK</div>
@@ -356,16 +366,16 @@
     </div>
   </footer>
 
-  <!-- CONTACT MODAL (kept for completeness) -->
+  <!-- CONTACT MODAL -->
   <div class="modal-bg" id="modal" aria-hidden="true" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200">
     <div class="modal" role="document">
       <h3 style="color:var(--brand-blue)">Contact Admissions</h3>
       <form id="contactForm">
-        <input name="name" placeholder="Your name" required>
-        <input name="phone" placeholder="Phone number" required>
-        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required>
-        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+        <input name="name" placeholder="Your name" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
+        <input name="phone" placeholder="Phone number" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
+        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%">
+        <textarea name="message" placeholder="Your message" rows="4" required style="padding:10px;border-radius:8px;border:1px solid #eef2ff;margin-top:8px;width:100%"></textarea>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
           <button type="button" onclick="closeModal()" style="padding:10px 14px;border-radius:8px;border:1px solid #eef2ff;background:#fff">Cancel</button>
           <button type="submit" style="padding:10px 14px;border-radius:8px;background:var(--brand-blue);color:#fff;border:0">Send</button>
         </div>
@@ -373,7 +383,7 @@
     </div>
   </div>
 
-  <!-- CINPS PULSE AI (kept as-is) -->
+  <!-- CINPS PULSE AI (floating) -->
   <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI" aria-expanded="false" style="position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(0,0,0,0.2)">🧠</button>
 
   <div id="cinps-chat-box" role="dialog" aria-hidden="true" aria-label="CINPS Pulse AI" style="position:fixed;bottom:100px;right:22px;width:360px;max-width:calc(100% - 40px);display:flex;flex-direction:column;border-radius:12px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.2);background:#fff;opacity:0;pointer-events:none;transform:translateY(10px) scale(.98);transition:all .25s ease;z-index:3000">
@@ -408,10 +418,8 @@
       drawerBackdrop.classList.add('show');
       drawerBackdrop.setAttribute('aria-hidden','false');
       navToggle.setAttribute('aria-expanded','true');
-      // move focus into first link
       const first = mobileDrawer.querySelector('.drawer-links a');
       setTimeout(()=>first?.focus(),120);
-      // trap focus (very lightweight)
       document.body.style.overflow='hidden';
     }
     function closeDrawer(){
@@ -431,17 +439,6 @@
     drawerClose?.addEventListener('click', closeDrawer);
     drawerBackdrop?.addEventListener('click', closeDrawer);
 
-    // close on Escape
-    document.addEventListener('keydown', (e)=>{
-      if (e.key === 'Escape'){
-        if (mobileDrawer.classList.contains('open')) closeDrawer();
-        // close chat if open (below)
-        closeChat();
-      }
-    });
-
-    // close drawer if clicking outside (already handled by backdrop)
-    // also close when link clicked
     mobileDrawer.querySelectorAll('.drawer-links a').forEach(a=>{
       a.addEventListener('click', closeDrawer);
     });
@@ -453,13 +450,13 @@
 
     document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
       e.preventDefault();
-      // simple UI feedback
+      // basic UX: show a quick confirmation and reset
       alert('Thanks — our admissions team will contact you soon.');
       e.target.reset();
       closeModal();
     });
 
-    // ================= CINPS PULSE AI (keeps behaviour) =================
+    // ================= CINPS PULSE AI (behaviour) =================
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
@@ -506,12 +503,11 @@
       input.value = '';
       addMsg('🧠 Thinking…','bot');
 
-      // sample behaviour: remote API POST can be switched to your CHAT_API
+      // Replace this mock with your CHAT_API call when ready.
       setTimeout(()=>{
-        // remove the 'Thinking…' bubble
         const last = messages.lastElementChild;
         if (last && last.textContent.includes('Thinking')) last.remove();
-        addMsg('Thanks — we received your query. For admissions and courses, visit Admissions page or call +91 8101579839.','bot');
+        addMsg('Thanks — we received your query. For admissions and course details, visit Admissions or call +91 8101579839.','bot');
       }, 700);
     }
 
@@ -525,6 +521,15 @@
     document.addEventListener('click',(e)=>{
       if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')){
         closeChat();
+      }
+    });
+
+    // close drawer or chat on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (mobileDrawer.classList.contains('open')) closeDrawer();
+        if (chatBox.classList.contains('active')) closeChat();
+        if (modal.style.display === 'flex') closeModal();
       }
     });
   </script>
