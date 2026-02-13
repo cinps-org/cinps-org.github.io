@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>CINPS | Chandidas Institute of Nursing & Paramedical Science</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description"
-content="CINPS – Structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance. Skill-focused healthcare education.">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
 /* ================= ROOT ================= */
 
 :root{
 --brand-blue:#0d3b8e;
 --light-blue:#1f57b8;
---soft-bg:#f4f6fb;
 --shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
@@ -96,7 +82,7 @@ cursor:pointer;
 
 .hero{
 background:
-linear-gradient(rgba(13,59,142,0.50),rgba(13,59,142,0.50)),
+linear-gradient(rgba(13,59,142,0.45),rgba(13,59,142,0.45)),
 url('assets/images/hero.jpg') center/cover no-repeat;
 color:#fff;
 padding:120px 20px;
@@ -105,9 +91,7 @@ display:flex;
 align-items:center;
 }
 
-.hero .container{
-max-width:850px;
-}
+.hero .container{max-width:850px;}
 
 .hero h1{
 font-size:42px;
@@ -137,17 +121,9 @@ background:#fff;
 color:var(--brand-blue);
 }
 
-.hero-buttons a.secondary{
-background:transparent;
-border:2px solid #fff;
-color:#fff;
-}
-
 /* ================= SECTIONS ================= */
 
-.section{
-padding:90px 0;
-}
+.section{padding:90px 0;}
 
 .content-block{
 max-width:850px;
@@ -216,6 +192,103 @@ text-align:center;
 padding:30px 10px;
 }
 
+/* ================= PREMIUM CINPS PULSE AI ================= */
+
+#cinps-chat-btn{
+position:fixed;
+bottom:25px;
+right:25px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:var(--brand-blue);
+color:#fff;
+border:none;
+font-size:22px;
+cursor:pointer;
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:0.3s ease;
+z-index:3000;
+}
+
+#cinps-chat-btn:hover{
+transform:scale(1.08);
+}
+
+#cinps-chat-box{
+position:fixed;
+bottom:100px;
+right:25px;
+width:360px;
+max-width:95%;
+background:#fff;
+border-radius:16px;
+box-shadow:0 25px 60px rgba(0,0,0,0.25);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+opacity:0;
+transform:translateY(20px);
+pointer-events:none;
+transition:0.3s ease;
+z-index:3000;
+}
+
+#cinps-chat-box.active{
+opacity:1;
+transform:translateY(0);
+pointer-events:auto;
+}
+
+#cinps-chat-header{
+background:var(--brand-blue);
+color:#fff;
+padding:14px 16px;
+font-weight:600;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:14px;
+}
+
+#cinps-chat-close{
+cursor:pointer;
+font-size:16px;
+}
+
+#cinps-chat-messages{
+padding:18px;
+height:260px;
+overflow-y:auto;
+font-size:14px;
+line-height:1.6;
+}
+
+#cinps-chat-input{
+display:flex;
+border-top:1px solid #eee;
+}
+
+#cinps-chat-input input{
+flex:1;
+border:none;
+padding:12px;
+font-size:14px;
+outline:none;
+}
+
+#cinps-chat-input button{
+background:var(--brand-blue);
+color:#fff;
+border:none;
+padding:0 18px;
+cursor:pointer;
+font-weight:500;
+}
+
 /* ================= MOBILE ================= */
 
 @media(max-width:768px){
@@ -240,36 +313,22 @@ padding:80px 20px;
 min-height:65vh;
 }
 
-.hero h1{
-font-size:26px;
-}
+.hero h1{font-size:26px;}
+.hero p{font-size:15px;}
 
-.hero p{
-font-size:15px;
-}
+.section{padding:60px 0;}
+.section h2{font-size:24px;}
+.section h3{font-size:18px;}
+.content-block p{font-size:15px;}
+.features li{font-size:14.5px;}
 
-.section{
-padding:60px 0;
-}
-
-.section h2{
-font-size:24px;
-}
-
-.section h3{
-font-size:18px;
-}
-
-.content-block p{
-font-size:15px;
-}
-
-.features li{
-font-size:14.5px;
+#cinps-chat-box{
+width:94%;
+right:3%;
+bottom:90px;
 }
 
 }
-
 
 </style>
 </head>
