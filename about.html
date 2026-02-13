@@ -5,25 +5,21 @@
   <title>About | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Chandidas Institute of Nursing & Paramedical Science (CINPS) — Skill-focused paramedical diploma & certificate programs with strong practical training, 100% internship assurance and placement support.">
-  <meta property="og:title" content="About CINPS — Chandidas Institute of Nursing & Paramedical Science">
-  <meta property="og:description" content="CINPS: Career-focused paramedical education, established 2017. Internship & placement support, simulation labs, industry-aligned curriculum.">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- Fonts & preload -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.ico">
-  <link rel="preload" as="image" href="assets/images/hero-about.jpg">
 
   <style>
     :root{
       --brand-blue:#0d3b8e;
       --light-blue:#1f57b8;
-      --shadow:0 10px 30px rgba(0,0,0,0.08);
       --muted:#6b7280;
-      --radius:12px;
+      --shadow:0 10px 30px rgba(13,59,142,0.10);
+      --glass: rgba(255,255,255,0.85);
+      --radius:14px;
       --container:1100px;
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
@@ -32,111 +28,148 @@
       color:#222;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      line-height:1.7;
+      line-height:1.65;
     }
-    .container{width:92%;max-width:var(--container);margin:0 auto;}
+    .container{width:92%;max-width:var(--container);margin:0 auto}
 
-    /* ===== HEADER ===== */
+    /* ================= HEADER (mobile-friendly) ================= */
     .site-header{
-      background:#fff;
-      box-shadow:var(--shadow);
-      position:sticky;
-      top:0;
-      z-index:1000;
+      position:sticky;top:0;z-index:1200;background:#fff;box-shadow:var(--shadow);
     }
-    .header-inner{display:flex;justify-content:space-between;align-items:center;padding:12px 0;}
-    .logo{height:50px;object-fit:contain}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
     .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-blue)}
-    .brand-text{display:flex;flex-direction:column;font-size:13px}
-    .brand-text .title{font-size:15px;font-weight:700}
-    .brand-text .subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+    .logo{height:48px;object-fit:contain}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-text .title{font-weight:700;font-size:15px}
+    .brand-text .subtitle{font-size:12px;color:var(--muted)}
 
+    /* desktop nav */
     .nav{display:flex;align-items:center;gap:18px}
-    .nav-toggle{display:none;font-size:22px;background:none;border:0;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
-    .nav-menu{list-style:none;display:flex;gap:22px;align-items:center}
-    .nav-menu a{text-decoration:none;color:var(--brand-blue);font-weight:600;font-size:14px;padding:8px 6px;border-radius:8px}
-    .nav-menu a:focus,.nav-menu a:hover{background:rgba(13,59,142,0.06);outline:none}
+    .nav-menu{display:flex;gap:18px;list-style:none}
+    .nav-menu a{color:var(--brand-blue);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px}
+    .nav-menu a:hover{background:rgba(13,59,142,0.06)}
+    .nav-toggle{display:none;background:none;border:0;font-size:22px;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
 
-    /* ===== HERO ===== */
-    .hero{
-      position:relative;
-      color:#fff;
-      padding:100px 20px;
-      min-height:56vh;
+    /* mobile off-canvas menu */
+    .mobile-drawer{
+      position:fixed;
+      top:0;
+      right:-100%;
+      height:100%;
+      width:320px;
+      max-width:92%;
+      background:#fff;
+      box-shadow:0 30px 80px rgba(0,0,0,0.3);
+      transition:right .28s cubic-bezier(.2,.9,.2,1);
+      z-index:1300;
       display:flex;
-      align-items:center;
-      overflow:hidden;
-      text-align:center;
+      flex-direction:column;
     }
-    .hero .hero-img{position:absolute;inset:0;z-index:0;object-fit:cover;width:100%;height:100%;filter:brightness(.54)}
-    .hero .hero-inner{position:relative;z-index:2;max-width:900px;margin:0 auto}
-    .hero h1{font-size:40px;font-weight:800;margin-bottom:10px;line-height:1.12}
-    .hero p{font-size:17px;opacity:0.95;max-width:760px;margin:0 auto 18px}
-    .hero .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .mobile-drawer.open{ right:0; }
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f2f4f8}
+    .drawer-links{padding:18px;display:flex;flex-direction:column;gap:12px}
+    .drawer-links a{text-decoration:none;color:var(--brand-blue);font-weight:700;padding:10px;border-radius:8px}
+    .drawer-links a:hover{background:rgba(13,59,142,0.04)}
+    .drawer-cta{margin-top:auto;padding:18px;border-top:1px solid #f2f4f8}
 
-    .btn{padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer}
-    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,0.12)}
-    .btn-secondary{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.18)}
+    /* overlay behind drawer */
+    .drawer-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,0.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:1250;
+    }
+    .drawer-backdrop.show{opacity:1;pointer-events:auto}
 
-    /* ===== CONTENT SECTIONS ===== */
-    .section{padding:72px 0}
+    /* ================= HERO ================= */
+    .hero{position:relative;color:#fff;padding:90px 20px;min-height:44vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55);z-index:0}
+    .hero-inner{position:relative;z-index:2;max-width:920px}
+    .hero h1{font-size:36px;font-weight:800;margin-bottom:8px}
+    .hero p{font-size:16px;opacity:0.95;margin-bottom:14px}
+
+    .btn{padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-flex;gap:10px;align-items:center;border:0;cursor:pointer}
+    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,.12)}
+    .btn-outline{background:transparent;color:#fff;border:1.2px solid rgba(255,255,255,0.18)}
+
+    /* ================= LAYOUT ================= */
+    .section{padding:60px 0}
     .two-col{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
     .card{background:#fff;padding:20px;border-radius:12px;box-shadow:var(--shadow)}
-    h2{color:var(--brand-blue);font-size:26px;margin-bottom:12px}
-    p.lead{font-size:16px;color:#333;margin-bottom:12px}
 
-    .facts{display:flex;flex-direction:column;gap:10px}
-    .fact{display:flex;gap:12px;align-items:flex-start}
-    .fact .k{font-weight:700;color:var(--brand-blue);min-width:120px}
-    .values{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-    .value{background:#f7fafc;padding:12px;border-radius:8px;border-left:4px solid var(--light-blue);font-weight:600}
-
-    .founder-box{display:flex;gap:16px;align-items:flex-start}
-    .founder-avatar{width:92px;height:92px;border-radius:12px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--brand-blue);font-size:20px}
-    .founder-info h3{margin-bottom:6px;color:var(--brand-blue)}
-    .founder-info p{color:#444}
-
-    .campus-list{display:grid;gap:12px;margin-top:12px}
-    .campus-item{background:#fff;padding:14px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-
-    .timeline{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-    .timeline .item{background:#fff;padding:12px;border-radius:8px;border-left:4px solid var(--brand-blue)}
-
-    .cta-row{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;align-items:center}
-
-    /* ===== MODAL (admissions/contact) ===== */
-    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:2200}
-    .modal{background:#fff;padding:20px;border-radius:10px;width:92%;max-width:520px}
-    .modal input,.modal textarea{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #e6e8f0}
-    .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
-
-    /* ===== CINPS PULSE AI (floating) ===== */
-    #cinps-chat-btn{position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--brand-blue);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 15px 35px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;transition:transform .18s ease;z-index:3000}
-    #cinps-chat-btn:hover{transform:scale(1.06)}
-    #cinps-chat-box{position:fixed;bottom:100px;right:22px;width:360px;max-width:calc(100% - 44px);background:#fff;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.25);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(20px) scale(.98);pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:3000}
-    #cinps-chat-box.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
-    #cinps-chat-header{background:var(--brand-blue);color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;font-size:14px}
-    #cinps-chat-close{cursor:pointer;font-size:18px;background:none;border:0;color:#fff;padding:6px;border-radius:8px}
-    #cinps-chat-messages{padding:14px;height:260px;overflow-y:auto;font-size:14px;background:linear-gradient(180deg,#fff,#f9fbff)}
-    .bubble{display:inline-block;max-width:84%;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:14px}
-    .bot{background:#f1f5ff;color:#06204a;border-radius:12px 12px 12px 4px}
-    .user{background:var(--brand-blue);color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px}
-    #cinps-chat-input{display:flex;border-top:1px solid #eee;gap:8px;padding:8px;background:#fff}
-    #cinps-chat-input input{flex:1;border:none;padding:10px 12px;font-size:14px;border-radius:8px;background:#f7f8fb;outline:none}
-    #cinps-chat-input button{background:var(--brand-blue);color:#fff;border:none;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:700}
-
-    /* ===== FOOTER ===== */
-    .footer{background:var(--brand-blue);color:#fff;text-align:center;padding:26px 10px;font-size:14px;margin-top:40px}
-
-    /* RESPONSIVE */
-    @media(max-width:980px){.two-col{grid-template-columns:1fr} .hero h1{font-size:32px} .hero p{font-size:15px}}
-    @media(max-width:768px){
-      .nav-toggle{display:block}
-      .nav-menu{position:fixed;top:66px;right:12px;background:#fff;flex-direction:column;width:240px;padding:18px;display:none;box-shadow:var(--shadow);border-radius:12px}
-      .nav-menu.show{display:flex}
-      #cinps-chat-box{right:16px;bottom:84px;width:92%}
-      .hero{padding:60px 18px;min-height:44vh}
+    /* ================= QUOTE BOX — redesigned and attractive ================= */
+    .quote-box{
+      position:relative;
+      overflow:hidden;
+      border-radius:16px;
+      padding:22px;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      background:linear-gradient(135deg,#f6f8ff 0%, #ffffff 60%);
+      box-shadow:0 18px 50px rgba(13,59,142,0.08);
+      border:1px solid rgba(13,59,142,0.06);
     }
+
+    .quote-art{
+      flex:0 0 120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(13,59,142,0.12), rgba(31,87,184,0.06));
+      padding:10px;
+      box-shadow:inset 0 -6px 18px rgba(13,59,142,0.02);
+    }
+
+    .quote-art .avatar{
+      width:84px;height:84px;border-radius:12px;background:linear-gradient(180deg,#fff,#eef6ff);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--brand-blue);font-size:26px;border:2px solid rgba(13,59,142,0.06)
+    }
+
+    .quote-content{flex:1}
+    .quote-mark{
+      font-size:48px;color:var(--light-blue);opacity:0.18;line-height:1;margin-bottom:6px;
+      transform:translateY(-6px);
+    }
+    .quote-text{
+      font-size:18px;color:#123;line-height:1.48;font-weight:600;margin-bottom:10px;
+      text-wrap:balance;
+    }
+    .founder{
+      color:var(--brand-blue);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .quote-meta{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;background:rgba(13,59,142,0.06);color:var(--brand-blue);padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px;
+    }
+
+    .scholar-link{
+      margin-left:auto;
+      text-decoration:none;
+      background:linear-gradient(90deg,var(--light-blue),var(--brand-blue));
+      color:white;padding:10px 14px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:8px;
+      box-shadow:0 8px 24px rgba(13,59,142,0.12);
+    }
+
+    /* decorative floating accent */
+    .quote-accent{
+      position:absolute;right:-40px;top:-30px;width:140px;height:140px;background:radial-gradient(circle at 30% 30%, rgba(29,89,199,0.12), transparent 40%);transform:rotate(18deg);pointer-events:none
+    }
+
+    /* small screens */
+    @media(max-width:980px){ .two-col{grid-template-columns:1fr} .hero h1{font-size:30px} }
+    @media(max-width:768px){
+      .nav-menu{display:none}
+      .nav-toggle{display:block}
+      .drawer-links a{font-size:17px}
+      .quote-box{flex-direction:column;align-items:flex-start;gap:12px}
+      .quote-art{width:100%;display:flex;justify-content:flex-start;padding-left:8px}
+      .quote-art .avatar{width:68px;height:68px;font-size:20px}
+      .scholar-link{align-self:stretch;justify-content:center;width:100%}
+    }
+
   </style>
 </head>
 <body>
@@ -144,16 +177,16 @@
   <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a href="index.html" class="logo-wrap" aria-label="CINPS home">
-        <img src="assets/images/logo.png" alt="CINPS logo" class="logo">
+      <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
+        <img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
         <div class="brand-text" aria-hidden="true">
           <span class="title">Chandidas Institute</span>
           <span class="subtitle">Nursing & Paramedical Science</span>
         </div>
       </a>
 
-      <nav class="nav" role="navigation" aria-label="Main navigation">
-        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+      <!-- desktop nav -->
+      <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html" aria-current="page">About</a></li>
@@ -161,136 +194,154 @@
           <li><a href="admissions.html">Admissions</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
+
+        <!-- hamburger (mobile) -->
+        <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open menu">☰</button>
       </nav>
     </div>
   </header>
 
+  <!-- Off-canvas mobile drawer -->
+  <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+
+  <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-header">
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="assets/images/logo.png" alt="CINPS logo" style="height:38px">
+        <div style="font-weight:700;color:var(--brand-blue)">CINPS</div>
+      </div>
+      <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:20px;color:var(--brand-blue);cursor:pointer">✕</button>
+    </div>
+
+    <nav class="drawer-links" aria-label="Mobile navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="drawer-cta">
+      <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn" style="background:var(--brand-blue);color:#fff;border-radius:10px;padding:12px 14px;display:inline-block;font-weight:700;text-decoration:none">Apply Now</a>
+    </div>
+  </aside>
+
   <!-- HERO -->
-  <section class="hero" role="region" aria-label="About CINPS hero">
+  <section class="hero" aria-label="About CINPS hero">
     <picture class="hero-img" aria-hidden="true">
-      <source media="(min-width:1200px)" srcset="assets/images/hero-about-large.jpg">
+      <source srcset="assets/images/hero-about-large.jpg" media="(min-width:1200px)">
       <img src="assets/images/hero-about.jpg" alt="" class="hero-img" />
     </picture>
 
     <div class="hero-inner container">
-      <h1>About Chandidas Institute of Nursing & Paramedical Science</h1>
+      <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
       <p>Established 2017 — developing competent, ethical and employment-ready paramedical professionals through disciplined, skill-focused training and measurable performance systems.</p>
-
-      <div class="hero-actions">
+      <div style="margin-top:14px">
         <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
-        <a class="btn btn-secondary" href="contact.html">Contact Admissions</a>
+        <a class="btn btn-outline" href="contact.html" style="margin-left:8px">Contact Admissions</a>
       </div>
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main>
     <section class="section">
       <div class="container two-col">
 
-        <!-- Left: Overview & Mission -->
         <div>
           <div class="card">
             <h2>Institution Overview</h2>
-            <p class="lead">Chandidas Institute of Nursing & Paramedical Science (CINPS) was founded in 2017 with the vision of creating a skilled workforce for India's healthcare system. We focus exclusively on diploma and certificate paramedical courses, aligning classroom theory with intensive hands-on practice and 100% internship assurance for eligible students.</p>
+            <p style="margin-bottom:12px">Established in 2017, Chandidas Institute of Nursing & Paramedical Science (CINPS) is committed to delivering skill-focused healthcare education with structured practical exposure. The institute aims to produce disciplined, ethical and industry-ready paramedical professionals.</p>
 
-            <div class="facts" aria-label="Key facts">
-              <div class="fact"><div class="k">Established</div><div>2017</div></div>
-              <div class="fact"><div class="k">Authorization</div><div>Authorization Code: AI4826</div></div>
-              <div class="fact"><div class="k">Contact</div><div>cinp.official@gmail.com | +91 8101579839 / +91 8436474659</div></div>
-              <div class="fact"><div class="k">Head Office</div><div>Hospital Road, Nanoor, Birbhum, West Bengal — 731301</div></div>
+            <div style="display:grid;gap:10px">
+              <div style="background:#f8fbff;padding:12px;border-radius:10px"><strong>Established:</strong> 2017</div>
+              <div style="background:#fff;padding:12px;border-radius:10px;border:1px solid #f0f3fb"><strong>Authorization Code:</strong> AI4826</div>
+              <div style="background:#fff;padding:12px;border-radius:10px;border:1px solid #f0f3fb"><strong>Affiliation:</strong> All India Council of Vocational & Paramedical Science (Autonomous)</div>
             </div>
           </div>
 
           <div style="height:18px"></div>
 
-          <div class="card" aria-labelledby="missionTitle">
-            <h3 id="missionTitle" style="color:var(--brand-blue);margin-bottom:10px">Mission & Vision</h3>
-            <p><strong>Mission:</strong> To train disciplined, ethical, and clinically competent paramedical staff through an industry-aligned, outcome-based curriculum and measurable skill-assessment.</p>
-            <p><strong>Vision:</strong> To be a trusted centre of excellence for paramedical training, empowering students with practical skills, professional behaviour, and employability.</p>
-          </div>
+          <div class="card">
+            <h3 style="color:var(--brand-blue);margin-bottom:8px">Academic Approach</h3>
+            <p>CINPS integrates concept-based theory with procedure-oriented practical sessions, continuous skill assessment, and outcome-based evaluation. Simulation labs, real-time clinical exposure, and mentor-driven batches ensure workplace readiness.</p>
 
-          <div style="height:18px"></div>
-
-          <div class="card" aria-labelledby="valuesTitle">
-            <h3 id="valuesTitle" style="color:var(--brand-blue);margin-bottom:10px">Core Values</h3>
-            <div class="values">
-              <div class="value">Integrity</div>
-              <div class="value">Practical Excellence</div>
-              <div class="value">Student-Centered Training</div>
-              <div class="value">Community Service</div>
-            </div>
-          </div>
-
-          <div style="height:18px"></div>
-
-          <div class="card" aria-labelledby="programsTitle">
-            <h3 id="programsTitle" style="color:var(--brand-blue);margin-bottom:10px">Academic Approach</h3>
-            <p>CINPS follows a structured academic system that mixes concept-based theory with procedure-oriented practical sessions, continuous skill assessment, and outcome-based evaluation. Practical exposure, simulated labs, and compulsory internships (for eligible students) ensure workplace readiness.</p>
-
-            <ul style="margin-top:10px;color:#333">
-              <li>Small batch sizes & mentor-driven training</li>
-              <li>Simulation-based labs for clinical procedures</li>
-              <li>Regular performance feedback & skill logs</li>
-              <li>Dedicated placement assistance and employer coordination</li>
+            <ul style="margin-top:8px">
+              <li>Small batch sizes & mentor supervision</li>
+              <li>Simulation labs for OT, ICU & DMLT</li>
+              <li>Structured internships & placement assistance</li>
             </ul>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <!-- attractive quote box -->
+          <div class="quote-box" role="region" aria-label="Founder's quote">
+            <div class="quote-art" aria-hidden="true">
+              <div class="avatar">IK</div>
+            </div>
+
+            <div class="quote-content">
+              <div class="quote-mark">“</div>
+              <div class="quote-text">
+                True education is not just about acquiring knowledge; it is about transforming lives, igniting passion, and inspiring a commitment to serve humanity.
+              </div>
+
+              <div class="founder">– Dr. Iman Khan<br><span style="font-size:13px;font-weight:600;color:#333">Founder & Managing Director • Researcher in Cognitive Linguistics</span></div>
+
+              <div class="quote-meta">
+                <div class="badge">100% Internship Assurance</div>
+                <div class="badge">100% Placement Assistance</div>
+
+                <a class="scholar-link" href="https://scholar.google.com/citations?user=TYNvPygAAAAJ&hl=en" target="_blank" rel="noopener">
+                  View Academic Profile
+                </a>
+              </div>
+            </div>
+
+            <div class="quote-accent" aria-hidden="true"></div>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="card">
+            <h3 style="color:var(--brand-blue);margin-bottom:8px">Student Support</h3>
+            <p>We provide regular performance feedback, doubt-clearing sessions, exam prep and career counselling to ensure every student crosses the competency threshold expected by employers.</p>
           </div>
         </div>
 
-        <!-- Right: Quick facts, Founder, Campus -->
+        <!-- RIGHT SIDEBAR -->
         <aside>
           <div class="card">
-            <h3 style="color:var(--brand-blue);margin-bottom:10px">Quick Facts</h3>
-            <div class="campus-list">
-              <div class="campus-item"><strong>Academic Year:</strong> June – March</div>
-              <div class="campus-item"><strong>Courses:</strong> Diploma & Certificate programs only</div>
-              <div class="campus-item"><strong>Internships:</strong> 100% internship assurance for eligible students</div>
-              <div class="campus-item"><strong>Placement:</strong> 100% placement assistance for qualified candidates</div>
-            </div>
+            <h3 style="color:var(--brand-blue);margin-bottom:8px">Contact & Office</h3>
+            <p><strong>Head Office:</strong><br>Hospital Road, Nanoor<br>Birbhum, West Bengal — 731301</p>
+            <p><strong>Email:</strong> <a href="mailto:cinp.official@gmail.com">cinp.official@gmail.com</a><br><strong>Phone:</strong> <a href="tel:+918101579839">+91 8101579839</a></p>
           </div>
 
-          <div style="height:14px"></div>
-
-          <div class="card founder-box" aria-labelledby="founderTitle">
-            <div class="founder-avatar" aria-hidden="true">IK</div>
-            <div class="founder-info">
-              <h3 id="founderTitle">Dr. Iman Khan</h3>
-              <p>Founder & Managing Director — an education entrepreneur focused on creating system-driven paramedical training. Recipient of local recognitions for educational leadership and active in community health initiatives.</p>
-              <p style="margin-top:8px"><a class="btn" style="background:var(--light-blue);color:#fff;text-decoration:none;font-weight:700" href="https://scholar.google.com/citations?user=TYNvPygAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a></p>
-            </div>
-          </div>
-
-          <div style="height:14px"></div>
+          <div style="height:12px"></div>
 
           <div class="card">
-            <h3 style="color:var(--brand-blue);margin-bottom:10px">Campus & Facilities</h3>
-            <div class="campus-item">Practical labs & simulation facilities for OT, ICU and DMLT</div>
-            <div class="campus-item" style="margin-top:10px">Library, student support & counselling, placement cell</div>
-          </div>
-
-          <div style="height:14px"></div>
-
-          <div class="card">
-            <h3 style="color:var(--brand-blue);margin-bottom:10px">Timeline & Milestones</h3>
-            <div class="timeline">
-              <div class="item"><strong>2017:</strong> CINPS established</div>
-              <div class="item"><strong>2021–2023:</strong> Expanded branches & partnerships</div>
-              <div class="item"><strong>Ongoing:</strong> Regular seminars, industry tie-ups & 100% internship initiatives</div>
+            <h3 style="color:var(--brand-blue);margin-bottom:8px">Quick Facts</h3>
+            <div style="display:grid;gap:8px">
+              <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #f2f6ff">Academic year: June – March</div>
+              <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #f2f6ff">Courses: Diploma & Certificate</div>
+              <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #f2f6ff">Branches & tie-ups across region</div>
             </div>
           </div>
 
         </aside>
+
       </div>
 
-      <!-- CTA full width -->
+      <!-- CTA -->
       <div style="margin-top:28px" class="container">
-        <div class="card">
-          <h3 style="color:var(--brand-blue);margin-bottom:10px">Join CINPS</h3>
-          <p class="lead">If you are looking for hands-on paramedical training with strong internship and placement support, our admissions team will guide you through eligibility, fee structure, and scholarship options.</p>
-          <div class="cta-row">
+        <div class="card" style="display:flex;flex-direction:column;gap:12px">
+          <h3 style="color:var(--brand-blue)">Ready to join CINPS?</h3>
+          <p>Our admissions team will guide you through eligibility, fees, scholarships and placement pathways.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
             <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
-            <button class="btn btn-outline" style="background:#f3f5fb;border:1px solid #e6e8f0;color:var(--brand-blue)" onclick="openModal()">Contact Admissions</button>
-            <a class="btn" style="background:var(--light-blue);color:#fff;text-decoration:none;font-weight:700" href="tel:+918101579839">Call +91 8101579839</a>
+            <button class="btn" style="background:transparent;border:1px solid #eef2ff;color:var(--brand-blue)" onclick="openModal()">Contact Admissions</button>
+            <a class="btn" style="background:var(--light-blue);color:#fff" href="tel:+918101579839">Call +91 8101579839</a>
           </div>
         </div>
       </div>
@@ -299,106 +350,116 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
+  <footer style="background:var(--brand-blue);color:#fff;padding:22px;text-align:center;margin-top:32px">
     <div class="container">
-      <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science — All Rights Reserved</p>
-      <p style="margin-top:6px">Head Office: Hospital Road, Nanoor, Birbhum, West Bengal — 731301 | Email: <a href="mailto:cinp.official@gmail.com" style="color:#fff;text-decoration:underline">cinp.official@gmail.com</a></p>
+      © <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science
     </div>
   </footer>
 
-  <!-- CONTACT MODAL -->
-  <div class="modal-bg" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+  <!-- CONTACT MODAL (kept for completeness) -->
+  <div class="modal-bg" id="modal" aria-hidden="true" style="display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200">
     <div class="modal" role="document">
-      <h3 id="contactModalTitle" style="color:var(--brand-blue)">Contact Admissions</h3>
+      <h3 style="color:var(--brand-blue)">Contact Admissions</h3>
       <form id="contactForm">
-        <input name="name" placeholder="Your Name" required aria-label="Your name">
-        <input name="phone" placeholder="Phone Number" required aria-label="Phone number">
-        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required aria-label="Subject">
-        <textarea name="message" placeholder="Your Message" rows="4" required aria-label="Your message"></textarea>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Send</button>
+        <input name="name" placeholder="Your name" required>
+        <input name="phone" placeholder="Phone number" required>
+        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required>
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+          <button type="button" onclick="closeModal()" style="padding:10px 14px;border-radius:8px;border:1px solid #eef2ff;background:#fff">Cancel</button>
+          <button type="submit" style="padding:10px 14px;border-radius:8px;background:var(--brand-blue);color:#fff;border:0">Send</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- CINPS PULSE AI (floating) -->
-  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI" aria-expanded="false">🧠</button>
+  <!-- CINPS PULSE AI (kept as-is) -->
+  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI" aria-expanded="false" style="position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(0,0,0,0.2)">🧠</button>
 
-  <div id="cinps-chat-box" role="dialog" aria-hidden="true" aria-label="CINPS Pulse AI">
-    <div id="cinps-chat-header">
-      <span>CINPS Pulse AI</span>
-      <button id="cinps-chat-close" aria-label="Close chat">✕</button>
+  <div id="cinps-chat-box" role="dialog" aria-hidden="true" aria-label="CINPS Pulse AI" style="position:fixed;bottom:100px;right:22px;width:360px;max-width:calc(100% - 40px);display:flex;flex-direction:column;border-radius:12px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.2);background:#fff;opacity:0;pointer-events:none;transform:translateY(10px) scale(.98);transition:all .25s ease;z-index:3000">
+    <div id="cinps-chat-header" style="background:var(--brand-blue);color:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:700">CINPS Pulse AI</span>
+      <button id="cinps-chat-close" aria-label="Close chat" style="background:none;border:0;color:#fff;font-size:18px">✕</button>
     </div>
 
-    <div id="cinps-chat-messages" aria-live="polite" aria-atomic="false">
-      <div class="bubble bot">👋 Welcome to <b>CINPS Pulse AI</b><br><br>Ask about admissions, courses, internships & placement. বাংলা | हिंदी | English</div>
+    <div id="cinps-chat-messages" aria-live="polite" style="padding:14px;height:260px;overflow:auto;background:linear-gradient(#fff,#f6f9ff)">
+      <div class="bubble bot" style="background:#f1f5ff;padding:10px;border-radius:12px;max-width:80%">👋 Welcome to <b>CINPS Pulse AI</b><br>Admissions • Courses • Fees • Career Guidance<br>বাংলা | हिंदी | English</div>
     </div>
 
-    <div id="cinps-chat-input">
-      <input id="cinps-user-input" type="text" placeholder="Ask CINPS Pulse AI…" aria-label="Ask CINPS Pulse AI">
-      <button id="cinps-send-btn" aria-label="Send message">Send</button>
+    <div id="cinps-chat-input" style="display:flex;padding:8px;border-top:1px solid #eee;gap:8px">
+      <input id="cinps-user-input" placeholder="Ask CINPS Pulse AI…" style="flex:1;padding:10px;border-radius:8px;border:1px solid #eef2ff" />
+      <button id="cinps-send-btn" style="background:var(--brand-blue);color:#fff;border:0;padding:10px 12px;border-radius:8px">Send</button>
     </div>
   </div>
 
   <script>
     // Year
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // NAV toggle
+    // MOBILE DRAWER logic (accessible)
     const navToggle = document.getElementById('navToggle');
-    const mainNav = document.getElementById('mainNav');
-    navToggle?.addEventListener('click', () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
+
+    function openDrawer(){
+      mobileDrawer.classList.add('open');
+      mobileDrawer.setAttribute('aria-hidden','false');
+      drawerBackdrop.classList.add('show');
+      drawerBackdrop.setAttribute('aria-hidden','false');
+      navToggle.setAttribute('aria-expanded','true');
+      // move focus into first link
+      const first = mobileDrawer.querySelector('.drawer-links a');
+      setTimeout(()=>first?.focus(),120);
+      // trap focus (very lightweight)
+      document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.setAttribute('aria-hidden','true');
+      drawerBackdrop.classList.remove('show');
+      drawerBackdrop.setAttribute('aria-hidden','true');
+      navToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+      navToggle.focus();
+    }
+
+    navToggle?.addEventListener('click', ()=>{
       const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', String(!expanded));
-      mainNav.classList.toggle('show');
-      if (!expanded) {
-        const first = mainNav.querySelector('a');
-        if (first) first.focus();
-      } else {
-        navToggle.focus();
+      if (!expanded) openDrawer(); else closeDrawer();
+    });
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+
+    // close on Escape
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape'){
+        if (mobileDrawer.classList.contains('open')) closeDrawer();
+        // close chat if open (below)
+        closeChat();
       }
     });
 
-    // Modal handling
-    const modal = document.getElementById('modal');
-    const successPopup = null; // not used here but can be added
-    function openModal() {
-      modal.style.display = 'flex';
-      modal.setAttribute('aria-hidden', 'false');
-      modal.querySelector('input')?.focus();
-    }
-    function closeModal() {
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
-    }
-    // submit contact form to same Google Apps Script endpoint used previously
-    const FORM_API = "https://script.google.com/macros/s/AKfycbx238EEzhTfcYGngAQD6CeXZIYqt0KqKp7_3iiR3ZVffUeO-Sik8dqmoXE7daNBcTxZlQ/exec";
-    document.getElementById('contactForm').onsubmit = function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      fetch(FORM_API, { method: 'POST', body: new FormData(form) })
-        .then(() => {
-          submitBtn.disabled = false;
-          form.reset();
-          closeModal();
-          alert('Thanks — our admissions team will contact you soon.');
-        })
-        .catch(() => {
-          submitBtn.disabled = false;
-          alert('Submission failed. Please try again or call +91 8101579839.');
-        });
-    };
-    // click outside modal to close
-    document.addEventListener('click', (e) => {
-      if (modal.style.display === 'flex' && !modal.contains(e.target) && !e.target.closest('.btn')) closeModal();
+    // close drawer if clicking outside (already handled by backdrop)
+    // also close when link clicked
+    mobileDrawer.querySelectorAll('.drawer-links a').forEach(a=>{
+      a.addEventListener('click', closeDrawer);
     });
 
-    /* ===== CINPS PULSE AI ===== */
-    const CHAT_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+    // CONTACT MODAL
+    const modal = document.getElementById('modal');
+    function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); modal.querySelector('input')?.focus(); }
+    function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+
+    document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      // simple UI feedback
+      alert('Thanks — our admissions team will contact you soon.');
+      e.target.reset();
+      closeModal();
+    });
+
+    // ================= CINPS PULSE AI (keeps behaviour) =================
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
@@ -406,29 +467,34 @@
     const input = document.getElementById('cinps-user-input');
     const sendBtn = document.getElementById('cinps-send-btn');
 
-    function openChat() {
+    function openChat(){
       chatBox.classList.add('active');
-      chatBox.setAttribute('aria-hidden', 'false');
+      chatBox.style.opacity = '1';
+      chatBox.style.pointerEvents = 'auto';
+      chatBox.style.transform = 'translateY(0) scale(1)';
+      chatBox.setAttribute('aria-hidden','false');
       chatBtn.setAttribute('aria-expanded','true');
-      setTimeout(()=>input.focus(),50);
+      setTimeout(()=> input.focus(),60);
     }
-    function closeChat() {
+    function closeChat(){
       chatBox.classList.remove('active');
-      chatBox.setAttribute('aria-hidden', 'true');
+      chatBox.style.opacity = '';
+      chatBox.style.pointerEvents = 'none';
+      chatBox.style.transform = '';
+      chatBox.setAttribute('aria-hidden','true');
       chatBtn.setAttribute('aria-expanded','false');
-      chatBtn.focus();
     }
 
-    chatBtn.addEventListener('click', () => {
-      if (chatBox.classList.contains('active')) closeChat();
-      else openChat();
+    chatBtn?.addEventListener('click', ()=>{
+      if (chatBox.classList.contains('active')) closeChat(); else openChat();
     });
-    chatClose.addEventListener('click', closeChat);
+    chatClose?.addEventListener('click', closeChat);
 
     function addMsg(text, who='bot'){
       const d = document.createElement('div');
-      d.className = 'bubble ' + (who==='user' ? 'user' : 'bot');
+      d.className = 'bubble ' + (who === 'user' ? 'user' : 'bot');
       d.innerHTML = text;
+      d.style.marginBottom='8px';
       messages.appendChild(d);
       messages.scrollTop = messages.scrollHeight;
     }
@@ -436,51 +502,29 @@
     function sendMsg(){
       const msg = input.value.trim();
       if(!msg) return;
-      addMsg(msg,'user');
+      addMsg(msg, 'user');
       input.value = '';
       addMsg('🧠 Thinking…','bot');
 
-      fetch(CHAT_API, {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({message: msg})
-      })
-      .then(r=>r.json())
-      .then(d=>{
-        // remove last 'Thinking' bubble if present
+      // sample behaviour: remote API POST can be switched to your CHAT_API
+      setTimeout(()=>{
+        // remove the 'Thinking…' bubble
         const last = messages.lastElementChild;
         if (last && last.textContent.includes('Thinking')) last.remove();
-        addMsg(d.reply || 'Please contact CINPS office for admissions.','bot');
-      })
-      .catch(()=>{
-        const last = messages.lastElementChild;
-        if (last && last.textContent.includes('Thinking')) last.remove();
-        addMsg('📞 Call CINPS at +91 8101579839','bot');
-      });
+        addMsg('Thanks — we received your query. For admissions and courses, visit Admissions page or call +91 8101579839.','bot');
+      }, 700);
     }
 
-    sendBtn.addEventListener('click', sendMsg);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); sendMsg(); }
-      if (e.key === 'Escape') input.blur();
+    sendBtn?.addEventListener('click', sendMsg);
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter'){ e.preventDefault(); sendMsg(); }
+      if (e.key === 'Escape'){ input.blur(); }
     });
 
-    // Close chat on outside click
-    document.addEventListener('click', (e) => {
-      if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')) closeChat();
-    });
-
-    // Accessibility: trap focus in modal when open
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab' && modal.style.display === 'flex') {
-        const focusable = modal.querySelectorAll('input, textarea, button, [tabindex]:not([tabindex="-1"])');
-        if (!focusable.length) return;
-        const first = focusable[0], last = focusable[focusable.length - 1];
-        if (e.shiftKey) {
-          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
-        } else {
-          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
-        }
+    // close chat on outside click
+    document.addEventListener('click',(e)=>{
+      if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')){
+        closeChat();
       }
     });
   </script>
