@@ -1,230 +1,409 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admissions | Chandidas Institute of Nursing & Paramedical Science</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Admissions open at Chandidas Institute of Nursing and Paramedical Science. Learn about eligibility, selection process, counseling, and seat confirmation.">
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="utf-8" />
+  <title>Admissions | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Admissions open at CINPS. Learn about eligibility, selection process, counseling, and seat confirmation for paramedical courses.">
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.ico">
 
-    <style>
-        /* Page-specific polish */
-        .hero-admission{
-            background: linear-gradient(180deg, #ffffff, #eef3ff);
-            padding: 50px 0;
-        }
-        .hero-admission h1{
-            color:#004aad;
-            margin-bottom:8px;
-        }
-        .hero-admission p{
-            max-width:800px;
-            color:#444;
-        }
+  <style>
+    /* ================= THEME (MATCHING OTHER PAGES) ================= */
+    :root{
+      --brand-blue:#0d3b8e;
+      --light-blue:#1f57b8;
+      --muted:#6b7280;
+      --shadow:0 10px 30px rgba(13,59,142,0.08);
+      --radius:14px;
+      --container:1100px;
+    }
 
-        .admission-grid{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:24px;
-            margin-top:40px;
-        }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#fff;
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.65;
+    }
+    .container{width:92%;max-width:var(--container);margin:0 auto}
 
-        .admission-card{
-            background:#fff;
-            padding:24px;
-            border-radius:12px;
-            box-shadow:0 8px 22px rgba(0,0,0,0.05);
-        }
+    /* ================= HEADER ================= */
+    .site-header{
+      position:sticky;top:0;z-index:1200;background:#fff;box-shadow:var(--shadow);
+    }
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-blue)}
+    .logo{height:48px;object-fit:contain}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-text .title{font-weight:700;font-size:15px;line-height:1.2;}
+    .brand-text .subtitle{font-size:12px;color:var(--muted)}
 
-        .admission-card h3{
-            color:#004aad;
-            margin-bottom:10px;
-        }
+    /* Desktop Nav */
+    .nav{display:flex;align-items:center;gap:18px}
+    .nav-menu{display:flex;gap:18px;list-style:none}
+    .nav-menu a{color:var(--brand-blue);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:background 0.2s}
+    .nav-menu a:hover{background:rgba(13,59,142,0.06)}
+    .nav-toggle{display:none;background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
 
-        .admission-card ul,
-        .admission-card ol{
-            margin-left:18px;
-        }
+    /* Mobile Drawer */
+    .mobile-drawer{
+      position:fixed;top:0;right:-100%;height:100%;width:320px;max-width:92%;
+      background:#fff;box-shadow:0 30px 80px rgba(0,0,0,0.28);
+      transition:right .28s cubic-bezier(.2,.9,.2,1);z-index:1300;
+      display:flex;flex-direction:column;
+    }
+    .mobile-drawer.open{right:0;}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #f2f4f8}
+    .drawer-links{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .drawer-links a{text-decoration:none;color:var(--brand-blue);font-weight:700;padding:12px;border-radius:8px;font-size:16px;}
+    .drawer-links a:hover{background:rgba(13,59,142,0.04)}
+    .drawer-cta{margin-top:auto;padding:20px;border-top:1px solid #f2f4f8}
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:1250;}
+    .drawer-backdrop.show{opacity:1;pointer-events:auto}
 
-        .note-box{
-            background:#f9fbff;
-            border-left:4px solid #004aad;
-            padding:18px;
-            margin-top:40px;
-            border-radius:8px;
-        }
+    /* ================= HERO ================= */
+    .hero{
+      position:relative;color:#fff;padding:110px 20px;min-height:55vh;
+      display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+    }
+    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45);z-index:0}
+    .hero-inner{position:relative;z-index:2;max-width:920px}
+    .hero h1{font-size:42px;font-weight:800;margin-bottom:16px;line-height:1.2;text-shadow:0 6px 18px rgba(0,0,0,0.3);}
+    .hero p{font-size:18px;opacity:0.95;margin-bottom:28px;max-width:700px;margin-left:auto;margin-right:auto;}
+    
+    .btn{padding:12px 24px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-flex;justify-content:center;gap:10px;align-items:center;border:0;cursor:pointer;font-size:15px;transition:transform 0.2s}
+    .btn:active{transform:scale(0.98)}
+    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,.12)}
+    .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4)}
+    .btn-blue{background:var(--brand-blue);color:#fff;box-shadow:0 8px 24px rgba(13,59,142,.15)}
 
-        .cta-box{
-            background:#004aad;
-            color:#fff;
-            padding:30px;
-            border-radius:14px;
-            text-align:center;
-            margin-top:40px;
-        }
+    /* ================= SECTIONS & CARDS ================= */
+    .section{padding:70px 0}
+    
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+    
+    .content-card{
+      background:#fff;padding:28px;border-radius:16px;box-shadow:var(--shadow);border:1px solid #f2f6ff;
+    }
+    
+    .step-card{
+      background:#fff;padding:24px;border-radius:14px;box-shadow:var(--shadow);border:1px solid #f2f6ff;
+      height: 100%; transition: transform 0.2s;
+    }
+    .step-card:hover{ transform: translateY(-3px); }
 
-        .cta-box a{
-            display:inline-block;
-            margin-top:14px;
-            background:#fff;
-            color:#004aad;
-            padding:12px 20px;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:600;
-        }
+    h2{color:var(--brand-blue);margin-bottom:20px;font-size:28px;font-weight:800;}
+    h3{color:var(--brand-blue);margin-bottom:12px;font-size:18px;font-weight:700;}
+    
+    .features{list-style:none;padding:0;margin-top:10px}
+    .features li{
+      position:relative;padding-left:30px;margin-bottom:12px;font-size:15px;color:#444;line-height:1.6;
+    }
+    .features li::before{
+      content:"✔";position:absolute;left:0;top:2px;
+      width:22px;height:22px;background:rgba(13,59,142,0.1);
+      color:var(--brand-blue);border-radius:50%;font-size:11px;
+      display:flex;align-items:center;justify-content:center;font-weight:800;
+    }
 
-        @media(max-width:900px){
-            .admission-grid{
-                grid-template-columns:1fr;
-            }
-        }
-    </style>
+    /* Note Box */
+    .note-box{
+      background:#f9fbff;border-left:5px solid var(--brand-blue);padding:20px;border-radius:8px;margin-top:30px;
+    }
+
+    /* CTA Box */
+    .cta-section{
+      background:var(--brand-blue);color:#fff;padding:40px;border-radius:16px;text-align:center;margin-top:40px;
+    }
+
+    /* ================= MODAL & CHAT ================= */
+    .modal-bg{display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200;padding:16px;}
+    .modal{background:#fff;padding:28px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,0.2);}
+    .modal input, .modal textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:10px;font-size:16px;outline:none;}
+    .modal input:focus, .modal textarea:focus{border-color:var(--brand-blue);}
+
+    #cinps-chat-btn{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(13,59,142,0.3);font-size:28px;cursor:pointer;transition:transform 0.2s}
+    #cinps-chat-btn:hover{transform:scale(1.05)}
+    #cinps-chat-box{position:fixed;bottom:100px;right:24px;width:360px;max-width:calc(100% - 48px);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.2);background:#fff;opacity:0;pointer-events:none;transform:translateY(20px) scale(.98);transition:all .3s cubic-bezier(0.2,0.8,0.2,1);z-index:3000}
+    #cinps-chat-box.active{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+
+    /* ================= RESPONSIVE ================= */
+    @media(max-width:980px){ 
+      .grid-2{grid-template-columns:1fr} 
+      .hero h1{font-size:32px}
+    }
+    @media(max-width:768px){
+      /* Header & Nav */
+      .nav-menu{display:none} .nav-toggle{display:block} .logo{height:40px}
+      /* Hero */
+      .hero{padding:60px 16px;min-height:auto}
+      .hero h1{font-size:28px} .hero p{font-size:15px}
+      /* Layout */
+      .section{padding:40px 0}
+      .content-card, .step-card{padding:20px}
+      /* Chat */
+      #cinps-chat-btn{bottom:20px;right:20px;width:56px;height:56px;font-size:24px}
+      #cinps-chat-box{bottom:85px;right:16px;left:16px;width:auto;max-width:none}
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- ===== HEADER ===== -->
-<header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container header-inner">
+      <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
+        <img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
+        <div class="brand-text" aria-hidden="true">
+          <span class="title">Chandidas Institute</span>
+          <span class="subtitle">Nursing & Paramedical Science</span>
+        </div>
+      </a>
 
-        <!-- LOGO -->
-        <div class="brand">
-            <a href="index.html">
-                <img src="assets/images/logo.png"
-                     alt="Chandidas Institute of Nursing & Paramedical Science Logo">
-            </a>
+      <nav class="nav" role="navigation" aria-label="Primary navigation">
+        <ul class="nav-menu" id="mainNav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="admissions.html" aria-current="page">Admissions</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-header">
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="assets/images/logo.png" alt="CINPS logo" style="height:36px">
+        <div style="font-weight:700;color:var(--brand-blue);line-height:1.2">CINPS</div>
+      </div>
+      <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer">✕</button>
+    </div>
+    <nav class="drawer-links" aria-label="Mobile navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="admissions.html" aria-current="page">Admissions</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="drawer-cta">
+      <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn btn-blue" style="width:100%">Apply Now</a>
+    </div>
+  </aside>
+
+  <section class="hero" aria-label="Admissions Open">
+    <img src="https://cinps-org.github.io/assets/images/admissions%20Banneriii.jpg" alt="Admissions Banner" class="hero-img" />
+    <div class="hero-inner container">
+      <h1>Admissions Open</h1>
+      <p>Begin your journey toward a respected healthcare career. Limited seats available for the upcoming academic session.</p>
+      <div style="margin-top:10px">
+        <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
+        <button onclick="openModal()" class="btn btn-outline" style="margin-left:8px;">Contact Us</button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        
+        <div class="content-card" style="margin-bottom:40px; text-align:center;">
+          <h2>Welcome to CINPS Admissions</h2>
+          <p style="color:#555; max-width:800px; margin:0 auto;">
+            We invite motivated learners who aspire to build a meaningful and stable career in the healthcare sector. Admissions are granted through a transparent and merit-focused process to ensure focused training and personalized mentorship.
+          </p>
         </div>
 
-        <!-- NAVIGATION -->
-        <nav class="nav">
-            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="courses.html">Courses</a></li>
-                <li><a href="admissions.html" class="active">Admissions</a></li>
-                <li><a href="contact.html">Contact</a></li>
+        <h2 style="text-align:center; margin-bottom:30px;">Selection Process</h2>
+        <div class="grid-2">
+          
+          <div class="step-card">
+            <h3>1. Eligibility Assessment</h3>
+            <ul class="features">
+              <li>Candidates must meet the minimum educational qualification specified for the chosen course.</li>
+              <li>Eligibility varies by program (10th / 10+2 with Science or Arts, as applicable).</li>
             </ul>
-        </nav>
+          </div>
 
-    </div>
-</header>
+          <div class="step-card">
+            <h3>2. Application & Verification</h3>
+            <ul class="features">
+              <li>Submission of completed application form.</li>
+              <li>Verification of academic certificates, identity proof, and photographs.</li>
+              <li>Review of prior medical experience (if applicable).</li>
+            </ul>
+          </div>
 
-<!-- ===== HERO SECTION ===== -->
-<section class="hero-admission">
-    <div class="container">
-        <h1>🎓 Admissions Open</h1>
-        <p><strong>Begin your journey toward a respected healthcare career</strong></p>
+          <div class="step-card">
+            <h3>3. Counseling & Guidance</h3>
+            <ul class="features">
+              <li>One-to-one counseling to explain course structure, clinical training, and internships.</li>
+              <li>Parents and guardians are welcome to participate.</li>
+            </ul>
+          </div>
 
-        <p>
-            Admissions are now open at <strong>Chandidas Institute of Nursing and Paramedical Science</strong>
-            for the upcoming academic session. Seats are strictly limited to ensure focused training,
-            personalized mentorship, and high-quality practical exposure for every student.
-        </p>
-
-        <p>
-            We invite motivated learners who aspire to build a meaningful and stable career in the
-            healthcare sector to apply early and secure their place.
-        </p>
-    </div>
-</section>
-
-<!-- ===== SELECTION PROCESS ===== -->
-<section class="section">
-    <div class="container">
-
-        <h2>🔍 Selection Process</h2>
-        <p>
-            Admission is granted through a transparent and merit-focused process,
-            designed to maintain academic standards and professional integrity.
-        </p>
-
-        <div class="admission-grid">
-
-            <div class="admission-card">
-                <h3>1. Eligibility Assessment</h3>
-                <ul>
-                    <li>Candidates must meet the minimum educational qualification specified for the chosen course.</li>
-                    <li>Eligibility varies by program (10th / 10+2 with Science or Arts, as applicable).</li>
-                </ul>
-            </div>
-
-            <div class="admission-card">
-                <h3>2. Application & Document Verification</h3>
-                <ul>
-                    <li>Submission of completed application form.</li>
-                    <li>Verification of academic certificates, identity proof, photographs, and required documents.</li>
-                    <li>Prior medical or healthcare experience (if applicable) is given due consideration.</li>
-                </ul>
-            </div>
-
-            <div class="admission-card">
-                <h3>3. Counseling & Career Guidance</h3>
-                <ul>
-                    <li>One-to-one counseling to explain course structure, clinical training, and internships.</li>
-                    <li>Parents and guardians are welcome to participate in the counseling process.</li>
-                </ul>
-            </div>
-
-            <div class="admission-card">
-                <h3>4. Seat Allotment & Confirmation</h3>
-                <ul>
-                    <li>Seats allotted based on eligibility, document verification, and availability.</li>
-                    <li>Admission confirmed after completion of formalities and payment of prescribed fees.</li>
-                    <li>Official admission confirmation and receipt are issued for transparency.</li>
-                </ul>
-            </div>
+          <div class="step-card">
+            <h3>4. Seat Allotment</h3>
+            <ul class="features">
+              <li>Seats allotted based on eligibility and availability.</li>
+              <li>Admission confirmed after completion of formalities and fee payment.</li>
+              <li>Official admission confirmation receipt issued.</li>
+            </ul>
+          </div>
 
         </div>
 
-        <!-- WHY APPLY EARLY -->
-        <div class="admission-card" style="margin-top:40px;">
+        <div class="grid-2" style="margin-top:40px;">
+          <div class="content-card" style="background:#f9fbff;">
             <h3>⭐ Why Apply Early?</h3>
-            <ul>
-                <li>Limited seats for quality-focused batches</li>
-                <li>Priority access to preferred courses</li>
-                <li>Early academic orientation and guidance</li>
-                <li>Better planning for internships and career pathways</li>
+            <ul class="features">
+              <li>Limited seats for quality-focused batches</li>
+              <li>Priority access to preferred courses</li>
+              <li>Early academic orientation</li>
+              <li>Better planning for internships</li>
             </ul>
-        </div>
+          </div>
 
-        <!-- IMPORTANT NOTE -->
-        <div class="note-box">
+          <div class="content-card">
             <h3>📌 Important Note</h3>
-            <p>
-                Admission at <strong>Chandidas Institute of Nursing and Paramedical Science</strong>
-                is conducted in a fair, ethical, and student-centric manner.
-                We do not encourage shortcuts—only genuine eligibility, commitment,
-                and passion for healthcare.
+            <p style="color:#444; line-height:1.6; margin-bottom:12px;">
+              Admission at <strong>Chandidas Institute of Nursing and Paramedical Science</strong> is conducted in a fair, ethical, and student-centric manner. We do not encourage shortcuts—only genuine eligibility, commitment, and passion for healthcare.
             </p>
+          </div>
         </div>
 
-        <!-- CTA -->
-<div class="cta-box">
-    <h2>Take the first confident step toward a future in healthcare</h2>
-    <p>Apply early. Train professionally. Serve with purpose.</p>
-    <a href="https://cinps-org.github.io/admission-form.html" target="_blank">
-        Apply Now
-    </a>
-</div>
+        <div class="cta-section">
+          <h2 style="color:#fff; margin-bottom:12px;">Take the first step toward your future</h2>
+          <p style="opacity:0.9; margin-bottom:24px; font-size:16px;">Apply early. Train professionally. Serve with purpose.</p>
+          <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn btn-primary">Apply Now</a>
+        </div>
 
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:var(--brand-blue);color:#fff;padding:24px;text-align:center;margin-top:20px">
+    <div class="container" style="font-size: 14px; opacity: 0.9;">
+      © <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science
     </div>
-</section>
+  </footer>
 
-<!-- ===== FOOTER ===== -->
-<footer class="footer">
-    <div class="container">
-        <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
+  <div class="modal-bg" id="modal" aria-hidden="true">
+    <div class="modal" role="document">
+      <h3 style="color:var(--brand-blue); margin-bottom: 8px;">Contact Admissions</h3>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;">We'll get back to you shortly.</p>
+      <form id="contactForm">
+        <input name="name" placeholder="Your name" required>
+        <input name="phone" placeholder="Phone number" type="tel" required>
+        <input name="subject" placeholder="Subject (e.g., Application status)" required>
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+        
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+          <button type="button" class="btn" onclick="closeModal()" style="background:#f4f7fb; color:#333; padding:10px 18px;">Cancel</button>
+          <button type="submit" class="btn btn-blue" style="padding:10px 24px;">Send</button>
+        </div>
+      </form>
     </div>
-</footer>
+  </div>
 
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-document.querySelector('.nav-toggle').onclick = function () {
-    document.querySelector('.nav-menu').classList.toggle('show');
-};
-</script>
+  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI">🧠</button>
+  <div id="cinps-chat-box" role="dialog" aria-hidden="true">
+    <div id="cinps-chat-header" style="background:var(--brand-blue);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:700">CINPS Pulse AI</span>
+      <button id="cinps-chat-close" style="background:none;border:0;color:#fff;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div id="cinps-chat-messages" style="padding:16px;height:300px;overflow:auto;background:linear-gradient(#fff,#f6f9ff)">
+      <div class="bubble bot" style="background:#f1f5ff;padding:12px;border-radius:12px;max-width:85%;font-size:14px;line-height:1.5;color:#333">👋 Hello! How can we help you with your admission process?</div>
+    </div>
+    <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff">
+      <input id="cinps-user-input" placeholder="Type a message..." style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;font-size:16px;outline:none" />
+      <button id="cinps-send-btn" style="background:var(--brand-blue);color:#fff;border:0;padding:0 16px;border-radius:10px;font-weight:600;cursor:pointer">Send</button>
+    </div>
+  </div>
 
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // MOBILE DRAWER
+    const navToggle = document.getElementById('navToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
+
+    function openDrawer(){
+      mobileDrawer.classList.add('open');
+      mobileDrawer.setAttribute('aria-hidden','false');
+      drawerBackdrop.classList.add('show');
+      drawerBackdrop.setAttribute('aria-hidden','false');
+      navToggle.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.setAttribute('aria-hidden','true');
+      drawerBackdrop.classList.remove('show');
+      drawerBackdrop.setAttribute('aria-hidden','true');
+      navToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+
+    navToggle?.addEventListener('click', ()=> navToggle.getAttribute('aria-expanded') === 'true' ? closeDrawer() : openDrawer());
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+    mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+    // MODAL
+    const modal = document.getElementById('modal');
+    function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault(); alert('Message sent! Our team will contact you soon.'); closeModal();
+    });
+
+    // CHATBOT
+    const chatBtn = document.getElementById('cinps-chat-btn');
+    const chatBox = document.getElementById('cinps-chat-box');
+    const chatClose = document.getElementById('cinps-chat-close');
+    const msgs = document.getElementById('cinps-chat-messages');
+    const input = document.getElementById('cinps-user-input');
+    const sendBtn = document.getElementById('cinps-send-btn');
+
+    function toggleChat(){
+      const isActive = chatBox.classList.contains('active');
+      isActive ? chatBox.classList.remove('active') : chatBox.classList.add('active');
+      chatBox.setAttribute('aria-hidden', isActive);
+    }
+    
+    function addMsg(txt, type='bot'){
+      const d = document.createElement('div');
+      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px';
+      if(type==='user'){ d.style.background='var(--brand-blue)'; d.style.color='#fff'; d.style.marginLeft='auto'; }
+      else{ d.style.background='#f1f5ff'; d.style.color='#333'; }
+      d.textContent = txt;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    chatBtn?.addEventListener('click', toggleChat);
+    chatClose?.addEventListener('click', toggleChat);
+    sendBtn?.addEventListener('click', ()=>{
+      const val = input.value.trim();
+      if(!val) return;
+      addMsg(val, 'user');
+      input.value='';
+      setTimeout(()=>addMsg('Thank you. Please call +91 8101579839 for urgent queries.'), 600);
+    });
+
+    // Global Close
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
+  </script>
 </body>
 </html>
