@@ -6,7 +6,6 @@
   <meta name="description" content="CINPS – Structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance.">
   <title>CINPS | Chandidas Institute of Nursing & Paramedical Science</title>
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -39,7 +38,7 @@
       margin:0 auto;
     }
 
-    a{color:inherit;}
+    a{color:inherit; text-decoration: none;}
     button{font-family:inherit;}
 
     /* ================= HEADER ================= */
@@ -56,16 +55,17 @@
       justify-content:space-between;
       align-items:center;
       padding:12px 0;
+      position: relative;
     }
 
-    .logo{height:50px;object-fit:contain;}
+    .logo{height:45px;object-fit:contain;}
 
     .logo-wrap{
       display:flex;
       align-items:center;
-      gap:12px;
-      text-decoration:none;
+      gap:10px;
       color:var(--brand-blue);
+      z-index: 1001; /* Keep logo above mobile menu if needed */
     }
 
     .brand-text{
@@ -77,12 +77,12 @@
     }
 
     .brand-text .title{font-size:15px;font-weight:700;}
-    .brand-text .subtitle{font-size:12px;color:var(--muted);margin-top:2px;}
+    .brand-text .subtitle{font-size:11px;color:var(--muted);margin-top:2px;}
 
+    /* Desktop Nav */
     .nav{
       display:flex;
       align-items:center;
-      gap:18px;
     }
 
     .nav-menu{
@@ -90,77 +90,91 @@
       display:flex;
       gap:22px;
       align-items:center;
+      margin: 0;
     }
 
     .nav-menu a{
-      text-decoration:none;
       color:var(--brand-blue);
       font-weight:600;
       font-size:14px;
-      padding:8px 6px;
+      padding:8px 12px;
       border-radius:8px;
+      transition: background 0.2s;
     }
     .nav-menu a:focus,
     .nav-menu a:hover{background:rgba(13,59,142,0.06);outline:none}
 
     .nav-toggle{
       display:none;
-      font-size:22px;
+      font-size:26px;
       background:none;
       border:none;
       cursor:pointer;
       padding:8px;
+      color: var(--brand-blue);
       border-radius:8px;
+      z-index: 1002;
     }
 
     /* ================= HERO ================= */
     .hero{
       background:
-      linear-gradient(rgba(13,59,142,0.45),rgba(13,59,142,0.45)),
+      linear-gradient(rgba(13,59,142,0.65),rgba(13,59,142,0.65)),
       url('assets/images/hero.jpg') center/cover no-repeat;
       color:#fff;
-      padding:110px 20px;
-      min-height:70vh;
+      padding:100px 20px;
+      min-height:60vh;
       display:flex;
       align-items:center;
+      text-align: center; /* Centered looks better on mobile usually */
+    }
+    
+    /* Ensure text alignment works for desktop too */
+    @media(min-width: 769px) {
+        .hero { text-align: left; }
     }
 
     .hero .container{max-width:900px;}
 
     .hero h1{
-      font-size:44px;
+      font-size:42px;
       font-weight:800;
-      margin-bottom:14px;
-      line-height:1.15;
+      margin-bottom:16px;
+      line-height:1.2;
       text-shadow:0 6px 18px rgba(0,0,0,0.25);
     }
 
     .hero p{
       font-size:18px;
-      margin-bottom:22px;
-      color:rgba(255,255,255,0.92);
+      margin-bottom:28px;
+      color:rgba(255,255,255,0.95);
       max-width:640px;
+      margin-left: auto; margin-right: auto; /* Center on mobile */
     }
+    @media(min-width: 769px) { .hero p { margin-left: 0; margin-right: 0; } }
 
     .hero-buttons{
       display:flex;
       gap:12px;
       flex-wrap:wrap;
+      justify-content: center; /* Center on mobile */
     }
+    @media(min-width: 769px) { .hero-buttons { justify-content: flex-start; } }
 
     .btn{
-      padding:12px 20px;
+      padding:12px 24px;
       border-radius:8px;
-      text-decoration:none;
       font-weight:700;
-      font-size:14px;
+      font-size:15px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:8px;
       cursor:pointer;
       border:0;
+      transition: transform 0.2s;
     }
+    .btn:active { transform: scale(0.98); }
 
     .btn-primary{
       background:#fff;
@@ -171,40 +185,43 @@
     .btn-secondary{
       background:transparent;
       color:#fff;
-      border:1.5px solid rgba(255,255,255,0.18);
+      border:1.5px solid rgba(255,255,255,0.4);
     }
 
     /* ================= SECTIONS ================= */
-    .section{padding:80px 0;background:#fff;}
-    .section.alt{background:#fbfbff;}
+    .section{padding:70px 0;background:#fff;}
+    .section.alt{background:#f9fbff;}
 
     .content-block{
       max-width:900px;
-      margin:0 auto 60px auto;
+      margin:0 auto 50px auto;
     }
+    .content-block:last-child { margin-bottom: 0; }
 
     .section h2{
       font-size:28px;
       font-weight:800;
       color:var(--brand-blue);
-      margin-bottom:18px;
+      margin-bottom:16px;
       position:relative;
+      line-height: 1.3;
     }
 
     .section h2::after{
       content:"";
       display:block;
       width:60px;
-      height:3px;
+      height:4px;
       background:var(--brand-blue);
-      margin-top:12px;
+      margin-top:10px;
+      border-radius: 2px;
     }
 
     .section h3{
-      font-size:18px;
+      font-size:20px;
       font-weight:700;
-      margin-top:18px;
-      margin-bottom:10px;
+      margin-top:24px;
+      margin-bottom:12px;
       color:#1e2a38;
     }
 
@@ -221,10 +238,10 @@
     }
 
     .features li{
-      font-size:15px;
-      line-height:1.9;
+      font-size:16px;
+      line-height:1.6;
       margin-bottom:12px;
-      padding-left:28px;
+      padding-left:32px;
       position:relative;
       color:#333;
     }
@@ -233,11 +250,15 @@
       content:"✔";
       position:absolute;
       left:0;
-      top:0;
+      top:2px;
       color:var(--light-blue);
       font-weight:bold;
-      font-size:14px;
+      font-size:16px;
       line-height:1;
+      background: rgba(31, 87, 184, 0.1);
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
     }
 
     /* ================= FOOTER ================= */
@@ -245,24 +266,24 @@
       background:var(--brand-blue);
       color:#fff;
       text-align:center;
-      padding:26px 10px;
+      padding:30px 10px;
       font-size:14px;
     }
 
     /* ================= CINPS PULSE AI CHAT ================= */
     #cinps-chat-btn{
       position:fixed;
-      bottom:22px;
-      right:22px;
+      bottom:24px;
+      right:24px;
       width:60px;
       height:60px;
       border-radius:50%;
       background:var(--brand-blue);
       color:#fff;
       border:none;
-      font-size:22px;
+      font-size:24px;
       cursor:pointer;
-      box-shadow:0 15px 35px rgba(0,0,0,0.25);
+      box-shadow:0 15px 35px rgba(13,59,142,0.25);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -275,12 +296,12 @@
     #cinps-chat-box{
       position:fixed;
       bottom:100px;
-      right:22px;
-      width:360px;
-      max-width:calc(100% - 44px);
+      right:24px;
+      width:350px;
+      max-width:calc(100% - 48px);
       background:#fff;
       border-radius:16px;
-      box-shadow:0 25px 60px rgba(0,0,0,0.25);
+      box-shadow:0 20px 60px rgba(0,0,0,0.2);
       display:flex;
       flex-direction:column;
       overflow:hidden;
@@ -300,111 +321,135 @@
     #cinps-chat-header{
       background:var(--brand-blue);
       color:#fff;
-      padding:12px 14px;
+      padding:14px 16px;
       font-weight:700;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      font-size:14px;
+      font-size:15px;
     }
 
-    #cinps-chat-close{cursor:pointer;font-size:18px;background:none;border:0;color:#fff;padding:6px;border-radius:8px}
+    #cinps-chat-close{cursor:pointer;font-size:20px;background:none;border:0;color:#fff;padding:4px;}
+    
     #cinps-chat-messages{
-      padding:14px;
-      height:260px;
+      padding:16px;
+      height:300px;
       overflow-y:auto;
       font-size:14px;
-      line-height:1.6;
+      line-height:1.5;
       background:linear-gradient(180deg,#fff,#f9fbff);
     }
 
     .bubble{
       display:inline-block;
-      max-width:84%;
-      padding:10px 12px;
+      max-width:88%;
+      padding:10px 14px;
       border-radius:12px;
       margin-bottom:10px;
       font-size:14px;
-      line-height:1.45;
     }
 
-    .bot{background:#f1f5ff;color:#06204a;border-radius:12px 12px 12px 4px;}
-    .user{background:var(--brand-blue);color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px;}
+    .bot{background:#f1f5ff;color:#06204a;border-radius:12px 12px 12px 2px;}
+    .user{background:var(--brand-blue);color:#fff;align-self:flex-end;border-radius:12px 12px 2px 12px;}
 
     #cinps-chat-input{
       display:flex;
-      border-top:1px solid #eee;
-      gap:8px;
-      padding:8px;
+      border-top:1px solid #f0f0f0;
+      gap:10px;
+      padding:12px;
       align-items:center;
       background:#fff;
     }
 
     #cinps-chat-input input{
       flex:1;
-      border:none;
-      padding:10px 12px;
-      font-size:14px;
+      border:1px solid #e0e0e0;
+      padding:10px 14px;
+      font-size:16px; /* 16px prevents iOS zoom on focus */
       outline:none;
-      border-radius:8px;
-      background:#f7f8fb;
+      border-radius:20px;
+      background:#fff;
     }
 
     #cinps-chat-input button{
       background:var(--brand-blue);
       color:#fff;
       border:none;
-      padding:9px 14px;
+      padding:10px 16px;
       cursor:pointer;
       font-weight:600;
-      border-radius:8px;
+      border-radius:20px;
+      font-size: 14px;
     }
 
-    /* ================= ACCESSIBILITY FOCUS ================= */
-    a:focus, button:focus, input:focus{outline:3px solid rgba(13,59,142,0.16); outline-offset:2px;}
-
-    /* ================= MOBILE ================= */
+    /* ================= RESPONSIVE MEDIA QUERIES ================= */
+    
+    /* Tablet & Small Desktop (Max 900px) */
     @media(max-width:900px){
-      .hero h1{font-size:30px}
-      .hero p{font-size:15px}
-      .section{padding:40px 0}
-      .section h2{font-size:22px}
+      .hero h1{font-size:36px}
+      .section{padding:50px 0}
+      .section h2{font-size:26px}
       .nav-menu{gap:14px}
     }
 
+    /* Mobile (Max 768px) */
     @media(max-width:768px){
+      /* Header & Nav */
+      .header-inner { padding: 10px 0; }
+      
+      .nav-toggle{display:block;}
+
       .nav-menu{
         position:fixed;
-        top:66px;
-        right:12px;
+        top:65px; /* Adjust based on header height */
+        left:0;
+        right:0;
         background:#fff;
         flex-direction:column;
-        width:240px;
-        padding:18px;
+        align-items: flex-start;
+        padding:20px;
         display:none;
-        box-shadow:var(--shadow);
-        border-radius:12px;
+        box-shadow:0 15px 30px rgba(0,0,0,0.1);
+        border-bottom: 1px solid #eee;
       }
-      .nav-menu.show{display:flex;}
-      .nav-toggle{display:block;background:transparent;border:0;color:var(--brand-blue)}
-      .nav{gap:10px;}
-      .hero{padding:70px 18px; min-height:58vh}
-      .hero h1{font-size:26px}
-      #cinps-chat-box{right:16px;bottom:84px;width:92%}
+      
+      .nav-menu.show{ display:flex; animation: slideDown 0.3s ease; }
+      
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .nav-menu li { width: 100%; }
+      .nav-menu a { display: block; width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; }
+      .nav-menu a:hover { background-color: #f7f9fc; }
+
+      /* Hero */
+      .hero{padding:60px 16px; min-height:auto;}
+      .hero h1{font-size:28px;}
+      .hero p{font-size:16px; max-width: 100%;}
+      .hero-buttons { flex-direction: column; width: 100%; }
+      .btn { width: 100%; }
+
+      /* Content */
+      .section h2{font-size:24px;}
+      .brand-text .title{font-size:14px;}
+      .logo{height:38px;}
+
+      /* Chat */
+      #cinps-chat-box{right:16px; left:16px; bottom:90px; width:auto; max-width:none;}
+      #cinps-chat-btn { bottom: 20px; right: 20px; }
     }
 
-    /* small screens */
+    /* Small Mobile (Max 420px) */
     @media(max-width:420px){
-      .brand-text .title{font-size:14px;}
-      .logo{height:44px;}
-      .hero h1{font-size:22px}
-      #cinps-chat-messages{height:200px}
+      .hero h1{font-size:26px}
+      .section h2 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
@@ -416,7 +461,7 @@
       </a>
 
       <nav class="nav" role="navigation" aria-label="Main Navigation">
-        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation">☰</button>
         <ul class="nav-menu" id="mainNav">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
@@ -428,7 +473,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="hero" role="region" aria-label="Hero">
     <div class="container">
       <h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
@@ -440,7 +484,6 @@
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
   <main>
     <section class="section">
       <div class="container">
@@ -475,8 +518,8 @@
           </ul>
         </div>
 
-        <div class="content-block alt">
-          <h2>100% Job Placement Assistance</h2>
+        <div class="content-block alt" style="background:#f9fbff; padding:20px; border-radius:12px;">
+          <h2 style="margin-top:0">100% Job Placement Assistance</h2>
           <p>CINPS supports students beyond academic completion by offering job placement assistance and career development services for qualified candidates.</p>
           <ul class="features">
             <li>Career counseling and professional guidance</li>
@@ -487,7 +530,7 @@
           </ul>
         </div>
 
-        <div class="content-block">
+        <div class="content-block" style="margin-top:40px;">
           <h2>Comprehensive Student Support System</h2>
           <h3>Academic Support</h3>
           <ul class="features">
@@ -514,14 +557,12 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer" role="contentinfo">
     <div class="container">
       <p>© <span id="year"></span> CINPS | All Rights Reserved</p>
     </div>
   </footer>
 
-  <!-- CHAT BUTTON & BOX -->
   <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI">🧠</button>
 
   <div id="cinps-chat-box" role="dialog" aria-label="CINPS Pulse AI" aria-hidden="true">
@@ -552,9 +593,15 @@
       const expanded = navToggle.getAttribute('aria-expanded') === 'true';
       navToggle.setAttribute('aria-expanded', String(!expanded));
       mainNav.classList.toggle('show');
+      
+      // Accessibility update
+      if (!expanded) {
+        // Focus first link when opened
+        setTimeout(() => mainNav.querySelector('a').focus(), 100);
+      }
     });
 
-    // Close mobile nav when link clicked (improves UX)
+    // Close mobile nav when link clicked
     mainNav.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         if (mainNav.classList.contains('show')) {
@@ -564,7 +611,15 @@
       });
     });
 
-    // CHAT TOGGLING (uses 'active' class for smooth transitions)
+    // Close nav on outside click
+    document.addEventListener('click', (e) => {
+       if (mainNav.classList.contains('show') && !mainNav.contains(e.target) && !navToggle.contains(e.target)) {
+           mainNav.classList.remove('show');
+           navToggle.setAttribute('aria-expanded', 'false');
+       }
+    });
+
+    // CHAT TOGGLING
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
@@ -590,15 +645,25 @@
 
     chatClose.addEventListener('click', closeChat);
 
-    // Basic message append (stub — replace with real AI integration)
+    // Chat Message Logic
     function appendMessage(text, who='bot') {
       const div = document.createElement('div');
       div.className = 'bubble ' + (who === 'user' ? 'user' : 'bot');
       div.textContent = text;
-      div.style.marginTop = '6px';
+      // Fade in effect
+      div.style.opacity = 0;
+      div.style.animation = "fadeIn 0.3s forwards";
+      
       chatMessages.appendChild(div);
-      // auto scroll
       chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Dynamic animation style
+      if(!document.getElementById('msg-anim')) {
+          const style = document.createElement('style');
+          style.id = 'msg-anim';
+          style.innerHTML = "@keyframes fadeIn { to { opacity: 1; } }";
+          document.head.appendChild(style);
+      }
     }
 
     function sendMessage() {
@@ -606,7 +671,8 @@
       if (!val) return;
       appendMessage(val, 'user');
       chatInput.value = '';
-      // simple mocked bot response — replace with real API call when ready
+      
+      // Simulated Bot Response
       setTimeout(() => {
         appendMessage('Thanks — we received your query. For admissions and courses, please visit the Admissions page or call +91 8101579839.', 'bot');
       }, 700);
@@ -620,23 +686,17 @@
       }
       if (e.key === 'Escape') {
         chatInput.blur();
+        closeChat();
       }
     });
 
-    // Close chat on outside click (mobile friendly)
+    // Mobile Chat Close on Outside Click
     document.addEventListener('click', (e) => {
       if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')) {
         closeChat();
       }
     });
 
-    // Improve reduced motion accessibility
-    (function() {
-      const r = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (r && r.matches) {
-        document.documentElement.style.setProperty('scroll-behavior', 'auto');
-      }
-    })();
   </script>
 
 </body>
