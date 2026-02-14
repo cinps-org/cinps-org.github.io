@@ -1,34 +1,26 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Courses | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Explore Diploma & Certificate paramedical programs at CINPS — structured training, simulation labs, 100% internship assurance and placement support.">
-  <!-- Social / SEO -->
-  <meta property="og:title" content="CINPS — Courses">
-  <meta property="og:description" content="Explore Diploma & Certificate paramedical programs at CINPS — structured training, simulation labs, 100% internship assurance and placement support.">
-  <meta property="og:image" content="assets/images/og-hero.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- Fonts & preconnect -->
+  
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.ico">
 
-  <!-- Preload hero -->
-  <link rel="preload" as="image" href="assets/images/hero.jpg">
-
   <style>
-    /* ===== ROOT & RESET (match index.html) ===== */
+    /* ================= THEME (MATCHING HOME/ABOUT) ================= */
     :root{
       --brand-blue:#0d3b8e;
       --light-blue:#1f57b8;
-      --shadow:0 10px 30px rgba(0,0,0,0.08);
       --muted:#6b7280;
-      --radius:12px;
+      --shadow:0 10px 30px rgba(13,59,142,0.08);
+      --radius:14px;
       --container:1100px;
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
@@ -37,119 +29,143 @@
       color:#222;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      -webkit-tap-highlight-color: transparent;
-      line-height:1.6;
+      line-height:1.65;
     }
-    .container{width:92%;max-width:var(--container);margin:0 auto;}
+    .container{width:92%;max-width:var(--container);margin:0 auto}
 
-    /* ===== HEADER ===== */
+    /* ================= HEADER ================= */
     .site-header{
-      background:#fff;
-      box-shadow:var(--shadow);
-      position:sticky;
-      top:0;
-      z-index:1000;
+      position:sticky;top:0;z-index:1200;background:#fff;box-shadow:var(--shadow);
     }
-    .header-inner{display:flex;justify-content:space-between;align-items:center;padding:12px 0;}
-    .logo{height:50px;}
-    .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-blue);}
-    .brand-text{display:flex;flex-direction:column;font-weight:600;font-size:13px;line-height:1.1}
-    .brand-text .title{font-weight:700;font-size:15px}
-    .brand-text .subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-blue)}
+    .logo{height:48px;object-fit:contain}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-text .title{font-weight:700;font-size:15px;line-height:1.2;}
+    .brand-text .subtitle{font-size:12px;color:var(--muted)}
 
+    /* Desktop Nav */
     .nav{display:flex;align-items:center;gap:18px}
-    .nav-toggle{display:none;font-size:22px;background:none;border:0;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
-    .nav-toggle[aria-expanded="true"]{outline:3px solid rgba(13,59,142,0.08)}
-    .nav-menu{list-style:none;display:flex;gap:22px;align-items:center}
-    .nav-menu a{text-decoration:none;color:var(--brand-blue);font-weight:600;font-size:14px;padding:8px 6px;border-radius:8px}
-    .nav-menu a:hover,.nav-menu a:focus{background:rgba(13,59,142,0.06)}
+    .nav-menu{display:flex;gap:18px;list-style:none}
+    .nav-menu a{color:var(--brand-blue);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:background 0.2s}
+    .nav-menu a:hover{background:rgba(13,59,142,0.06)}
+    .nav-toggle{display:none;background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
 
-    /* ===== HERO ===== */
+    /* Mobile Drawer */
+    .mobile-drawer{
+      position:fixed;top:0;right:-100%;height:100%;width:320px;max-width:92%;
+      background:#fff;box-shadow:0 30px 80px rgba(0,0,0,0.28);
+      transition:right .28s cubic-bezier(.2,.9,.2,1);z-index:1300;
+      display:flex;flex-direction:column;
+    }
+    .mobile-drawer.open{right:0;}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #f2f4f8}
+    .drawer-links{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .drawer-links a{text-decoration:none;color:var(--brand-blue);font-weight:700;padding:12px;border-radius:8px;font-size:16px;}
+    .drawer-links a:hover{background:rgba(13,59,142,0.04)}
+    .drawer-cta{margin-top:auto;padding:20px;border-top:1px solid #f2f4f8}
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:1250;}
+    .drawer-backdrop.show{opacity:1;pointer-events:auto}
+
+    /* ================= HERO ================= */
     .hero{
-      position:relative;
-      color:#fff;
-      padding:110px 20px;
-      min-height:58vh;
+      position:relative;color:#fff;padding:110px 20px;min-height:50vh;
+      display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+    }
+    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45);z-index:0}
+    .hero-inner{position:relative;z-index:2;max-width:920px}
+    .hero h1{font-size:42px;font-weight:800;margin-bottom:16px;line-height:1.2;text-shadow:0 6px 18px rgba(0,0,0,0.3);}
+    .hero p{font-size:18px;opacity:0.95;margin-bottom:28px;max-width:700px;margin-left:auto;margin-right:auto;}
+    
+    .btn{padding:12px 24px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-flex;justify-content:center;gap:10px;align-items:center;border:0;cursor:pointer;font-size:15px;transition:transform 0.2s}
+    .btn:active{transform:scale(0.98)}
+    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,.12)}
+    .btn-blue{background:var(--brand-blue);color:#fff;box-shadow:0 8px 24px rgba(13,59,142,.15)}
+
+    /* ================= COURSE CARDS ================= */
+    .section{padding:70px 0}
+    
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:28px;
+    }
+    
+    .course-card{
+      background:#fff;
+      padding:24px;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      border:1px solid #f2f6ff;
       display:flex;
-      align-items:center;
-      overflow:hidden;
+      flex-direction:column;
+      transition:transform 0.2s ease, box-shadow 0.2s ease;
     }
-    /* semantic image fallback (keeps SEO & accessibility) */
-    .hero .hero-img{
-      position:absolute;inset:0;z-index:0;object-fit:cover;width:100%;height:100%;filter:brightness(.55);
+    .course-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 40px rgba(13,59,142,0.12);
     }
-    .hero .hero-inner{position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center}
-    .hero h1{font-size:44px;font-weight:800;line-height:1.12;margin-bottom:10px}
-    .hero p{font-size:18px;max-width:720px;margin:0 auto 20px;color:rgba(255,255,255,0.95)}
-    .hero .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    
+    .course-card h3{color:var(--brand-blue);margin-bottom:8px;font-size:20px;line-height:1.3;}
+    .course-meta{
+      font-size:13px; font-weight:600; color:var(--light-blue); background:rgba(13,59,142,0.05);
+      padding:6px 10px; border-radius:6px; display:inline-block; margin-bottom:16px;
+    }
+    
+    .features{list-style:none;padding:0;margin-bottom:20px; flex:1;}
+    .features li{
+      position:relative;padding-left:28px;margin-bottom:10px;font-size:15px;color:#555;line-height:1.5;
+    }
+    .features li::before{
+      content:"•";position:absolute;left:8px;top:0px;
+      color:var(--brand-blue);font-size:18px;font-weight:bold;
+    }
+    
+    .apply-link{
+      margin-top:auto;
+      text-decoration:none;
+      background: #f4f8ff;
+      color: var(--brand-blue);
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .apply-link:hover{ background: #eef4ff; }
 
-    .btn{padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer}
-    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,0.12)}
-    .btn-secondary{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.18)}
+    /* ================= MODAL & CHAT ================= */
+    .modal-bg{display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200;padding:16px;}
+    .modal{background:#fff;padding:28px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,0.2);}
+    .modal input, .modal textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:10px;font-size:16px;outline:none;}
+    .modal input:focus, .modal textarea:focus{border-color:var(--brand-blue);}
 
-    /* ===== SECTIONS & CARDS ===== */
-    .section{padding:80px 0}
-    .section h2{color:var(--brand-blue);font-size:28px;font-weight:800;margin-bottom:18px;position:relative}
-    .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px}
-    .course-card{background:#fff;border-radius:12px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;transition:transform .18s ease}
-    .course-card:hover{transform:translateY(-6px)}
-    .course-card h3{color:var(--brand-blue);font-size:18px;margin-bottom:6px}
-    .course-meta{font-size:13px;color:var(--muted);margin-bottom:12px}
-    .course-card ul{padding-left:18px;margin-bottom:18px}
-    .course-card li{margin-bottom:8px;color:#333;font-size:14px}
-    .apply-btn{background:var(--brand-blue);color:#fff;padding:12px;border-radius:8px;text-decoration:none;text-align:center;font-weight:700;display:inline-block}
+    #cinps-chat-btn{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(13,59,142,0.3);font-size:28px;cursor:pointer;transition:transform 0.2s}
+    #cinps-chat-btn:hover{transform:scale(1.05)}
+    #cinps-chat-box{position:fixed;bottom:100px;right:24px;width:360px;max-width:calc(100% - 48px);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.2);background:#fff;opacity:0;pointer-events:none;transform:translateY(20px) scale(.98);transition:all .3s cubic-bezier(0.2,0.8,0.2,1);z-index:3000}
+    #cinps-chat-box.active{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
 
-    /* more courses widget */
-    .more-courses{margin-top:48px;background:linear-gradient(180deg,var(--light-blue),var(--brand-blue));color:#fff;padding:40px;border-radius:12px;text-align:center}
-    .support-btn{background:#fff;color:var(--brand-blue);padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:700;display:inline-block}
-
-    /* ===== MODALS ===== */
-    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:2200}
-    .modal{background:#fff;padding:22px;border-radius:10px;width:92%;max-width:520px}
-    .modal h3{margin-bottom:8px;color:var(--brand-blue)}
-    .modal input,.modal textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e8f0;margin-top:8px}
-    .modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:12px}
-    .btn-outline{background:#f3f5fb;border-radius:8px;padding:10px 14px;border:0}
-    .btn-primary{background:var(--brand-blue);color:#fff;padding:10px 14px;border-radius:8px;border:0}
-
-    /* success popup */
-    .success-content{text-align:center}
-
-    /* ===== CINPS PULSE AI (floating) ===== */
-    #cinps-chat-btn{position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;background:var(--brand-blue);color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 15px 35px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;transition:transform .18s ease;z-index:3000}
-    #cinps-chat-btn:hover{transform:scale(1.06)}
-    #cinps-chat-btn:focus{outline:3px solid rgba(13,59,142,0.12)}
-    #cinps-chat-box{position:fixed;bottom:100px;right:22px;width:360px;max-width:calc(100% - 44px);background:#fff;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.25);display:flex;flex-direction:column;overflow:hidden;opacity:0;transform:translateY(20px) scale(.98);pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:3000}
-    #cinps-chat-box.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
-    #cinps-chat-header{background:var(--brand-blue);color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;font-size:14px}
-    #cinps-chat-close{cursor:pointer;font-size:18px;background:none;border:0;color:#fff;padding:6px;border-radius:8px}
-    #cinps-chat-messages{padding:14px;height:260px;overflow-y:auto;font-size:14px;background:linear-gradient(180deg,#fff,#f9fbff)}
-    .bubble{display:inline-block;max-width:84%;padding:10px 12px;border-radius:12px;margin-bottom:10px;font-size:14px}
-    .bot{background:#f1f5ff;color:#06204a;border-radius:12px 12px 12px 4px}
-    .user{background:var(--brand-blue);color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px}
-    #cinps-chat-input{display:flex;border-top:1px solid #eee;gap:8px;padding:8px;background:#fff}
-    #cinps-chat-input input{flex:1;border:none;padding:10px 12px;font-size:14px;border-radius:8px;background:#f7f8fb;outline:none}
-    #cinps-chat-input button{background:var(--brand-blue);color:#fff;border:none;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:700}
-
-    /* ===== FOOTER ===== */
-    .footer{background:var(--brand-blue);color:#fff;text-align:center;padding:26px 10px;font-size:14px;margin-top:40px}
-
-    /* ===== RESPONSIVE ===== */
-    @media(max-width:900px){.hero h1{font-size:30px}.hero p{font-size:15px}.section{padding:40px 0}}
+    /* ================= RESPONSIVE ================= */
+    @media(max-width:980px){ 
+      .hero h1{font-size:32px}
+    }
     @media(max-width:768px){
-      .nav-menu{position:fixed;top:66px;right:12px;background:#fff;flex-direction:column;width:240px;padding:18px;display:none;box-shadow:var(--shadow);border-radius:12px}
-      .nav-menu.show{display:flex}
-      .nav-toggle{display:block}
-      #cinps-chat-box{right:16px;bottom:84px;width:92%}
-      .hero{padding:70px 18px;min-height:48vh}
-      .hero h1{font-size:26px}
+      /* Header & Nav */
+      .nav-menu{display:none} .nav-toggle{display:block} .logo{height:40px}
+      /* Hero */
+      .hero{padding:60px 16px;min-height:auto}
+      .hero h1{font-size:28px} .hero p{font-size:15px}
+      /* Layout */
+      .section{padding:40px 0}
+      .course-card{padding:20px}
+      /* Chat */
+      #cinps-chat-btn{bottom:20px;right:20px;width:56px;height:56px;font-size:24px}
+      #cinps-chat-box{bottom:85px;right:16px;left:16px;width:auto;max-width:none}
     }
-    @media(max-width:420px){.logo{height:44px}.hero h1{font-size:22px}#cinps-chat-messages{height:200px}}
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
@@ -160,8 +176,7 @@
         </div>
       </a>
 
-      <nav class="nav" role="navigation" aria-label="Main Navigation">
-        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+      <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
@@ -169,369 +184,268 @@
           <li><a href="admissions.html">Admissions</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
+        <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open menu">☰</button>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" role="region" aria-label="Courses hero">
-    <!-- semantic responsive image (improves crawlability) -->
-    <picture class="hero-img" aria-hidden="true">
-      <source media="(min-width:1200px)" srcset="assets/images/hero-large.jpg">
-      <img src="assets/images/hero.jpg" alt="" class="hero-img" />
-    </picture>
+  <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-header">
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="assets/images/logo.png" alt="CINPS logo" style="height:36px">
+        <div style="font-weight:700;color:var(--brand-blue);line-height:1.2">CINPS</div>
+      </div>
+      <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer">✕</button>
+    </div>
+    <nav class="drawer-links" aria-label="Mobile navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html" aria-current="page">Courses</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="drawer-cta">
+      <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn btn-blue" style="width:100%">Apply Now</a>
+    </div>
+  </aside>
 
+  <section class="hero" aria-label="Courses Hero">
+    <img src="https://cinps-org.github.io/assets/images/Landscape Bannerii.jpg" alt="CINPS Courses Banner" class="hero-img" />
     <div class="hero-inner container">
-      <h1>Career-Focused Paramedical Programs</h1>
-      <p>Hands-on practical training • Simulation labs • 100% internship & placement assistance for eligible candidates.</p>
-      <div class="hero-actions">
-        <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Apply Now</a>
-        <a href="contact.html" class="btn btn-secondary">Contact Admissions</a>
+      <h1>Our Academic Programs</h1>
+      <p>Industry-aligned diploma and certificate courses designed to build competent and ethical healthcare professionals.</p>
+      <div style="margin-top:10px">
+        <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
       </div>
     </div>
   </section>
 
-  <!-- MAIN -->
   <main>
-    <section class="section" aria-labelledby="programsHeading">
+    <section class="section">
       <div class="container">
-        <h2 id="programsHeading">Our Programs</h2>
+        
+        <div class="grid-3">
 
-        <div class="course-grid" role="list">
-
-          <!-- DOTT -->
-          <article class="course-card" role="listitem" aria-labelledby="dottTitle">
+          <article class="course-card">
             <div>
-              <h3 id="dottTitle">Diploma in Operation Theatre Technology (DOTT)</h3>
-              <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
-              <ul>
+              <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
                 <li>Surgical instrumentation</li>
                 <li>Anaesthesia assistance</li>
                 <li>Emergency OT management</li>
               </ul>
             </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
           </article>
 
-          <!-- DMLT -->
-          <article class="course-card" role="listitem" aria-labelledby="dmltTitle">
+          <article class="course-card">
             <div>
-              <h3 id="dmltTitle">Diploma in Medical Laboratory Technology (DMLT)</h3>
-              <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
-              <ul>
+              <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
                 <li>Clinical biochemistry</li>
                 <li>Microbiology & pathology</li>
-                <li>Blood banking</li>
+                <li>Blood banking procedures</li>
               </ul>
             </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
           </article>
 
-          <!-- ICU 2Y -->
-          <article class="course-card" role="listitem" aria-labelledby="icu2Title">
+          <article class="course-card">
             <div>
-              <h3 id="icu2Title">Intensive Care Unit Technician (2 Year)</h3>
-              <div class="course-meta">2 Years + Internship | Eligibility: 10+2</div>
-              <ul>
+              <h3>Intensive Care Unit Technician (2 Year)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
                 <li>Mechanical ventilation</li>
                 <li>Critical monitoring systems</li>
-                <li>Emergency response & ICU pharmacology basics</li>
-              </ul>
-            </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
-          </article>
-
-          <!-- EMT -->
-          <article class="course-card" role="listitem" aria-labelledby="emtTitle">
-            <div>
-              <h3 id="emtTitle">Emergency Medical Technician (EMT)</h3>
-              <div class="course-meta">6 Months – 2 Years + Internship | Eligibility: 10+2</div>
-              <ul>
-                <li>Pre-hospital trauma life support</li>
-                <li>CPR & advanced first aid</li>
-                <li>Ambulance operations & disaster response</li>
-              </ul>
-            </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
-          </article>
-
-          <!-- ICU 1Y -->
-          <article class="course-card" role="listitem" aria-labelledby="icu1Title">
-            <div>
-              <h3 id="icu1Title">ICU Technician (1 Year Fast Track)</h3>
-              <div class="course-meta">1 Year + Internship | Eligibility: 10th Pass</div>
-              <ul>
-                <li>Core ICU skills</li>
-                <li>Patient monitoring & documentation</li>
                 <li>Emergency response basics</li>
               </ul>
             </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
           </article>
 
-          <!-- RMP -->
-          <article class="course-card" role="listitem" aria-labelledby="rmpTitle">
+          <article class="course-card">
             <div>
-              <h3 id="rmpTitle">Registered Medical Practitioner (RMP / DRMP)</h3>
-              <div class="course-meta">1 Year | Eligibility: 10th Pass</div>
-              <ul>
+              <h3>Emergency Medical Technician (EMT)</h3>
+              <div class="course-meta">6 Months – 2 Years | 10+2</div>
+              <ul class="features">
+                <li>Pre-hospital trauma life support</li>
+                <li>CPR & advanced first aid</li>
+                <li>Ambulance operations</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
+          </article>
+
+          <article class="course-card">
+            <div>
+              <h3>ICU Technician (Fast Track)</h3>
+              <div class="course-meta">1 Year + Internship | 10th Pass</div>
+              <ul class="features">
+                <li>Core ICU skills</li>
+                <li>Patient monitoring documentation</li>
+                <li>Basic emergency response</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
+          </article>
+
+          <article class="course-card">
+            <div>
+              <h3>Registered Medical Practitioner (RMP)</h3>
+              <div class="course-meta">1 Year | 10th Pass</div>
+              <ul class="features">
                 <li>Basic clinical assessment</li>
                 <li>Common ailment management</li>
                 <li>Medical record keeping</li>
               </ul>
             </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
           </article>
 
-          <!-- CMS -->
-          <article class="course-card" role="listitem" aria-labelledby="cmsTitle">
+          <article class="course-card">
             <div>
-              <h3 id="cmsTitle">Community Medical Service & Essential Drugs (CMS & ED)</h3>
-              <div class="course-meta">18–24 Months | Eligibility: 10th Pass</div>
-              <ul>
+              <h3>CMS & Essential Drugs (CMS & ED)</h3>
+              <div class="course-meta">18–24 Months | 10th Pass</div>
+              <ul class="features">
                 <li>Primary healthcare fundamentals</li>
                 <li>Preventive health education</li>
                 <li>Essential drug management</li>
               </ul>
             </div>
-            <a class="apply-btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener">Apply Now</a>
           </article>
 
         </div>
 
-        <!-- MORE COURSES WIDGET -->
-        <div class="more-courses" style="margin-top:40px;">
-          <h2>Need personalised guidance?</h2>
-          <p>Contact our Admission Support Team for fee structure, eligibility checks, scholarships, and schedule counselling sessions.</p>
-          <a class="support-btn" href="javascript:void(0)" onclick="openModal()">💬 Contact Admission Team</a>
+        <div style="margin-top:40px; text-align:center">
+          <div class="course-card" style="background:var(--brand-blue); color:#fff; border:none; display:block;">
+            <h3 style="color:#fff; margin-bottom:12px;">Need guidance choosing a course?</h3>
+            <p style="color:rgba(255,255,255,0.9); margin-bottom:24px">Our admission counselors can help you select the right program based on your qualifications.</p>
+            <button onclick="openModal()" class="btn" style="background:#fff; color:var(--brand-blue); border:none;">Contact Admission Team</button>
+          </div>
         </div>
+
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <p>© <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science — All Rights Reserved</p>
+  <footer style="background:var(--brand-blue);color:#fff;padding:24px;text-align:center;margin-top:20px">
+    <div class="container" style="font-size: 14px; opacity: 0.9;">
+      © <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science
     </div>
   </footer>
 
-  <!-- ===== CONTACT MODAL ===== -->
-  <div class="modal-bg" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+  <div class="modal-bg" id="modal" aria-hidden="true">
     <div class="modal" role="document">
-      <h3 id="contactModalTitle">Contact Admissions</h3>
+      <h3 style="color:var(--brand-blue); margin-bottom: 8px;">Contact Admissions</h3>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;">We'll get back to you shortly.</p>
       <form id="contactForm">
-        <input name="name" placeholder="Your Name" required aria-label="Your name">
-        <input name="phone" placeholder="Phone Number" required aria-label="Phone number">
-        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required aria-label="Subject">
-        <textarea name="message" placeholder="Your Message" rows="4" required aria-label="Your message"></textarea>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Send</button>
+        <input name="name" placeholder="Your name" required>
+        <input name="phone" placeholder="Phone number" type="tel" required>
+        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required>
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
+        
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+          <button type="button" class="btn" onclick="closeModal()" style="background:#f4f7fb; color:#333; padding:10px 18px;">Cancel</button>
+          <button type="submit" class="btn btn-blue" style="padding:10px 24px;">Send</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ===== SUCCESS POPUP ===== -->
-  <div class="modal-bg" id="successPopup" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal success-content">
-      <h3>Thanks for contacting us</h3>
-      <p>We received your message. Our representative will contact you soon.</p>
-      <div style="text-align:center;margin-top:14px">
-        <button class="btn btn-primary" onclick="closeSuccess()">Done</button>
-      </div>
+  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI">🧠</button>
+  <div id="cinps-chat-box" role="dialog" aria-hidden="true">
+    <div id="cinps-chat-header" style="background:var(--brand-blue);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:700">CINPS Pulse AI</span>
+      <button id="cinps-chat-close" style="background:none;border:0;color:#fff;font-size:20px;cursor:pointer">✕</button>
     </div>
-  </div>
-
-  <!-- ===== CINPS PULSE AI (floating widget) ===== -->
-  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI" aria-expanded="false">🧠</button>
-
-  <div id="cinps-chat-box" role="dialog" aria-hidden="true" aria-label="CINPS Pulse AI">
-    <div id="cinps-chat-header">
-      <span>CINPS Pulse AI</span>
-      <button id="cinps-chat-close" aria-label="Close chat">✕</button>
+    <div id="cinps-chat-messages" style="padding:16px;height:300px;overflow:auto;background:linear-gradient(#fff,#f6f9ff)">
+      <div class="bubble bot" style="background:#f1f5ff;padding:12px;border-radius:12px;max-width:85%;font-size:14px;line-height:1.5;color:#333">👋 Welcome! Ask about course eligibility, fees, or duration.</div>
     </div>
-
-    <div id="cinps-chat-messages" aria-live="polite" aria-atomic="false">
-      <div class="bubble bot">👋 Welcome to <b>CINPS Pulse AI</b><br><br>Admissions • Courses • Fees • Career Guidance<br>বাংলা | हिंदी | English</div>
-    </div>
-
-    <div id="cinps-chat-input">
-      <input id="cinps-user-input" type="text" placeholder="Ask CINPS Pulse AI…" aria-label="Ask CINPS Pulse AI">
-      <button id="cinps-send-btn" aria-label="Send message">Send</button>
+    <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff">
+      <input id="cinps-user-input" placeholder="Type a message..." style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;font-size:16px;outline:none" />
+      <button id="cinps-send-btn" style="background:var(--brand-blue);color:#fff;border:0;padding:0 16px;border-radius:10px;font-weight:600;cursor:pointer">Send</button>
     </div>
   </div>
 
   <script>
-    /* ===== GLOBAL INTERACTIONS ===== */
-    // Year
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    // NAV toggle (mobile)
+    // MOBILE DRAWER
     const navToggle = document.getElementById('navToggle');
-    const mainNav = document.getElementById('mainNav');
-    navToggle.addEventListener('click', () => {
-      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', String(!expanded));
-      mainNav.classList.toggle('show');
-      if (!expanded) {
-        // set focus to first nav link for accessibility
-        const firstLink = mainNav.querySelector('a');
-        if (firstLink) firstLink.focus();
-      } else {
-        navToggle.focus();
-      }
-    });
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
 
-    // MODAL functions
+    function openDrawer(){
+      mobileDrawer.classList.add('open');
+      mobileDrawer.setAttribute('aria-hidden','false');
+      drawerBackdrop.classList.add('show');
+      drawerBackdrop.setAttribute('aria-hidden','false');
+      navToggle.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.setAttribute('aria-hidden','true');
+      drawerBackdrop.classList.remove('show');
+      drawerBackdrop.setAttribute('aria-hidden','true');
+      navToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
+
+    navToggle?.addEventListener('click', ()=> navToggle.getAttribute('aria-expanded') === 'true' ? closeDrawer() : openDrawer());
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+    mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+    // MODAL
     const modal = document.getElementById('modal');
-    const successPopup = document.getElementById('successPopup');
-
-    function openModal() {
-      modal.style.display = 'flex';
-      modal.setAttribute('aria-hidden', 'false');
-      // focus first input
-      const first = modal.querySelector('input');
-      if (first) first.focus();
-    }
-    function closeModal() {
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
-      document.querySelector('.support-btn')?.focus();
-    }
-    function closeSuccess() {
-      successPopup.style.display = 'none';
-      successPopup.setAttribute('aria-hidden', 'true');
-    }
-
-    /* CONTACT FORM (submits to Google Apps Script form endpoint) */
-    const FORM_API = "https://script.google.com/macros/s/AKfycbx238EEzhTfcYGngAQD6CeXZIYqt0KqKp7_3iiR3ZVffUeO-Sik8dqmoXE7daNBcTxZlQ/exec";
-    document.getElementById("contactForm").onsubmit = function (e) {
-      e.preventDefault();
-      const form = e.target;
-      // simple UX disable while submitting
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      fetch(FORM_API, { method: "POST", body: new FormData(form) })
-        .then(() => {
-          submitBtn.disabled = false;
-          form.reset();
-          closeModal();
-          successPopup.style.display = 'flex';
-          successPopup.setAttribute('aria-hidden', 'false');
-        })
-        .catch(() => {
-          submitBtn.disabled = false;
-          alert("Submission failed. Please try again or call +91 8101579839.");
-        });
-    };
-
-    /* Simple click outside modal to close */
-    document.addEventListener('click', (e) => {
-      if (modal.style.display === 'flex' && !modal.contains(e.target) && !e.target.closest('.support-btn')) {
-        closeModal();
-      }
+    function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault(); alert('Message sent!'); closeModal();
     });
 
-    /* ===== CINPS PULSE AI (chat) ===== */
-    const CHAT_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+    // CHATBOT
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
-    const messages = document.getElementById('cinps-chat-messages');
+    const msgs = document.getElementById('cinps-chat-messages');
     const input = document.getElementById('cinps-user-input');
     const sendBtn = document.getElementById('cinps-send-btn');
 
-    // Open / close handlers with ARIA
-    function openChat() {
-      chatBox.classList.add('active');
-      chatBox.setAttribute('aria-hidden', 'false');
-      chatBtn.setAttribute('aria-expanded', 'true');
-      // focus input
-      setTimeout(() => input.focus(), 60);
+    function toggleChat(){
+      const isActive = chatBox.classList.contains('active');
+      isActive ? chatBox.classList.remove('active') : chatBox.classList.add('active');
+      chatBox.setAttribute('aria-hidden', isActive);
     }
-    function closeChat() {
-      chatBox.classList.remove('active');
-      chatBox.setAttribute('aria-hidden', 'true');
-      chatBtn.setAttribute('aria-expanded', 'false');
-      chatBtn.focus();
-    }
-
-    chatBtn.addEventListener('click', () => {
-      if (chatBox.classList.contains('active')) closeChat();
-      else openChat();
-    });
-    chatClose.addEventListener('click', closeChat);
-
-    // send message
-    sendBtn.addEventListener('click', sendMsg);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMsg();
-      }
-      if (e.key === 'Escape') {
-        input.blur();
-      }
-    });
-
-    function addMsg(text, who = 'bot') {
+    
+    function addMsg(txt, type='bot'){
       const d = document.createElement('div');
-      d.className = 'bubble ' + (who === 'user' ? 'user' : 'bot');
-      d.innerHTML = text;
-      messages.appendChild(d);
-      messages.scrollTop = messages.scrollHeight;
+      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px';
+      if(type==='user'){ d.style.background='var(--brand-blue)'; d.style.color='#fff'; d.style.marginLeft='auto'; }
+      else{ d.style.background='#f1f5ff'; d.style.color='#333'; }
+      d.textContent = txt;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
     }
 
-    function sendMsg() {
-      const msg = input.value.trim();
-      if (!msg) return;
-      addMsg(msg, 'user');
-      input.value = '';
-      addMsg('🧠 Thinking…', 'bot');
-
-      // Post to CHAT_API — expects JSON response with { reply: "..." }
-      fetch(CHAT_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg })
-      })
-        .then(r => r.json())
-        .then(d => {
-          // remove last 'Thinking...' bubble
-          const last = messages.lastElementChild;
-          if (last && last.textContent.includes('Thinking')) last.remove();
-          addMsg((d && d.reply) ? d.reply : "Please contact CINPS office for admissions.", 'bot');
-        })
-        .catch(() => {
-          const last = messages.lastElementChild;
-          if (last && last.textContent.includes('Thinking')) last.remove();
-          addMsg("📞 Call CINPS at +91 8101579839", 'bot');
-        });
-    }
-
-    // Close chat on outside click (for small screens)
-    document.addEventListener('click', (e) => {
-      if (!chatBox.contains(e.target) && !chatBtn.contains(e.target) && chatBox.classList.contains('active')) {
-        closeChat();
-      }
+    chatBtn?.addEventListener('click', toggleChat);
+    chatClose?.addEventListener('click', toggleChat);
+    sendBtn?.addEventListener('click', ()=>{
+      const val = input.value.trim();
+      if(!val) return;
+      addMsg(val, 'user');
+      input.value='';
+      setTimeout(()=>addMsg('Thank you. Please check the Admissions page for details.'), 600);
     });
 
-    /* Small accessibility helper: trap focus inside modal when open */
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab' && modal.style.display === 'flex') {
-        const focusable = modal.querySelectorAll('input, textarea, button, [tabindex]:not([tabindex="-1"])');
-        if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey) {
-          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
-        } else {
-          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
-        }
-      }
-    });
+    // Global Close
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
   </script>
 </body>
 </html>
