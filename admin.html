@@ -100,9 +100,15 @@ button{
 
 <body>
 
+<div id="loading-screen" style="padding:100px;text-align:center;">
+  <h2>Checking Admin Access...</h2>
+</div>
+
+<div id="admin-content" style="display:none;">
+
 <header>
   <h2>CINPS Admin Dashboard</h2>
-  <button class="logout" onclick="logout()">Log Out</button>
+  <button class="logout" onclick="handleLogout()">Log Out</button>
 </header>
 
 <div class="dashboard">
@@ -144,95 +150,97 @@ button{
 </div>
 
 </div>
-
+</div>
 <script type="module">
 
 import { auth } from "./firebase/firebase-auth.js";
 import { db } from "./firebase/firebase-firestore.js";
 
-import { onAuthStateChanged, signOut }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { collection, getDocs, doc, getDoc, updateDoc }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  doc,
+  getDoc,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const table = document.getElementById("studentTable");
 
-onAuthStateChanged(auth, async (user)=>{
+const adminContent = document.getElementById("admin-content");
+const loadingScreen = document.getElementById("loading-screen");
 
-  if(!user){
-    window.location.href="student-corner.html";
+
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "student-corner.html";
     return;
   }
 
-  const adminRef = doc(db,"admins",user.uid);
+  const adminRef = doc(db, "admins", user.uid);
   const adminSnap = await getDoc(adminRef);
 
-  if(!adminSnap.exists()){
-    alert("Access denied.");
-    window.location.href="student-corner.html";
+  if (!adminSnap.exists()) {
+    window.location.href = "student-corner.html";
     return;
   }
 
-  loadData();
+  loadingScreen.style.display = "none";
+  adminContent.style.display = "block";
+
+  loadStudents();
+
 });
 
-async function loadData(){
 
-  table.innerHTML="";
-  let totalStudents=0;
-  let totalCollected=0;
-  let totalPending=0;
+async function loadStudents() {
 
-  const snapshot = await getDocs(collection(db,"students"));
+  const querySnapshot = await getDocs(collection(db, "students"));
 
-  snapshot.forEach((docSnap)=>{
+  let totalStudents = 0;
+  let totalCollected = 0;
+  let totalPending = 0;
+
+  const table = document.getElementById("studentTable");
+  table.innerHTML = "";
+
+  querySnapshot.forEach((docSnap) => {
 
     const data = docSnap.data();
-    totalStudents++;
-    totalCollected += Number(data.feePaid || 0);
-    totalPending += Number(data.feeTotal || 0) - Number(data.feePaid || 0);
 
-    table.innerHTML += `
+    totalStudents++;
+    totalCollected += data.feePaid || 0;
+    totalPending += (data.feeTotal || 0) - (data.feePaid || 0);
+
+    const row = `
       <tr>
-        <td>${data.name}</td>
-        <td>${data.course}</td>
-        <td>${data.attendance}%</td>
-        <td>₹${data.feePaid}</td>
-        <td>₹${data.feeTotal}</td>
-        <td><button class="edit" onclick="editStudent('${docSnap.id}')">Edit</button></td>
+        <td>${data.name || "-"}</td>
+        <td>${data.course || "-"}</td>
+        <td>${data.attendance || 0}%</td>
+        <td>₹${data.feePaid || 0}</td>
+        <td>₹${data.feeTotal || 0}</td>
+        <td><button class="edit">Edit</button></td>
       </tr>
     `;
+
+    table.innerHTML += row;
+
   });
 
   document.getElementById("totalStudents").innerText = totalStudents;
-  document.getElementById("totalCollected").innerText = "₹"+totalCollected;
-  document.getElementById("totalPending").innerText = "₹"+totalPending;
+  document.getElementById("totalCollected").innerText = "₹" + totalCollected;
+  document.getElementById("totalPending").innerText = "₹" + totalPending;
+
 }
 
-window.editStudent = async function(uid){
 
-  const newAttendance = prompt("New Attendance %:");
-  const newFeePaid = prompt("New Fee Paid:");
-  const newFeeTotal = prompt("New Fee Total:");
-
-  if(newAttendance !== null){
-
-    await updateDoc(doc(db,"students",uid),{
-      attendance:Number(newAttendance),
-      feePaid:Number(newFeePaid),
-      feeTotal:Number(newFeeTotal)
-    });
-
-    alert("Updated Successfully");
-    loadData();
-  }
-}
-
-window.logout = async function(){
+window.handleLogout = async function() {
   await signOut(auth);
-  window.location.href="student-corner.html";
-}
+  window.location.href = "student-corner.html";
+};
 
 </script>
 
