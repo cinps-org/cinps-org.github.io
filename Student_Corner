@@ -441,12 +441,14 @@
   const registerModal = document.getElementById('registerModal');
 
 
+  /* ================= LOGIN ================= */
+
   window.handleLogin = async function() {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed");
+      console.error("Login Error:", error);
+      alert("Login failed. Please try again.");
     }
   };
 
@@ -456,61 +458,93 @@
   };
 
 
+  /* ================= AUTH STATE ================= */
+
   onAuthStateChanged(auth, async (user) => {
 
-    if (user) {
+    guestView.style.display = "none";
+    studentView.style.display = "none";
 
-      const docRef = doc(db, "students", user.uid);
-      const docSnap = await getDoc(docRef);
+    if (!user) {
+      guestView.style.display = "flex";
+      return;
+    }
 
-      if (docSnap.exists()) {
+    try {
 
-        guestView.style.display = 'none';
-        studentView.style.display = 'block';
+      const studentRef = doc(db, "students", user.uid);
+      const studentSnap = await getDoc(studentRef);
 
-        loadDashboardData(docSnap.data());
+      if (studentSnap.exists()) {
+
+        studentView.style.display = "block";
+        loadDashboardData(studentSnap.data());
 
       } else {
 
-        registerModal.style.display = 'flex';
+        registerModal.style.display = "flex";
       }
 
-    } else {
-
-      guestView.style.display = 'flex';
-      studentView.style.display = 'none';
+    } catch (error) {
+      console.error("Auth State Error:", error);
+      alert("System error. Please refresh.");
     }
   });
 
+
+  /* ================= REGISTRATION ================= */
 
   document.getElementById("regForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const user = auth.currentUser;
 
-    const name = document.getElementById("reg-name").value;
+    if (!user) {
+      alert("Authentication error. Please login again.");
+      return;
+    }
+
+    const name = document.getElementById("reg-name").value.trim();
     const course = document.getElementById("reg-course").value;
     const year = document.getElementById("reg-year").value;
 
+    const studentId = `CINPS-${course}-${year}-${user.uid.substring(0,5).toUpperCase()}`;
+
     const studentData = {
-      name: name,
-      course: course,
-      year: year,
-      studentId: "TEMP-ID",
+      name,
+      email: user.email,
+      photoURL: user.photoURL || "",
+      course,
+      year,
+      studentId,
       feeTotal: 0,
       feePaid: 0,
       attendance: 0,
       clinicalHours: 0,
       internshipDays: 0,
       assignments: 0,
-      status: "Active"
+      status: "Active",
+      createdAt: new Date()
     };
 
-    await setDoc(doc(db, "students", user.uid), studentData);
+    try {
 
-    registerModal.style.display = 'none';
+      await setDoc(doc(db, "students", user.uid), studentData);
+
+      registerModal.style.display = "none";
+      guestView.style.display = "none";
+      studentView.style.display = "block";
+
+      loadDashboardData(studentData);
+
+    } catch (error) {
+      console.error("Registration Error:", error);
+      alert("Registration failed.");
+    }
   });
 
+
+  /* ================= DASHBOARD LOADER ================= */
 
   function loadDashboardData(student) {
 
@@ -518,24 +552,26 @@
     document.getElementById('disp-id').innerText = student.studentId;
     document.getElementById('disp-course').innerText = student.course;
 
-    document.getElementById('stat-attendance').innerText = student.attendance + "%";
-    document.getElementById('stat-clinical').innerText = student.clinicalHours;
+    document.getElementById('stat-attendance').innerText = (student.attendance || 0) + "%";
+    document.getElementById('stat-clinical').innerText = student.clinicalHours || 0;
     document.getElementById('stat-internship').innerText = student.internshipDays || 0;
-    document.getElementById('stat-assignments').innerText = student.assignments;
+    document.getElementById('stat-assignments').innerText = student.assignments || 0;
 
-    document.getElementById('fee-total').innerText = student.feeTotal;
-    document.getElementById('fee-paid').innerText = student.feePaid;
+    document.getElementById('fee-total').innerText = student.feeTotal || 0;
+    document.getElementById('fee-paid').innerText = student.feePaid || 0;
 
-    const balance = student.feeTotal - student.feePaid;
+    const balance = (student.feeTotal || 0) - (student.feePaid || 0);
     document.getElementById('fee-balance').innerText = balance;
 
-    const percent = student.feeTotal > 0 
-      ? (student.feePaid / student.feeTotal) * 100 
+    const percent = student.feeTotal > 0
+      ? (student.feePaid / student.feeTotal) * 100
       : 0;
 
     document.getElementById('fee-bar').style.width = percent + "%";
   }
 
+
+  /* ================= MODALS ================= */
 
   window.closeModals = function() {
     document.getElementById('genericModal').style.display = 'none';
@@ -543,17 +579,20 @@
   };
 
 
+  /* ================= MOBILE DRAWER ================= */
+
   window.toggleDrawer = function() {
     const d = document.getElementById('mobileDrawer');
     const b = document.getElementById('drawerBackdrop');
     if (d.classList.contains('open')) {
-      d.classList.remove('open'); 
+      d.classList.remove('open');
       b.classList.remove('show');
     } else {
-      d.classList.add('open'); 
+      d.classList.add('open');
       b.classList.add('show');
     }
   };
-  </script>
+
+</script>
 </body>
 </html>
