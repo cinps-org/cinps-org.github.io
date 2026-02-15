@@ -168,76 +168,71 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
-const adminContent = document.getElementById("admin-content");
-const loadingScreen = document.getElementById("loading-screen");
-
+const studentTable = document.getElementById("studentTable");
+const totalStudents = document.getElementById("totalStudents");
+const totalCollected = document.getElementById("totalCollected");
+const totalPending = document.getElementById("totalPending");
 
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
+    alert("Not authorised");
     window.location.href = "student-corner.html";
     return;
   }
 
+  // Check admin collection
   const adminRef = doc(db, "admins", user.uid);
   const adminSnap = await getDoc(adminRef);
 
   if (!adminSnap.exists()) {
+    alert("Access denied");
     window.location.href = "student-corner.html";
     return;
   }
 
-  loadingScreen.style.display = "none";
-  adminContent.style.display = "block";
-
+  // If admin exists → load students
   loadStudents();
 
 });
-
 
 async function loadStudents() {
 
   const querySnapshot = await getDocs(collection(db, "students"));
 
-  let totalStudents = 0;
-  let totalCollected = 0;
-  let totalPending = 0;
+  let studentCount = 0;
+  let collected = 0;
+  let pending = 0;
 
-  const table = document.getElementById("studentTable");
-  table.innerHTML = "";
+  studentTable.innerHTML = "";
 
   querySnapshot.forEach((docSnap) => {
 
     const data = docSnap.data();
 
-    totalStudents++;
-    totalCollected += data.feePaid || 0;
-    totalPending += (data.feeTotal || 0) - (data.feePaid || 0);
+    studentCount++;
 
-    const row = `
+    collected += data.feePaid || 0;
+    pending += (data.feeTotal || 0) - (data.feePaid || 0);
+
+    studentTable.innerHTML += `
       <tr>
-        <td>${data.name || "-"}</td>
-        <td>${data.course || "-"}</td>
-        <td>${data.attendance || 0}%</td>
-        <td>₹${data.feePaid || 0}</td>
-        <td>₹${data.feeTotal || 0}</td>
+        <td>${data.name}</td>
+        <td>${data.course}</td>
+        <td>${data.attendance}%</td>
+        <td>₹${data.feePaid}</td>
+        <td>₹${data.feeTotal}</td>
         <td><button class="edit">Edit</button></td>
       </tr>
     `;
-
-    table.innerHTML += row;
-
   });
 
-  document.getElementById("totalStudents").innerText = totalStudents;
-  document.getElementById("totalCollected").innerText = "₹" + totalCollected;
-  document.getElementById("totalPending").innerText = "₹" + totalPending;
-
+  totalStudents.textContent = studentCount;
+  totalCollected.textContent = "₹" + collected;
+  totalPending.textContent = "₹" + pending;
 }
 
-
-window.handleLogout = async function() {
+window.logout = async function() {
   await signOut(auth);
   window.location.href = "student-corner.html";
 };
