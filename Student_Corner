@@ -418,163 +418,142 @@
     </div>
   </footer>
 
-  <script type="module">
-    // Import Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
-      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc } 
-      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script type="module">
 
-    // --- CONFIGURATION ---
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
-    };
+  import { auth, googleProvider } from "./firebase/firebase-auth.js";
+  import { db } from "./firebase/firebase-firestore.js";
 
-    // Initialize
-    // const app = initializeApp(firebaseConfig);
-    // const auth = getAuth(app);
-    // const db = getFirestore(app);
-    // const provider = new GoogleAuthProvider();
+  import { 
+    signInWithPopup, 
+    signOut, 
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // --- DOM ELEMENTS ---
-    const guestView = document.getElementById('guest-view');
-    const studentView = document.getElementById('student-dashboard');
-    const registerModal = document.getElementById('registerModal');
+  import { 
+    doc, 
+    getDoc, 
+    setDoc 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // --- MOCK AUTHENTICATION FOR DEMO (Remove this in production) ---
-    window.handleLogin = function() {
-      // Simulate successful login flow
-      guestView.style.display = 'none';
-      studentView.style.display = 'block';
-      loadMockData(); 
-      // In Real App: signInWithPopup(auth, provider)...
-    };
 
-    window.handleLogout = function() {
+  const guestView = document.getElementById('guest-view');
+  const studentView = document.getElementById('student-dashboard');
+  const registerModal = document.getElementById('registerModal');
+
+
+  window.handleLogin = async function() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed");
+    }
+  };
+
+
+  window.handleLogout = async function() {
+    await signOut(auth);
+  };
+
+
+  onAuthStateChanged(auth, async (user) => {
+
+    if (user) {
+
+      const docRef = doc(db, "students", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+
+        guestView.style.display = 'none';
+        studentView.style.display = 'block';
+
+        loadDashboardData(docSnap.data());
+
+      } else {
+
+        registerModal.style.display = 'flex';
+      }
+
+    } else {
+
       guestView.style.display = 'flex';
       studentView.style.display = 'none';
-      // In Real App: signOut(auth)...
-    };
-
-    // --- REAL LOGIC STRUCTURE (Commented out for static demo) ---
-    /*
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Check if student exists in 'students' collection
-        const docRef = doc(db, "students", user.uid);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          // Show Dashboard
-          guestView.style.display = 'none';
-          studentView.style.display = 'block';
-          loadDashboardData(docSnap.data());
-        } else {
-          // Show Registration Modal
-          registerModal.style.display = 'flex';
-        }
-      } else {
-        guestView.style.display = 'flex';
-        studentView.style.display = 'none';
-      }
-    });
-    */
-
-    // --- DATA LOADING & UI UPDATE ---
-    function loadMockData() {
-      // This mimics data coming from Firestore
-      const student = {
-        name: "Demo Student",
-        studentId: "CINPS DOTT 2026 01",
-        course: "DOTT",
-        feeTotal: 120000,
-        feePaid: 45000,
-        attendance: 85,
-        clinicalHours: 24,
-        assignments: 12
-      };
-
-      // Populate Profile
-      document.getElementById('disp-name').innerText = student.name;
-      document.getElementById('disp-id').innerText = student.studentId;
-      document.getElementById('disp-course').innerText = student.course;
-
-      // Populate Stats
-      document.getElementById('stat-attendance').innerText = student.attendance + "%";
-      document.getElementById('stat-clinical').innerText = student.clinicalHours;
-      document.getElementById('stat-assignments').innerText = student.assignments;
-
-      // Populate Fees
-      document.getElementById('fee-total').innerText = student.feeTotal;
-      document.getElementById('fee-paid').innerText = student.feePaid;
-      const balance = student.feeTotal - student.feePaid;
-      document.getElementById('fee-balance').innerText = balance;
-      
-      const percent = (student.feePaid / student.feeTotal) * 100;
-      document.getElementById('fee-bar').style.width = percent + "%";
     }
+  });
 
-    // --- MODAL HANDLING ---
-    window.openModal = function(type) {
-      const modal = document.getElementById('genericModal');
-      const title = document.getElementById('modal-title');
-      const content = document.getElementById('modal-content');
 
-      modal.style.display = 'flex';
+  document.getElementById("regForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      if(type === 'classModal') {
-        title.innerText = "Daily Class Update";
-        content.innerHTML = `
-          <div class="form-group">
-            <label>Date</label><input type="date">
-          </div>
-          <div class="form-group">
-            <label>Topic Covered</label><input type="text">
-          </div>
-          <div class="form-group">
-            <label>Any Doubts?</label><textarea rows="2"></textarea>
-          </div>
-          <button class="submit-btn">Submit Update</button>
-        `;
-      } else if (type === 'clinicalModal') {
-        title.innerText = "Log Clinical Hours";
-        content.innerHTML = `
-          <div class="form-group">
-            <label>Hospital/Dept</label><input type="text" placeholder="e.g. Nanoor Hospital / ICU">
-          </div>
-          <div class="form-group">
-            <label>Hours Spent</label><input type="number">
-          </div>
-          <div class="form-group">
-            <label>Procedures Observed</label><textarea rows="2"></textarea>
-          </div>
-          <button class="submit-btn">Log Hours</button>
-        `;
-      }
-      // Add other conditions for other modals
+    const user = auth.currentUser;
+
+    const name = document.getElementById("reg-name").value;
+    const course = document.getElementById("reg-course").value;
+    const year = document.getElementById("reg-year").value;
+
+    const studentData = {
+      name: name,
+      course: course,
+      year: year,
+      studentId: "TEMP-ID",
+      feeTotal: 0,
+      feePaid: 0,
+      attendance: 0,
+      clinicalHours: 0,
+      internshipDays: 0,
+      assignments: 0,
+      status: "Active"
     };
 
-    window.closeModals = function() {
-      document.getElementById('genericModal').style.display = 'none';
-      document.getElementById('registerModal').style.display = 'none';
-    };
+    await setDoc(doc(db, "students", user.uid), studentData);
 
-    // --- DRAWER TOGGLE ---
-    window.toggleDrawer = function() {
-      const d = document.getElementById('mobileDrawer');
-      const b = document.getElementById('drawerBackdrop');
-      if (d.classList.contains('open')) {
-        d.classList.remove('open'); b.classList.remove('show');
-      } else {
-        d.classList.add('open'); b.classList.add('show');
-      }
-    };
+    registerModal.style.display = 'none';
+  });
+
+
+  function loadDashboardData(student) {
+
+    document.getElementById('disp-name').innerText = student.name;
+    document.getElementById('disp-id').innerText = student.studentId;
+    document.getElementById('disp-course').innerText = student.course;
+
+    document.getElementById('stat-attendance').innerText = student.attendance + "%";
+    document.getElementById('stat-clinical').innerText = student.clinicalHours;
+    document.getElementById('stat-internship').innerText = student.internshipDays || 0;
+    document.getElementById('stat-assignments').innerText = student.assignments;
+
+    document.getElementById('fee-total').innerText = student.feeTotal;
+    document.getElementById('fee-paid').innerText = student.feePaid;
+
+    const balance = student.feeTotal - student.feePaid;
+    document.getElementById('fee-balance').innerText = balance;
+
+    const percent = student.feeTotal > 0 
+      ? (student.feePaid / student.feeTotal) * 100 
+      : 0;
+
+    document.getElementById('fee-bar').style.width = percent + "%";
+  }
+
+
+  window.closeModals = function() {
+    document.getElementById('genericModal').style.display = 'none';
+    document.getElementById('registerModal').style.display = 'none';
+  };
+
+
+  window.toggleDrawer = function() {
+    const d = document.getElementById('mobileDrawer');
+    const b = document.getElementById('drawerBackdrop');
+    if (d.classList.contains('open')) {
+      d.classList.remove('open'); 
+      b.classList.remove('show');
+    } else {
+      d.classList.add('open'); 
+      b.classList.add('show');
+    }
+  };
   </script>
 </body>
 </html>
