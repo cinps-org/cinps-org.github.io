@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CINPS Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#f4f7fb;
+}
+
+header{
+  background:#0d3b8e;
+  color:#fff;
+  padding:18px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.dashboard{
+  width:95%;
+  max-width:1200px;
+  margin:30px auto;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.stat-card{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.stat-card h3{
+  margin:0;
+  font-size:22px;
+  color:#0d3b8e;
+}
+
+.stat-card p{
+  margin:5px 0 0;
+  font-size:13px;
+  color:#666;
+}
+
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+}
+
+th{
+  background:#f0f4ff;
+  text-align:left;
+}
+
+button{
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.edit{
+  background:#0d3b8e;
+  color:#fff;
+}
+
+.logout{
+  background:#ef4444;
+  color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>CINPS Admin Dashboard</h2>
+  <button class="logout" onclick="logout()">Log Out</button>
+</header>
+
+<div class="dashboard">
+
+<div class="stats">
+  <div class="stat-card">
+    <h3 id="totalStudents">0</h3>
+    <p>Total Students</p>
+  </div>
+
+  <div class="stat-card">
+    <h3 id="totalCollected">₹0</h3>
+    <p>Total Fee Collected</p>
+  </div>
+
+  <div class="stat-card">
+    <h3 id="totalPending">₹0</h3>
+    <p>Total Pending Fees</p>
+  </div>
+</div>
+
+<div class="card">
+<h3>Student Records</h3>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Course</th>
+<th>Attendance</th>
+<th>Fee Paid</th>
+<th>Fee Total</th>
+<th>Edit</th>
+</tr>
+</thead>
+<tbody id="studentTable"></tbody>
+</table>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { auth } from "./firebase/firebase-auth.js";
+import { db } from "./firebase/firebase-firestore.js";
+
+import { onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { collection, getDocs, doc, getDoc, updateDoc }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const table = document.getElementById("studentTable");
+
+onAuthStateChanged(auth, async (user)=>{
+
+  if(!user){
+    window.location.href="student-corner.html";
+    return;
+  }
+
+  const adminRef = doc(db,"admins",user.uid);
+  const adminSnap = await getDoc(adminRef);
+
+  if(!adminSnap.exists()){
+    alert("Access denied.");
+    window.location.href="student-corner.html";
+    return;
+  }
+
+  loadData();
+});
+
+async function loadData(){
+
+  table.innerHTML="";
+  let totalStudents=0;
+  let totalCollected=0;
+  let totalPending=0;
+
+  const snapshot = await getDocs(collection(db,"students"));
+
+  snapshot.forEach((docSnap)=>{
+
+    const data = docSnap.data();
+    totalStudents++;
+    totalCollected += Number(data.feePaid || 0);
+    totalPending += Number(data.feeTotal || 0) - Number(data.feePaid || 0);
+
+    table.innerHTML += `
+      <tr>
+        <td>${data.name}</td>
+        <td>${data.course}</td>
+        <td>${data.attendance}%</td>
+        <td>₹${data.feePaid}</td>
+        <td>₹${data.feeTotal}</td>
+        <td><button class="edit" onclick="editStudent('${docSnap.id}')">Edit</button></td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("totalStudents").innerText = totalStudents;
+  document.getElementById("totalCollected").innerText = "₹"+totalCollected;
+  document.getElementById("totalPending").innerText = "₹"+totalPending;
+}
+
+window.editStudent = async function(uid){
+
+  const newAttendance = prompt("New Attendance %:");
+  const newFeePaid = prompt("New Fee Paid:");
+  const newFeeTotal = prompt("New Fee Total:");
+
+  if(newAttendance !== null){
+
+    await updateDoc(doc(db,"students",uid),{
+      attendance:Number(newAttendance),
+      feePaid:Number(newFeePaid),
+      feeTotal:Number(newFeeTotal)
+    });
+
+    alert("Updated Successfully");
+    loadData();
+  }
+}
+
+window.logout = async function(){
+  await signOut(auth);
+  window.location.href="student-corner.html";
+}
+
+</script>
+
+</body>
+</html>
