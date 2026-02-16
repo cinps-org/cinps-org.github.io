@@ -22,11 +22,6 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-<div id="loading-screen" style="text-align:center;padding:40px;">
-  Checking Admin Access...
-</div>
-
-<div id="admin-content" style="display:none;">
 
 .dashboard{
   width:95%;
@@ -113,7 +108,7 @@ button{
 
 <header>
   <h2>CINPS Admin Dashboard</h2>
-  <button class="logout" onclick="handleLogout()">Log Out</button>
+  <button class="logout" onclick="logout()">Log Out</button>
 </header>
 
 <div class="dashboard">
@@ -156,6 +151,7 @@ button{
 
 </div>
 </div>
+
 <script type="module">
 
 import { auth } from "./firebase/firebase-auth.js";
@@ -178,6 +174,9 @@ const totalStudents = document.getElementById("totalStudents");
 const totalCollected = document.getElementById("totalCollected");
 const totalPending = document.getElementById("totalPending");
 
+const loadingScreen = document.getElementById("loading-screen");
+const adminContent = document.getElementById("admin-content");
+
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
@@ -186,7 +185,7 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  // Check admin collection
+  // 🔐 Check admin FIRST
   const adminRef = doc(db, "admins", user.uid);
   const adminSnap = await getDoc(adminRef);
 
@@ -196,7 +195,10 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  // If admin exists → load students
+  // ✅ Authorized
+  loadingScreen.style.display = "none";
+  adminContent.style.display = "block";
+
   loadStudents();
 
 });
