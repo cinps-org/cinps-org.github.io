@@ -462,45 +462,30 @@
 
 onAuthStateChanged(auth, async (user) => {
 
-  guestView.style.display = "none";
-  studentView.style.display = "none";
-
   if (!user) {
-    guestView.style.display = "flex";
+    window.location.href = "index.html";
     return;
   }
 
   try {
 
-    // 🔎 STEP 1 — Check if Admin
-    const adminRef = doc(db, "admins", user.uid);
-    const adminSnap = await getDoc(adminRef);
-
-    if (adminSnap.exists()) {
-      // ✅ If Admin → Redirect to Admin Panel
-      window.location.href = "admin.html";
-      return;
-    }
-
-    // 🔎 STEP 2 — Check if Student
     const studentRef = doc(db, "students", user.uid);
     const studentSnap = await getDoc(studentRef);
 
-    if (studentSnap.exists()) {
-
-      studentView.style.display = "block";
-      loadDashboardData(studentSnap.data());
-
-    } else {
-
-      // New student → show registration
-      registerModal.style.display = "flex";
+    if (!studentSnap.exists()) {
+      alert("Your student account is not registered. Contact administration.");
+      await signOut(auth);
+      return;
     }
 
+    const data = studentSnap.data();
+    loadStudentDashboard(data);
+
   } catch (error) {
-    console.error("Auth State Error:", error);
+    console.error(error);
     alert("System error. Please refresh.");
   }
+
 });
 
 
