@@ -95,6 +95,33 @@ button{
   background:#ef4444;
   color:#fff;
 }
+
+/* Modal */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+
+.modal{
+  background:#fff;
+  width:95%;
+  max-width:500px;
+  padding:25px;
+  border-radius:12px;
+}
+
+.modal input,
+.modal select{
+  padding:8px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:13px;
+}
 </style>
 </head>
 
@@ -152,6 +179,43 @@ button{
 </div>
 </div>
 
+<!-- ================= EDIT MODAL ================= -->
+
+<div id="editModal" class="modal-overlay">
+
+  <div class="modal">
+    <h3>Edit Student</h3>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <input type="text" id="editName" disabled>
+
+      <select id="editBranch">
+        <option value="Nanoor">Nanoor</option>
+        <option value="Sainthia">Sainthia</option>
+        <option value="Ranishwar">Ranishwar</option>
+      </select>
+
+      <input type="number" id="editAttendance" placeholder="Attendance (%)">
+      <input type="number" id="editClinical" placeholder="Clinical Hours">
+
+      <input type="number" id="editFeeTotal" placeholder="Fee Total">
+      <input type="number" id="editFeePaid" placeholder="Fee Paid">
+
+      <div style="font-size:13px;color:#555;">
+        Due: ₹<span id="editFeeDue">0</span>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button onclick="closeModal()">Cancel</button>
+        <button class="edit" onclick="saveChanges()">Save</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
 <script type="module">
 
 import { auth } from "./firebase/firebase-auth.js";
@@ -166,7 +230,9 @@ import {
   doc,
   getDoc,
   collection,
-  onSnapshot
+  onSnapshot,
+  updateDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentTable = document.getElementById("studentTable");
@@ -177,11 +243,20 @@ const totalPending = document.getElementById("totalPending");
 const loadingScreen = document.getElementById("loading-screen");
 const adminContent = document.getElementById("admin-content");
 
-let studentsData = []; // 🔥 In-memory store
+const editModal = document.getElementById("editModal");
+const editName = document.getElementById("editName");
+const editBranch = document.getElementById("editBranch");
+const editAttendance = document.getElementById("editAttendance");
+const editClinical = document.getElementById("editClinical");
+const editFeeTotal = document.getElementById("editFeeTotal");
+const editFeePaid = document.getElementById("editFeePaid");
+const editFeeDue = document.getElementById("editFeeDue");
 
-// ===============================
-// AUTH + ROLE CHECK
-// ===============================
+let studentsData = [];
+let currentEditId = null;
+let unsubscribe = null;
+
+/* ================= AUTH ================= */
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -204,15 +279,13 @@ onAuthStateChanged(auth, async (user) => {
   startRealtimeListener();
 });
 
-// ===============================
-// REALTIME STUDENT LISTENER
-// ===============================
+/* ================= REALTIME ================= */
 
 function startRealtimeListener() {
 
-  const studentsRef = collection(db, "students");
+  if (unsubscribe) unsubscribe();
 
-  onSnapshot(studentsRef, (snapshot) => {
+  unsubscribe = onSnapshot(collection(db, "students"), (snapshot) => {
 
     studentsData = [];
 
@@ -227,9 +300,7 @@ function startRealtimeListener() {
   });
 }
 
-// ===============================
-// DASHBOARD RENDER FUNCTION
-// ===============================
+/* ================= RENDER ================= */
 
 function renderDashboard(dataArray) {
 
@@ -243,19 +314,8 @@ function renderDashboard(dataArray) {
 
     studentCount++;
 
-    // 🔥 Backward compatibility
-    let totalFee = 0;
-    let paidFee = 0;
-
-    if (data.fees) {
-      totalFee = data.fees.total || 0;
-    paidFee = Number(data.fees?.paid) || 0;
-
-    } else {
-      totalFee = data.feeTotal || 0;
-    paidFee = Number(data.fees?.paid) || 0;
-
-    }
+    let totalFee = Number(data.fees?.total ?? data.feeTotal) || 0;
+    let paidFee = Number(data.fees?.paid ?? data.feePaid) || 0;
 
     collected += paidFee;
     pending += (totalFee - paidFee);
@@ -267,11 +327,7 @@ function renderDashboard(dataArray) {
         <td>${data.attendance || 0}%</td>
         <td>₹${paidFee}</td>
         <td>₹${totalFee}</td>
-        <td>
-          <button class="edit" data-id="${data.id}">
-            Edit
-          </button>
-        </td>
+        <td><button class="edit" data-id="${data.id}">Edit</button></td>
       </tr>
     `;
   });
@@ -283,9 +339,7 @@ function renderDashboard(dataArray) {
   attachEditListeners();
 }
 
-// ===============================
-// EDIT BUTTON LISTENER
-// ===============================
+/* ================= EDIT ================= */
 
 function attachEditListeners() {
 
@@ -296,24 +350,80 @@ function attachEditListeners() {
       const studentId = btn.getAttribute("data-id");
       const student = studentsData.find(s => s.id === studentId);
 
-      console.log("Edit student:", student);
+      if (!student) return;
 
-      // 🔥 Modal will be added next step
-      alert("Edit modal coming next step.");
+      currentEditId = studentId;
 
+      editName.value = student.name || "";
+      editBranch.value = student.branch || "Nanoor";
+      editAttendance.value = student.attendance || 0;
+      editClinical.value = student.clinicalHours || 0;
+
+      const total = Number(student.fees?.total ?? student.feeTotal) || 0;
+      const paid = Number(student.fees?.paid ?? student.feePaid) || 0;
+
+      editFeeTotal.value = total;
+      editFeePaid.value = paid;
+      editFeeDue.textContent = total - paid;
+
+      editModal.style.display = "flex";
     });
   });
 }
 
-// ===============================
-// LOGOUT
-// ===============================
+function calculateDue(){
+  const total = Number(editFeeTotal.value) || 0;
+  const paid = Number(editFeePaid.value) || 0;
+  editFeeDue.textContent = total - paid;
+}
 
-window.logout = async function () {
+editFeeTotal.addEventListener("input", calculateDue);
+editFeePaid.addEventListener("input", calculateDue);
+
+window.closeModal = function(){
+  editModal.style.display = "none";
+  currentEditId = null;
+};
+
+window.saveChanges = async function(){
+
+  if(!currentEditId) return;
+
+  try{
+
+    const studentRef = doc(db,"students",currentEditId);
+
+    const total = Number(editFeeTotal.value) || 0;
+    const paid = Number(editFeePaid.value) || 0;
+
+    await updateDoc(studentRef,{
+      branch: editBranch.value,
+      attendance: Number(editAttendance.value) || 0,
+      clinicalHours: Number(editClinical.value) || 0,
+      fees:{
+        total: total,
+        paid: paid,
+        due: total - paid
+      },
+      updatedAt: serverTimestamp()
+    });
+
+    closeModal();
+
+  }catch(error){
+    alert("Update failed. Try again.");
+    console.error(error);
+  }
+};
+
+/* ================= LOGOUT ================= */
+
+window.logout = async function(){
   await signOut(auth);
-  window.location.href = "student-corner.html";
+  window.location.href="student-corner.html";
 };
 
 </script>
+
 </body>
 </html>
