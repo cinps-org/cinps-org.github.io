@@ -79,7 +79,7 @@ th{
 }
 
 button{
-  padding:6px 10px;
+  padding:6px 12px;
   border:none;
   border-radius:6px;
   font-size:12px;
@@ -113,6 +113,18 @@ button{
   max-width:500px;
   padding:25px;
   border-radius:12px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.form-group label{
+  font-size:12px;
+  font-weight:600;
+  color:#333;
 }
 
 .modal input,
@@ -182,38 +194,63 @@ button{
 <!-- ================= EDIT MODAL ================= -->
 
 <div id="editModal" class="modal-overlay">
-
   <div class="modal">
+
     <h3>Edit Student</h3>
 
-    <div style="display:flex; flex-direction:column; gap:12px;">
+    <div style="display:flex; flex-direction:column; gap:14px;">
 
-      <input type="text" id="editName" disabled>
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" id="editName" readonly>
+      </div>
 
-      <select id="editBranch">
-        <option value="Nanoor">Nanoor</option>
-        <option value="Sainthia">Sainthia</option>
-        <option value="Ranishwar">Ranishwar</option>
-      </select>
+      <div class="form-group">
+        <label>Course</label>
+        <input type="text" id="editCourse" readonly>
+      </div>
 
-      <input type="number" id="editAttendance" placeholder="Attendance (%)">
-      <input type="number" id="editClinical" placeholder="Clinical Hours">
+      <div class="form-group">
+        <label>Branch</label>
+        <select id="editBranch">
+          <option value="Nanoor">Nanoor</option>
+          <option value="Sainthia">Sainthia</option>
+          <option value="Ranishwar">Ranishwar</option>
+        </select>
+      </div>
 
-      <input type="number" id="editFeeTotal" placeholder="Fee Total">
-      <input type="number" id="editFeePaid" placeholder="Fee Paid">
+      <div class="form-group">
+        <label>Attendance (%)</label>
+        <input type="number" id="editAttendance">
+      </div>
 
-      <div style="font-size:13px;color:#555;">
+      <div class="form-group">
+        <label>Clinical Hours</label>
+        <input type="number" id="editClinical">
+      </div>
+
+      <div class="form-group">
+        <label>Fee Total</label>
+        <input type="number" id="editFeeTotal">
+      </div>
+
+      <div class="form-group">
+        <label>Fee Paid</label>
+        <input type="number" id="editFeePaid">
+      </div>
+
+      <div style="font-size:13px; font-weight:600;">
         Due: ₹<span id="editFeeDue">0</span>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:10px;">
         <button onclick="closeModal()">Cancel</button>
-        <button class="edit" onclick="saveChanges()">Save</button>
+        <button class="edit" onclick="saveChanges()">Save Changes</button>
       </div>
 
     </div>
-  </div>
 
+  </div>
 </div>
 
 <script type="module">
@@ -221,10 +258,8 @@ button{
 import { auth } from "./firebase/firebase-auth.js";
 import { db } from "./firebase/firebase-firestore.js";
 
-import {
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { onAuthStateChanged, signOut }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   doc,
@@ -233,7 +268,8 @@ import {
   onSnapshot,
   updateDoc,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentTable = document.getElementById("studentTable");
 const totalStudents = document.getElementById("totalStudents");
@@ -245,6 +281,7 @@ const adminContent = document.getElementById("admin-content");
 
 const editModal = document.getElementById("editModal");
 const editName = document.getElementById("editName");
+const editCourse = document.getElementById("editCourse");
 const editBranch = document.getElementById("editBranch");
 const editAttendance = document.getElementById("editAttendance");
 const editClinical = document.getElementById("editClinical");
@@ -254,9 +291,8 @@ const editFeeDue = document.getElementById("editFeeDue");
 
 let studentsData = [];
 let currentEditId = null;
-let unsubscribe = null;
 
-/* ================= AUTH ================= */
+/* AUTH CHECK */
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -279,13 +315,11 @@ onAuthStateChanged(auth, async (user) => {
   startRealtimeListener();
 });
 
-/* ================= REALTIME ================= */
+/* REALTIME LISTENER */
 
 function startRealtimeListener() {
 
-  if (unsubscribe) unsubscribe();
-
-  unsubscribe = onSnapshot(collection(db, "students"), (snapshot) => {
+  onSnapshot(collection(db, "students"), (snapshot) => {
 
     studentsData = [];
 
@@ -300,7 +334,7 @@ function startRealtimeListener() {
   });
 }
 
-/* ================= RENDER ================= */
+/* RENDER */
 
 function renderDashboard(dataArray) {
 
@@ -314,8 +348,8 @@ function renderDashboard(dataArray) {
 
     studentCount++;
 
-    let totalFee = Number(data.fees?.total ?? data.feeTotal) || 0;
-    let paidFee = Number(data.fees?.paid ?? data.feePaid) || 0;
+    const totalFee = Number(data.fees?.total ?? data.feeTotal) || 0;
+    const paidFee = Number(data.fees?.paid ?? data.feePaid) || 0;
 
     collected += paidFee;
     pending += (totalFee - paidFee);
@@ -339,7 +373,7 @@ function renderDashboard(dataArray) {
   attachEditListeners();
 }
 
-/* ================= EDIT ================= */
+/* EDIT */
 
 function attachEditListeners() {
 
@@ -347,14 +381,14 @@ function attachEditListeners() {
 
     btn.addEventListener("click", () => {
 
-      const studentId = btn.getAttribute("data-id");
-      const student = studentsData.find(s => s.id === studentId);
-
+      const id = btn.getAttribute("data-id");
+      const student = studentsData.find(s => s.id === id);
       if (!student) return;
 
-      currentEditId = studentId;
+      currentEditId = id;
 
       editName.value = student.name || "";
+      editCourse.value = student.course || "";
       editBranch.value = student.branch || "Nanoor";
       editAttendance.value = student.attendance || 0;
       editClinical.value = student.clinicalHours || 0;
@@ -390,7 +424,6 @@ window.saveChanges = async function(){
   if(!currentEditId) return;
 
   try{
-
     const studentRef = doc(db,"students",currentEditId);
 
     const total = Number(editFeeTotal.value) || 0;
@@ -416,14 +449,11 @@ window.saveChanges = async function(){
   }
 };
 
-/* ================= LOGOUT ================= */
-
 window.logout = async function(){
   await signOut(auth);
   window.location.href="student-corner.html";
 };
 
 </script>
-
 </body>
 </html>
