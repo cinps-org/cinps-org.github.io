@@ -157,16 +157,16 @@ button{
 import { auth } from "./firebase/firebase-auth.js";
 import { db } from "./firebase/firebase-firestore.js";
 
-import { 
+import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { 
+import {
   doc,
   getDoc,
   collection,
-  getDocs
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentTable = document.getElementById("studentTable");
@@ -177,35 +177,61 @@ const totalPending = document.getElementById("totalPending");
 const loadingScreen = document.getElementById("loading-screen");
 const adminContent = document.getElementById("admin-content");
 
+let studentsData = []; // 🔥 In-memory store
+
+// ===============================
+// AUTH + ROLE CHECK
+// ===============================
+
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
-    alert("Not authorised");
     window.location.href = "student-corner.html";
     return;
   }
 
-  // 🔐 Check admin FIRST
   const adminRef = doc(db, "admins", user.uid);
   const adminSnap = await getDoc(adminRef);
 
   if (!adminSnap.exists()) {
-    alert("Access denied");
     window.location.href = "student-corner.html";
     return;
   }
 
-  // ✅ Authorized
   loadingScreen.style.display = "none";
   adminContent.style.display = "block";
 
-  loadStudents();
-
+  startRealtimeListener();
 });
 
-async function loadStudents() {
+// ===============================
+// REALTIME STUDENT LISTENER
+// ===============================
 
-  const querySnapshot = await getDocs(collection(db, "students"));
+function startRealtimeListener() {
+
+  const studentsRef = collection(db, "students");
+
+  onSnapshot(studentsRef, (snapshot) => {
+
+    studentsData = [];
+
+    snapshot.forEach((docSnap) => {
+      studentsData.push({
+        id: docSnap.id,
+        ...docSnap.data()
+      });
+    });
+
+    renderDashboard(studentsData);
+  });
+}
+
+// ===============================
+// DASHBOARD RENDER FUNCTION
+// ===============================
+
+function renderDashboard(dataArray) {
 
   let studentCount = 0;
   let collected = 0;
@@ -213,23 +239,39 @@ async function loadStudents() {
 
   studentTable.innerHTML = "";
 
-  querySnapshot.forEach((docSnap) => {
-
-    const data = docSnap.data();
+  dataArray.forEach((data) => {
 
     studentCount++;
 
-    collected += data.feePaid || 0;
-    pending += (data.feeTotal || 0) - (data.feePaid || 0);
+    // 🔥 Backward compatibility
+    let totalFee = 0;
+    let paidFee = 0;
+
+    if (data.fees) {
+      totalFee = data.fees.total || 0;
+    paidFee = Number(data.fees?.paid) || 0;
+
+    } else {
+      totalFee = data.feeTotal || 0;
+    paidFee = Number(data.fees?.paid) || 0;
+
+    }
+
+    collected += paidFee;
+    pending += (totalFee - paidFee);
 
     studentTable.innerHTML += `
       <tr>
-        <td>${data.name}</td>
-        <td>${data.course}</td>
-        <td>${data.attendance}%</td>
-        <td>₹${data.feePaid}</td>
-        <td>₹${data.feeTotal}</td>
-        <td><button class="edit">Edit</button></td>
+        <td>${data.name || "-"}</td>
+        <td>${data.course || "-"}</td>
+        <td>${data.attendance || 0}%</td>
+        <td>₹${paidFee}</td>
+        <td>₹${totalFee}</td>
+        <td>
+          <button class="edit" data-id="${data.id}">
+            Edit
+          </button>
+        </td>
       </tr>
     `;
   });
@@ -237,14 +279,41 @@ async function loadStudents() {
   totalStudents.textContent = studentCount;
   totalCollected.textContent = "₹" + collected;
   totalPending.textContent = "₹" + pending;
+
+  attachEditListeners();
 }
 
-window.logout = async function() {
+// ===============================
+// EDIT BUTTON LISTENER
+// ===============================
+
+function attachEditListeners() {
+
+  document.querySelectorAll(".edit").forEach((btn) => {
+
+    btn.addEventListener("click", () => {
+
+      const studentId = btn.getAttribute("data-id");
+      const student = studentsData.find(s => s.id === studentId);
+
+      console.log("Edit student:", student);
+
+      // 🔥 Modal will be added next step
+      alert("Edit modal coming next step.");
+
+    });
+  });
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+
+window.logout = async function () {
   await signOut(auth);
   window.location.href = "student-corner.html";
 };
 
 </script>
-
 </body>
 </html>
