@@ -256,16 +256,19 @@ function loadDashboard(student){
   document.getElementById("assignmentStat").innerText =
     student.assignments || 0;
 
-  const total = student.fees?.total || 0;
-  const paid = student.fees?.paid || 0;
-  const due = student.fees?.due ?? (total - paid);
+const total = Number(student.fees?.total || 0);
+const paid = Number(student.fees?.paid || 0);
 
-  document.getElementById("feeTotal").innerText = total;
-  document.getElementById("feePaid").innerText = paid;
-  document.getElementById("feeDue").innerText = due;
+// Always calculate due dynamically
+const due = total - paid;
 
-  const percent = total > 0 ? (paid / total) * 100 : 0;
-  document.getElementById("feeFill").style.width = percent + "%";
+document.getElementById("feeTotal").innerText = total;
+document.getElementById("feePaid").innerText = paid;
+document.getElementById("feeDue").innerText = due;
+
+const percent = total > 0 ? (paid / total) * 100 : 0;
+document.getElementById("feeFill").style.width = percent + "%";
+
 }
 
 </script>
