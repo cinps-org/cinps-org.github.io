@@ -189,8 +189,7 @@ import {
 
 import {
   doc,
-  getDoc,
-  updateDoc
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const guestView = document.getElementById("guestView");
@@ -214,8 +213,7 @@ onAuthStateChanged(auth, async (user)=>{
 
   try{
 
-    // 🔥 DIRECT DOCUMENT READ USING EMAIL AS DOC ID
-    const studentRef = doc(db, "students", user.email);
+    const studentRef = doc(db,"students", user.email);
     const studentSnap = await getDoc(studentRef);
 
     if(!studentSnap.exists()){
@@ -225,21 +223,6 @@ onAuthStateChanged(auth, async (user)=>{
     }
 
     const studentData = studentSnap.data();
-
-    // 🔥 First login UID binding
-    if(!studentData.uid){
-      await updateDoc(studentRef,{
-        uid:user.uid,
-        status:"active"
-      });
-      studentData.uid=user.uid;
-    }
-
-    if(studentData.uid !== user.uid){
-      alert("Account mismatch. Contact admin.");
-      await signOut(auth);
-      return;
-    }
 
     loadDashboard(studentData);
 
@@ -268,7 +251,7 @@ function loadDashboard(student){
 
   const total = student.fees?.total || 0;
   const paid = student.fees?.paid || 0;
-  const due = total - paid;
+  const due = student.fees?.due || (total - paid);
 
   document.getElementById("feeTotal").innerText = total;
   document.getElementById("feePaid").innerText = paid;
@@ -276,6 +259,39 @@ function loadDashboard(student){
 
   const percent = total>0 ? (paid/total)*100 : 0;
   document.getElementById("feeFill").style.width = percent+"%";
+}
+
+</script>
+function loadDashboard(student) {
+
+  document.getElementById("studentName").innerText = student.name || "";
+  document.getElementById("studentId").innerText = student.studentId || "";
+  document.getElementById("studentCourse").innerText = student.course || "";
+  document.getElementById("studentStatus").innerText = student.status || "";
+  document.getElementById("studentBranch").innerText = student.branch || "";
+
+  document.getElementById("attendanceStat").innerText =
+    (student.attendance || 0) + "%";
+
+  document.getElementById("clinicalStat").innerText =
+    student.clinicalHours || 0;
+
+  document.getElementById("internshipStat").innerText =
+    student.internshipDays || 0;
+
+  document.getElementById("assignmentStat").innerText =
+    student.assignments || 0;
+
+  const total = student.fees?.total || 0;
+  const paid = student.fees?.paid || 0;
+  const due = total - paid;
+
+  document.getElementById("feeTotal").innerText = total;
+  document.getElementById("feePaid").innerText = paid;
+  document.getElementById("feeDue").innerText = due;
+
+  const percent = total > 0 ? (paid / total) * 100 : 0;
+  document.getElementById("feeFill").style.width = percent + "%";
 }
 
 </script>
