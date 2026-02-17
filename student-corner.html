@@ -253,11 +253,10 @@ onAuthStateChanged(auth, async (user)=>{
     guestView.style.display="none";
     dashboard.style.display="block";
 
-  }catch(error){
-    console.error(error);
-    alert("System error.");
-  }
-
+}catch(error){
+  console.error("FULL ERROR:", error);
+  alert(error.message);
+}
 });
 
 function loadDashboard(student){
