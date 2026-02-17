@@ -459,11 +459,12 @@
 
 
   /* ================= AUTH STATE ================= */
-
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
-    window.location.href = "index.html";
+    // Show login screen
+    document.getElementById("guest-view").style.display = "flex";
+    document.getElementById("student-dashboard").style.display = "none";
     return;
   }
 
@@ -473,13 +474,17 @@ onAuthStateChanged(auth, async (user) => {
     const studentSnap = await getDoc(studentRef);
 
     if (!studentSnap.exists()) {
-      alert("Your student account is not registered. Contact administration.");
+      alert("Your account is not activated. Please contact administration.");
       await signOut(auth);
       return;
     }
 
     const data = studentSnap.data();
-    loadStudentDashboard(data);
+
+    document.getElementById("guest-view").style.display = "none";
+    document.getElementById("student-dashboard").style.display = "block";
+
+    loadDashboardData(data);
 
   } catch (error) {
     console.error(error);
@@ -487,8 +492,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 
 });
-
-
 
   /* ================= REGISTRATION ================= */
 
