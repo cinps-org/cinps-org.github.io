@@ -188,10 +188,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-  collection,
-  query,
-  where,
-  getDocs,
+  doc,
+  getDoc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -216,24 +214,19 @@ onAuthStateChanged(auth, async (user)=>{
 
   try{
 
-    const q = query(
-      collection(db,"students"),
-      where("email","==",user.email)
-    );
+    // 🔥 DIRECT DOCUMENT READ USING EMAIL AS DOC ID
+    const studentRef = doc(db, "students", user.email);
+    const studentSnap = await getDoc(studentRef);
 
-    const snapshot = await getDocs(q);
-
-    if(snapshot.empty){
+    if(!studentSnap.exists()){
       alert("No student record found. Contact administration.");
       await signOut(auth);
       return;
     }
 
-    const docSnap = snapshot.docs[0];
-    const studentRef = docSnap.ref;
-    const studentData = docSnap.data();
+    const studentData = studentSnap.data();
 
-    // First login activation
+    // 🔥 First login UID binding
     if(!studentData.uid){
       await updateDoc(studentRef,{
         uid:user.uid,
@@ -253,10 +246,11 @@ onAuthStateChanged(auth, async (user)=>{
     guestView.style.display="none";
     dashboard.style.display="block";
 
-}catch(error){
-  console.error("FULL ERROR:", error);
-  alert(error.message);
-}
+  }catch(error){
+    console.error("FULL ERROR:", error);
+    alert(error.message);
+  }
+
 });
 
 function loadDashboard(student){
