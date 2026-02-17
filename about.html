@@ -499,19 +499,40 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function sendMsg(){
-      const msg = input.value.trim();
-      if(!msg) return;
-      addMsg(msg, 'user');
-      input.value = '';
-      addMsg('🧠 Thinking…','bot');
+   const CINPS_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
 
-      setTimeout(()=>{
-        const last = messages.lastElementChild;
-        if (last && last.textContent.includes('Thinking')) last.remove();
-        addMsg('Thanks — we received your query. For admissions and course details, visit Admissions or call +91 8101579839.','bot');
-      }, 700);
-    }
+function sendMsg(){
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  addMsg(msg, 'user');
+  input.value = '';
+
+  const loading = document.createElement('div');
+  loading.textContent = "🧠 Thinking…";
+  loading.style.marginBottom='10px';
+  loading.style.padding='10px 14px';
+  loading.style.borderRadius='12px';
+  loading.style.background='#f1f5ff';
+  messages.appendChild(loading);
+
+  fetch(CINPS_API, {
+    method: "POST",
+    body: JSON.stringify({
+      userId: "WEB_" + Date.now(),
+      message: msg
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loading.remove();
+    addMsg(data.reply || "Please contact CINPS office.");
+  })
+  .catch(() => {
+    loading.remove();
+    addMsg("Please contact CINPS office at +91 8101579839.");
+  });
+}
 
     sendBtn?.addEventListener('click', sendMsg);
     input?.addEventListener('keydown', (e) => {
