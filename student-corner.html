@@ -1,598 +1,289 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Student Corner | CINPS</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="CINPS Student Portal - Track attendance, fees, clinical hours, and assignments.">
-  
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="icon" href="assets/favicon.ico">
+<meta charset="utf-8" />
+<title>Student Corner | CINPS</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="CINPS Student Portal - Track attendance, fees, clinical hours, and assignments.">
 
-  <style>
-    /* ================= THEME VARIABLES ================= */
-    :root{
-      --brand-blue:#0d3b8e;
-      --light-blue:#1f57b8;
-      --accent-green:#10b981;
-      --accent-red:#ef4444;
-      --accent-orange:#f59e0b;
-      --muted:#6b7280;
-      --bg-light:#f8fafc;
-      --shadow:0 10px 30px rgba(13,59,142,0.08);
-      --radius:14px;
-      --container:1100px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:'Poppins',sans-serif;
-      background:var(--bg-light);
-      color:#222;
-      line-height:1.6;
-      -webkit-font-smoothing:antialiased;
-    }
-    .container{width:92%;max-width:var(--container);margin:0 auto}
-    a{text-decoration:none;color:inherit}
-    button{cursor:pointer;font-family:inherit}
+<style>
+:root{
+  --brand:#0d3b8e;
+  --bg:#f4f7fb;
+  --shadow:0 10px 30px rgba(0,0,0,0.05);
+}
 
-    /* ================= HEADER ================= */
-    .site-header{
-      position:sticky;top:0;z-index:1200;background:#fff;box-shadow:var(--shadow);
-    }
-    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .logo-wrap{display:flex;align-items:center;gap:12px;color:var(--brand-blue)}
-    .logo{height:48px;object-fit:contain}
-    .brand-text{display:flex;flex-direction:column}
-    .brand-text .title{font-weight:700;font-size:15px;line-height:1.2}
-    .brand-text .subtitle{font-size:12px;color:var(--muted)}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);}
 
-    /* Nav Logic matches previous pages */
-    .nav{display:flex;align-items:center;gap:18px}
-    .nav-menu{display:flex;gap:18px;list-style:none}
-    .nav-menu a{color:var(--brand-blue);font-weight:600;padding:8px 10px;border-radius:8px;font-size:14px}
-    .nav-menu a:hover{background:rgba(13,59,142,0.06)}
-    .nav-toggle{display:none;background:none;border:0;font-size:24px;color:var(--brand-blue);padding:8px}
+header{
+  background:var(--brand);
+  color:#fff;
+  padding:18px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    /* Mobile Drawer */
-    .mobile-drawer{
-      position:fixed;top:0;right:-100%;height:100%;width:300px;background:#fff;
-      box-shadow:0 0 50px rgba(0,0,0,0.2);transition:right .3s ease;z-index:1300;
-      display:flex;flex-direction:column;padding:20px;
-    }
-    .mobile-drawer.open{right:0}
-    .drawer-links a{display:block;padding:12px;font-weight:700;color:var(--brand-blue);border-bottom:1px solid #f1f1f1}
-    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:none;z-index:1250}
-    .drawer-backdrop.show{display:block}
+button{
+  cursor:pointer;
+  border:none;
+  border-radius:6px;
+  padding:8px 14px;
+  font-size:13px;
+}
 
-    /* ================= LOGIN HERO (Guest View) ================= */
-    #guest-view{
-      min-height:85vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: linear-gradient(135deg, var(--brand-blue) 0%, var(--light-blue) 100%);
-      padding:20px;
-    }
-    .login-card{
-      background:#fff;
-      padding:40px;
-      border-radius:16px;
-      box-shadow:0 20px 60px rgba(0,0,0,0.2);
-      text-align:center;
-      max-width:400px;
-      width:100%;
-    }
-    .login-card h1{color:var(--brand-blue);font-size:24px;margin-bottom:10px}
-    .login-card p{color:#666;margin-bottom:24px;font-size:14px}
-    .google-btn{
-      display:flex;align-items:center;justify-content:center;gap:12px;
-      width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;
-      background:#fff;font-weight:600;color:#444;transition:all 0.2s;
-    }
-    .google-btn:hover{background:#f9f9f9;border-color:#ccc}
+.login-screen{
+  min-height:90vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    /* ================= DASHBOARD (Student View) ================= */
-    #student-dashboard{display:none; padding-bottom:60px;}
-    
-    /* Top Profile Card */
-    .profile-section{
-      background:#fff; padding:30px 0; border-bottom:1px solid #eee; margin-bottom:30px;
-    }
-    .profile-card{
-      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
-    }
-    .student-info h2{color:var(--brand-blue);font-size:24px;margin-bottom:4px}
-    .student-info .meta{font-size:14px;color:#666; display:flex; gap:15px; flex-wrap:wrap;}
-    .student-info .badge{background:var(--brand-blue);color:#fff;padding:2px 8px;border-radius:4px;font-size:12px;}
-    
-    .logout-btn{
-      padding:8px 16px; border:1px solid #ef4444; color:#ef4444; background:#fff; 
-      border-radius:6px; font-size:13px; font-weight:600; transition:0.2s;
-    }
-    .logout-btn:hover{background:#ef4444; color:#fff;}
+.login-card{
+  background:#fff;
+  padding:40px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  text-align:center;
+  width:95%;
+  max-width:400px;
+}
 
-    /* Stats Row */
-    .stats-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:16px; margin-bottom:30px;
-    }
-    .stat-card{
-      background:#fff; padding:16px; border-radius:12px; box-shadow:var(--shadow); border:1px solid #edf2f7; text-align:center;
-    }
-    .stat-val{font-size:24px; font-weight:700; color:var(--brand-blue); display:block;}
-    .stat-label{font-size:12px; color:#666; font-weight:500;}
+.google-btn{
+  width:100%;
+  background:#fff;
+  border:1px solid #ddd;
+  padding:12px;
+  border-radius:8px;
+  font-weight:600;
+}
 
-    /* Main Grid */
-    .dashboard-grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;
-    }
-    
-    /* Action Cards */
-    .action-card{
-      background:#fff; border-radius:14px; padding:24px; box-shadow:var(--shadow); 
-      border:1px solid #edf2f7; transition:transform 0.2s; position:relative; overflow:hidden;
-      display:flex; flex-direction:column;
-    }
-    .action-card:hover{transform:translateY(-4px);}
-    
-    .card-head{display:flex; align-items:center; gap:12px; margin-bottom:16px;}
-    .card-icon{
-      width:40px; height:40px; border-radius:8px; background:rgba(13,59,142,0.1); 
-      color:var(--brand-blue); display:flex; align-items:center; justify-content:center; font-size:18px;
-    }
-    .card-title{font-size:16px; font-weight:700; color:#333;}
-    
-    .card-body{font-size:14px; color:#555; flex:1; margin-bottom:16px;}
-    
-    .card-btn{
-      width:100%; padding:10px; border-radius:8px; border:none; font-weight:600; font-size:13px;
-      background:var(--brand-blue); color:#fff; text-align:center;
-    }
-    
-    /* Specific Card Styles */
-    .fee-progress{height:8px; background:#eee; border-radius:4px; margin:10px 0; overflow:hidden;}
-    .fee-bar{height:100%; background:var(--accent-green); width:0%; transition:width 1s;}
-    .fee-text{font-size:12px; display:flex; justify-content:space-between;}
+.dashboard{
+  display:none;
+  width:95%;
+  max-width:1100px;
+  margin:30px auto;
+}
 
-    .notice-item{border-left:3px solid var(--accent-orange); padding-left:10px; margin-bottom:10px; font-size:13px;}
-    .notice-date{font-size:11px; color:#999; display:block;}
+.profile{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+}
 
-    /* ================= MODAL ================= */
-    .modal-overlay{
-      position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000;
-      display:none; align-items:center; justify-content:center; padding:20px;
-    }
-    .modal-box{
-      background:#fff; width:100%; max-width:500px; border-radius:16px; padding:24px;
-      max-height:90vh; overflow-y:auto;
-    }
-    .modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
-    .modal-header h3{color:var(--brand-blue);}
-    .close-modal{background:none; border:none; font-size:20px; color:#999;}
-    
-    .form-group{margin-bottom:16px;}
-    .form-group label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:#444;}
-    .form-group input, .form-group select, .form-group textarea{
-      width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; font-size:14px;
-    }
-    .submit-btn{
-      width:100%; padding:12px; background:var(--brand-blue); color:#fff; border:none; 
-      border-radius:8px; font-weight:600;
-    }
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:20px;
+}
 
-    /* ================= RESPONSIVE ================= */
-    @media(max-width:768px){
-      .nav-menu{display:none} .nav-toggle{display:block}
-      .profile-card{flex-direction:column; align-items:flex-start;}
-      .stats-grid{grid-template-columns:1fr 1fr;}
-      .dashboard-grid{grid-template-columns:1fr;}
-    }
-  </style>
+.stat-card{
+  background:#fff;
+  padding:18px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.stat-card h3{
+  color:var(--brand);
+  font-size:22px;
+}
+
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+
+.fee-bar{
+  height:8px;
+  background:#ddd;
+  border-radius:4px;
+  margin-top:8px;
+  overflow:hidden;
+}
+
+.fee-fill{
+  height:100%;
+  background:#10b981;
+  width:0%;
+}
+</style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo-wrap">
-        <img src="assets/images/logo.png" alt="CINPS" class="logo">
-        <div class="brand-text">
-          <span class="title">Chandidas Institute</span>
-          <span class="subtitle">Nursing & Paramedical Science</span>
-        </div>
-      </a>
-      <nav class="nav">
-        <ul class="nav-menu">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="courses.html">Courses</a></li>
-          <li><a href="student-corner.html" style="color:var(--brand-blue); background:rgba(13,59,142,0.06);">Student Corner</a></li>
-        </ul>
-        <button class="nav-toggle" onclick="toggleDrawer()">☰</button>
-      </nav>
-    </div>
-  </header>
+<header>
+  <h2>CINPS Student Portal</h2>
+  <button onclick="handleLogout()">Logout</button>
+</header>
 
-  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
-  <aside class="mobile-drawer" id="mobileDrawer">
-    <div class="drawer-links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="courses.html">Courses</a>
-      <a href="student-corner.html">Student Corner</a>
-    </div>
-  </aside>
+<div id="guestView" class="login-screen">
+  <div class="login-card">
+    <h2>Student Login</h2>
+    <p style="margin:10px 0 20px;">Login using your registered email</p>
+    <button class="google-btn" onclick="handleLogin()">
+      Sign in with Google
+    </button>
+  </div>
+</div>
 
-  <div id="guest-view">
-    <div class="login-card">
-      <h1>Student Login</h1>
-      <p>Access your dashboard, attendance, assignments, and fee status.</p>
-      <button class="google-btn" onclick="handleLogin()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-        Sign in with Google
-      </button>
-      <p style="margin-top:20px; font-size:12px; color:#999;">
-        First time? You will be redirected to registration.
-      </p>
+<div id="dashboard" class="dashboard">
+
+  <div class="profile">
+    <h2 id="studentName">Loading...</h2>
+    <p>ID: <span id="studentId"></span></p>
+    <p>Course: <span id="studentCourse"></span></p>
+    <p>Status: <span id="studentStatus"></span></p>
+    <p>Branch: <span id="studentBranch"></span></p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <h3 id="attendanceStat">0%</h3>
+      <p>Attendance</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="clinicalStat">0</h3>
+      <p>Clinical Hours</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="internshipStat">0</h3>
+      <p>Internship Days</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="assignmentStat">0</h3>
+      <p>Assignments</p>
     </div>
   </div>
 
-  <div id="student-dashboard">
-    
-    <div class="profile-section">
-      <div class="container profile-card">
-        <div class="student-info">
-          <h2 id="disp-name">Loading...</h2>
-          <div class="meta">
-            <span><i class="fa-solid fa-id-card"></i> <span id="disp-id">...</span></span>
-            <span><i class="fa-solid fa-graduation-cap"></i> <span id="disp-course">...</span></span>
-            <span class="badge" id="disp-status">Active</span>
-          </div>
-        </div>
-        <button class="logout-btn" onclick="handleLogout()">Log Out</button>
-      </div>
-    </div>
-
-    <div class="container">
-      
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-val" id="stat-attendance">0%</span>
-          <span class="stat-label">Attendance</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-val" id="stat-clinical">0</span>
-          <span class="stat-label">Clinical Hrs</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-val" id="stat-internship">0</span>
-          <span class="stat-label">Internship Days</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-val" id="stat-assignments">0</span>
-          <span class="stat-label">Assignments</span>
-        </div>
-      </div>
-
-      <div class="dashboard-grid">
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-user-check"></i></div>
-            <div class="card-title">Class Update</div>
-          </div>
-          <div class="card-body">Log your daily class attendance and topics covered.</div>
-          <button class="card-btn" onclick="openModal('classModal')">Give Update</button>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
-            <div class="card-title">Assignments</div>
-          </div>
-          <div class="card-body">View pending assignments and submit work.</div>
-          <button class="card-btn">View All</button>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-user-md"></i></div>
-            <div class="card-title">Clinical Log</div>
-          </div>
-          <div class="card-body">Record hospital visits, procedures, and hours.</div>
-          <button class="card-btn" onclick="openModal('clinicalModal')">Log Hours</button>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
-            <div class="card-title">Fee Status</div>
-          </div>
-          <div class="card-body">
-            <div class="fee-text">
-              <span>Paid: ₹<span id="fee-paid">0</span></span>
-              <span>Total: ₹<span id="fee-total">0</span></span>
-            </div>
-            <div class="fee-progress">
-              <div class="fee-bar" id="fee-bar" style="width:0%"></div>
-            </div>
-            <div style="font-size:12px; color:#ef4444; margin-top:4px;">
-              Balance: ₹<span id="fee-balance">0</span>
-            </div>
-          </div>
-          <button class="card-btn" style="background:var(--light-blue)">Payment History</button>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-bell"></i></div>
-            <div class="card-title">Notices</div>
-          </div>
-          <div class="card-body" id="notice-list">
-            <div class="notice-item">
-              <div>Exam Schedule Published</div>
-              <span class="notice-date">Feb 14, 2026</span>
-            </div>
-            <div class="notice-item">
-              <div>Holiday on Monday</div>
-              <span class="notice-date">Feb 12, 2026</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-briefcase-medical"></i></div>
-            <div class="card-title">Internship</div>
-          </div>
-          <div class="card-body">Update daily internship logs and supervisor remarks.</div>
-          <button class="card-btn" onclick="openModal('internModal')">Update Log</button>
-        </div>
-
-         <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-list-check"></i></div>
-            <div class="card-title">Syllabus</div>
-          </div>
-          <div class="card-body">Download course curriculum and track progress.</div>
-          <button class="card-btn" style="background:#64748b">Download PDF</button>
-        </div>
-
-        <div class="action-card">
-          <div class="card-head">
-            <div class="card-icon"><i class="fa-solid fa-headset"></i></div>
-            <div class="card-title">Support</div>
-          </div>
-          <div class="card-body">Facing issues? Contact admin or technical team.</div>
-          <button class="card-btn" onclick="openModal('supportModal')">Get Help</button>
-        </div>
-
-      </div>
+  <div class="card">
+    <h3>Fee Status</h3>
+    <p>Paid: ₹<span id="feePaid">0</span></p>
+    <p>Total: ₹<span id="feeTotal">0</span></p>
+    <p>Due: ₹<span id="feeDue">0</span></p>
+    <div class="fee-bar">
+      <div id="feeFill" class="fee-fill"></div>
     </div>
   </div>
 
-  <div class="modal-overlay" id="registerModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>Student Registration</h3>
-      </div>
-      <form id="regForm">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="reg-name" required>
-        </div>
-        <div class="form-group">
-          <label>Course</label>
-          <select id="reg-course">
-            <option>DOTT</option>
-            <option>DMLT</option>
-            <option>ICU Technician</option>
-            <option>EMT</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Admission Year</label>
-          <input type="number" id="reg-year" value="2026">
-        </div>
-        <button type="submit" class="submit-btn">Complete Registration</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="genericModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="modal-title">Update</h3>
-        <button class="close-modal" onclick="closeModals()">✕</button>
-      </div>
-      <div id="modal-content">
-        <p>Feature coming soon in backend integration.</p>
-      </div>
-    </div>
-  </div>
-
-  <footer style="background:var(--brand-blue);color:#fff;padding:24px;text-align:center;margin-top:auto;">
-    <div class="container" style="font-size: 13px; opacity: 0.8;">
-      © 2026 Chandidas Institute of Nursing & Paramedical Science
-    </div>
-  </footer>
+</div>
 
 <script type="module">
 
-  import { auth, googleProvider } from "./firebase/firebase-auth.js";
-  import { db } from "./firebase/firebase-firestore.js";
+import { auth, googleProvider } from "./firebase/firebase-auth.js";
+import { db } from "./firebase/firebase-firestore.js";
 
-  import { 
-    signInWithPopup, 
-    signOut, 
-    onAuthStateChanged 
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  import { 
-    doc, 
-    getDoc, 
-    setDoc 
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const guestView = document.getElementById("guestView");
+const dashboard = document.getElementById("dashboard");
 
-  const guestView = document.getElementById('guest-view');
-  const studentView = document.getElementById('student-dashboard');
-  const registerModal = document.getElementById('registerModal');
+window.handleLogin = async function(){
+  await signInWithPopup(auth, googleProvider);
+};
 
+window.handleLogout = async function(){
+  await signOut(auth);
+};
 
-  /* ================= LOGIN ================= */
+onAuthStateChanged(auth, async (user)=>{
 
-  window.handleLogin = async function() {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login Error:", error);
-      alert("Login failed. Please try again.");
-    }
-  };
-
-
-  window.handleLogout = async function() {
-    await signOut(auth);
-  };
-
-
-  /* ================= AUTH STATE ================= */
-onAuthStateChanged(auth, async (user) => {
-
-  if (!user) {
-    // Show login screen
-    document.getElementById("guest-view").style.display = "flex";
-    document.getElementById("student-dashboard").style.display = "none";
+  if(!user){
+    guestView.style.display="flex";
+    dashboard.style.display="none";
     return;
   }
 
-  try {
+  try{
 
-    const studentRef = doc(db, "students", user.uid);
-    const studentSnap = await getDoc(studentRef);
+    const q = query(
+      collection(db,"students"),
+      where("email","==",user.email)
+    );
 
-    if (!studentSnap.exists()) {
-      alert("Your account is not activated. Please contact administration.");
+    const snapshot = await getDocs(q);
+
+    if(snapshot.empty){
+      alert("No student record found. Contact administration.");
       await signOut(auth);
       return;
     }
 
-    const data = studentSnap.data();
+    const docSnap = snapshot.docs[0];
+    const studentRef = docSnap.ref;
+    const studentData = docSnap.data();
 
-    document.getElementById("guest-view").style.display = "none";
-    document.getElementById("student-dashboard").style.display = "block";
+    // First login activation
+    if(!studentData.uid){
+      await updateDoc(studentRef,{
+        uid:user.uid,
+        status:"active"
+      });
+      studentData.uid=user.uid;
+    }
 
-    loadDashboardData(data);
+    if(studentData.uid !== user.uid){
+      alert("Account mismatch. Contact admin.");
+      await signOut(auth);
+      return;
+    }
 
-  } catch (error) {
+    loadDashboard(studentData);
+
+    guestView.style.display="none";
+    dashboard.style.display="block";
+
+  }catch(error){
     console.error(error);
-    alert("System error. Please refresh.");
+    alert("System error.");
   }
 
 });
 
-  /* ================= REGISTRATION ================= */
+function loadDashboard(student){
 
-  document.getElementById("regForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  document.getElementById("studentName").innerText = student.name || "";
+  document.getElementById("studentId").innerText = student.studentId || "";
+  document.getElementById("studentCourse").innerText = student.course || "";
+  document.getElementById("studentStatus").innerText = student.status || "";
+  document.getElementById("studentBranch").innerText = student.branch || "";
 
-    const user = auth.currentUser;
+  document.getElementById("attendanceStat").innerText = (student.attendance || 0) + "%";
+  document.getElementById("clinicalStat").innerText = student.clinicalHours || 0;
+  document.getElementById("internshipStat").innerText = student.internshipDays || 0;
+  document.getElementById("assignmentStat").innerText = student.assignments || 0;
 
-    if (!user) {
-      alert("Authentication error. Please login again.");
-      return;
-    }
+  const total = student.fees?.total || 0;
+  const paid = student.fees?.paid || 0;
+  const due = total - paid;
 
-    const name = document.getElementById("reg-name").value.trim();
-    const course = document.getElementById("reg-course").value;
-    const year = document.getElementById("reg-year").value;
+  document.getElementById("feeTotal").innerText = total;
+  document.getElementById("feePaid").innerText = paid;
+  document.getElementById("feeDue").innerText = due;
 
-    const studentId = `CINPS-${course}-${year}-${user.uid.substring(0,5).toUpperCase()}`;
-
-    const studentData = {
-      name,
-      email: user.email,
-      photoURL: user.photoURL || "",
-      course,
-      year,
-      studentId,
-      feeTotal: 0,
-      feePaid: 0,
-      attendance: 0,
-      clinicalHours: 0,
-      internshipDays: 0,
-      assignments: 0,
-      status: "Active",
-      createdAt: new Date()
-    };
-
-    try {
-
-      await setDoc(doc(db, "students", user.uid), studentData);
-
-      registerModal.style.display = "none";
-      guestView.style.display = "none";
-      studentView.style.display = "block";
-
-      loadDashboardData(studentData);
-
-    } catch (error) {
-      console.error("Registration Error:", error);
-      alert("Registration failed.");
-    }
-  });
-
-
-  /* ================= DASHBOARD LOADER ================= */
-
-  function loadDashboardData(student) {
-
-    document.getElementById('disp-name').innerText = student.name;
-    document.getElementById('disp-id').innerText = student.studentId;
-    document.getElementById('disp-course').innerText = student.course;
-
-    document.getElementById('stat-attendance').innerText = (student.attendance || 0) + "%";
-    document.getElementById('stat-clinical').innerText = student.clinicalHours || 0;
-    document.getElementById('stat-internship').innerText = student.internshipDays || 0;
-    document.getElementById('stat-assignments').innerText = student.assignments || 0;
-
-    document.getElementById('fee-total').innerText = student.feeTotal || 0;
-    document.getElementById('fee-paid').innerText = student.feePaid || 0;
-
-    const balance = (student.feeTotal || 0) - (student.feePaid || 0);
-    document.getElementById('fee-balance').innerText = balance;
-
-    const percent = student.feeTotal > 0
-      ? (student.feePaid / student.feeTotal) * 100
-      : 0;
-
-    document.getElementById('fee-bar').style.width = percent + "%";
-  }
-
-
-  /* ================= MODALS ================= */
-
-  window.closeModals = function() {
-    document.getElementById('genericModal').style.display = 'none';
-    document.getElementById('registerModal').style.display = 'none';
-  };
-
-
-  /* ================= MOBILE DRAWER ================= */
-
-  window.toggleDrawer = function() {
-    const d = document.getElementById('mobileDrawer');
-    const b = document.getElementById('drawerBackdrop');
-    if (d.classList.contains('open')) {
-      d.classList.remove('open');
-      b.classList.remove('show');
-    } else {
-      d.classList.add('open');
-      b.classList.add('show');
-    }
-  };
+  const percent = total>0 ? (paid/total)*100 : 0;
+  document.getElementById("feeFill").style.width = percent+"%";
+}
 
 </script>
 </body>
