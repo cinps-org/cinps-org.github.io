@@ -399,13 +399,41 @@
 
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
-    sendBtn?.addEventListener('click', ()=>{
-      const val = input.value.trim();
-      if(!val) return;
-      addMsg(val, 'user');
-      input.value='';
-      setTimeout(()=>addMsg('Thank you. Please check the Admissions page for details.'), 600);
-    });
+    const CINPS_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+
+sendBtn?.addEventListener('click', sendMessage);
+input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
+
+function sendMessage(){
+  const val = input.value.trim();
+  if(!val) return;
+
+  addMsg(val, 'user');
+  input.value = '';
+
+  const loading = document.createElement('div');
+  loading.textContent = "Thinking...";
+  loading.style.padding='10px';
+  msgs.appendChild(loading);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  fetch(CINPS_API, {
+    method: "POST",
+    body: JSON.stringify({
+      userId: "WEB_" + Date.now(),
+      message: val
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loading.remove();
+    addMsg(data.reply || "Please contact CINPS office.");
+  })
+  .catch(() => {
+    loading.remove();
+    addMsg("Please contact CINPS office at +91 8101579839.");
+  });
+}
 
     // Global Close
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
