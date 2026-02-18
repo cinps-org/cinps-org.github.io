@@ -25,7 +25,7 @@ button{padding:6px 12px;border:none;border-radius:6px;font-size:12px;cursor:poin
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:1000;}
 .modal{background:#fff;width:95%;max-width:500px;padding:25px;border-radius:12px;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
-.form-group label{font-size:12px;font-weight:600;}
+.form-group label{font-size:12px;font-weight:600;color:#333;}
 .modal input,.modal select{padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;}
 </style>
 </head>
@@ -81,72 +81,96 @@ button{padding:6px 12px;border:none;border-radius:6px;font-size:12px;cursor:poin
 <div class="modal">
 <h3>Create Student</h3>
 
+<div style="display:flex;flex-direction:column;gap:14px;">
+
 <div class="form-group">
 <label>Name</label>
-<input id="createName">
+<input type="text" id="createName">
 </div>
 
 <div class="form-group">
-<label>Email (Document ID)</label>
-<input id="createEmail">
+<label>Email</label>
+<input type="email" id="createEmail">
 </div>
 
 <div class="form-group">
 <label>Course</label>
-<input id="createCourse">
+<select id="createCourse">
+<option>DOTT</option>
+<option>DMLT</option>
+<option>ICU Technician</option>
+<option>EMT</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Branch</label>
+<select id="createBranch">
+<option>Nanoor</option>
+<option>Sainthia</option>
+<option>Ranishwar</option>
+</select>
 </div>
 
 <div class="form-group">
 <label>Total Fee</label>
-<input id="createTotal" type="number">
+<input type="number" id="createFeeTotal" value="0">
 </div>
 
-<div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;">
+<div style="display:flex;justify-content:flex-end;gap:10px;">
 <button onclick="closeCreateModal()">Cancel</button>
 <button class="edit" onclick="createStudent()">Create</button>
 </div>
 
 </div>
 </div>
+</div>
 
 <!-- EDIT MODAL -->
 <div id="editModal" class="modal-overlay">
 <div class="modal">
-
 <h3>Edit Student</h3>
+
+<div style="display:flex;flex-direction:column;gap:14px;">
 
 <input type="hidden" id="editEmail">
 
 <div class="form-group">
 <label>Name</label>
-<input id="editName">
+<input type="text" id="editName">
 </div>
 
 <div class="form-group">
 <label>Course</label>
-<input id="editCourse">
+<select id="editCourse">
+<option>DOTT</option>
+<option>DMLT</option>
+<option>ICU Technician</option>
+<option>EMT</option>
+</select>
 </div>
 
 <div class="form-group">
 <label>Attendance (%)</label>
-<input id="editAttendance" type="number">
+<input type="number" id="editAttendance">
 </div>
 
 <div class="form-group">
 <label>Fee Paid</label>
-<input id="editPaid" type="number">
+<input type="number" id="editPaid">
 </div>
 
 <div class="form-group">
-<label>Fee Total</label>
-<input id="editTotal" type="number">
+<label>Total Fee</label>
+<input type="number" id="editTotal">
 </div>
 
-<div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;">
+<div style="display:flex;justify-content:flex-end;gap:10px;">
 <button onclick="closeEditModal()">Cancel</button>
-<button class="edit" onclick="saveEdit()">Save</button>
+<button class="edit" onclick="updateStudent()">Update</button>
 </div>
 
+</div>
 </div>
 </div>
 
@@ -159,7 +183,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import { 
 doc, getDoc, collection, onSnapshot, 
-updateDoc, setDoc, serverTimestamp
+updateDoc, setDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentTable = document.getElementById("studentTable");
@@ -167,126 +191,161 @@ const totalStudents = document.getElementById("totalStudents");
 const totalCollected = document.getElementById("totalCollected");
 const totalPending = document.getElementById("totalPending");
 
-onAuthStateChanged(auth, async (user)=>{
+const loadingScreen = document.getElementById("loading-screen");
+const adminContent = document.getElementById("admin-content");
 
-if(!user){ window.location.href="student-corner.html"; return; }
+let studentsData = [];
 
-const adminSnap = await getDoc(doc(db,"admins",user.uid));
-if(!adminSnap.exists()){ window.location.href="student-corner.html"; return; }
+onAuthStateChanged(auth, async (user) => {
 
-document.getElementById("loading-screen").style.display="none";
-document.getElementById("admin-content").style.display="block";
+  if (!user) {
+    window.location.href = "student-corner.html";
+    return;
+  }
 
-onSnapshot(collection(db,"students"), snapshot=>{
+  const adminRef = doc(db, "admins", user.uid);
+  const adminSnap = await getDoc(adminRef);
 
-let count=0, collected=0, pending=0;
-studentTable.innerHTML="";
+  if (!adminSnap.exists()) {
+    window.location.href = "student-corner.html";
+    return;
+  }
 
-snapshot.forEach(docSnap=>{
+  loadingScreen.style.display = "none";
+  adminContent.style.display = "block";
 
-const data = docSnap.data();
-const email = docSnap.id;
-
-const total = data.fees?.total || 0;
-const paid = data.fees?.paid || 0;
-
-count++;
-collected+=paid;
-pending+=(total-paid);
-
-studentTable.innerHTML+=`
-<tr>
-<td>${data.name}</td>
-<td>${data.course}</td>
-<td>${data.attendance||0}%</td>
-<td>₹${paid}</td>
-<td>₹${total}</td>
-<td><button class="edit" onclick="openEdit('${email}')">Edit</button></td>
-</tr>
-`;
-
+  startRealtimeListener();
 });
 
-totalStudents.textContent=count;
-totalCollected.textContent="₹"+collected;
-totalPending.textContent="₹"+pending;
+function startRealtimeListener() {
+  onSnapshot(collection(db, "students"), (snapshot) => {
+    studentsData = [];
+    snapshot.forEach((docSnap) => {
+      studentsData.push({ id: docSnap.id, ...docSnap.data() });
+    });
+    renderDashboard(studentsData);
+  });
+}
 
-});
+function renderDashboard(dataArray) {
 
-});
+  let collected = 0;
+  let pending = 0;
+  studentTable.innerHTML = "";
 
-/* CREATE */
+  dataArray.forEach((data) => {
 
-window.openCreateModal=()=>document.getElementById("createModal").style.display="flex";
-window.closeCreateModal=()=>document.getElementById("createModal").style.display="none";
+    const totalFee = Number(data.fees?.total) || 0;
+    const paidFee = Number(data.fees?.paid) || 0;
 
-window.createStudent=async()=>{
+    collected += paidFee;
+    pending += (totalFee - paidFee);
 
-const name=createName.value.trim();
-const email=createEmail.value.trim().toLowerCase();
-const course=createCourse.value.trim();
-const total=Number(createTotal.value)||0;
+    studentTable.innerHTML += `
+      <tr>
+        <td>${data.name}</td>
+        <td>${data.course}</td>
+        <td>${data.attendance || 0}%</td>
+        <td>₹${paidFee}</td>
+        <td>₹${totalFee}</td>
+        <td><button class="edit" onclick="openEditModal('${data.id}')">Edit</button></td>
+      </tr>
+    `;
+  });
 
-if(!name||!email){ alert("Name & Email required"); return; }
+  totalStudents.textContent = dataArray.length;
+  totalCollected.textContent = "₹" + collected;
+  totalPending.textContent = "₹" + pending;
+}
 
-await setDoc(doc(db,"students",email),{
-uid:"",
-name,
-email,
-course,
-attendance:0,
-clinicalHours:0,
-internshipDays:0,
-assignments:0,
-fees:{ total, paid:0, due:total },
-status:"pending_activation",
-createdAt:serverTimestamp(),
-updatedAt:serverTimestamp()
-});
+/* CREATE STUDENT */
 
-closeCreateModal();
+window.openCreateModal = () => document.getElementById("createModal").style.display="flex";
+window.closeCreateModal = () => document.getElementById("createModal").style.display="none";
+
+window.createStudent = async function(){
+
+  const name = createName.value.trim();
+  const email = createEmail.value.trim().toLowerCase();
+  const course = createCourse.value;
+  const branch = createBranch.value;
+  const totalFee = Number(createFeeTotal.value) || 0;
+
+  if(!name || !email){
+    alert("Name and Email required.");
+    return;
+  }
+
+  const studentId = `CINPS-${course}-${new Date().getFullYear()}-${Math.random().toString(36).substring(2,6).toUpperCase()}`;
+
+  await setDoc(doc(db,"students", email),{
+
+      uid:"",
+      name,
+      email,
+      course,
+      branch,
+      studentId,
+
+      attendance:0,
+      clinicalHours:0,
+      internshipDays:0,
+      assignments:0,
+
+      fees:{
+        total: totalFee,
+        paid:0,
+        due: totalFee
+      },
+
+      status:"pending_activation",
+      role:"student",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+  });
+
+  alert("Student Created Successfully.");
+  closeCreateModal();
 };
 
-/* EDIT */
+/* EDIT STUDENT */
 
-window.openEdit=async(email)=>{
-
-const snap=await getDoc(doc(db,"students",email));
-if(!snap.exists())return;
-
-const data=snap.data();
-
-editEmail.value=email;
-editName.value=data.name;
-editCourse.value=data.course;
-editAttendance.value=data.attendance||0;
-editPaid.value=data.fees?.paid||0;
-editTotal.value=data.fees?.total||0;
-
-document.getElementById("editModal").style.display="flex";
+window.openEditModal = function(email){
+  const student = studentsData.find(s => s.id === email);
+  editEmail.value = email;
+  editName.value = student.name;
+  editCourse.value = student.course;
+  editAttendance.value = student.attendance || 0;
+  editPaid.value = student.fees?.paid || 0;
+  editTotal.value = student.fees?.total || 0;
+  document.getElementById("editModal").style.display="flex";
 };
 
-window.closeEditModal=()=>document.getElementById("editModal").style.display="none";
+window.closeEditModal = () => document.getElementById("editModal").style.display="none";
 
-window.saveEdit=async()=>{
+window.updateStudent = async function(){
 
-const email=editEmail.value;
+  const email = editEmail.value;
+  const paid = Number(editPaid.value);
+  const total = Number(editTotal.value);
 
-await updateDoc(doc(db,"students",email),{
-name:editName.value,
-course:editCourse.value,
-attendance:Number(editAttendance.value),
-"fees.paid":Number(editPaid.value),
-"fees.total":Number(editTotal.value),
-updatedAt:serverTimestamp()
-});
+  await updateDoc(doc(db,"students",email),{
+    name: editName.value,
+    course: editCourse.value,
+    attendance: Number(editAttendance.value),
+    "fees.paid": paid,
+    "fees.total": total,
+    "fees.due": total - paid,
+    updatedAt: serverTimestamp()
+  });
 
-closeEditModal();
+  alert("Student Updated Successfully.");
+  closeEditModal();
 };
 
-window.logout=async()=>{
-await signOut(auth);
-window.location.href="student-corner.html";
+window.logout = async function(){
+  await signOut(auth);
+  window.location.href="student-corner.html";
 };
 
 </script>
