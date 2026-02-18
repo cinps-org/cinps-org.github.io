@@ -25,7 +25,7 @@ button{padding:6px 12px;border:none;border-radius:6px;font-size:12px;cursor:poin
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);justify-content:center;align-items:center;z-index:1000;}
 .modal{background:#fff;width:95%;max-width:500px;padding:25px;border-radius:12px;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
-.form-group label{font-size:12px;font-weight:600;color:#333;}
+.form-group label{font-size:12px;font-weight:600;}
 .modal input,.modal select{padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;}
 </style>
 </head>
@@ -76,58 +76,77 @@ button{padding:6px 12px;border:none;border-radius:6px;font-size:12px;cursor:poin
 </div>
 </div>
 
-<!-- CREATE STUDENT MODAL -->
-<div id="createStudentModal" class="modal-overlay">
+<!-- CREATE MODAL -->
+<div id="createModal" class="modal-overlay">
 <div class="modal">
-<h3>Create New Student</h3>
-
-<div style="display:flex;flex-direction:column;gap:14px;">
+<h3>Create Student</h3>
 
 <div class="form-group">
-<label>Full Name</label>
-<input type="text" id="createName">
+<label>Name</label>
+<input id="createName">
 </div>
 
 <div class="form-group">
-<label>Email</label>
-<input type="email" id="createEmail">
+<label>Email (Document ID)</label>
+<input id="createEmail">
 </div>
 
 <div class="form-group">
 <label>Course</label>
-<select id="createCourse">
-<option>DOTT</option>
-<option>DMLT</option>
-<option>ICU Technician</option>
-<option>EMT</option>
-</select>
+<input id="createCourse">
 </div>
 
 <div class="form-group">
-<label>Branch</label>
-<select id="createBranch">
-<option>Nanoor</option>
-<option>Sainthia</option>
-<option>Ranishwar</option>
-</select>
+<label>Total Fee</label>
+<input id="createTotal" type="number">
 </div>
 
-<div class="form-group">
-<label>Admission Year</label>
-<input type="number" id="createYear" value="2026">
-</div>
-
-<div class="form-group">
-<label>Total Course Fee</label>
-<input type="number" id="createFeeTotal" value="0">
-</div>
-
-<div style="display:flex;justify-content:flex-end;gap:10px;">
+<div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;">
 <button onclick="closeCreateModal()">Cancel</button>
-<button class="edit" onclick="createStudent()">Create Student</button>
+<button class="edit" onclick="createStudent()">Create</button>
 </div>
 
 </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal-overlay">
+<div class="modal">
+
+<h3>Edit Student</h3>
+
+<input type="hidden" id="editEmail">
+
+<div class="form-group">
+<label>Name</label>
+<input id="editName">
+</div>
+
+<div class="form-group">
+<label>Course</label>
+<input id="editCourse">
+</div>
+
+<div class="form-group">
+<label>Attendance (%)</label>
+<input id="editAttendance" type="number">
+</div>
+
+<div class="form-group">
+<label>Fee Paid</label>
+<input id="editPaid" type="number">
+</div>
+
+<div class="form-group">
+<label>Fee Total</label>
+<input id="editTotal" type="number">
+</div>
+
+<div style="margin-top:15px;display:flex;gap:10px;justify-content:flex-end;">
+<button onclick="closeEditModal()">Cancel</button>
+<button class="edit" onclick="saveEdit()">Save</button>
+</div>
+
 </div>
 </div>
 
@@ -140,153 +159,134 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import { 
 doc, getDoc, collection, onSnapshot, 
-updateDoc, serverTimestamp, addDoc 
+updateDoc, setDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const studentTable = document.getElementById("studentTable");
 const totalStudents = document.getElementById("totalStudents");
 const totalCollected = document.getElementById("totalCollected");
 const totalPending = document.getElementById("totalPending");
-const loadingScreen = document.getElementById("loading-screen");
-const adminContent = document.getElementById("admin-content");
 
-const createModal = document.getElementById("createStudentModal");
+onAuthStateChanged(auth, async (user)=>{
 
-let studentsData = [];
+if(!user){ window.location.href="student-corner.html"; return; }
 
-onAuthStateChanged(auth, async (user) => {
+const adminSnap = await getDoc(doc(db,"admins",user.uid));
+if(!adminSnap.exists()){ window.location.href="student-corner.html"; return; }
 
-  if (!user) {
-    window.location.href = "student-corner.html";
-    return;
-  }
+document.getElementById("loading-screen").style.display="none";
+document.getElementById("admin-content").style.display="block";
 
-  const adminRef = doc(db, "admins", user.uid);
-  const adminSnap = await getDoc(adminRef);
+onSnapshot(collection(db,"students"), snapshot=>{
 
-  if (!adminSnap.exists()) {
-    window.location.href = "student-corner.html";
-    return;
-  }
+let count=0, collected=0, pending=0;
+studentTable.innerHTML="";
 
-  loadingScreen.style.display = "none";
-  adminContent.style.display = "block";
+snapshot.forEach(docSnap=>{
 
-  startRealtimeListener();
+const data = docSnap.data();
+const email = docSnap.id;
+
+const total = data.fees?.total || 0;
+const paid = data.fees?.paid || 0;
+
+count++;
+collected+=paid;
+pending+=(total-paid);
+
+studentTable.innerHTML+=`
+<tr>
+<td>${data.name}</td>
+<td>${data.course}</td>
+<td>${data.attendance||0}%</td>
+<td>₹${paid}</td>
+<td>₹${total}</td>
+<td><button class="edit" onclick="openEdit('${email}')">Edit</button></td>
+</tr>
+`;
+
 });
 
-function startRealtimeListener() {
-  onSnapshot(collection(db, "students"), (snapshot) => {
-    studentsData = [];
-    snapshot.forEach((docSnap) => {
-      studentsData.push({ id: docSnap.id, ...docSnap.data() });
-    });
-    renderDashboard(studentsData);
-  });
-}
+totalStudents.textContent=count;
+totalCollected.textContent="₹"+collected;
+totalPending.textContent="₹"+pending;
 
-function renderDashboard(dataArray) {
+});
 
-  let studentCount = 0;
-  let collected = 0;
-  let pending = 0;
-  studentTable.innerHTML = "";
+});
 
-  dataArray.forEach((data) => {
+/* CREATE */
 
-    studentCount++;
+window.openCreateModal=()=>document.getElementById("createModal").style.display="flex";
+window.closeCreateModal=()=>document.getElementById("createModal").style.display="none";
 
-    const totalFee = Number(data.fees?.total) || 0;
-    const paidFee = Number(data.fees?.paid) || 0;
+window.createStudent=async()=>{
 
-    collected += paidFee;
-    pending += (totalFee - paidFee);
+const name=createName.value.trim();
+const email=createEmail.value.trim().toLowerCase();
+const course=createCourse.value.trim();
+const total=Number(createTotal.value)||0;
 
-    studentTable.innerHTML += `
-      <tr>
-        <td>${data.name}</td>
-        <td>${data.course}</td>
-        <td>${data.attendance || 0}%</td>
-        <td>₹${paidFee}</td>
-        <td>₹${totalFee}</td>
-        <td>-</td>
-      </tr>
-    `;
-  });
+if(!name||!email){ alert("Name & Email required"); return; }
 
-  totalStudents.textContent = studentCount;
-  totalCollected.textContent = "₹" + collected;
-  totalPending.textContent = "₹" + pending;
-}
+await setDoc(doc(db,"students",email),{
+uid:"",
+name,
+email,
+course,
+attendance:0,
+clinicalHours:0,
+internshipDays:0,
+assignments:0,
+fees:{ total, paid:0, due:total },
+status:"pending_activation",
+createdAt:serverTimestamp(),
+updatedAt:serverTimestamp()
+});
 
-/* CREATE STUDENT LOGIC */
-
-window.openCreateModal = function(){
-  createModal.style.display = "flex";
+closeCreateModal();
 };
 
-window.closeCreateModal = function(){
-  createModal.style.display = "none";
+/* EDIT */
+
+window.openEdit=async(email)=>{
+
+const snap=await getDoc(doc(db,"students",email));
+if(!snap.exists())return;
+
+const data=snap.data();
+
+editEmail.value=email;
+editName.value=data.name;
+editCourse.value=data.course;
+editAttendance.value=data.attendance||0;
+editPaid.value=data.fees?.paid||0;
+editTotal.value=data.fees?.total||0;
+
+document.getElementById("editModal").style.display="flex";
 };
 
-window.createStudent = async function(){
+window.closeEditModal=()=>document.getElementById("editModal").style.display="none";
 
-  const name = document.getElementById("createName").value.trim();
-  const email = document.getElementById("createEmail").value.trim();
-  const course = document.getElementById("createCourse").value;
-  const branch = document.getElementById("createBranch").value;
-  const year = document.getElementById("createYear").value;
-  const totalFee = Number(document.getElementById("createFeeTotal").value) || 0;
+window.saveEdit=async()=>{
 
-  if(!name || !email){
-    alert("Name and Email required.");
-    return;
-  }
+const email=editEmail.value;
 
-  const studentId = `CINPS-${course}-${year}-${Math.random().toString(36).substring(2,6).toUpperCase()}`;
+await updateDoc(doc(db,"students",email),{
+name:editName.value,
+course:editCourse.value,
+attendance:Number(editAttendance.value),
+"fees.paid":Number(editPaid.value),
+"fees.total":Number(editTotal.value),
+updatedAt:serverTimestamp()
+});
 
-  try{
-
-    await addDoc(collection(db,"students"),{
-
-      uid: "", // will link on first login
-      name,
-      email,
-      course,
-      branch,
-      year,
-      studentId,
-
-      attendance:0,
-      clinicalHours:0,
-      internshipDays:0,
-      assignments:0,
-
-      fees:{
-        total: totalFee,
-        paid:0,
-        due: totalFee
-      },
-
-      status:"pending_activation",
-      role:"student",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    alert("Student Created Successfully.");
-    closeCreateModal();
-
-  }catch(error){
-    console.error(error);
-    alert("Creation failed.");
-  }
-
+closeEditModal();
 };
 
-window.logout = async function(){
-  await signOut(auth);
-  window.location.href="student-corner.html";
+window.logout=async()=>{
+await signOut(auth);
+window.location.href="student-corner.html";
 };
 
 </script>
