@@ -202,36 +202,32 @@ window.handleLogin = async function(){
 window.handleLogout = async function(){
   await signOut(auth);
 };
+onAuthStateChanged(auth, async (user) => {
 
-onAuthStateChanged(auth, async (user)=>{
-
-  if(!user){
-    guestView.style.display="flex";
-    dashboard.style.display="none";
+  if (!user) {
     return;
   }
 
-  try{
+  const email = user.email;
 
-    const studentRef = doc(db,"students", user.email);
+  try {
+
+    const studentRef = doc(db, "students", email);
     const studentSnap = await getDoc(studentRef);
 
-    if(!studentSnap.exists()){
+    if (!studentSnap.exists()) {
       alert("No student record found. Contact administration.");
       await signOut(auth);
       return;
     }
 
     const studentData = studentSnap.data();
+    console.log("Student Data:", studentData);
 
-    loadDashboard(studentData);
+    // Render dashboard here
 
-    guestView.style.display="none";
-    dashboard.style.display="block";
-
-  }catch(error){
-    console.error("FULL ERROR:", error);
-    alert(error.message);
+  } catch (error) {
+    console.error("Error:", error);
   }
 
 });
