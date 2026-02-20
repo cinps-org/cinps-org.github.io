@@ -94,7 +94,6 @@ loginBtn.onclick = () => signInWithPopup(auth, provider);
 logoutBtn.onclick = () => signOut(auth);
 
 onAuthStateChanged(auth, async (user) => {
-
   if (!user) {
     loginBtn.classList.remove("hidden");
     logoutBtn.classList.add("hidden");
@@ -103,28 +102,139 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  try {
-    const adminRef = doc(db, "admins", user.uid);
-    const adminSnap = await getDoc(adminRef);
+  const adminRef = doc(db, "admins", user.uid);
+  const adminSnap = await getDoc(adminRef);
 
-    if (!adminSnap.exists()) {
-      alert("Access denied: Not an admin");
-      await signOut(auth);
-      return;
-    }
-
-    loginBtn.classList.add("hidden");
-    logoutBtn.classList.remove("hidden");
-    adminArea.classList.remove("hidden");
-    adminInfo.textContent = "Logged in as: " + user.email;
-
-    loadStudents();
-
-  } catch (error) {
-    alert("Permission error. Check Firestore rules.");
+  if (!adminSnap.exists()) {
+    alert("Access denied: Not an admin");
     await signOut(auth);
+    return;
   }
+
+  loginBtn.classList.add("hidden");
+  logoutBtn.classList.remove("hidden");
+  adminArea.classList.remove("hidden");
+  adminInfo.textContent = "Logged in as: " + user.email;
+
+  loadStudents();
 });
+
+async function loadStudents() {
+  tableBody.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "students"));
+
+  snap.forEach(docSnap => {
+    const d = docSnap.data();
+    const uid = docSnap.id;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${uid}</td>
+      <td><input id="name-${uid}" value="${d.name}" /></td>
+      <td><input id="course-${uid}" value="${d.course}" /></td>
+      <td><input id="branch-${uid}" value="${d.branch}" /></td>
+      <td><input type="number" id="att-${uid}" value="${d.attendance}" /></td>
+      <td><input type="number" id="total-${uid}" value="${d.fees.total}" /></td>
+      <td><input type="number" id="paid-${uid}" value="${d.fees.paid}" /></td>
+      <td>${d.fees.due}</td>
+      <td><button onclick="saveEdit('${uid}')">Save</button></td>
+    `;
+    tableBody.appendChild(tr);
+  });
+}
+
+window.saveEdit = async function(uid) {
+
+  const ref = doc(db, "students", uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return alert("Student not found");
+
+  const oldData = snap.data();
+
+  const name = document.getElementById("name-" + uid).value.trim();
+  const course = document.getElementById("course-" + uid).value.trim();
+  const branch = document.getElementById("branch-" + uid).value.trim();
+  const attendance = Number(document.getElementById("att-" + uid).value);
+  const total = Number(document.getElementById("total-" + uid).value);
+  const paid = Number(document.getElementById("paid-" + uid).value);
+
+  if (!name || !course || !branch) {
+    return alert("Name, Course, Branch required");
+  }
+
+  if (attendance < 0 || total < 0 || paid < 0) {
+    return alert("Negative values not allowed");
+  }
+
+  if (paid > total) {
+    return alert("Paid cannot exceed total");
+  }
+
+  const updated = {
+    name,
+    email: oldData.email,
+    course,
+    branch,
+    attendance,
+    clinicalHours: oldData.clinicalHours,
+    internshipDays: oldData.internshipDays,
+    assignments: oldData.assignments,
+    fees: {
+      total,
+      paid,
+      due: total - paid
+    },
+    createdAt: oldData.createdAt
+  };
+
+  await setDoc(ref, updated);
+  alert("Student updated successfully");
+  loadStudents();
+};
+
+addBtn.onclick = async () => {
+
+  const uid = document.getElementById("studentUid").value.trim();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const course = document.getElementById("course").value.trim();
+  const branch = document.getElementById("branch").value.trim();
+  const totalFee = Number(document.getElementById("feeTotal").value);
+
+  if (!uid || !name || !email || !course || !branch) {
+    formStatus.textContent = "All fields required.";
+    return;
+  }
+
+  if (isNaN(totalFee) || totalFee < 0) {
+    formStatus.textContent = "Invalid fee amount.";
+    return;
+  }
+
+  const data = {
+    name,
+    email,
+    course,
+    branch,
+    attendance: 0,
+    clinicalHours: 0,
+    internshipDays: 0,
+    assignments: 0,
+    fees: {
+      total: totalFee,
+      paid: 0,
+      due: totalFee
+    },
+    createdAt: serverTimestamp()
+  };
+
+  await setDoc(doc(db, "students", uid), data);
+  formStatus.textContent = "Student created successfully.";
+  loadStudents();
+};
+</script>
 
 async function loadStudents() {
   tableBody.innerHTML = "";
