@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CINPS Student Corner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f6fa; margin:0; padding:20px; }
+    h1 { margin-top:0; }
+    .card { background:#fff; padding:15px; margin-top:20px; }
+    button { padding:8px 12px; cursor:pointer; }
+    .hidden { display:none; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    td { padding:6px; border-bottom:1px solid #ddd; }
+  </style>
+</head>
+<body>
 
+<h1>CINPS Student Corner</h1>
+
+<button id="loginBtn">Sign in with Google</button>
+<button id="logoutBtn" class="hidden">Logout</button>
+
+<div id="studentArea" class="hidden">
+  <div class="card">
+    <h3>Profile</h3>
+    <table>
+      <tr><td>Name</td><td id="name"></td></tr>
+      <tr><td>Course</td><td id="course"></td></tr>
+      <tr><td>Branch</td><td id="branch"></td></tr>
+      <tr><td>Attendance</td><td id="attendance"></td></tr>
+      <tr><td>Clinical Hours</td><td id="clinical"></td></tr>
+      <tr><td>Internship Days</td><td id="internship"></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Fee Status</h3>
+    <table>
+      <tr><td>Total</td><td id="feeTotal"></td></tr>
+      <tr><td>Paid</td><td id="feePaid"></td></tr>
+      <tr><td>Due</td><td id="feeDue"></td></tr>
+    </table>
+  </div>
+</div>
+
+<div id="noRecord" class="hidden">
+  <div class="card">
+    <h3>No student record found</h3>
+    <p>Please contact CINPS administration.</p>
+  </div>
+</div>
+
+<script type="module">
+  import { auth, provider, db } from "./firebase-init.js";
+  import {
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+  import {
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const studentArea = document.getElementById("studentArea");
+  const noRecord = document.getElementById("noRecord");
+
+  loginBtn.onclick = () => signInWithPopup(auth, provider);
+  logoutBtn.onclick = () => signOut(auth);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      loginBtn.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+      studentArea.classList.add("hidden");
+      noRecord.classList.add("hidden");
+      return;
+    }
+
+    loginBtn.classList.add("hidden");
+    logoutBtn.classList.remove("hidden");
+
+    const studentRef = doc(db, "students", user.uid);
+    const studentSnap = await getDoc(studentRef);
+
+    if (!studentSnap.exists()) {
+      studentArea.classList.add("hidden");
+      noRecord.classList.remove("hidden");
+      return;
+    }
+
+    const data = studentSnap.data();
+
+    document.getElementById("name").textContent = data.name;
+    document.getElementById("course").textContent = data.course;
+    document.getElementById("branch").textContent = data.branch;
+    document.getElementById("attendance").textContent = data.attendance;
+    document.getElementById("clinical").textContent = data.clinicalHours;
+    document.getElementById("internship").textContent = data.internshipDays;
+
+    document.getElementById("feeTotal").textContent = data.fees.total;
+    document.getElementById("feePaid").textContent = data.fees.paid;
+    document.getElementById("feeDue").textContent = data.fees.due;
+
+    studentArea.classList.remove("hidden");
+    noRecord.classList.add("hidden");
+  });
+</script>
+
+</body>
+</html>
