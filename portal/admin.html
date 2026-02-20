@@ -8,13 +8,14 @@
 <style>
 body { font-family: Arial, sans-serif; background:#f5f6fa; margin:0; padding:20px; }
 h1 { margin-top:0; }
-button { padding:8px 12px; cursor:pointer; }
+button { padding:6px 10px; cursor:pointer; }
 table { width:100%; border-collapse:collapse; margin-top:20px; background:#fff; }
 th, td { border:1px solid #ddd; padding:8px; text-align:left; }
 th { background:#eee; }
 .hidden { display:none; }
 .card { background:#fff; padding:15px; margin-top:20px; }
-input { padding:6px; margin:4px 0; width:100%; }
+input { padding:5px; margin:2px 0; width:100%; }
+.small-input { width:70px; }
 .status { margin-top:10px; font-weight:bold; }
 </style>
 </head>
@@ -31,14 +32,14 @@ input { padding:6px; margin:4px 0; width:100%; }
 <div id="adminArea" class="hidden">
 
   <div class="card">
-    <h3>Add / Update Student (UID Based)</h3>
+    <h3>Add / Create Student (UID Based)</h3>
     <input id="studentUid" placeholder="Student UID (from Auth)" />
     <input id="name" placeholder="Name" />
     <input id="email" placeholder="Email" />
     <input id="course" placeholder="Course" />
     <input id="branch" placeholder="Branch" />
     <input id="feeTotal" type="number" placeholder="Total Fee" />
-    <button id="addStudentBtn">Create / Update Student</button>
+    <button id="addStudentBtn">Create Student</button>
     <div id="formStatus" class="status"></div>
   </div>
 
@@ -53,6 +54,9 @@ input { padding:6px; margin:4px 0; width:100%; }
           <th>Branch</th>
           <th>Attendance</th>
           <th>Fee Due</th>
+          <th>Add Attendance</th>
+          <th>Add Payment</th>
+          <th>Update</th>
         </tr>
       </thead>
       <tbody id="studentsTable"></tbody>
@@ -112,13 +116,11 @@ onAuthStateChanged(auth, async (user) => {
     loginBtn.classList.add("hidden");
     logoutBtn.classList.remove("hidden");
     adminArea.classList.remove("hidden");
-
     adminInfo.textContent = "Logged in as: " + user.email;
 
     loadStudents();
 
   } catch (error) {
-    console.error(error);
     alert("Permission error. Check Firestore rules.");
     await signOut(auth);
   }
@@ -126,25 +128,82 @@ onAuthStateChanged(auth, async (user) => {
 
 async function loadStudents() {
   tableBody.innerHTML = "";
-  try {
-    const snap = await getDocs(collection(db, "students"));
-    snap.forEach(docSnap => {
-      const d = docSnap.data();
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${docSnap.id}</td>
-        <td>${d.name}</td>
-        <td>${d.course}</td>
-        <td>${d.branch}</td>
-        <td>${d.attendance}</td>
-        <td>${d.fees?.due}</td>
-      `;
-      tableBody.appendChild(tr);
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  const snap = await getDocs(collection(db, "students"));
+
+  snap.forEach(docSnap => {
+    const d = docSnap.data();
+    const uid = docSnap.id;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${uid}</td>
+      <td>${d.name}</td>
+      <td>${d.course}</td>
+      <td>${d.branch}</td>
+      <td>${d.attendance}</td>
+      <td>${d.fees?.due}</td>
+
+      <td>
+        <input type="number" min="0" class="small-input" id="att-${uid}">
+      </td>
+
+      <td>
+        <input type="number" min="0" class="small-input" id="pay-${uid}">
+      </td>
+
+      <td>
+        <button onclick="updateStudent('${uid}')">Save</button>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
 }
+
+window.updateStudent = async function(uid) {
+
+  const ref = doc(db, "students", uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return alert("Student not found");
+
+  const data = snap.data();
+
+  const addAttendance = Number(document.getElementById("att-" + uid).value || 0);
+  const addPayment = Number(document.getElementById("pay-" + uid).value || 0);
+
+  if (addAttendance < 0 || addPayment < 0) {
+    return alert("Negative values not allowed");
+  }
+
+  const newAttendance = data.attendance + addAttendance;
+  const newPaid = data.fees.paid + addPayment;
+  const total = data.fees.total;
+
+  if (newPaid > total) {
+    return alert("Payment exceeds total fee");
+  }
+
+  const updated = {
+    name: data.name,
+    email: data.email,
+    course: data.course,
+    branch: data.branch,
+    attendance: newAttendance,
+    clinicalHours: data.clinicalHours,
+    internshipDays: data.internshipDays,
+    assignments: data.assignments,
+    fees: {
+      total: total,
+      paid: newPaid,
+      due: total - newPaid
+    },
+    createdAt: data.createdAt
+  };
+
+  await setDoc(ref, updated);
+  alert("Student updated");
+  loadStudents();
+};
 
 addBtn.onclick = async () => {
 
@@ -161,12 +220,9 @@ addBtn.onclick = async () => {
   }
 
   if (isNaN(totalFee) || totalFee < 0) {
-    formStatus.textContent = "Fee must be valid positive number.";
+    formStatus.textContent = "Invalid fee amount.";
     return;
   }
-
-  addBtn.disabled = true;
-  formStatus.textContent = "Saving...";
 
   const data = {
     name,
@@ -185,16 +241,9 @@ addBtn.onclick = async () => {
     createdAt: serverTimestamp()
   };
 
-  try {
-    await setDoc(doc(db, "students", uid), data, { merge: true });
-    formStatus.textContent = "Student saved successfully.";
-    loadStudents();
-  } catch (error) {
-    console.error(error);
-    formStatus.textContent = "Permission denied or schema error.";
-  }
-
-  addBtn.disabled = false;
+  await setDoc(doc(db, "students", uid), data);
+  formStatus.textContent = "Student created successfully.";
+  loadStudents();
 };
 </script>
 
