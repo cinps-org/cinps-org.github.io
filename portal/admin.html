@@ -46,19 +46,19 @@ input { padding:5px; margin:2px 0; width:100%; }
   <div class="card">
     <h3>Students</h3>
     <table>
-      <thead>
-        <tr>
-          <th>UID</th>
-          <th>Name</th>
-          <th>Course</th>
-          <th>Branch</th>
-          <th>Attendance</th>
-          <th>Fee Due</th>
-          <th>Add Attendance</th>
-          <th>Add Payment</th>
-          <th>Update</th>
-        </tr>
-      </thead>
+     <thead>
+<tr>
+  <th>UID</th>
+  <th>Name</th>
+  <th>Course</th>
+  <th>Branch</th>
+  <th>Attendance</th>
+  <th>Total Fee</th>
+  <th>Paid</th>
+  <th>Due</th>
+  <th>Save</th>
+</tr>
+</thead>
       <tbody id="studentsTable"></tbody>
     </table>
   </div>
@@ -135,26 +135,71 @@ async function loadStudents() {
     const uid = docSnap.id;
 
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${uid}</td>
-      <td>${d.name}</td>
-      <td>${d.course}</td>
-      <td>${d.branch}</td>
-      <td>${d.attendance}</td>
-      <td>${d.fees?.due}</td>
+ tr.innerHTML = `
+  <td>${uid}</td>
 
-      <td>
-        <input type="number" min="0" class="small-input" id="att-${uid}">
-      </td>
+  <td><input id="name-${uid}" value="${d.name}" /></td>
+  <td><input id="course-${uid}" value="${d.course}" /></td>
+  <td><input id="branch-${uid}" value="${d.branch}" /></td>
+  <td><input type="number" id="att-${uid}" value="${d.attendance}" /></td>
 
-      <td>
-        <input type="number" min="0" class="small-input" id="pay-${uid}">
-      </td>
+  <td><input type="number" id="total-${uid}" value="${d.fees.total}" /></td>
+  <td><input type="number" id="paid-${uid}" value="${d.fees.paid}" /></td>
+  <td>${d.fees.due}</td>
 
-      <td>
-        <button onclick="updateStudent('${uid}')">Save</button>
-      </td>
-    `;
+  <td>
+    <button onclick="saveEdit('${uid}')">Save</button>
+  </td>
+`;
+    window.saveEdit = async function(uid) {
+
+  const ref = doc(db, "students", uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return alert("Student not found");
+
+  const oldData = snap.data();
+
+  const name = document.getElementById("name-" + uid).value.trim();
+  const course = document.getElementById("course-" + uid).value.trim();
+  const branch = document.getElementById("branch-" + uid).value.trim();
+  const attendance = Number(document.getElementById("att-" + uid).value);
+  const total = Number(document.getElementById("total-" + uid).value);
+  const paid = Number(document.getElementById("paid-" + uid).value);
+
+  if (!name || !course || !branch) {
+    return alert("Name, Course, Branch required");
+  }
+
+  if (attendance < 0 || total < 0 || paid < 0) {
+    return alert("Negative values not allowed");
+  }
+
+  if (paid > total) {
+    return alert("Paid cannot exceed total");
+  }
+
+  const updated = {
+    name,
+    email: oldData.email, // keep original email
+    course,
+    branch,
+    attendance,
+    clinicalHours: oldData.clinicalHours,
+    internshipDays: oldData.internshipDays,
+    assignments: oldData.assignments,
+    fees: {
+      total,
+      paid,
+      due: total - paid
+    },
+    createdAt: oldData.createdAt
+  };
+
+  await setDoc(ref, updated);
+  alert("Student updated successfully");
+  loadStudents();
+};
     tableBody.appendChild(tr);
   });
 }
