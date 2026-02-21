@@ -190,7 +190,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔐 YOUR REAL CONFIG HERE */
+/* 🔐 PASTE YOUR REAL KEYS HERE */
 const firebaseConfig = {
   apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
@@ -264,7 +264,7 @@ onAuthStateChanged(auth, async (user) => {
   const percent = total > 0 ? (paid / total) * 100 : 0;
   document.getElementById("feeFill").style.width = percent + "%";
 
-  // ================= CSV LOADING =================
+  // ===== CSV Loading =====
 
   async function loadCSV(path){
     const response = await fetch(path);
@@ -289,15 +289,19 @@ onAuthStateChanged(auth, async (user) => {
     });
   }
 
-  const courseName = data.course;
+  const courseName = data.course.trim();
 
   loadCSV("/data/syllabus.csv").then(rows => {
-    const filtered = rows.filter(r => r[0] === courseName).map(r => r[1]);
+    const filtered = rows
+      .filter(r => r[0] && r[0].trim() === courseName)
+      .map(r => r[1]);
     renderList("syllabusSection", filtered);
   });
 
   loadCSV("/data/assignments.csv").then(rows => {
-    const filtered = rows.filter(r => r[0] === courseName).map(r => r[1]);
+    const filtered = rows
+      .filter(r => r[0] && r[0].trim() === courseName)
+      .map(r => r[1]);
     renderList("assignmentSection", filtered);
   });
 
