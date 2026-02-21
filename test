@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Corner | CINPS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ===== GLOBAL ===== */
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#f4f6f9;
+    color:#333;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+h1{
+    font-size:22px;
+    margin:0;
+}
+
+button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.login-btn{
+    background:#0a7cff;
+    color:white;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+}
+
+.stat{
+    font-size:18px;
+    font-weight:600;
+    margin-top:8px;
+}
+
+.progress{
+    background:#e5e7eb;
+    border-radius:8px;
+    overflow:hidden;
+    height:10px;
+    margin-top:10px;
+}
+
+.progress-bar{
+    height:100%;
+    background:#28a745;
+    width:0%;
+}
+
+.center{
+    text-align:center;
+    margin-top:100px;
+}
+
+.hidden{
+    display:none;
+}
+
+@media(max-width:600px){
+    header{
+        flex-direction:column;
+        gap:10px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>CINPS Student Dashboard</h1>
+        <button id="logoutBtn" class="logout-btn hidden">Logout</button>
+    </header>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginSection" class="center">
+        <button id="loginBtn" class="login-btn">Sign in with Google</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+
+        <!-- PROFILE CARD -->
+        <div class="card">
+            <h2 id="studentName"></h2>
+            <p>Email: <span id="studentEmail"></span></p>
+            <p>Course: <span id="studentCourse"></span></p>
+            <p>Branch: <span id="studentBranch"></span></p>
+        </div>
+
+        <!-- ACADEMIC STATUS -->
+        <div class="grid">
+
+            <div class="card">
+                <h3>Attendance</h3>
+                <div class="stat" id="attendance"></div>
+            </div>
+
+            <div class="card">
+                <h3>Clinical Hours</h3>
+                <div class="stat" id="clinicalHours"></div>
+            </div>
+
+            <div class="card">
+                <h3>Internship Days</h3>
+                <div class="stat" id="internshipDays"></div>
+            </div>
+
+            <div class="card">
+                <h3>Assignments</h3>
+                <div class="stat" id="assignments"></div>
+            </div>
+
+        </div>
+
+        <!-- FEE STATUS -->
+        <div class="card">
+            <h3>Fee Status</h3>
+            <p>Total: ₹<span id="feeTotal"></span></p>
+            <p>Paid: ₹<span id="feePaid"></span></p>
+            <p>Due: ₹<span id="feeDue"></span></p>
+
+            <div class="progress">
+                <div class="progress-bar" id="feeProgress"></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FIREBASE SDK -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* ===== YOUR FIREBASE CONFIG HERE ===== */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const loginSection = document.getElementById("loginSection");
+const dashboard = document.getElementById("dashboard");
+
+/* ===== LOGIN ===== */
+loginBtn.onclick = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+};
+
+/* ===== LOGOUT ===== */
+logoutBtn.onclick = async () => {
+    await signOut(auth);
+};
+
+/* ===== AUTH GUARD ===== */
+onAuthStateChanged(auth, async (user) => {
+
+    if(!user){
+        loginSection.classList.remove("hidden");
+        dashboard.classList.add("hidden");
+        logoutBtn.classList.add("hidden");
+        return;
+    }
+
+    loginSection.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+
+    const uid = user.uid;
+    const docRef = doc(db, "students", uid);
+    const snap = await getDoc(docRef);
+
+    if(!snap.exists()){
+        alert("Student record not found.");
+        return;
+    }
+
+    const data = snap.data();
+
+    /* ===== PROFILE ===== */
+    document.getElementById("studentName").textContent = data.name;
+    document.getElementById("studentEmail").textContent = data.email;
+    document.getElementById("studentCourse").textContent = data.course;
+    document.getElementById("studentBranch").textContent = data.branch;
+
+    /* ===== ACADEMICS ===== */
+    document.getElementById("attendance").textContent = data.attendance + "%";
+    document.getElementById("clinicalHours").textContent = data.clinicalHours + " hrs";
+    document.getElementById("internshipDays").textContent = data.internshipDays + " days";
+    document.getElementById("assignments").textContent = data.assignments;
+
+    /* ===== FEES ===== */
+    document.getElementById("feeTotal").textContent = data.fees.total;
+    document.getElementById("feePaid").textContent = data.fees.paid;
+    document.getElementById("feeDue").textContent = data.fees.due;
+
+    let percentage = 0;
+    if(data.fees.total > 0){
+        percentage = (data.fees.paid / data.fees.total) * 100;
+    }
+
+    document.getElementById("feeProgress").style.width = percentage + "%";
+
+});
+
+</script>
+
+</body>
+</html>
