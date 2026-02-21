@@ -179,7 +179,67 @@ button{
     <h3>Assignments</h3>
     <div id="assignmentSection"></div>
   </div>
+</div>
 
+  <div class="card">
+  <h3>Student Class Update</h3>
+
+  <form id="studentUpdateForm">
+
+    <label>Class Start Time</label>
+    <input type="time" name="startTime" required>
+
+    <label>Branch</label>
+    <select name="branch" required>
+      <option value="">Select Branch</option>
+      <option>Nanoor</option>
+      <option>Sainthia</option>
+      <option>Other</option>
+    </select>
+
+    <label>Course</label>
+    <select name="course" required>
+      <option value="">Select Course</option>
+      <option>OTT</option>
+      <option>MLT</option>
+      <option>EMT</option>
+      <option>ICU</option>
+      <option>MRT</option>
+      <option>ECG</option>
+      <option>PT</option>
+      <option>RMP</option>
+      <option>CMS & ED</option>
+      <option>NA</option>
+    </select>
+
+    <label>Year</label>
+    <select name="year" required>
+      <option value="">Select Year</option>
+      <option>First Year</option>
+      <option>Second Year</option>
+    </select>
+
+    <label>Class Type</label>
+    <select name="classType" required>
+      <option value="">Select Type</option>
+      <option>Theory</option>
+      <option>Practical</option>
+      <option>Other</option>
+    </select>
+
+    <label>Class Review</label>
+    <select name="review" required>
+      <option value="">Select Review</option>
+      <option>Good</option>
+      <option>Medium</option>
+      <option>Bad</option>
+    </select>
+
+    <button type="submit" style="margin-top:12px;">Submit Update</button>
+
+    <div id="updateStatus" style="margin-top:10px;"></div>
+
+  </form>
 </div>
 
 <script type="module">
@@ -240,6 +300,32 @@ onAuthStateChanged(auth, async (user) => {
     await signOut(auth);
     return;
   }
+
+  // ===== Student Update Submission =====
+
+const updateScriptURL = "PASTE_YOUR_EXISTING_GOOGLE_SCRIPT_URL_HERE";
+
+const studentUpdateForm = document.getElementById("studentUpdateForm");
+
+studentUpdateForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const status = document.getElementById("updateStatus");
+  status.innerText = "Submitting...";
+
+  fetch(updateScriptURL, {
+    method: "POST",
+    body: new FormData(studentUpdateForm)
+  })
+  .then(res => res.json())
+  .then(() => {
+    status.innerText = "✅ Update submitted successfully";
+    studentUpdateForm.reset();
+  })
+  .catch(() => {
+    status.innerText = "❌ Submission failed";
+  });
+});
 
   const data = snap.data();
 
