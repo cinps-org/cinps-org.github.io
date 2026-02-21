@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Student Corner | CINPS</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="description" content="CINPS Student Portal - Track attendance, fees, clinical hours, and assignments.">
+<meta name="description" content="CINPS Student Portal">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -26,8 +26,6 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-
-header h2{font-weight:600;}
 
 button{
   cursor:pointer;
@@ -75,7 +73,7 @@ button{
   margin:30px auto;
 }
 
-.profile{
+.profile, .card{
   background:#fff;
   padding:20px;
   border-radius:12px;
@@ -103,13 +101,6 @@ button{
   color:var(--brand);
 }
 
-.card{
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:var(--shadow);
-}
-
 .fee-bar{
   height:8px;
   background:#ddd;
@@ -133,18 +124,14 @@ button{
   <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
 </header>
 
-<!-- LOGIN VIEW -->
 <div id="guestView" class="login-screen">
   <div class="login-card">
     <h2>Student Login</h2>
     <p style="margin:10px 0 20px;">Login using your registered email</p>
-    <button class="google-btn" id="loginBtn">
-      Sign in with Google
-    </button>
+    <button class="google-btn" id="loginBtn">Sign in with Google</button>
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="dashboard">
 
   <div class="profile">
@@ -183,19 +170,18 @@ button{
     </div>
   </div>
 
-<div class="card">
-  <h3>Course Syllabus</h3>
-  <div id="syllabusSection"></div>
+  <div class="card">
+    <h3>Course Syllabus</h3>
+    <div id="syllabusSection"></div>
+  </div>
+
+  <div class="card">
+    <h3>Assignments</h3>
+    <div id="assignmentSection"></div>
+  </div>
+
 </div>
 
-<div class="card">
-  <h3>Assignments</h3>
-  <div id="assignmentSection"></div>
-  </div>
- </div>
-  
-</div>
-  
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -204,9 +190,9 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔐 REPLACE WITH YOUR REAL CONFIG */
+/* 🔐 YOUR REAL CONFIG HERE */
 const firebaseConfig = {
- apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
+  apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
   projectId: "cinps-student-corner",
   storageBucket: "cinps-student-corner.firebasestorage.app",
@@ -245,42 +231,28 @@ onAuthStateChanged(auth, async (user) => {
   dashboard.style.display = "block";
   logoutBtn.style.display = "inline-block";
 
-  const uid = user.uid;   // ✅ UID SAFE
+  const uid = user.uid;
   const studentRef = doc(db, "students", uid);
   const snap = await getDoc(studentRef);
 
   if (!snap.exists()) {
-    alert("No student record found. Contact administration.");
+    alert("No student record found.");
     await signOut(auth);
     return;
   }
 
   const data = snap.data();
 
-  // Profile
   document.getElementById("studentName").innerText = data.name;
   document.getElementById("studentEmail").innerText = data.email;
   document.getElementById("studentCourse").innerText = data.course;
   document.getElementById("studentBranch").innerText = data.branch;
 
-  // Academic
   document.getElementById("attendanceStat").innerText = data.attendance + "%";
   document.getElementById("clinicalStat").innerText = data.clinicalHours;
   document.getElementById("internshipStat").innerText = data.internshipDays;
   document.getElementById("assignmentStat").innerText = data.assignments;
 
-  // Attendance color logic
-  const att = data.attendance;
-  const attElement = document.getElementById("attendanceStat");
-  if(att < 50){
-    attElement.style.color = "#e53935";
-  }else if(att < 75){
-    attElement.style.color = "#f9a825";
-  }else{
-    attElement.style.color = "#2e7d32";
-  }
-
-  // Fees
   const total = Number(data.fees?.total || 0);
   const paid = Number(data.fees?.paid || 0);
   const due = total - paid;
@@ -291,98 +263,46 @@ onAuthStateChanged(auth, async (user) => {
 
   const percent = total > 0 ? (paid / total) * 100 : 0;
   document.getElementById("feeFill").style.width = percent + "%";
-});
 
-  // ============================
-// LOAD SYLLABUS & ASSIGNMENTS
-// ============================
+  // ================= CSV LOADING =================
 
-async function loadCSV(path){
-  const response = await fetch(path);
-  const text = await response.text();
-  return text.split("\n").map(r => r.split(","));
-}
-
-function renderList(containerId, items){
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-
-  if(!items || items.length === 0){
-    container.innerHTML = "<p>No records available.</p>";
-    return;
+  async function loadCSV(path){
+    const response = await fetch(path);
+    const text = await response.text();
+    return text.split("\n").map(r => r.split(","));
   }
 
-  items.forEach(item => {
-    const div = document.createElement("div");
-    div.style.margin = "6px 0";
-    div.innerText = "📄 " + item;
-    container.appendChild(div);
-  });
-}
+  function renderList(containerId, items){
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
-const courseName = data.course;
+    if(!items || items.length === 0){
+      container.innerHTML = "<p>No records available.</p>";
+      return;
+    }
 
-// Load syllabus
-loadCSV("/data/syllabus.csv").then(rows => {
-  const filtered = rows
-    .filter(r => r[0] === courseName)
-    .map(r => r[1]);
-  renderList("syllabusSection", filtered);
-});
-
-// Load assignments
-loadCSV("/data/assignments.csv").then(rows => {
-  const filtered = rows
-    .filter(r => r[0] === courseName)
-    .map(r => r[1]);
-  renderList("assignmentSection", filtered);
-});
-// ============================
-// LOAD SYLLABUS FROM CSV
-// ============================
-
-async function loadCSV(path){
-  const response = await fetch(path);
-  const text = await response.text();
-  const rows = text.split("\n").map(r => r.split(","));
-  return rows;
-}
-
-function renderList(containerId, items){
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-
-  if(items.length === 0){
-    container.innerHTML = "<p>No records available.</p>";
-    return;
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.style.margin = "6px 0";
+      div.innerText = "📄 " + item;
+      container.appendChild(div);
+    });
   }
 
-  items.forEach(item => {
-    const div = document.createElement("div");
-    div.style.margin = "6px 0";
-    div.innerText = "📄 " + item;
-    container.appendChild(div);
+  const courseName = data.course;
+
+  loadCSV("/data/syllabus.csv").then(rows => {
+    const filtered = rows.filter(r => r[0] === courseName).map(r => r[1]);
+    renderList("syllabusSection", filtered);
   });
-}
 
-const courseName = data.course;
+  loadCSV("/data/assignments.csv").then(rows => {
+    const filtered = rows.filter(r => r[0] === courseName).map(r => r[1]);
+    renderList("assignmentSection", filtered);
+  });
 
-// Load syllabus
-loadCSV("/data/syllabus.csv").then(rows => {
-  const filtered = rows
-    .filter(r => r[0] === courseName)
-    .map(r => r[1]);
-  renderList("syllabusSection", filtered);
 });
 
-// Load assignments
-loadCSV("/data/assignments.csv").then(rows => {
-  const filtered = rows
-    .filter(r => r[0] === courseName)
-    .map(r => r[1]);
-  renderList("assignmentSection", filtered);
-});
 </script>
-
 </body>
 </html>
