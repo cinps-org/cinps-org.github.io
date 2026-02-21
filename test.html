@@ -291,7 +291,52 @@ onAuthStateChanged(auth, async (user) => {
 
   const percent = total > 0 ? (paid / total) * 100 : 0;
   document.getElementById("feeFill").style.width = percent + "%";
+});
+
+  // ============================
+// LOAD SYLLABUS & ASSIGNMENTS
+// ============================
+
+async function loadCSV(path){
+  const response = await fetch(path);
+  const text = await response.text();
+  return text.split("\n").map(r => r.split(","));
 }
+
+function renderList(containerId, items){
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  if(!items || items.length === 0){
+    container.innerHTML = "<p>No records available.</p>";
+    return;
+  }
+
+  items.forEach(item => {
+    const div = document.createElement("div");
+    div.style.margin = "6px 0";
+    div.innerText = "📄 " + item;
+    container.appendChild(div);
+  });
+}
+
+const courseName = data.course;
+
+// Load syllabus
+loadCSV("/data/syllabus.csv").then(rows => {
+  const filtered = rows
+    .filter(r => r[0] === courseName)
+    .map(r => r[1]);
+  renderList("syllabusSection", filtered);
+});
+
+// Load assignments
+loadCSV("/data/assignments.csv").then(rows => {
+  const filtered = rows
+    .filter(r => r[0] === courseName)
+    .map(r => r[1]);
+  renderList("assignmentSection", filtered);
+});
 // ============================
 // LOAD SYLLABUS FROM CSV
 // ============================
