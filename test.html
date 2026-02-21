@@ -1,185 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8" />
 <title>Student Corner | CINPS</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="CINPS Student Portal - Track attendance, fees, clinical hours, and assignments.">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-/* ===== GLOBAL ===== */
-body{
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:#f4f6f9;
-    color:#333;
+:root{
+  --brand:#0d3b8e;
+  --bg:#f4f7fb;
+  --shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-.container{
-    max-width:1100px;
-    margin:auto;
-    padding:20px;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:var(--bg);}
 
 header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
+  background:var(--brand);
+  color:#fff;
+  padding:18px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-h1{
-    font-size:22px;
-    margin:0;
-}
+header h2{font-weight:600;}
 
 button{
-    padding:8px 14px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:14px;
-}
-
-.login-btn{
-    background:#0a7cff;
-    color:white;
+  cursor:pointer;
+  border:none;
+  border-radius:6px;
+  padding:8px 14px;
+  font-size:13px;
 }
 
 .logout-btn{
-    background:#dc3545;
-    color:white;
+  background:#e53935;
+  color:#fff;
+}
+
+.login-screen{
+  min-height:90vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.login-card{
+  background:#fff;
+  padding:40px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  text-align:center;
+  width:95%;
+  max-width:400px;
+}
+
+.google-btn{
+  width:100%;
+  background:#fff;
+  border:1px solid #ddd;
+  padding:12px;
+  border-radius:8px;
+  font-weight:600;
+}
+
+.dashboard{
+  display:none;
+  width:95%;
+  max-width:1100px;
+  margin:30px auto;
+}
+
+.profile{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  background:#fff;
+  padding:18px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.stat-card h3{
+  font-size:22px;
+  color:var(--brand);
 }
 
 .card{
-    background:white;
-    border-radius:10px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
 }
 
-.grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-    gap:20px;
+.fee-bar{
+  height:8px;
+  background:#ddd;
+  border-radius:4px;
+  margin-top:8px;
+  overflow:hidden;
 }
 
-.stat{
-    font-size:18px;
-    font-weight:600;
-    margin-top:8px;
+.fee-fill{
+  height:100%;
+  background:#10b981;
+  width:0%;
+  transition:width 0.4s ease;
 }
-
-.progress{
-    background:#e5e7eb;
-    border-radius:8px;
-    overflow:hidden;
-    height:10px;
-    margin-top:10px;
-}
-
-.progress-bar{
-    height:100%;
-    background:#28a745;
-    width:0%;
-}
-
-.center{
-    text-align:center;
-    margin-top:100px;
-}
-
-.hidden{
-    display:none;
-}
-
-@media(max-width:600px){
-    header{
-        flex-direction:column;
-        gap:10px;
-    }
-}
-
 </style>
 </head>
 <body>
 
-<div class="container">
+<header>
+  <h2>CINPS Student Portal</h2>
+  <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+</header>
 
-    <header>
-        <h1>CINPS Student Dashboard</h1>
-        <button id="logoutBtn" class="logout-btn hidden">Logout</button>
-    </header>
+<!-- LOGIN VIEW -->
+<div id="guestView" class="login-screen">
+  <div class="login-card">
+    <h2>Student Login</h2>
+    <p style="margin:10px 0 20px;">Login using your registered email</p>
+    <button class="google-btn" id="loginBtn">
+      Sign in with Google
+    </button>
+  </div>
+</div>
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginSection" class="center">
-        <button id="loginBtn" class="login-btn">Sign in with Google</button>
+<!-- DASHBOARD -->
+<div id="dashboard" class="dashboard">
+
+  <div class="profile">
+    <h2 id="studentName">Loading...</h2>
+    <p>Email: <span id="studentEmail"></span></p>
+    <p>Course: <span id="studentCourse"></span></p>
+    <p>Branch: <span id="studentBranch"></span></p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <h3 id="attendanceStat">0%</h3>
+      <p>Attendance</p>
     </div>
-
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="hidden">
-
-        <!-- PROFILE CARD -->
-        <div class="card">
-            <h2 id="studentName"></h2>
-            <p>Email: <span id="studentEmail"></span></p>
-            <p>Course: <span id="studentCourse"></span></p>
-            <p>Branch: <span id="studentBranch"></span></p>
-        </div>
-
-        <!-- ACADEMIC STATUS -->
-        <div class="grid">
-
-            <div class="card">
-                <h3>Attendance</h3>
-                <div class="stat" id="attendance"></div>
-            </div>
-
-            <div class="card">
-                <h3>Clinical Hours</h3>
-                <div class="stat" id="clinicalHours"></div>
-            </div>
-
-            <div class="card">
-                <h3>Internship Days</h3>
-                <div class="stat" id="internshipDays"></div>
-            </div>
-
-            <div class="card">
-                <h3>Assignments</h3>
-                <div class="stat" id="assignments"></div>
-            </div>
-
-        </div>
-
-        <!-- FEE STATUS -->
-        <div class="card">
-            <h3>Fee Status</h3>
-            <p>Total: ₹<span id="feeTotal"></span></p>
-            <p>Paid: ₹<span id="feePaid"></span></p>
-            <p>Due: ₹<span id="feeDue"></span></p>
-
-            <div class="progress">
-                <div class="progress-bar" id="feeProgress"></div>
-            </div>
-        </div>
-
+    <div class="stat-card">
+      <h3 id="clinicalStat">0</h3>
+      <p>Clinical Hours</p>
     </div>
+    <div class="stat-card">
+      <h3 id="internshipStat">0</h3>
+      <p>Internship Days</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="assignmentStat">0</h3>
+      <p>Assignments</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Fee Status</h3>
+    <p>Total: ₹<span id="feeTotal">0</span></p>
+    <p>Paid: ₹<span id="feePaid">0</span></p>
+    <p>Due: ₹<span id="feeDue">0</span></p>
+    <div class="fee-bar">
+      <div id="feeFill" class="fee-fill"></div>
+    </div>
+  </div>
 
 </div>
 
-
-<!-- FIREBASE SDK -->
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ===== YOUR FIREBASE CONFIG HERE ===== */
+/* 🔐 REPLACE WITH YOUR REAL CONFIG */
 const firebaseConfig = {
  apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
@@ -195,68 +209,77 @@ const db = getFirestore(app);
 
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
-const loginSection = document.getElementById("loginSection");
+const guestView = document.getElementById("guestView");
 const dashboard = document.getElementById("dashboard");
 
-/* ===== LOGIN ===== */
 loginBtn.onclick = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(auth, provider);
 };
 
-/* ===== LOGOUT ===== */
 logoutBtn.onclick = async () => {
-    await signOut(auth);
+  await signOut(auth);
 };
 
-/* ===== AUTH GUARD ===== */
 onAuthStateChanged(auth, async (user) => {
 
-    if(!user){
-        loginSection.classList.remove("hidden");
-        dashboard.classList.add("hidden");
-        logoutBtn.classList.add("hidden");
-        return;
-    }
+  if (!user) {
+    guestView.style.display = "flex";
+    dashboard.style.display = "none";
+    logoutBtn.style.display = "none";
+    return;
+  }
 
-    loginSection.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    logoutBtn.classList.remove("hidden");
+  guestView.style.display = "none";
+  dashboard.style.display = "block";
+  logoutBtn.style.display = "inline-block";
 
-    const uid = user.uid;
-    const docRef = doc(db, "students", uid);
-    const snap = await getDoc(docRef);
+  const uid = user.uid;   // ✅ UID SAFE
+  const studentRef = doc(db, "students", uid);
+  const snap = await getDoc(studentRef);
 
-    if(!snap.exists()){
-        alert("Student record not found.");
-        return;
-    }
+  if (!snap.exists()) {
+    alert("No student record found. Contact administration.");
+    await signOut(auth);
+    return;
+  }
 
-    const data = snap.data();
+  const data = snap.data();
 
-    /* ===== PROFILE ===== */
-    document.getElementById("studentName").textContent = data.name;
-    document.getElementById("studentEmail").textContent = data.email;
-    document.getElementById("studentCourse").textContent = data.course;
-    document.getElementById("studentBranch").textContent = data.branch;
+  // Profile
+  document.getElementById("studentName").innerText = data.name;
+  document.getElementById("studentEmail").innerText = data.email;
+  document.getElementById("studentCourse").innerText = data.course;
+  document.getElementById("studentBranch").innerText = data.branch;
 
-    /* ===== ACADEMICS ===== */
-    document.getElementById("attendance").textContent = data.attendance + "%";
-    document.getElementById("clinicalHours").textContent = data.clinicalHours + " hrs";
-    document.getElementById("internshipDays").textContent = data.internshipDays + " days";
-    document.getElementById("assignments").textContent = data.assignments;
+  // Academic
+  document.getElementById("attendanceStat").innerText = data.attendance + "%";
+  document.getElementById("clinicalStat").innerText = data.clinicalHours;
+  document.getElementById("internshipStat").innerText = data.internshipDays;
+  document.getElementById("assignmentStat").innerText = data.assignments;
 
-    /* ===== FEES ===== */
-    document.getElementById("feeTotal").textContent = data.fees.total;
-    document.getElementById("feePaid").textContent = data.fees.paid;
-    document.getElementById("feeDue").textContent = data.fees.due;
+  // Attendance color logic
+  const att = data.attendance;
+  const attElement = document.getElementById("attendanceStat");
+  if(att < 50){
+    attElement.style.color = "#e53935";
+  }else if(att < 75){
+    attElement.style.color = "#f9a825";
+  }else{
+    attElement.style.color = "#2e7d32";
+  }
 
-    let percentage = 0;
-    if(data.fees.total > 0){
-        percentage = (data.fees.paid / data.fees.total) * 100;
-    }
+  // Fees
+  const total = Number(data.fees?.total || 0);
+  const paid = Number(data.fees?.paid || 0);
+  const due = total - paid;
 
-    document.getElementById("feeProgress").style.width = percentage + "%";
+  document.getElementById("feeTotal").innerText = total;
+  document.getElementById("feePaid").innerText = paid;
+  document.getElementById("feeDue").innerText = due;
+
+  const percent = total > 0 ? (paid / total) * 100 : 0;
+  document.getElementById("feeFill").style.width = percent + "%";
 
 });
 
