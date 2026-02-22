@@ -1,643 +1,446 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Class Update - CINPS</title>
+  <meta charset="utf-8" />
+  <title>Home | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="CINPS – Structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance.">
+  <meta property="og:title" content="CINPS — Chandidas Institute of Nursing & Paramedical Science">
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.ico">
+
+  <style>
+    /* ================= THEME (MATCHING ABOUT PAGE) ================= */
+    :root{
+      --brand-blue:#0d3b8e;
+      --light-blue:#1f57b8;
+      --muted:#6b7280;
+      --shadow:0 10px 30px rgba(13,59,142,0.08);
+      --radius:14px;
+      --container:1100px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#fff;
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.65;
+    }
+    .container{width:92%;max-width:var(--container);margin:0 auto}
+
+    /* ================= HEADER ================= */
+    .site-header{
+      position:sticky;top:0;z-index:1200;background:#fff;box-shadow:var(--shadow);
+    }
+    .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--brand-blue)}
+    .logo{height:48px;object-fit:contain}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-text .title{font-weight:700;font-size:15px;line-height:1.2;}
+    .brand-text .subtitle{font-size:12px;color:var(--muted)}
+
+    /* Desktop Nav */
+    .nav{display:flex;align-items:center;gap:18px}
+    .nav-menu{display:flex;gap:18px;list-style:none}
+    .nav-menu a{color:var(--brand-blue);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:background 0.2s}
+    .nav-menu a:hover{background:rgba(13,59,142,0.06)}
+    .nav-toggle{display:none;background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer;padding:8px;border-radius:8px}
+
+    /* Mobile Drawer */
+    .mobile-drawer{
+      position:fixed;top:0;right:-100%;height:100%;width:320px;max-width:92%;
+      background:#fff;box-shadow:0 30px 80px rgba(0,0,0,0.28);
+      transition:right .28s cubic-bezier(.2,.9,.2,1);z-index:1300;
+      display:flex;flex-direction:column;
+    }
+    .mobile-drawer.open{right:0;}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #f2f4f8}
+    .drawer-links{padding:20px;display:flex;flex-direction:column;gap:12px}
+    .drawer-links a{text-decoration:none;color:var(--brand-blue);font-weight:700;padding:12px;border-radius:8px;font-size:16px;}
+    .drawer-links a:hover{background:rgba(13,59,142,0.04)}
+    .drawer-cta{margin-top:auto;padding:20px;border-top:1px solid #f2f4f8}
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:1250;}
+    .drawer-backdrop.show{opacity:1;pointer-events:auto}
+
+    /* ================= HERO (Home Specific) ================= */
+    .hero{
+      position:relative;color:#fff;padding:110px 20px;min-height:75vh;
+      display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;
+    }
+    .hero .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.4);z-index:0}
+    .hero-inner{position:relative;z-index:2;max-width:920px}
+    .hero h1{font-size:42px;font-weight:800;margin-bottom:16px;line-height:1.2;text-shadow:0 6px 18px rgba(0,0,0,0.3);}
+    .hero p{font-size:18px;opacity:0.95;margin-bottom:28px;max-width:700px;margin-left:auto;margin-right:auto;}
+    .hero-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+
+    .btn{padding:12px 24px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-flex;justify-content:center;gap:10px;align-items:center;border:0;cursor:pointer;font-size:15px;transition:transform 0.2s}
+    .btn:active{transform:scale(0.98)}
+    .btn-primary{background:#fff;color:var(--brand-blue);box-shadow:0 8px 24px rgba(13,59,142,.12)}
+    .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4)}
+    .btn-blue{background:var(--brand-blue);color:#fff;box-shadow:0 8px 24px rgba(13,59,142,.15)}
+
+    /* ================= LAYOUT & CARDS ================= */
+    .section{padding:70px 0}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:24px;}
     
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    .card{background:#fff;padding:28px;border-radius:16px;box-shadow:var(--shadow);border:1px solid #f2f6ff;height:100%}
+    .card h2{color:var(--brand-blue);margin-bottom:16px;font-size:24px;line-height:1.3;}
+    .card h3{color:var(--brand-blue);margin-bottom:12px;font-size:18px;}
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    /* Feature Lists */
+    .features{list-style:none;padding:0;margin-top:16px}
+    .features li{
+      position:relative;padding-left:34px;margin-bottom:12px;font-size:15px;color:#444;line-height:1.6;
+    }
+    .features li::before{
+      content:"✔";position:absolute;left:0;top:2px;
+      width:24px;height:24px;background:rgba(13,59,142,0.1);
+      color:var(--brand-blue);border-radius:50%;font-size:12px;
+      display:flex;align-items:center;justify-content:center;font-weight:800;
+    }
 
-    <style>
-        :root {
-            /* CINPS Brand Palette */
-            --primary-color: #005f73; 
-            --primary-hover: #07748c;
-            --accent-color: #0a9396;
-            --bg-color: #f4f7f9;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
-            --success-color: #10b981;
-            --focus-ring: rgba(0, 95, 115, 0.15);
-        }
+    /* Highlight Box (Internship/Placement) */
+    .highlight-box{
+      background:linear-gradient(135deg, #f6f9ff 0%, #fff 100%);
+      border:1px solid #eef2ff;
+      padding:24px;border-radius:14px;height:100%;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
+    /* ================= MODAL & CHAT ================= */
+    .modal-bg{display:none;align-items:center;justify-content:center;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2200;padding:16px;}
+    .modal{background:#fff;padding:28px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,0.2);}
+    .modal input, .modal textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:10px;font-size:16px;outline:none;}
+    .modal input:focus, .modal textarea:focus{border-color:var(--brand-blue);}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    #cinps-chat-btn{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;background:var(--brand-blue);color:#fff;border:0;z-index:3000;box-shadow:0 15px 35px rgba(13,59,142,0.3);font-size:28px;cursor:pointer;transition:transform 0.2s}
+    #cinps-chat-btn:hover{transform:scale(1.05)}
+    #cinps-chat-box{position:fixed;bottom:100px;right:24px;width:360px;max-width:calc(100% - 48px);display:flex;flex-direction:column;border-radius:16px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.2);background:#fff;opacity:0;pointer-events:none;transform:translateY(20px) scale(.98);transition:all .3s cubic-bezier(0.2,0.8,0.2,1);z-index:3000}
+    #cinps-chat-box.active{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
 
-        /* --- Navigation Bar --- */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 5%;
-            background-color: #ffffff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .nav-brand img {
-            height: 45px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .nav-brand span {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-apply-btn {
-            background-color: var(--primary-color);
-            color: white !important;
-            padding: 10px 24px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px var(--focus-ring);
-        }
-
-        .nav-apply-btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: var(--primary-color);
-            user-select: none;
-        }
-
-        /* --- Main Content Area --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .page-header h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .page-header p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            font-weight: 500;
-        }
-
-        /* --- Login Box --- */
-        .login-box {
-            background: var(--card-bg);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            margin-bottom: 24px;
-            width: 100%;
-            max-width: 700px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid var(--border-color);
-        }
-
-        .login-box p {
-            margin-bottom: 16px;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        /* --- Form Container --- */
-        form {
-            width: 100%;
-            max-width: 700px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-        }
-
-        .card h3 {
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            margin: 0 0 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 700;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            background-color: var(--input-bg);
-            transition: all 0.2s ease;
-        }
-
-        input[readonly] {
-            background-color: #e2e8f0;
-            color: #475569;
-            cursor: not-allowed;
-            font-weight: 500;
-        }
-
-        input:not([readonly]):focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px var(--focus-ring);
-        }
-
-        .time-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .time-row select {
-            flex: 1;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-            line-height: 1.5;
-        }
-
-        /* New Feature: Character Counter & Duration Hint */
-        .char-counter, .duration-hint {
-            display: block;
-            text-align: right;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-            font-weight: 500;
-        }
-        
-        .duration-hint {
-            text-align: left;
-            color: var(--primary-color);
-        }
-
-        button {
-            width: 100%;
-            padding: 18px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px var(--focus-ring);
-        }
-
-        button:hover:not(:disabled) {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 95, 115, 0.25);
-        }
-
-        button:disabled {
-            background-color: #cbd5e1;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* --- Footer --- */
-        .footer {
-            background-color: var(--text-main);
-            color: #ffffff;
-            text-align: center;
-            padding: 24px 20px;
-            font-size: 0.9rem;
-            margin-top: auto;
-        }
-
-        /* --- POPUP MODAL --- */
-        .popup-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            backdrop-filter: blur(4px);
-        }
-
-        .popup-card {
-            background: #ffffff;
-            width: 90%;
-            max-width: 400px;
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            animation: popupFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes popupFade {
-            from { transform: scale(0.9) translateY(20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .loader {
-            width: 60px; height: 60px;
-            border: 5px solid #e2e8f0;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            margin: auto;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .checkmark {
-            width: 80px; height: 80px; margin: auto;
-            background-color: #ecfdf5;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .checkmark svg { width: 50px; height: 50px; }
-
-        .checkmark circle {
-            stroke: var(--success-color); stroke-width: 6; fill: none;
-            stroke-dasharray: 251; stroke-dashoffset: 251;
-            animation: drawCircle .5s ease-out forwards;
-        }
-
-        .checkmark path {
-            stroke: var(--success-color); stroke-width: 6; fill: none;
-            stroke-dasharray: 50; stroke-dashoffset: 50;
-            animation: drawTick .3s .5s ease-out forwards;
-        }
-
-        @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-        @keyframes drawTick { to { stroke-dashoffset: 0; } }
-
-        /* --- Mobile Responsiveness --- */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 70px; left: 0; width: 100%;
-                background: white; padding: 24px 5%;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                gap: 20px; border-top: 1px solid var(--border-color);
-            }
-            .nav-links.active { display: flex; }
-            .nav-apply-btn { text-align: center; display: block; }
-            .menu-toggle { display: block; }
-            .form-row { grid-template-columns: 1fr; gap: 0; }
-            .card { padding: 24px 20px; }
-        }
-    </style>
+    /* ================= RESPONSIVE ================= */
+    @media(max-width:980px){ 
+      .grid-2{grid-template-columns:1fr} 
+      .hero h1{font-size:32px}
+    }
+    @media(max-width:768px){
+      /* Header & Nav */
+      .nav-menu{display:none} .nav-toggle{display:block} .logo{height:40px}
+      /* Hero */
+      .hero{padding:60px 16px;min-height:auto}
+      .hero h1{font-size:28px} .hero p{font-size:15px}
+      .hero-buttons .btn{width:100%;margin:0 !important}
+      /* Layout */
+      .section{padding:40px 0}
+      .card{padding:20px}
+      /* Chat */
+      #cinps-chat-btn{bottom:20px;right:20px;width:56px;height:56px;font-size:24px}
+      #cinps-chat-box{bottom:85px;right:16px;left:16px;width:auto;max-width:none}
+    }
+  </style>
 </head>
-
 <body>
 
-    <nav class="navbar">
-        <a href="https://cinps-org.github.io/index.html" class="nav-brand">
-            <img src="https://cinps-org.github.io/assets/images/logo.png" alt="CINPS Logo">
-            <span>CINPS</span>
-        </a>
-        
-        <div class="menu-toggle" id="mobile-menu">☰</div>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap" aria-label="CINPS Home">
+        <img src="assets/images/logo.png" alt="CINPS Logo" class="logo">
+        <div class="brand-text" aria-hidden="true">
+          <span class="title">Chandidas Institute</span>
+          <span class="subtitle">Nursing & Paramedical Science</span>
+        </div>
+      </a>
 
-        <ul class="nav-links" id="nav-links">
-            <li><a href="https://cinps-org.github.io/index.html">Home</a></li>
-            <li><a href="https://cinps-org.github.io/about.html">About</a></li>
-            <li><a href="https://cinps-org.github.io/courses.html">Courses</a></li>
-            <li><a href="https://cinps-org.github.io/admissions.html" class="nav-apply-btn">Admissions</a></li>
+      <nav class="nav" role="navigation" aria-label="Primary navigation">
+        <ul class="nav-menu" id="mainNav">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="courses.html">Courses</a></li>
+          <li><a href="admissions.html">Admissions</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://cinps-org.github.io/portal/studentcorner.html" target="_blank" rel="noopener">Student Corner</a></li>
+          <li><a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">Instructor Hub</a></li>
         </ul>
+        <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-header">
+      <div style="display:flex;gap:12px;align-items:center">
+        <img src="assets/images/logo.png" alt="CINPS logo" style="height:36px">
+        <div style="font-weight:700;color:var(--brand-blue);line-height:1.2">CINPS</div>
+      </div>
+      <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer">✕</button>
+    </div>
+    <nav class="drawer-links" aria-label="Mobile navigation">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="admissions.html">Admissions</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://cinps-org.github.io/portal/studentcorner.html" target="_blank" rel="noopener">Student Corner</a>
+      <a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">Instructor Hub</a>
     </nav>
+    <div class="drawer-cta">
+      <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn btn-blue" style="width:100%">Apply Now</a>
+    </div>
+  </aside>
 
-    <div class="main-content">
-        <div class="page-header">
-            <h1>Teacher Class Update</h1>
-            <p>Faculty Dashboard & Reporting Portal</p>
+  <section class="hero" aria-label="Welcome to CINPS">
+    <img src="assets/images/hero.jpg" alt="" class="hero-img" />
+    <div class="hero-inner container">
+      <h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
+      <p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals — 100% internship & dedicated placement support.</p>
+      <div class="hero-buttons">
+        <a class="btn btn-primary" href="courses.html">Explore Courses</a>
+        <a class="btn btn-outline" href="admissions.html">Apply Now</a>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="card">
+          <h2>Chandidas Institute of Nursing and Paramedical Science (CINPS)</h2>
+          <p style="margin-bottom:16px; color:#444;">Chandidas Institute of Nursing and Paramedical Science (CINPS) is a professionally governed paramedical institute committed to delivering structured, skill-driven, and career-oriented healthcare education. We prepare students for responsible roles in hospitals, diagnostic centers, and emergency services.</p>
+          <p style="color:#444;">CINPS operates with a clear academic vision: to transform aspiring healthcare learners into competent professionals through disciplined training systems, practical exposure, and measurable performance standards.</p>
         </div>
+      </div>
+    </section>
 
-        <div class="login-box" id="loginBox">
-            <p>Please verify your faculty identity to submit logs.</p>
-            <div id="g_id_onload"
-                 data-client_id="880919546311-js43d7b2h0eq5lm29pg9mb80ilc53s4v.apps.googleusercontent.com"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin"
-                 data-type="standard"
-                 data-size="large"
-                 data-theme="outline"
-                 data-shape="pill">
-            </div>
-        </div>
+    <section class="section" style="background:#f9fbff; padding-top:0;">
+      <div class="container">
+        <div class="grid-2">
+          
+          <div class="card">
+            <h3>Structured Academic System</h3>
+            <p style="font-size:15px;color:#555">Education is not limited to classroom instruction. Our framework integrates:</p>
+            <ul class="features">
+              <li>Concept-based theoretical learning</li>
+              <li>Procedure-oriented practical training</li>
+              <li>Continuous skill assessment</li>
+              <li>Professional behavior monitoring</li>
+              <li>Outcome-based evaluation methods</li>
+            </ul>
+          </div>
 
-        <form id="classUpdateForm">
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div class="highlight-box">
+              <h3>100% Internship Assurance</h3>
+              <ul class="features" style="margin-top:8px">
+                <li>Real-time clinical exposure</li>
+                <li>Apply concepts in practical settings</li>
+                <li>Workplace discipline & documentation</li>
+              </ul>
+            </div>
             
-            <div class="card">
-                <h3>Class Information</h3>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="text" id="date" name="date" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Day</label>
-                        <input type="text" id="day" name="day" readonly>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Instructor (Verified)</label>
-                    <input type="text" id="instructorDisplay" placeholder="Awaiting login verification..." readonly>
-                    <input type="hidden" name="instructorName" id="instructorName">
-                    <input type="hidden" name="instructorEmail" id="instructorEmail">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Start Time</label>
-                        <div class="time-row">
-                            <select name="startHour" id="startHour" required onchange="calculateDuration()">
-                                <option value="">HH</option>
-                                <option>01</option><option>02</option><option>03</option><option>04</option>
-                                <option>05</option><option>06</option><option>07</option><option>08</option>
-                                <option>09</option><option>10</option><option>11</option><option>12</option>
-                            </select>
-                            <select name="startMinute" id="startMinute" required onchange="calculateDuration()">
-                                <option value="">MM</option>
-                                <option>00</option><option>05</option><option>10</option><option>15</option>
-                                <option>20</option><option>25</option><option>30</option><option>35</option>
-                                <option>40</option><option>45</option><option>50</option><option>55</option>
-                            </select>
-                            <select name="ampm" id="ampm" required onchange="calculateDuration()">
-                                <option value="">AM/PM</option>
-                                <option>AM</option><option>PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>End Time (Auto-Captured)</label>
-                        <input type="text" id="endTime" name="endTime" readonly>
-                        <span class="duration-hint" id="durationDisplay"></span>
-                    </div>
-                </div>
+            <div class="highlight-box">
+              <h3>100% Placement Assistance</h3>
+              <ul class="features" style="margin-top:8px">
+                <li>Career counseling & guidance</li>
+                <li>Interview preparation sessions</li>
+                <li>Resume development assistance</li>
+              </ul>
             </div>
+          </div>
 
-            <div class="card">
-                <h3>Course Details</h3>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Mode of Class</label>
-                        <select name="mode" required>
-                            <option value="">Select Mode</option>
-                            <option>Offline</option>
-                            <option>Online</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Course Type</label>
-                        <select name="courseType" required>
-                            <option value="">Select Type</option>
-                            <option>Two-Year Diploma</option>
-                            <option>One-Year Diploma</option>
-                            <option>Certificate</option>
-                        </select>
-                    </div>
-                </div>
+        </div>
+      </div>
+    </section>
 
-                <div class="form-group">
-                    <label>Course Program</label>
-                    <select name="course" required>
-                        <option value="">Select Course</option>
-                        <option>OTT</option><option>MLT</option><option>EMT</option>
-                        <option>ICU</option><option>MRT</option><option>ECG</option>
-                        <option>PT</option><option>RMP</option><option>CMS & ED</option><option>NA</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Topic Taught</label>
-                    <textarea name="topic" id="topicInput" placeholder="Enter detailed topic description..." required oninput="updateCharCount()"></textarea>
-                    <span class="char-counter" id="charCountDisplay">0 characters</span>
-                </div>
+    <section class="section">
+      <div class="container">
+        <div class="card">
+          <h2 style="text-align:center; margin-bottom:24px">Comprehensive Student Support</h2>
+          <div class="grid-2">
+            <div>
+              <h3>Academic Support</h3>
+              <ul class="features">
+                <li>Doubt-clearing sessions</li>
+                <li>Structured revision programs</li>
+                <li>Performance feedback discussions</li>
+                <li>Examination preparation assistance</li>
+              </ul>
             </div>
+            <div>
+              <h3>Professional Development</h3>
+              <ul class="features">
+                <li>Communication skill enhancement</li>
+                <li>Workplace behavior training</li>
+                <li>Documentation accuracy guidance</li>
+                <li>Time management coaching</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-            <button type="submit" id="submitBtn" disabled>Submit Class Record</button>
+        <div style="margin-top:40px; text-align:center">
+          <div class="card" style="background:var(--brand-blue); color:#fff; border:none;">
+            <h2 style="color:#fff">Ready to Start Your Healthcare Career?</h2>
+            <p style="color:rgba(255,255,255,0.9); margin-bottom:24px">Join CINPS to build a capable, ethical, and employment-ready future.</p>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap">
+              <a href="https://cinps-org.github.io/admission-form" target="_blank" class="btn" style="background:#fff; color:var(--brand-blue)">Apply Now</a>
+              <button onclick="openModal()" class="btn" style="border:1px solid rgba(255,255,255,0.5); color:#fff; background:transparent">Contact Us</button>
+            </div>
+          </div>
+        </div>
 
-        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:var(--brand-blue);color:#fff;padding:24px;text-align:center;margin-top:20px">
+    <div class="container" style="font-size: 14px; opacity: 0.9;">
+      © <span id="year"></span> Chandidas Institute of Nursing & Paramedical Science
     </div>
+  </footer>
 
-    <footer class="footer">
-        <p>&copy; 2026 Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
-    </footer>
-
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="popup-card" id="popupCard"></div>
-    </div>
-
-    <script>
-        // --- Mobile Menu Toggle ---
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-
-        mobileMenu.addEventListener('click', () => {
-            const isExpanded = navLinks.classList.toggle('active');
-            mobileMenu.innerHTML = isExpanded ? '✕' : '☰';
-        });
-
-        // --- Core Application Logic ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHpuX4WLBGDImZdmBOSWLyRaQa6EBFBNYwlD7pvIjpKR7D-TZ4wDPTSfCA_MhDMzPugw/exec";
+  <div class="modal-bg" id="modal" aria-hidden="true">
+    <div class="modal" role="document">
+      <h3 style="color:var(--brand-blue); margin-bottom: 8px;">Contact Admissions</h3>
+      <p style="font-size: 14px; color: var(--muted); margin-bottom: 16px;">We'll get back to you shortly.</p>
+      <form id="contactForm">
+        <input name="name" placeholder="Your name" required>
+        <input name="phone" placeholder="Phone number" type="tel" required>
+        <input name="subject" placeholder="Subject (e.g., Course enquiry)" required>
+        <textarea name="message" placeholder="Your message" rows="4" required></textarea>
         
-        // Auto-fill Current Time details
-        const now = new Date();
-        document.getElementById('date').value = now.toLocaleDateString("en-GB");
-        document.getElementById('day').value = now.toLocaleDateString("en-US", {weekday: "long"});
-        document.getElementById('endTime').value = now.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"});
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+          <button type="button" class="btn" onclick="closeModal()" style="background:#f4f7fb; color:#333; padding:10px 18px;">Cancel</button>
+          <button type="submit" class="btn btn-blue" style="padding:10px 24px;">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        // Google Authentication Callback
-        function handleCredentialResponse(response) {
-            const data = JSON.parse(atob(response.credential.split('.')[1]));
-            document.getElementById('instructorDisplay').value = data.name + " (Verified)";
-            document.getElementById('instructorName').value = data.name;
-            document.getElementById('instructorEmail').value = data.email;
-            
-            // Hide login box and enable submit
-            document.getElementById('loginBox').style.display = "none";
-            document.getElementById('submitBtn').disabled = false;
-        }
+  <button id="cinps-chat-btn" aria-label="Open CINPS Pulse AI">🧠</button>
+  <div id="cinps-chat-box" role="dialog" aria-hidden="true">
+    <div id="cinps-chat-header" style="background:var(--brand-blue);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:700">CINPS Pulse AI</span>
+      <button id="cinps-chat-close" style="background:none;border:0;color:#fff;font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div id="cinps-chat-messages" style="padding:16px;height:300px;overflow:auto;background:linear-gradient(#fff,#f6f9ff)">
+      <div class="bubble bot" style="background:#f1f5ff;padding:12px;border-radius:12px;max-width:85%;font-size:14px;line-height:1.5;color:#333">👋 Welcome! Ask about courses, fees, or admissions.</div>
+    </div>
+    <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff">
+      <input id="cinps-user-input" placeholder="Type a message..." style="flex:1;padding:12px;border-radius:10px;border:1px solid #e2e8f0;font-size:16px;outline:none" />
+      <button id="cinps-send-btn" style="background:var(--brand-blue);color:#fff;border:0;padding:0 16px;border-radius:10px;font-weight:600;cursor:pointer">Send</button>
+    </div>
+  </div>
 
-        // --- New Frontend Feature 1: Character Counter ---
-        function updateCharCount() {
-            const length = document.getElementById('topicInput').value.length;
-            document.getElementById('charCountDisplay').innerText = `${length} characters`;
-        }
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-        // --- New Frontend Feature 2: Visual Duration Calculator ---
-        function calculateDuration() {
-            const h = document.getElementById('startHour').value;
-            const m = document.getElementById('startMinute').value;
-            const ampm = document.getElementById('ampm').value;
-            
-            if(h && m && ampm) {
-                document.getElementById('durationDisplay').innerText = "⏱ Duration will be calculated upon submission.";
-                // Note: Actual duration math is kept simple here on the frontend to avoid time-zone logic issues, 
-                // but providing the visual hint confirms to the user that times are logged.
-            }
-        }
+    // MOBILE DRAWER
+    const navToggle = document.getElementById('navToggle');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
 
-        // --- UI Modal Functions ---
-        const popupOverlay = document.getElementById('popupOverlay');
-        const popupCard = document.getElementById('popupCard');
+    function openDrawer(){
+      mobileDrawer.classList.add('open');
+      mobileDrawer.setAttribute('aria-hidden','false');
+      drawerBackdrop.classList.add('show');
+      drawerBackdrop.setAttribute('aria-hidden','false');
+      navToggle.setAttribute('aria-expanded','true');
+      document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.setAttribute('aria-hidden','true');
+      drawerBackdrop.classList.remove('show');
+      drawerBackdrop.setAttribute('aria-hidden','true');
+      navToggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow='';
+    }
 
-        function showLoading() {
-            popupOverlay.style.display = "flex";
-            popupCard.innerHTML = `
-                <div class="loader"></div>
-                <h3 style="margin-top:24px; color:var(--primary-color); font-weight:700;">Processing...</h3>
-                <p style="color:var(--text-muted);">Securely logging class data.</p>
-            `;
-        }
+    navToggle?.addEventListener('click', ()=> navToggle.getAttribute('aria-expanded') === 'true' ? closeDrawer() : openDrawer());
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+    mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-        function showSuccess() {
-            popupCard.innerHTML = `
-                <div class="checkmark">
-                    <svg viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="40"/>
-                        <path d="M30 52 L45 65 L70 38"/>
-                    </svg>
-                </div>
-                <h3 style="margin-top:20px; color:var(--success-color); font-weight:700;">Submission Complete</h3>
-                <p style="color:var(--text-muted); font-weight:500;">Your class record has been saved.</p>
-            `;
-            setTimeout(() => { popupOverlay.style.display = "none"; }, 3500);
-        }
+    // MODAL
+    const modal = document.getElementById('modal');
+    function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
+      e.preventDefault(); alert('Message sent!'); closeModal();
+    });
 
-        // --- Form Submission ---
-        document.getElementById('classUpdateForm').addEventListener("submit", function(e) {
-            e.preventDefault();
-            showLoading();
-            
-            fetch(SCRIPT_URL, { method: "POST", body: new FormData(this) })
-            .then(r => r.json())
-            .then(() => { 
-                showSuccess(); 
-                this.reset();
-                // Reset dynamic elements
-                updateCharCount();
-                document.getElementById('durationDisplay').innerText = "";
-            })
-            .catch(() => { 
-                popupCard.innerHTML = "<h3 style='color:#ef4444;'>❌ Submission Failed</h3><p>Please check your connection and try again.</p>"; 
-            });
-        });
-    </script>
+    // CHATBOT
+    const chatBtn = document.getElementById('cinps-chat-btn');
+    const chatBox = document.getElementById('cinps-chat-box');
+    const chatClose = document.getElementById('cinps-chat-close');
+    const msgs = document.getElementById('cinps-chat-messages');
+    const input = document.getElementById('cinps-user-input');
+    const sendBtn = document.getElementById('cinps-send-btn');
+
+    function toggleChat(){
+      const isActive = chatBox.classList.contains('active');
+      isActive ? chatBox.classList.remove('active') : chatBox.classList.add('active');
+      chatBox.setAttribute('aria-hidden', isActive);
+    }
+    
+    function addMsg(txt, type='bot'){
+      const d = document.createElement('div');
+      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px';
+      if(type==='user'){ d.style.background='var(--brand-blue)'; d.style.color='#fff'; d.style.marginLeft='auto'; }
+      else{ d.style.background='#f1f5ff'; d.style.color='#333'; }
+      d.textContent = txt;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    chatBtn?.addEventListener('click', toggleChat);
+    chatClose?.addEventListener('click', toggleChat);
+    const CINPS_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+
+sendBtn?.addEventListener('click', sendMessage);
+input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
+
+function sendMessage(){
+  const val = input.value.trim();
+  if(!val) return;
+
+  addMsg(val, 'user');
+  input.value = '';
+
+  const loading = document.createElement('div');
+  loading.textContent = "Thinking...";
+  loading.style.padding='10px';
+  msgs.appendChild(loading);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  fetch(CINPS_API, {
+    method: "POST",
+    body: JSON.stringify({
+      userId: "WEB_" + Date.now(),
+      message: val
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loading.remove();
+    addMsg(data.reply || "Please contact CINPS office.");
+  })
+  .catch(() => {
+    loading.remove();
+    addMsg("Please contact CINPS office at +91 8101579839.");
+  });
+}
+
+    // Global Close
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
+  </script>
 </body>
 </html>
