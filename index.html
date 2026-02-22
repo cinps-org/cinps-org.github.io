@@ -159,11 +159,12 @@
 
       <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
-          <li><a href="index.html" aria-current="page">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="courses.html">Courses</a></li>
           <li><a href="admissions.html">Admissions</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener">StudentCorner</a></li>
+          <li><a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">InstructorHub</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open menu">☰</button>
       </nav>
@@ -185,6 +186,8 @@
       <a href="courses.html">Courses</a>
       <a href="admissions.html">Admissions</a>
       <a href="contact.html">Contact</a>
+      <a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener">Student Corner</a></li>
+      <a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">Instructor Hub</a>
     </nav>
     <div class="drawer-cta">
       <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener" class="btn btn-blue" style="width:100%">Apply Now</a>
@@ -198,7 +201,7 @@
       <p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals — 100% internship & dedicated placement support.</p>
       <div class="hero-buttons">
         <a class="btn btn-primary" href="courses.html">Explore Courses</a>
-        <a class="btn btn-outline" href="admissions.html">Apply Now</a>
+        <a class="btn btn-outline" href="https://cinps-org.github.io/admission-form">Apply Now</a>
       </div>
     </div>
   </section>
@@ -366,13 +369,43 @@
     mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
     // MODAL
+   // MODAL
     const modal = document.getElementById('modal');
     function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
     function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    
     document.getElementById('contactForm')?.addEventListener('submit', (e)=>{
-      e.preventDefault(); alert('Message sent!'); closeModal();
-    });
+      e.preventDefault(); 
+      
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      
+      // Visual feedback during submission
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
 
+      const formData = new FormData(form);
+
+      fetch("https://script.google.com/macros/s/AKfycbx238EEzhTfcYGngAQD6CeXZIYqt0KqKp7_3iiR3ZVffUeO-Sik8dqmoXE7daNBcTxZlQ/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text()) // Use text() instead of json() as Apps Script often returns a simple success string
+      .then(data => {
+        alert('Message sent successfully! We will get back to you shortly.');
+        form.reset();
+        closeModal();
+      })
+      .catch(error => {
+        alert('There was an error sending your message. Please try again.');
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      });
+    });
     // CHATBOT
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
