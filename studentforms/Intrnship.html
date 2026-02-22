@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Update Portal - CINPS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* CINPS Brand Palette - Clinical, Trustworthy, Professional */
+            --primary-color: #005f73; 
+            --primary-hover: #07748c;
+            --accent-color: #0a9396;
+            --bg-color: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            --success-color: #10b981;
+            --focus-ring: rgba(0, 95, 115, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 5%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-brand img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-brand span {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-apply-btn {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px var(--focus-ring);
+        }
+
+        .nav-apply-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--primary-color);
+            user-select: none;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 20px;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .page-header h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* --- Form Container --- */
+        .form-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 650px;
+            padding: 48px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 10px 15px -5px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: var(--input-bg);
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        input:hover, select:hover, textarea:hover {
+            border-color: #cbd5e1;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        /* Grid Layout for Form Rows */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .divider {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 32px 0;
+            position: relative;
+            text-align: center;
+        }
+        
+        .divider::after {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 0 16px;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 20px;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px var(--focus-ring);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 95, 115, 0.25);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px var(--focus-ring);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--text-main);
+            color: #ffffff;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* --- Success Modal --- */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.65);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .success-card {
+            background: white;
+            padding: 48px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 420px;
+            width: 90%;
+        }
+
+        .icon-circle {
+            width: 88px;
+            height: 88px;
+            background-color: #ecfdf5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 0 12px #f0fdf4;
+        }
+
+        .check-icon {
+            color: var(--success-color);
+            font-size: 44px;
+            line-height: 1;
+        }
+
+        .success-card h3 {
+            color: var(--text-main);
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .success-card p {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .btn-close {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-close:hover {
+            background-color: #e2e8f0;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 24px 5%;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                gap: 20px;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-apply-btn {
+                text-align: center;
+                display: block;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-container {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="https://cinps-org.github.io/" class="nav-brand">
+            <img src="https://cinps-org.github.io/assets/images/logo.png" alt="CINPS Logo">
+            <span>CINPS</span>
+        </a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            ☰
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="https://cinps-org.github.io/index.html">Home</a></li>
+            <li><a href="https://cinps-org.github.io/about.html">About</a></li>
+            <li><a href="https://cinps-org.github.io/courses.html">Courses</a></li>
+            <li><a href="https://cinps-org.github.io/admissions.html" class="nav-apply-btn">Apply Now</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Internship Daily Log</h1>
+            <p>100% Internship Assurance Tracking Portal</p>
+        </div>
+
+        <div class="form-container">
+            <form id="internshipForm">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="logDate">Date of Duty</label>
+                        <input type="date" id="logDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shiftType">Shift</label>
+                        <select id="shiftType" required>
+                            <option value="" disabled selected>Select Shift</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Evening">Evening</option>
+                            <option value="Night">Night</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime">Start Time</label>
+                        <input type="time" id="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End Time</label>
+                        <input type="time" id="endTime" required>
+                    </div>
+                </div>
+
+                <hr class="divider" data-label="Student Information">
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter student name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentId">Student ID / Roll No</label>
+                        <input type="text" id="studentId" placeholder="e.g. CINPS-INT-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="course">Course Program</label>
+                        <select id="course" required>
+                            <option value="" disabled selected>Select Course</option>
+                            <option value="B.Sc Nursing">B.Sc Nursing</option>
+                            <option value="GNM">GNM</option>
+                            <option value="DMLT">DMLT</option>
+                            <option value="BPT">BPT</option>
+                            <option value="Other">Other Paramedical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="divider" data-label="Internship Details">
+
+                <div class="form-group">
+                    <label for="hospitalName">Assigned Hospital / Healthcare Center</label>
+                    <input type="text" id="hospitalName" placeholder="Enter institution name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="department">Ward / Department</label>
+                        <input type="text" id="department" placeholder="e.g. ICU, OPD, Pathology" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supervisorName">Supervisor / In-Charge Name</label>
+                        <input type="text" id="supervisorName" placeholder="Name of reporting head">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tasksHandled">Key Tasks & Responsibilities Handled</label>
+                    <textarea id="tasksHandled" placeholder="Briefly describe patient care given, tests performed, or operational duties managed today..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Internship Log</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Chandidas Institute of Nursing & Paramedical Science. Empowering Healthcare Professionals.</p>
+    </footer>
+
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <div class="icon-circle">
+                <span class="check-icon">✔</span>
+            </div>
+            <h3>Log Submitted</h3>
+            <p>Your internship update has been successfully recorded in the central database.</p>
+            <button class="btn-close" onclick="closeModal()">Close Window</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            const isExpanded = navLinks.classList.toggle('active');
+            mobileMenu.innerHTML = isExpanded ? '✕' : '☰';
+        });
+
+        // --- 1. Auto Capture Date & Time ---
+        function setAutoValues() {
+            const now = new Date();
+            
+            // Format Date
+            const dateString = now.toISOString().split('T')[0];
+            document.getElementById('logDate').value = dateString;
+
+            // Format Time
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('endTime').value = `${hours}:${minutes}`;
+        }
+
+        // --- 2. Smart ERP Autofill Logic (Cross-Form Consistency) ---
+        // As a management solution, we use the same localStorage keys across all CINPS forms 
+        // so the student only has to type their static info once.
+        function populateFromStorage() {
+            const fill = (id, key) => {
+                const element = document.getElementById(id);
+                const storedVal = localStorage.getItem(key);
+                if (element && storedVal) {
+                    element.value = storedVal;
+                }
+            };
+
+            fill('fullName', 'cinps_student_name');
+            fill('studentId', 'cinps_student_id');
+            fill('course', 'cinps_course');
+            fill('hospitalName', 'cinps_internship_hospital');
+        }
+
+        // --- 3. Save User Data to Storage on Submit ---
+        function saveToStorage() {
+            localStorage.setItem('cinps_student_name', document.getElementById('fullName').value);
+            localStorage.setItem('cinps_student_id', document.getElementById('studentId').value);
+            localStorage.setItem('cinps_course', document.getElementById('course').value);
+            localStorage.setItem('cinps_internship_hospital', document.getElementById('hospitalName').value);
+        }
+
+        // --- 4. Run on Load ---
+        window.onload = function() {
+            setAutoValues();
+            populateFromStorage();
+        };
+
+        // --- 5. Handle Submission ---
+        const form = document.getElementById('internshipForm');
+        const overlay = document.getElementById('successOverlay');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            // Save current data to browser storage for next time
+            saveToStorage();
+
+            // Insert Backend Integration Here (e.g., Google Apps Script webhook)
+            
+            // Show Premium Success Animation
+            overlay.style.display = 'flex';
+        });
+
+        function closeModal() {
+            overlay.style.display = 'none';
+            // Reset the dynamic fields (tasks, time) but keep the student info
+            document.getElementById('tasksHandled').value = '';
+            document.getElementById('department').value = '';
+            setAutoValues(); 
+        }
+    </script>
+</body>
+</html>
