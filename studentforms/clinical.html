@@ -569,9 +569,15 @@ form.addEventListener("submit", async (e) => {
   try {
     /* 1️⃣ Store full log */
     await addDoc(
-      collection(db, "students", currentUser.uid, "clinicalLogs"),
-      logData
-    );
+    import { setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+await setDoc(
+  doc(db, "students", currentUser.uid),
+  {
+    clinicalHours: increment(hoursWorked)
+  },
+  { merge: true }
+);
 
     /* 2️⃣ Increment total hours */
     await updateDoc(
