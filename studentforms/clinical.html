@@ -610,6 +610,9 @@ form.addEventListener("submit", async (e) => {
     console.error(error);
     alert("Error saving clinical data.");
   }
+closeBtn.addEventListener("click", () => {
+  overlay.style.display = "none";
+  window.location.href = "/portal/student-corner.html";
 });
 </script>
 </body>
