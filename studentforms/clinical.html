@@ -498,20 +498,18 @@
         </div>
     </div>
 
-  <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
   getFirestore, 
   doc, 
   collection, 
-  addDoc, 
-  updateDoc, 
-  increment, 
+  runTransaction,
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔐 SAME config as student-corner */
+/* Firebase Config */
 const firebaseConfig = {
   apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
@@ -524,7 +522,7 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-/* Ensure login */
+/* Ensure Login */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     alert("Please login from Student Corner first.");
@@ -534,12 +532,16 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-/* Submit Logic */
 const form = document.getElementById("clinicalForm");
 const overlay = document.getElementById("successOverlay");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (!currentUser) {
+    alert("Authentication not ready. Please refresh.");
+    return;
+  }
 
   const start = document.getElementById("startTime").value;
   const end = document.getElementById("endTime").value;
@@ -547,41 +549,58 @@ form.addEventListener("submit", async (e) => {
   const startDate = new Date(`1970-01-01T${start}:00`);
   const endDate = new Date(`1970-01-01T${end}:00`);
 
-  const hoursWorked = (endDate - startDate) / (1000 * 60 * 60);
+  const minutesWorked = Math.floor((endDate - startDate) / (1000 * 60));
 
-  if (hoursWorked <= 0) {
+  if (minutesWorked <= 0) {
     alert("End time must be after start time.");
     return;
   }
 
-  const logData = {
-    date: document.getElementById("clinicalDate").value,
-    startTime: start,
-    endTime: end,
-    hours: hoursWorked,
-    hospital: document.getElementById("hospitalName").value,
-    department: document.getElementById("department").value,
-    skills: document.getElementById("skills").value,
-    createdAt: serverTimestamp()
-  };
+  /* Convert to FULL hours only (integer for rule compliance) */
+  const hoursWorked = Math.floor(minutesWorked / 60);
+
+  if (hoursWorked <= 0) {
+    alert("Minimum 1 hour required to submit.");
+    return;
+  }
+
+  const studentRef = doc(db, "students", currentUser.uid);
+  const logRef = doc(collection(db, "students", currentUser.uid, "clinicalLogs"));
 
   try {
 
-    /* 1️⃣ Save full log */
-    await addDoc(
-      collection(db, "students", currentUser.uid, "clinicalLogs"),
-      logData
-    );
+    await runTransaction(db, async (transaction) => {
 
-    /* 2️⃣ Increment total hours */
-    await updateDoc(
-      doc(db, "students", currentUser.uid),
-      {
-        clinicalHours: increment(hoursWorked)
+      const studentSnap = await transaction.get(studentRef);
+
+      if (!studentSnap.exists()) {
+        throw new Error("Student record not found.");
       }
-    );
+
+      const currentHours = studentSnap.data().clinicalHours || 0;
+
+      /* 1️⃣ Increment clinicalHours */
+      transaction.update(studentRef, {
+        clinicalHours: currentHours + hoursWorked
+      });
+
+      /* 2️⃣ Save Log */
+      transaction.set(logRef, {
+        date: document.getElementById("clinicalDate").value,
+        startTime: start,
+        endTime: end,
+        hours: hoursWorked,
+        minutes: minutesWorked,
+        hospital: document.getElementById("hospitalName").value,
+        department: document.getElementById("department").value,
+        skills: document.getElementById("skills").value,
+        createdAt: serverTimestamp()
+      });
+
+    });
 
     overlay.style.display = "flex";
+    form.reset();
 
   } catch (error) {
     console.error(error);
