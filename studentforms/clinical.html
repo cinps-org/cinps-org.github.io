@@ -494,7 +494,7 @@
             </div>
             <h3>Submission Successful</h3>
             <p>The clinical exposure details have been securely recorded and updated in the system.</p>
-            <button class="btn-close" onclick="closeModal()">Close Window</button>
+           <button class="btn-close" id="closeModalBtn">Close Window</button>
         </div>
     </div>
 
@@ -534,7 +534,11 @@ onAuthStateChanged(auth, (user) => {
 
 const form = document.getElementById("clinicalForm");
 const overlay = document.getElementById("successOverlay");
+const closeBtn = document.getElementById("closeModalBtn");
 
+closeBtn.addEventListener("click", () => {
+  overlay.style.display = "none";
+});
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
