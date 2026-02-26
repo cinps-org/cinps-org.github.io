@@ -576,40 +576,60 @@ form.addEventListener("submit", async (e) => {
 
     await runTransaction(db, async (transaction) => {
 
-      const studentSnap = await transaction.get(studentRef);
+  const studentSnap = await transaction.get(studentRef);
 
-      if (!studentSnap.exists()) {
-        throw new Error("Student record not found.");
-      }
+  if (!studentSnap.exists()) {
+    throw new Error("Student record not found.");
+  }
 
-      const currentHours = studentSnap.data().clinicalHours || 0;
+  const selectedDate = document.getElementById("clinicalDate").value;
 
-      transaction.update(studentRef, {
-        clinicalHours: currentHours + hoursWorked
-      });
+  /* 🔍 Check duplicate date */
+  const logsCollectionRef = collection(db, "students", currentUser.uid, "clinicalLogs");
 
-      transaction.set(logRef, {
-        date: document.getElementById("clinicalDate").value,
-        startTime: start,
-        endTime: end,
-        hours: hoursWorked,
-        minutes: minutesWorked,
-        hospital: document.getElementById("hospitalName").value,
-        department: document.getElementById("department").value,
-        skills: document.getElementById("skills").value,
-        createdAt: serverTimestamp()
-      });
+  const existingLogsQuery = logsCollectionRef;
+  const existingLogsSnap = await transaction.get(existingLogsQuery);
 
+  let duplicateFound = false;
+
+  existingLogsSnap.forEach(docSnap => {
+    if (docSnap.data().date === selectedDate) {
+      duplicateFound = true;
+    }
+  });
+
+  if (duplicateFound) {
+    throw new Error("Clinical entry already submitted for this date.");
+  }
+
+  const currentHours = studentSnap.data().clinicalHours || 0;
+
+  transaction.update(studentRef, {
+    clinicalHours: currentHours + hoursWorked
+  });
+
+  transaction.set(logRef, {
+    date: selectedDate,
+    startTime: start,
+    endTime: end,
+    hours: hoursWorked,
+    minutes: minutesWorked,
+    hospital: document.getElementById("hospitalName").value,
+    department: document.getElementById("department").value,
+    skills: document.getElementById("skills").value,
+    createdAt: serverTimestamp()
+  });
+
+});
     });
 
     overlay.style.display = "flex";
     form.reset();
 
-  } catch (error) {
-    console.error(error);
-    alert("Error saving clinical data.");
-  }
-
+catch (error) {
+  console.error(error);
+  alert(error.message || "Error saving clinical data.");
+}
 });
 </script>
 </body>
