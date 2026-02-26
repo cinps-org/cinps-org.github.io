@@ -498,8 +498,7 @@
         </div>
     </div>
 
-    <script>
-      <script type="module">
+  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
@@ -512,9 +511,9 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔐 Use SAME config as student-corner.html */
+/* 🔐 SAME config as student-corner */
 const firebaseConfig = {
-  apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
+  apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
   authDomain: "cinps-student-corner.firebaseapp.com",
   projectId: "cinps-student-corner"
 };
@@ -525,7 +524,7 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-/* Ensure student is logged in */
+/* Ensure login */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     alert("Please login from Student Corner first.");
@@ -535,7 +534,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-/* Form Submission */
+/* Submit Logic */
 const form = document.getElementById("clinicalForm");
 const overlay = document.getElementById("successOverlay");
 
@@ -567,17 +566,12 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    /* 1️⃣ Store full log */
-    await addDoc(
-    import { setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-await setDoc(
-  doc(db, "students", currentUser.uid),
-  {
-    clinicalHours: increment(hoursWorked)
-  },
-  { merge: true }
-);
+    /* 1️⃣ Save full log */
+    await addDoc(
+      collection(db, "students", currentUser.uid, "clinicalLogs"),
+      logData
+    );
 
     /* 2️⃣ Increment total hours */
     await updateDoc(
@@ -595,5 +589,3 @@ await setDoc(
   }
 });
 </script>
-</body>
-</html>
