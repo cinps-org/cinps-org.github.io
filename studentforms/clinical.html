@@ -572,61 +572,58 @@ form.addEventListener("submit", async (e) => {
   const studentRef = doc(db, "students", currentUser.uid);
   const logRef = doc(collection(db, "students", currentUser.uid, "clinicalLogs"));
 
-  try {
+ try {
 
-    await runTransaction(db, async (transaction) => {
+  await runTransaction(db, async (transaction) => {
 
-  const studentSnap = await transaction.get(studentRef);
+    const studentSnap = await transaction.get(studentRef);
 
-  if (!studentSnap.exists()) {
-    throw new Error("Student record not found.");
-  }
-
-  const selectedDate = document.getElementById("clinicalDate").value;
-
-  /* 🔍 Check duplicate date */
-  const logsCollectionRef = collection(db, "students", currentUser.uid, "clinicalLogs");
-
-  const existingLogsQuery = logsCollectionRef;
-  const existingLogsSnap = await transaction.get(existingLogsQuery);
-
-  let duplicateFound = false;
-
-  existingLogsSnap.forEach(docSnap => {
-    if (docSnap.data().date === selectedDate) {
-      duplicateFound = true;
+    if (!studentSnap.exists()) {
+      throw new Error("Student record not found.");
     }
-  });
 
-  if (duplicateFound) {
-    throw new Error("Clinical entry already submitted for this date.");
-  }
+    const selectedDate = document.getElementById("clinicalDate").value;
 
-  const currentHours = studentSnap.data().clinicalHours || 0;
+    /* 🔍 Check duplicate date */
+    const logsRef = collection(db, "students", currentUser.uid, "clinicalLogs");
+    const existingLogsSnap = await transaction.get(logsRef);
 
-  transaction.update(studentRef, {
-    clinicalHours: currentHours + hoursWorked
-  });
+    let duplicateFound = false;
 
-  transaction.set(logRef, {
-    date: selectedDate,
-    startTime: start,
-    endTime: end,
-    hours: hoursWorked,
-    minutes: minutesWorked,
-    hospital: document.getElementById("hospitalName").value,
-    department: document.getElementById("department").value,
-    skills: document.getElementById("skills").value,
-    createdAt: serverTimestamp()
-  });
-
-});
+    existingLogsSnap.forEach(docSnap => {
+      if (docSnap.data().date === selectedDate) {
+        duplicateFound = true;
+      }
     });
 
-    overlay.style.display = "flex";
-    form.reset();
+    if (duplicateFound) {
+      throw new Error("Clinical entry already submitted for this date.");
+    }
 
-catch (error) {
+    const currentHours = studentSnap.data().clinicalHours || 0;
+
+    transaction.update(studentRef, {
+      clinicalHours: currentHours + hoursWorked
+    });
+
+    transaction.set(logRef, {
+      date: selectedDate,
+      startTime: start,
+      endTime: end,
+      hours: hoursWorked,
+      minutes: minutesWorked,
+      hospital: document.getElementById("hospitalName").value,
+      department: document.getElementById("department").value,
+      skills: document.getElementById("skills").value,
+      createdAt: serverTimestamp()
+    });
+
+  });
+
+  overlay.style.display = "flex";
+  form.reset();
+
+} catch (error) {
   console.error(error);
   alert(error.message || "Error saving clinical data.");
 }
