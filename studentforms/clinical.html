@@ -499,70 +499,95 @@
     </div>
 
     <script>
-        // --- Mobile Menu Logic ---
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
+      <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, 
+  doc, 
+  collection, 
+  addDoc, 
+  updateDoc, 
+  increment, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            // Toggle hamburger to 'X' visually if desired
-            if(navLinks.classList.contains('active')){
-                mobileMenu.innerHTML = '✕';
-            } else {
-                mobileMenu.innerHTML = '☰';
-            }
-        });
+/* 🔐 Use SAME config as student-corner.html */
+const firebaseConfig = {
+  apiKey: "YOUR_REAL_KEY",
+  authDomain: "cinps-student-corner.firebaseapp.com",
+  projectId: "cinps-student-corner"
+};
 
-        // --- 1. Auto Capture Date & Time ---
-        function setAutoValues() {
-            const now = new Date();
-            
-            // Format Date as YYYY-MM-DD
-            const dateString = now.toISOString().split('T')[0];
-            document.getElementById('clinicalDate').value = dateString;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-            // Format Time as HH:MM
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('endTime').value = `${hours}:${minutes}`;
-        }
+let currentUser = null;
 
-        // --- 2. LocalStorage Autofill Logic ---
-        function populateFromStorage() {
-            const fill = (id, key) => {
-                const storedVal = localStorage.getItem(key);
-                if (storedVal) {
-                    document.getElementById(id).value = storedVal;
-                }
-            };
+/* Ensure student is logged in */
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    alert("Please login from Student Corner first.");
+    window.location.href = "/portal/student-corner.html";
+  } else {
+    currentUser = user;
+  }
+});
 
-            fill('fullName', 'cinps_student_name');
-            fill('studentId', 'cinps_student_id');
-            fill('course', 'cinps_course');
-            fill('yearSem', 'cinps_year_sem');
-            fill('hospitalName', 'cinps_hospital');
-            fill('department', 'cinps_department');
-        }
+/* Form Submission */
+const form = document.getElementById("clinicalForm");
+const overlay = document.getElementById("successOverlay");
 
-        // --- 3. Run on Load ---
-        window.onload = function() {
-            setAutoValues();
-            populateFromStorage();
-        };
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-        // --- 4. Handle Submission ---
-        const form = document.getElementById('clinicalForm');
-        const overlay = document.getElementById('successOverlay');
+  const start = document.getElementById("startTime").value;
+  const end = document.getElementById("endTime").value;
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            // Send data to backend here
-            overlay.style.display = 'flex';
-        });
+  const startDate = new Date(`1970-01-01T${start}:00`);
+  const endDate = new Date(`1970-01-01T${end}:00`);
 
-        function closeModal() {
-            overlay.style.display = 'none';
-        }
-    </script>
+  const hoursWorked = (endDate - startDate) / (1000 * 60 * 60);
+
+  if (hoursWorked <= 0) {
+    alert("End time must be after start time.");
+    return;
+  }
+
+  const logData = {
+    date: document.getElementById("clinicalDate").value,
+    startTime: start,
+    endTime: end,
+    hours: hoursWorked,
+    hospital: document.getElementById("hospitalName").value,
+    department: document.getElementById("department").value,
+    skills: document.getElementById("skills").value,
+    createdAt: serverTimestamp()
+  };
+
+  try {
+    /* 1️⃣ Store full log */
+    await addDoc(
+      collection(db, "students", currentUser.uid, "clinicalLogs"),
+      logData
+    );
+
+    /* 2️⃣ Increment total hours */
+    await updateDoc(
+      doc(db, "students", currentUser.uid),
+      {
+        clinicalHours: increment(hoursWorked)
+      }
+    );
+
+    overlay.style.display = "flex";
+
+  } catch (error) {
+    console.error(error);
+    alert("Error saving clinical data.");
+  }
+});
+</script>
 </body>
 </html>
