@@ -509,7 +509,6 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* Firebase Config */
 const firebaseConfig = {
   apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
@@ -522,7 +521,6 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-/* Ensure Login */
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     alert("Please login from Student Corner first.");
@@ -536,9 +534,13 @@ const form = document.getElementById("clinicalForm");
 const overlay = document.getElementById("successOverlay");
 const closeBtn = document.getElementById("closeModalBtn");
 
+/* Close Button */
 closeBtn.addEventListener("click", () => {
   overlay.style.display = "none";
+  window.location.href = "/portal/student-corner.html";
 });
+
+/* Submit */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -560,7 +562,6 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  /* Convert to FULL hours only (integer for rule compliance) */
   const hoursWorked = Math.floor(minutesWorked / 60);
 
   if (hoursWorked <= 0) {
@@ -583,12 +584,10 @@ form.addEventListener("submit", async (e) => {
 
       const currentHours = studentSnap.data().clinicalHours || 0;
 
-      /* 1️⃣ Increment clinicalHours */
       transaction.update(studentRef, {
         clinicalHours: currentHours + hoursWorked
       });
 
-      /* 2️⃣ Save Log */
       transaction.set(logRef, {
         date: document.getElementById("clinicalDate").value,
         startTime: start,
@@ -610,9 +609,7 @@ form.addEventListener("submit", async (e) => {
     console.error(error);
     alert("Error saving clinical data.");
   }
-closeBtn.addEventListener("click", () => {
-  overlay.style.display = "none";
-  window.location.href = "/portal/student-corner.html";
+
 });
 </script>
 </body>
