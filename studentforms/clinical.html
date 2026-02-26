@@ -570,7 +570,8 @@ form.addEventListener("submit", async (e) => {
   }
 
   const studentRef = doc(db, "students", currentUser.uid);
-  const logRef = doc(collection(db, "students", currentUser.uid, "clinicalLogs"));
+ const selectedDate = document.getElementById("clinicalDate").value;
+const logRef = doc(db, "students", currentUser.uid, "clinicalLogs", selectedDate);
 
  try {
 
