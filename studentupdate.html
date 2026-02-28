@@ -2,143 +2,306 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<!-- THIS FIXES THE TINY ISSUE -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <title>CINPS Attendance</title>
 
 <style>
-/* ===== RESET ===== */
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+/* ===== RESET & VARIABLES ===== */
+:root {
+  --primary: #0a4fd8;
+  --primary-hover: #083cb0;
+  --bg-color: #f4f7fb;
+  --card-bg: #ffffff;
+  --text-main: #1a1f36;
+  --text-muted: #697386;
+  --border: #e3e8ee;
+  --good: #10b981;
+  --medium: #f59e0b;
+  --bad: #ef4444;
+  --radius: 16px;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-body{
-  margin:0;
-  background:#f2f4f7;
-  padding:12px;
-  color:#111;
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  padding: 20px 15px;
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px; /* Perfect for mobile and desktop */
+  margin: auto;
 }
 
 /* ===== HEADER ===== */
-.header{
-  text-align:center;
-  padding:12px 8px 18px;
+.header {
+  text-align: center;
+  padding: 10px 0 24px;
 }
 
-.header h1{
-  font-size:20px;
-  margin:0;
+.header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary);
+  line-height: 1.3;
 }
 
-.header p{
-  margin:4px 0 0;
-  font-size:14px;
-  color:#555;
+.header p {
+  margin: 6px 0 0;
+  font-size: 15px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* ===== CARD ===== */
-.card{
-  background:#fff;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
+/* ===== CARDS ===== */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,0.02);
+  transition: transform 0.2s ease;
 }
 
-.card h3{
-  font-size:16px;
-  margin:0 0 14px;
-  border-bottom:1px solid #eee;
-  padding-bottom:8px;
+.card h3 {
+  font-size: 17px;
+  margin: 0 0 18px;
+  color: var(--text-main);
+  border-bottom: 2px solid var(--bg-color);
+  padding-bottom: 10px;
 }
 
 /* ===== FORM ELEMENTS ===== */
-label{
-  display:block;
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:6px;
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-main);
 }
 
-input, select{
-  width:100%;
-  font-size:17px;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  margin-bottom:14px;
-  background:#fff;
+input, select {
+  width: 100%;
+  font-size: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 18px;
+  background: var(--card-bg);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  outline: none;
+  appearance: none; /* Removes native styling on mobile */
 }
 
-input[readonly]{
-  background:#f5f6f8;
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23697386%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px top 50%;
+  background-size: 12px auto;
+  padding-right: 40px;
 }
 
-/* ===== REVIEW BUTTONS ===== */
-.review{
-  display:flex;
-  gap:10px;
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(10, 79, 216, 0.15);
 }
 
-.review label{
-  flex:1;
-  border:2px solid #ddd;
-  border-radius:14px;
-  padding:14px 8px;
-  text-align:center;
-  font-size:15px;
-  cursor:pointer;
+input[readonly] {
+  background: var(--bg-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
 }
 
-.review input{ display:none; }
-
-.review .emoji{
-  font-size:28px;
-  display:block;
+/* ===== REVIEW BUTTONS & EMOJI ANIMATIONS ===== */
+.review {
+  display: flex;
+  gap: 12px;
 }
 
-.review .good{ border-color:#2ecc71; }
-.review .medium{ border-color:#f1c40f; }
-.review .bad{ border-color:#e74c3c; }
-
-.review input:checked + span{
-  color:#fff;
-  background:#2ecc71;
-  border-radius:10px;
-  padding:6px 0;
+.review label {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 8px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--card-bg);
+  margin: 0;
 }
 
-/* ===== BUTTON ===== */
-button{
-  width:100%;
-  font-size:18px;
-  padding:18px;
-  border-radius:14px;
-  background:#0a4fd8;
-  color:#fff;
-  border:none;
-  font-weight:600;
+.review input { display: none; }
+
+.review .emoji {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 6px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* ===== STATUS ===== */
-#status{
-  text-align:center;
-  font-size:15px;
-  margin-top:12px;
+/* Hover Effects */
+.review label:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.review label:hover .emoji { transform: scale(1.15); }
+
+/* Checked States */
+.review input[value="Good"]:checked + span { color: var(--good); font-weight: bold; }
+.review input[value="Good"]:checked ~ * /* targets label border via JS logic below conceptually, but CSS handles parent visually by wrapper */ {}
+.review label:has(input[value="Good"]:checked) { border-color: var(--good); background: rgba(16, 185, 129, 0.05); }
+.review label:has(input[value="Medium"]:checked) { border-color: var(--medium); background: rgba(245, 158, 11, 0.05); }
+.review label:has(input[value="Bad"]:checked) { border-color: var(--bad); background: rgba(239, 68, 68, 0.05); }
+
+/* Keyframe Animations for Selected Emojis */
+@keyframes bounceHappy { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes tiltNeutral { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+@keyframes shakeSad { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+
+.review label:has(input[value="Good"]:checked) .emoji { animation: bounceHappy 1.2s infinite; }
+.review label:has(input[value="Medium"]:checked) .emoji { animation: tiltNeutral 2s infinite ease-in-out; }
+.review label:has(input[value="Bad"]:checked) .emoji { animation: shakeSad 0.5s infinite; filter: grayscale(20%); }
+
+/* Fallback for older browsers not supporting :has() */
+.review input:checked + span {
+  display: block;
 }
 
-/* ===== DESKTOP ENHANCEMENT ===== */
-@media(min-width:900px){
-  body{
-    display:flex;
-    justify-content:center;
-  }
-  .container{
-    width:900px;
-  }
+/* ===== SUBMIT BUTTON ===== */
+button[type="submit"] {
+  width: 100%;
+  font-size: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(10, 79, 216, 0.3);
+  transition: all 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 79, 216, 0.4);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* ===== MODAL POP-UP ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--card-bg);
+  width: 90%;
+  max-width: 400px;
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1);
+}
+
+.modal-state { display: none; }
+.modal-state.active { display: block; }
+
+.modal-box h3 { margin: 20px 0 10px; font-size: 22px; color: var(--text-main); }
+.modal-box p { color: var(--text-muted); font-size: 15px; margin: 0 0 24px; line-height: 1.5; }
+
+/* Spinner Animation */
+.spinner {
+  width: 60px; height: 60px;
+  border: 5px solid #e3e8ee;
+  border-top: 5px solid var(--primary);
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Success Animation */
+.success-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--good);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+/* Return Button */
+.btn-return {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  width: 100%;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.btn-return:hover { background: var(--primary-hover); }
+
+/* Error Icon */
+.error-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--bad);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 </style>
 </head>
@@ -146,144 +309,217 @@ button{
 <body>
 
 <div class="container">
+  <div class="header">
+    <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
+    <p>Attendance Form</p>
+  </div>
 
-<div class="header">
-  <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
-  <p>Attendance Form</p>
+  <form id="attendanceForm">
+    <div class="card">
+      <h3>Class Details</h3>
+
+      <label>Date</label>
+      <input type="text" id="date" readonly>
+
+      <label>Day</label>
+      <input type="text" id="day" readonly>
+
+      <label>Class Start Time</label>
+      <input type="time" name="startTime" required>
+
+      <label>Class End Time</label>
+      <input type="text" id="endTime" readonly>
+
+      <label>Branch</label>
+      <select name="branch" required>
+        <option value="" disabled selected>Select Branch</option>
+        <option>Nanoor</option>
+        <option>Sainthia</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h3>Course Details</h3>
+
+      <select name="courseType" required>
+        <option value="" disabled selected>Course Type</option>
+        <option>Two-Year Diploma</option>
+        <option>One-Year Diploma</option>
+        <option>Certificate</option>
+      </select>
+
+      <select name="course" required>
+        <option value="" disabled selected>Course Name</option>
+        <option>OTT</option>
+        <option>MLT</option>
+        <option>EMT</option>
+        <option>ICU</option>
+        <option>MRT</option>
+        <option>ECG</option>
+        <option>PT</option>
+        <option>RMP</option>
+        <option>CMS & ED</option>
+        <option>NA</option>
+      </select>
+
+      <select name="year" required>
+        <option value="" disabled selected>Academic Year</option>
+        <option>First Year</option>
+        <option>Second Year</option>
+      </select>
+
+      <select name="classType" required>
+        <option value="" disabled selected>Class Type</option>
+        <option>Theory</option>
+        <option>Practical</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h3>Class Review</h3>
+      <div class="review">
+        <label>
+          <input type="radio" name="review" value="Good" required>
+          <span><span class="emoji">😀</span>Good</span>
+        </label>
+
+        <label>
+          <input type="radio" name="review" value="Medium">
+          <span><span class="emoji">😐</span>Medium</span>
+        </label>
+
+        <label>
+          <input type="radio" name="review" value="Bad">
+          <span><span class="emoji">😞</span>Bad</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Student Information</h3>
+      <input type="text" name="studentName" placeholder="Full Name" required>
+      <input type="text" name="studentId" placeholder="Student ID No." required>
+    </div>
+
+    <button type="submit" id="submitBtn">Submit Attendance</button>
+  </form>
 </div>
 
-<form id="attendanceForm">
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal-box">
+    
+    <div id="stateProcessing" class="modal-state">
+      <div class="spinner"></div>
+      <h3>Processing...</h3>
+      <p>Your submission is processing, please wait.</p>
+    </div>
 
-<div class="card">
-  <h3>Class Details</h3>
+    <div id="stateSuccess" class="modal-state">
+      <div class="success-icon">✓</div>
+      <h3>Success!</h3>
+      <p>Your submission updated successfully.</p>
+      <a href="https://cinps-org.github.io/portal/student-corner.html" class="btn-return">Back to Student Corner</a>
+    </div>
 
-  <label>Date</label>
-  <input type="text" id="date" readonly>
+    <div id="stateError" class="modal-state">
+      <div class="error-icon">✗</div>
+      <h3>Submission Failed</h3>
+      <p>There was a problem processing your request. Please check your connection and try again.</p>
+      <button type="button" class="btn-return" onclick="closeModal()">Try Again</button>
+    </div>
 
-  <label>Day</label>
-  <input type="text" id="day" readonly>
-
-  <label>Class Start Time</label>
-  <input type="time" name="startTime" required>
-
-  <label>Class End Time</label>
-  <input type="text" id="endTime" readonly>
-
-  <label>Branch</label>
-  <select name="branch" required>
-    <option value="">Select Branch</option>
-    <option>Nanoor</option>
-    <option>Sainthia</option>
-    <option>Other</option>
-  </select>
-</div>
-
-<div class="card">
-  <h3>Course Details</h3>
-
-  <select name="courseType" required>
-    <option value="">Course Type</option>
-    <option>Two-Year Diploma</option>
-    <option>One-Year Diploma</option>
-    <option>Certificate</option>
-  </select>
-
-  <select name="course" required>
-    <option value="">Course</option>
-    <option>OTT</option>
-    <option>MLT</option>
-    <option>EMT</option>
-    <option>ICU</option>
-    <option>MRT</option>
-    <option>ECG</option>
-    <option>PT</option>
-    <option>RMP</option>
-    <option>CMS & ED</option>
-    <option>NA</option>
-  </select>
-
-  <select name="year" required>
-    <option value="">Year</option>
-    <option>First Year</option>
-    <option>Second Year</option>
-  </select>
-
-  <select name="classType" required>
-    <option value="">Class Type</option>
-    <option>Theory</option>
-    <option>Practical</option>
-    <option>Other</option>
-  </select>
-</div>
-
-<div class="card">
-  <h3>Class Review</h3>
-
-  <div class="review">
-    <label class="good">
-      <input type="radio" name="review" value="Good" required>
-      <span>
-        <span class="emoji">😀</span>Good
-      </span>
-    </label>
-
-    <label class="medium">
-      <input type="radio" name="review" value="Medium">
-      <span>
-        <span class="emoji">😐</span>Medium
-      </span>
-    </label>
-
-    <label class="bad">
-      <input type="radio" name="review" value="Bad">
-      <span>
-        <span class="emoji">😞</span>Bad
-      </span>
-    </label>
   </div>
 </div>
 
-<div class="card">
-  <h3>Student</h3>
-
-  <input type="text" name="studentName" placeholder="Full Name" required>
-  <input type="text" name="studentId" placeholder="Student ID No." required>
-</div>
-
-<div class="card">
-  <button type="submit">Submit Attendance</button>
-  <div id="status"></div>
-</div>
-
-</form>
-</div>
-
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbyyM_ebdCh27Zq3vkqli-Lu8bR0cZiucs0N7DGU64lBpZWWBCMRpvwzw0IhIl1PWZDx/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyyM_ebdCh27Zq3vkqli-Lu8bR0cZiucs0N7DGU64lBpZWWBCMRpvwzw0IhIl1PWZDx/exec";
+  
+  // DOM Elements
+  const attendanceForm = document.getElementById('attendanceForm');
+  const dateInput = document.getElementById('date');
+  const dayInput = document.getElementById('day');
+  const endTimeInput = document.getElementById('endTime');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  // Modal Elements
+  const modalOverlay = document.getElementById('modalOverlay');
+  const stateProcessing = document.getElementById('stateProcessing');
+  const stateSuccess = document.getElementById('stateSuccess');
+  const stateError = document.getElementById('stateError');
 
-// Auto date/time
-const now = new Date();
-date.value = now.toLocaleDateString("en-GB");
-day.value = now.toLocaleDateString("en-US",{weekday:"long"});
-endTime.value = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  // Auto date/time logic (Kept exactly as requested)
+  const now = new Date();
+  dateInput.value = now.toLocaleDateString("en-GB");
+  dayInput.value = now.toLocaleDateString("en-US", { weekday: "long" });
+  endTimeInput.value = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 
-attendanceForm.addEventListener("submit",e=>{
-  e.preventDefault();
-  status.innerText="Submitting...";
+  // Modal Control Functions
+  function showModalState(stateElement) {
+    modalOverlay.classList.add('active');
+    stateProcessing.classList.remove('active');
+    stateSuccess.classList.remove('active');
+    stateError.classList.remove('active');
+    
+    stateElement.classList.add('active');
+  }
 
-  fetch(scriptURL,{
-    method:"POST",
-    body:new FormData(attendanceForm)
-  })
-  .then(r=>r.json())
-  .then(()=>{
-    status.innerText="✅ Attendance submitted successfully";
-    attendanceForm.reset();
-  })
-  .catch(()=>{
-    status.innerText="❌ Submission failed";
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+    submitBtn.disabled = false;
+  }
+
+  // Form Submission
+  attendanceForm.addEventListener("submit", e => {
+    e.preventDefault();
+    
+    // Disable button to prevent double submission
+    submitBtn.disabled = true;
+    
+    // Show Processing Animation
+    showModalState(stateProcessing);
+
+    fetch(scriptURL, {
+      method: "POST",
+      body: new FormData(attendanceForm)
+    })
+    .then(r => r.json()) // Assumes AppScript returns JSON
+    .then(() => {
+      // Show Green Tick Success Animation
+      showModalState(stateSuccess);
+      attendanceForm.reset();
+      
+      // Reset auto fields after form reset clears them
+      dateInput.value = now.toLocaleDateString("en-GB");
+      dayInput.value = now.toLocaleDateString("en-US", { weekday: "long" });
+      endTimeInput.value = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    })
+    .catch((error) => {
+      console.error('Error!', error.message);
+      // Show Error Modal if submission fails
+      showModalState(stateError);
+    });
   });
-});
+
+  // JS Fallback for styling radio button wrappers (Ensures cross-browser support)
+  const reviewLabels = document.querySelectorAll('.review label');
+  const reviewInputs = document.querySelectorAll('.review input[type="radio"]');
+  
+  reviewInputs.forEach(input => {
+    input.addEventListener('change', () => {
+      reviewLabels.forEach(label => {
+        label.style.borderColor = 'var(--border)';
+        label.style.background = 'var(--card-bg)';
+      });
+      if(input.checked) {
+        const parent = input.parentElement;
+        if(input.value === "Good") { parent.style.borderColor = 'var(--good)'; parent.style.background = 'rgba(16, 185, 129, 0.05)'; }
+        if(input.value === "Medium") { parent.style.borderColor = 'var(--medium)'; parent.style.background = 'rgba(245, 158, 11, 0.05)'; }
+        if(input.value === "Bad") { parent.style.borderColor = 'var(--bad)'; parent.style.background = 'rgba(239, 68, 68, 0.05)'; }
+      }
+    });
+  });
 </script>
 
 </body>
