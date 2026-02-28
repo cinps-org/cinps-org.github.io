@@ -2,198 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinical Exposure Update - CINPS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Clinical Exposure Update</title>
     
     <style>
+        /* ===== RESET & VARIABLES ===== */
         :root {
-            /* CINPS Brand Palette */
-            --primary-color: #005f73; 
-            --primary-hover: #07748c;
-            --accent-color: #0a9396;
-            --bg-color: #f4f7f9;
+            --primary: #005f73; 
+            --primary-hover: #0a9396;
+            --bg-color: #f4f7fa;
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
-            --success-color: #10b981;
-            --focus-ring: rgba(0, 95, 115, 0.15);
+            --border: #e2e8f0;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            padding: 20px 15px;
         }
 
-        /* --- Navigation Bar --- */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 5%;
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .nav-brand img {
-            height: 45px;
-            width: auto;
-        }
-
-        .nav-brand span {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-apply-btn {
-            background-color: var(--primary-color);
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-
-        .nav-apply-btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: var(--primary-color);
-        }
-
-        /* --- Main Content Area --- */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        .page-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .page-title h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .page-title p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-        }
-
-        /* --- Form Container --- */
+        /* ===== MAIN CONTAINER ===== */
         .form-container {
             background-color: var(--card-bg);
             width: 100%;
-            max-width: 600px; /* Slightly wider for better desktop view */
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 6px solid var(--primary);
             position: relative;
-            overflow: hidden;
         }
 
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
         }
 
+        .header h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+        }
+
+        .row {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .col {
+            flex: 1;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
             color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        input, select, textarea {
+        input, textarea {
             width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
             color: var(--text-main);
-            background-color: var(--input-bg);
+            background-color: #f8fafc;
             transition: all 0.2s ease;
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: #94a3b8;
-        }
-
-        input:hover, textarea:hover {
-            border-color: #cbd5e1;
+            outline: none;
         }
 
         input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--primary);
             background-color: #ffffff;
-            box-shadow: 0 0 0 4px var(--focus-ring);
+            box-shadow: 0 0 0 3px rgba(0, 95, 115, 0.1);
         }
 
         textarea {
@@ -202,299 +118,211 @@
             line-height: 1.5;
         }
 
+        .divider {
+            border: none;
+            border-top: 1px dashed var(--border);
+            margin: 24px 0;
+            position: relative;
+        }
+
+        /* ===== COOLDOWN BANNER ===== */
+        #cooldownBanner {
+            display: none;
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
         .btn-submit {
             width: 100%;
             padding: 16px;
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
-            letter-spacing: 0.5px;
             cursor: pointer;
             transition: all 0.2s ease;
-            margin-top: 16px;
-            box-shadow: 0 4px 6px -1px var(--focus-ring);
+            margin-top: 10px;
         }
 
-        .btn-submit:hover {
+        .btn-submit:hover:not(:disabled) {
             background-color: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 8px -1px rgba(0, 95, 115, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 95, 115, 0.25);
         }
 
-        .btn-submit:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 4px -1px var(--focus-ring);
+        .btn-submit:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
-        .divider {
-            border: 0;
-            border-top: 1px solid var(--border-color);
-            margin: 24px 0;
-            position: relative;
-            text-align: center;
-        }
-        
-        .divider::after {
-            content: 'Student Details';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            padding: 0 12px;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-        }
-        .col {
-            flex: 1;
-        }
-
-        /* --- Footer --- */
-        .footer {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            text-align: center;
-            padding: 24px 20px;
-            font-size: 0.9rem;
-            margin-top: auto;
-        }
-
-        .footer p {
-            opacity: 0.9;
-        }
-
-        /* --- Success Modal --- */
-        .success-overlay {
+        /* ===== MODAL ===== */
+        .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(4px);
-        }
-
-        .success-card {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            max-width: 400px;
-            width: 90%;
-        }
-
-        .icon-circle {
-            width: 80px;
-            height: 80px;
-            background-color: #ecfdf5;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 24px;
-            box-shadow: 0 0 0 10px #f0fdf4;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .check-icon {
-            color: var(--success-color);
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-state { display: none; }
+        .modal-state.active { display: block; }
+
+        .modal-box h3 { margin: 20px 0 10px; font-size: 22px; color: var(--text-main); }
+        .modal-box p { color: var(--text-muted); font-size: 15px; margin: 0 0 24px; line-height: 1.5; }
+
+        /* Animations */
+        .spinner {
+            width: 60px; height: 60px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .success-icon {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
             font-size: 40px;
-            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
+        @keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        .success-card h3 {
-            color: var(--text-main);
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .success-card p {
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .btn-close {
-            background-color: #f1f5f9;
-            color: var(--text-main);
-            border: none;
-            padding: 12px 32px;
-            border-radius: 8px;
-            cursor: pointer;
+        .btn-return {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
             width: 100%;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
         }
-
-        .btn-close:hover {
-            background-color: #e2e8f0;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.9) translateY(10px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* --- Mobile Responsiveness --- */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 75px;
-                left: 0;
-                width: 100%;
-                background: white;
-                padding: 20px 5%;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                gap: 20px;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-apply-btn {
-                text-align: center;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .page-title h1 {
-                font-size: 1.75rem;
-            }
-        }
+        .btn-return:hover { background: var(--primary-hover); }
 
         @media (max-width: 500px) {
-            .row {
-                flex-direction: column;
-                gap: 0;
-            }
-            .form-container {
-                padding: 30px 20px;
-                border-radius: 12px;
-            }
+            .row { flex-direction: column; gap: 0; }
+            .form-container { padding: 24px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="https://cinps-org.github.io/" class="nav-brand">
-            <img src="https://cinps-org.github.io/assets/images/logo.png" alt="CINPS Logo">
-            <span>CINPS</span>
-        </a>
-        
-        <div class="menu-toggle" id="mobile-menu">
-            ☰
+    <div class="form-container">
+        <div class="header">
+            <h1>Clinical Log Update</h1>
+            <p>Record your hospital exposure</p>
         </div>
 
-        <ul class="nav-links" id="nav-links">
-            <li><a href="https://cinps-org.github.io/index.html">Home</a></li>
-             <li><a href="https://cinps-org.github.io/portal/student-corner.html">student-corner</a></li>
-        </ul>
-    </nav>
+        <div id="cooldownBanner"></div>
 
-    <main class="main-content">
-        <div class="page-title">
-            <h1>Student Portal</h1>
-            <p>Clinical Exposure Update System</p>
-        </div>
-
-        <div class="form-container">
-            <form id="clinicalForm">
-                <div class="form-group">
-                    <label for="clinicalDate">Date of Clinical</label>
-                    <input type="date" id="clinicalDate" required>
+        <form id="clinicalForm">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="fullName">Student Name</label>
+                    <input type="text" id="fullName" placeholder="Loading..." required>
                 </div>
-
-                <div class="row">
-                    <div class="col form-group">
-                        <label for="startTime">Start Time</label>
-                        <input type="time" id="startTime" required>
-                    </div>
-                    <div class="col form-group">
-                        <label for="endTime">End Time</label>
-                        <input type="time" id="endTime" required>
-                    </div>
-                </div>
-
-                <hr class="divider">
-
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="Enter student name">
-                </div>
-
-                <div class="row">
-                    <div class="col form-group">
-                        <label for="studentId">Student ID / Roll No</label>
-                        <input type="text" id="studentId" placeholder="e.g. CINPS-001">
-                    </div>
-                    <div class="col form-group">
-                        <label for="yearSem">Year / Semester</label>
-                        <input type="text" id="yearSem" placeholder="e.g. 2nd Year">
-                    </div>
-                </div>
-
-                <div class="form-group">
+                <div class="col form-group">
                     <label for="course">Course</label>
-                    <input type="text" id="course" placeholder="e.g. B.Sc Nursing">
+                    <input type="text" id="course" placeholder="Loading..." required>
                 </div>
-
-                <div class="form-group">
-                    <label for="hospitalName">Hospital / Clinical Centre</label>
-                    <input type="text" id="hospitalName" placeholder="Enter center name">
-                </div>
-
-                <div class="form-group">
-                    <label for="department">Department</label>
-                    <input type="text" id="department" placeholder="e.g. Pediatrics">
-                </div>
-
-                <div class="form-group">
-                    <label for="skills">Procedures / Skills Observed or Performed</label>
-                    <textarea id="skills" placeholder="Describe the procedures performed in detail..." required></textarea>
-                </div>
-
-                <button type="submit" class="btn-submit">Submit Report</button>
-            </form>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <p>&copy; 2026 Chandidas Institute of Nursing & Paramedical Science. All rights reserved.</p>
-    </footer>
-
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-card">
-            <div class="icon-circle">
-                <span class="check-icon">✔</span>
             </div>
-            <h3>Submission Successful</h3>
-            <p>The clinical exposure details have been securely recorded and updated in the system.</p>
-           <button class="btn-close" id="closeModalBtn">Close Window</button>
+
+            <hr class="divider">
+
+            <div class="form-group">
+                <label for="clinicalDate">Date of Clinical</label>
+                <input type="date" id="clinicalDate" required>
+            </div>
+
+            <div class="row">
+                <div class="col form-group">
+                    <label for="startTime">Start Time</label>
+                    <input type="time" id="startTime" required>
+                </div>
+                <div class="col form-group">
+                    <label for="endTime">End Time</label>
+                    <input type="time" id="endTime" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="hospitalName">Hospital / Clinical Centre</label>
+                <input type="text" id="hospitalName" placeholder="e.g. District Hospital" required>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Department / Ward</label>
+                <input type="text" id="department" placeholder="e.g. ICU, Pediatrics" required>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Skills & Procedures Performed</label>
+                <textarea id="skills" placeholder="Describe procedures observed or performed in detail..." required></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-submit">Submit Report</button>
+        </form>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-box">
+            <div id="stateProcessing" class="modal-state">
+                <div class="spinner"></div>
+                <h3>Processing...</h3>
+                <p>Your submission is processing, please wait.</p>
+            </div>
+            <div id="stateSuccess" class="modal-state">
+                <div class="success-icon">✓</div>
+                <h3>Success!</h3>
+                <p>Your submission updated successfully.</p>
+                <a href="https://cinps-org.github.io/portal/student-corner.html" class="btn-return">Back to Student Corner</a>
+            </div>
         </div>
     </div>
 
@@ -502,17 +330,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-  getFirestore, 
-  doc, 
-  collection, 
-  runTransaction,
-  serverTimestamp 
+    getFirestore, doc, collection, getDoc, getDocs, query, orderBy, limit, runTransaction, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
-  authDomain: "cinps-student-corner.firebaseapp.com",
-  projectId: "cinps-student-corner"
+    apiKey:"AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
+    authDomain: "cinps-student-corner.firebaseapp.com",
+    projectId: "cinps-student-corner"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -521,113 +345,143 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    alert("Please login from Student Corner first.");
-    window.location.href = "/portal/student-corner.html";
-  } else {
-    currentUser = user;
-  }
-});
-
+// DOM Elements
 const form = document.getElementById("clinicalForm");
-const overlay = document.getElementById("successOverlay");
-const closeBtn = document.getElementById("closeModalBtn");
+const submitBtn = document.getElementById("submitBtn");
+const cooldownBanner = document.getElementById("cooldownBanner");
+const modalOverlay = document.getElementById('modalOverlay');
+const stateProcessing = document.getElementById('stateProcessing');
+const stateSuccess = document.getElementById('stateSuccess');
 
-/* Close Button */
-closeBtn.addEventListener("click", () => {
-  overlay.style.display = "none";
-  window.location.href = "/portal/student-corner.html";
+// Set today's date as default
+document.getElementById('clinicalDate').valueAsDate = new Date();
+
+function showModalState(stateElement) {
+    modalOverlay.classList.add('active');
+    stateProcessing.classList.remove('active');
+    stateSuccess.classList.remove('active');
+    stateElement.classList.add('active');
+}
+
+// 1. Auth & Data Fetching
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        alert("Please login from Student Corner first.");
+        window.location.href = "https://cinps-org.github.io/portal/student-corner.html";
+        return;
+    }
+    currentUser = user;
+
+    try {
+        // Fetch existing data for Autofill
+        const docRef = doc(db, "students", user.uid);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            document.getElementById('fullName').value = docSnap.data().name || '';
+            document.getElementById('course').value = docSnap.data().course || '';
+        }
+
+        // Check 6-Hour Cooldown
+        const logsRef = collection(db, "students", user.uid, "clinicalLogs");
+        const q = query(logsRef, orderBy("createdAt", "desc"), limit(1));
+        const logSnap = await getDocs(q);
+
+        if (!logSnap.empty) {
+            const lastLog = logSnap.docs[0].data();
+            if (lastLog.createdAt) {
+                const lastTime = lastLog.createdAt.toDate().getTime();
+                const now = new Date().getTime();
+                const diff = now - lastTime;
+                const sixHours = 6 * 60 * 60 * 1000;
+
+                if (diff < sixHours) {
+                    const remaining = sixHours - diff;
+                    const hours = Math.floor(remaining / (1000 * 60 * 60));
+                    const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = "Cooldown Active";
+                    cooldownBanner.style.display = "block";
+                    cooldownBanner.textContent = `You can submit your next log in ${hours}h ${mins}m.`;
+                    
+                    // Disable form inputs
+                    Array.from(form.elements).forEach(el => el.disabled = true);
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Initialization Error:", error);
+    }
 });
 
-/* Submit */
+// 2. Form Submission & Transaction logic
 form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    if (!currentUser) return;
 
-  if (!currentUser) {
-    alert("Authentication not ready. Please refresh.");
-    return;
-  }
+    submitBtn.disabled = true;
+    
+    // Time Calculation Logic (Handles Night Shifts)
+    const startStr = document.getElementById("startTime").value;
+    const endStr = document.getElementById("endTime").value;
+    
+    const startMins = parseInt(startStr.split(':')[0]) * 60 + parseInt(startStr.split(':')[1]);
+    let endMins = parseInt(endStr.split(':')[0]) * 60 + parseInt(endStr.split(':')[1]);
+    
+    // If end time is mathematically smaller than start time, it means they worked past midnight
+    if (endMins < startMins) { endMins += (24 * 60); }
+    
+    const totalMinsWorked = endMins - startMins;
+    const hoursWorked = Math.floor(totalMinsWorked / 60);
 
-  const start = document.getElementById("startTime").value;
-  const end = document.getElementById("endTime").value;
-
-  const startDate = new Date(`1970-01-01T${start}:00`);
-  const endDate = new Date(`1970-01-01T${end}:00`);
-
-  const minutesWorked = Math.floor((endDate - startDate) / (1000 * 60));
-
-  if (minutesWorked <= 0) {
-    alert("End time must be after start time.");
-    return;
-  }
-
-  const hoursWorked = Math.floor(minutesWorked / 60);
-
-  if (hoursWorked <= 0) {
-    alert("Minimum 1 hour required to submit.");
-    return;
-  }
-
-  const studentRef = doc(db, "students", currentUser.uid);
- const selectedDate = document.getElementById("clinicalDate").value;
-const logRef = doc(db, "students", currentUser.uid, "clinicalLogs", selectedDate);
-
- try {
-
-  await runTransaction(db, async (transaction) => {
-
-    const studentSnap = await transaction.get(studentRef);
-
-    if (!studentSnap.exists()) {
-      throw new Error("Student record not found.");
+    if (hoursWorked <= 0) {
+        alert("Minimum 1 hour of clinical exposure is required to submit a log.");
+        submitBtn.disabled = false;
+        return;
     }
 
-    const selectedDate = document.getElementById("clinicalDate").value;
+    showModalState(stateProcessing);
 
-    /* 🔍 Check duplicate date */
-    const logsRef = collection(db, "students", currentUser.uid, "clinicalLogs");
-    const existingLogsSnap = await transaction.get(logsRef);
+    const studentRef = doc(db, "students", currentUser.uid);
+    const logRef = doc(collection(db, "students", currentUser.uid, "clinicalLogs"));
 
-    let duplicateFound = false;
+    try {
+        await runTransaction(db, async (transaction) => {
+            const studentSnap = await transaction.get(studentRef);
+            if (!studentSnap.exists()) throw new Error("Student record not found.");
 
-    existingLogsSnap.forEach(docSnap => {
-      if (docSnap.data().date === selectedDate) {
-        duplicateFound = true;
-      }
-    });
+            const currentHours = studentSnap.data().clinicalHours || 0;
 
-    if (duplicateFound) {
-      throw new Error("Clinical entry already submitted for this date.");
+            // RULE COMPLIANCE: We ONLY update clinicalHours on the root document.
+            transaction.update(studentRef, {
+                clinicalHours: currentHours + hoursWorked
+            });
+
+            // Write all other metadata to the isolated subcollection
+            transaction.set(logRef, {
+                studentName: document.getElementById("fullName").value,
+                course: document.getElementById("course").value,
+                date: document.getElementById("clinicalDate").value,
+                startTime: startStr,
+                endTime: endStr,
+                hoursLogged: hoursWorked,
+                hospital: document.getElementById("hospitalName").value,
+                department: document.getElementById("department").value,
+                skills: document.getElementById("skills").value,
+                createdAt: serverTimestamp()
+            });
+        });
+
+        // Trigger Success UI
+        showModalState(stateSuccess);
+        
+    } catch (error) {
+        console.error("Transaction failed: ", error);
+        alert("Failed to submit data. Please ensure you have an active network connection.");
+        modalOverlay.classList.remove('active');
+        submitBtn.disabled = false;
     }
-
-    const currentHours = studentSnap.data().clinicalHours || 0;
-
-    transaction.update(studentRef, {
-      clinicalHours: currentHours + hoursWorked
-    });
-
-    transaction.set(logRef, {
-      date: selectedDate,
-      startTime: start,
-      endTime: end,
-      hours: hoursWorked,
-      minutes: minutesWorked,
-      hospital: document.getElementById("hospitalName").value,
-      department: document.getElementById("department").value,
-      skills: document.getElementById("skills").value,
-      createdAt: serverTimestamp()
-    });
-
-  });
-
-  overlay.style.display = "flex";
-  form.reset();
-
-} catch (error) {
-  console.error(error);
-  alert(error.message || "Error saving clinical data.");
-}
 });
 </script>
 </body>
