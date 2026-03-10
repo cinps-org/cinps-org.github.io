@@ -432,7 +432,7 @@
 
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
-    const CINPS_API = const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
+   const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
 
 sendBtn?.addEventListener('click', sendMessage);
 input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
@@ -450,12 +450,15 @@ function sendMessage(){
   msgs.appendChild(loading);
   msgs.scrollTop = msgs.scrollHeight;
 
- fetch(CINPS_API, {
+const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
+const SUPABASE_KEY = "sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp";
+
+fetch(CINPS_API, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "apikey": "sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp",
-    "Authorization": "Bearer sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp"
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY
   },
   body: JSON.stringify({
     message: val
