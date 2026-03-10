@@ -432,7 +432,7 @@
 
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
-    const CINPS_API = "https://script.google.com/macros/s/AKfycbzo06VO3zeKRV5qba98_ClEMGHFtRItIyFQR_LPPQ5NTJ40MoXY0tsWQQQv0vf0RpR3Tw/exec";
+    const CINPS_API = const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
 
 sendBtn?.addEventListener('click', sendMessage);
 input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
@@ -450,23 +450,24 @@ function sendMessage(){
   msgs.appendChild(loading);
   msgs.scrollTop = msgs.scrollHeight;
 
-  fetch(CINPS_API, {
-    method: "POST",
-    body: JSON.stringify({
-      userId: "WEB_" + Date.now(),
-      message: val
-    })
+ fetch(CINPS_API, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "apikey": "sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp",
+    "Authorization": "Bearer sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp"
+  },
+  body: JSON.stringify({
+    message: val
   })
-  .then(res => res.json())
-  .then(data => {
-    loading.remove();
-    addMsg(data.reply || "Please contact CINPS office.");
-  })
-  .catch(() => {
-    loading.remove();
-    addMsg("Please contact CINPS office at +91 8101579839.");
-  });
-}
+})
+.then(res => res.json())
+.then(data => {
+  addMsg(data.reply || "Please contact CINPS office.");
+})
+.catch(() => {
+  addMsg("Please contact CINPS office at +91 8101579839.");
+});
 
     // Global Close
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
