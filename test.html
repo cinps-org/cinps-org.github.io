@@ -468,7 +468,7 @@ fetch(CINPS_API, {
   loading.remove();
   addMsg(data.reply || "Please contact CINPS office.");
 })
-.catch(() => {
+.catch((error) => {
   loading.remove();
   addMsg("Please contact CINPS office at +91 8101579839.");
 });
