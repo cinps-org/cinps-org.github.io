@@ -409,70 +409,108 @@
     });
 
     // ================= CHATBOT (Pulse AI) =================
-    const chatBtn = document.getElementById('cinps-chat-btn');
-    const chatBox = document.getElementById('cinps-chat-box');
-    const chatClose = document.getElementById('cinps-chat-close');
-    const msgs = document.getElementById('cinps-chat-messages');
-    const input = document.getElementById('cinps-user-input');
-    const sendBtn = document.getElementById('cinps-send-btn');
+// ================= CHATBOT (Pulse AI) =================
 
-    function toggleChat(){
-      const isActive = chatBox.classList.contains('active');
-      isActive ? chatBox.classList.remove('active') : chatBox.classList.add('active');
-      chatBox.setAttribute('aria-hidden', isActive);
-    }
-    
-    // Updated to RETURN the element so it can be targeted and removed later
-    function addMsg(txt, type='bot'){
-      const d = document.createElement('div');
-      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px'; d.style.lineHeight='1.5';
-      if(type==='user'){ d.style.background='var(--brand-blue)'; d.style.color='#fff'; d.style.marginLeft='auto'; }
-      else{ d.style.background='#f1f5ff'; d.style.color='#333'; }
-      d.textContent = txt;
-      msgs.appendChild(d);
-      msgs.scrollTop = msgs.scrollHeight;
-      return d;
-    }
+const chatBtn = document.getElementById('cinps-chat-btn');
+const chatBox = document.getElementById('cinps-chat-box');
+const chatClose = document.getElementById('cinps-chat-close');
+const msgs = document.getElementById('cinps-chat-messages');
+const input = document.getElementById('cinps-user-input');
+const sendBtn = document.getElementById('cinps-send-btn');
 
-    chatBtn?.addEventListener('click', toggleChat);
-    chatClose?.addEventListener('click', toggleChat);
+const API_URL = "https://cinps-pulse-ai.cinpsnotifications.workers.dev";
 
-  function sendMessage() {
+function toggleChat(){
+  const isActive = chatBox.classList.contains('active');
+  isActive ? chatBox.classList.remove('active') : chatBox.classList.add('active');
+  chatBox.setAttribute('aria-hidden', isActive);
+}
+
+function addMsg(txt, type='bot'){
+  const d = document.createElement('div');
+  d.style.padding='10px 14px';
+  d.style.borderRadius='12px';
+  d.style.marginBottom='10px';
+  d.style.maxWidth='85%';
+  d.style.fontSize='14px';
+  d.style.lineHeight='1.5';
+
+  if(type==='user'){
+    d.style.background='var(--brand-blue)';
+    d.style.color='#fff';
+    d.style.marginLeft='auto';
+  }else{
+    d.style.background='#f1f5ff';
+    d.style.color='#333';
+  }
+
+  d.textContent = txt;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  return d;
+}
+
+chatBtn?.addEventListener('click', toggleChat);
+chatClose?.addEventListener('click', toggleChat);
+
+let isSending = false;
+
+async function sendMessage() {
+
   const val = input.value.trim();
-  if (!val) return;
+  if (!val || isSending) return;
 
-  addMsg(val, 'user');
+  isSending = true;
+
+  addMsg(val,'user');
   input.value = '';
 
-  // Add the loading bubble
-  const loadingBubble = addMsg("🧠 Pulse AI is thinking...", 'bot');
+  const loadingBubble = addMsg("🧠 Pulse AI is thinking...",'bot');
 
-  // Replace with your actual Firebase URL after deployment
- const API_URL = "https://us-central1-cinps-pulse-flash-lite.cloudfunctions.net/pulseAI";
+  try {
 
-  fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: val })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Network response was not ok");
-    return res.json();
-  })
-  .then(data => {
-    // Update the existing bubble instead of removing/adding
-    loadingBubble.textContent = data.reply || "Please contact the CINPS office.";
-  })
-  .catch((error) => {
-    console.error("Pulse AI Error:", error);
-    loadingBubble.textContent = "I'm having trouble connecting. Please contact CINPS at +91 8101579839.";
-  });
+    const response = await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({message:val})
+    });
+
+    if(!response.ok){
+      throw new Error("Server error");
+    }
+
+    const data = await response.json();
+
+    loadingBubble.textContent =
+      data.reply ||
+      "Please contact CINPS admission office at +91 8101579839.";
+
+  } catch(error){
+
+    console.error("Pulse AI Error:",error);
+
+    loadingBubble.textContent =
+      "⚠️ Pulse AI is temporarily unavailable. Please contact CINPS at +91 8101579839.";
+
+  } finally {
+
+    isSending = false;
+
+  }
+
 }
-    sendBtn?.addEventListener('click', sendMessage);
-    input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
 
+sendBtn?.addEventListener('click',sendMessage);
+
+input?.addEventListener('keypress',(e)=>{
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    sendMessage();
+  }
+});
     // ================= GLOBAL EVENT LISTENERS =================
     window.addEventListener('keydown', (e)=>{ 
       if(e.key === 'Escape'){ 
