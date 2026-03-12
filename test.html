@@ -437,7 +437,6 @@
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
 
-    // Fixed the overlapping functions here
     function sendMessage(){
       const val = input.value.trim();
       if(!val) return;
@@ -445,17 +444,17 @@
       addMsg(val, 'user');
       input.value = '';
 
-      const loading = addMsg("Thinking...", 'bot');
+      // Add the visual loading indicator exactly as requested
+      const loading = addMsg("", 'bot');
+      loading.textContent = "🧠 Thinking…";
 
-      const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/functions/v1/pulse-ai";
-      const SUPABASE_KEY = "sb_publishable_1TIYTksSHNJvn28zlqUs9A__3S88VDp";
+      // Replaced old Supabase URL with the new Cloud Run URL
+      const API_URL = "https://pulseai-krdxrelr2q-uc.a.run.app";
 
-      fetch(CINPS_API, {
+      fetch(API_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ message: val })
       })
@@ -465,6 +464,7 @@
         addMsg(data.reply || "Please contact CINPS office.", 'bot');
       })
       .catch((error) => {
+        console.error("Pulse AI Error:", error);
         loading.remove();
         addMsg("Please contact CINPS office at +91 8101579839.", 'bot');
       });
