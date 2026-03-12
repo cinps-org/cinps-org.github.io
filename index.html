@@ -159,10 +159,10 @@
 
       <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
-         <li><a href="/about">About</a></li>
-<li><a href="/courses">Courses</a></li>
-<li><a href="/admissions">Admissions</a></li>
-<li><a href="/contact">Contact</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/courses">Courses</a></li>
+          <li><a href="/admissions">Admissions</a></li>
+          <li><a href="/contact">Contact</a></li>
           <li><a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener">StudentCorner</a></li>
           <li><a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">InstructorHub</a></li>
         </ul>
@@ -181,12 +181,12 @@
       <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer">✕</button>
     </div>
     <nav class="drawer-links" aria-label="Mobile navigation">
-<a href="/" aria-current="page">Home</a>
-<a href="/about">About</a>
-<a href="/courses">Courses</a>
-<a href="/admissions">Admissions</a>
-<a href="/contact">Contact</a>
-      <a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener">Student Corner</a></li>
+      <a href="/" aria-current="page">Home</a>
+      <a href="/about">About</a>
+      <a href="/courses">Courses</a>
+      <a href="/admissions">Admissions</a>
+      <a href="/contact">Contact</a>
+      <a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener">Student Corner</a>
       <a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener">Instructor Hub</a>
     </nav>
     <div class="drawer-cta">
@@ -338,9 +338,10 @@
   </div>
 
   <script>
+    // Set dynamic year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // MOBILE DRAWER
+    // ================= MOBILE DRAWER =================
     const navToggle = document.getElementById('navToggle');
     const mobileDrawer = document.getElementById('mobileDrawer');
     const drawerBackdrop = document.getElementById('drawerBackdrop');
@@ -354,6 +355,7 @@
       navToggle.setAttribute('aria-expanded','true');
       document.body.style.overflow='hidden';
     }
+    
     function closeDrawer(){
       mobileDrawer.classList.remove('open');
       mobileDrawer.setAttribute('aria-hidden','true');
@@ -368,8 +370,7 @@
     drawerBackdrop?.addEventListener('click', closeDrawer);
     mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-    // MODAL
-   // MODAL
+    // ================= MODAL & CONTACT FORM =================
     const modal = document.getElementById('modal');
     function openModal(){ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
     function closeModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
@@ -391,7 +392,7 @@
         method: "POST",
         body: formData
       })
-      .then(res => res.text()) // Use text() instead of json() as Apps Script often returns a simple success string
+      .then(res => res.text())
       .then(data => {
         alert('Message sent successfully! We will get back to you shortly.');
         form.reset();
@@ -406,7 +407,8 @@
         submitBtn.disabled = false;
       });
     });
-    // CHATBOT
+
+    // ================= CHATBOT (Pulse AI) =================
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
@@ -420,60 +422,65 @@
       chatBox.setAttribute('aria-hidden', isActive);
     }
     
+    // Updated to RETURN the element so it can be targeted and removed later
     function addMsg(txt, type='bot'){
       const d = document.createElement('div');
-      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px';
+      d.style.padding='10px 14px'; d.style.borderRadius='12px'; d.style.marginBottom='10px'; d.style.maxWidth='85%'; d.style.fontSize='14px'; d.style.lineHeight='1.5';
       if(type==='user'){ d.style.background='var(--brand-blue)'; d.style.color='#fff'; d.style.marginLeft='auto'; }
       else{ d.style.background='#f1f5ff'; d.style.color='#333'; }
       d.textContent = txt;
       msgs.appendChild(d);
       msgs.scrollTop = msgs.scrollHeight;
+      return d;
     }
 
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
-   const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
 
-sendBtn?.addEventListener('click', sendMessage);
-input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
+    // Fixed the overlapping functions here
+    function sendMessage(){
+      const val = input.value.trim();
+      if(!val) return;
 
-function sendMessage(){
-  const val = input.value.trim();
-  if(!val) return;
+      addMsg(val, 'user');
+      input.value = '';
 
-  addMsg(val, 'user');
-  input.value = '';
+      const loading = addMsg("Thinking...", 'bot');
 
-  const loading = document.createElement('div');
-  loading.textContent = "Thinking...";
-  loading.style.padding='10px';
-  msgs.appendChild(loading);
-  msgs.scrollTop = msgs.scrollHeight;
+      const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/functions/v1/pulse-ai";
+      const SUPABASE_KEY = "sb_publishable_1TIYTksSHNJvn28zlqUs9A__3S88VDp";
 
-const CINPS_API = "https://coayeloyjxqejwtydidz.functions.supabase.co/pulse-ai";
-const SUPABASE_KEY = "sb_publishable_1T1YTksSHNJvn28zlqUs9A_-3S88VDp";
+      fetch(CINPS_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`
+        },
+        body: JSON.stringify({ message: val })
+      })
+      .then(res => res.json())
+      .then(data => {
+        loading.remove();
+        addMsg(data.reply || "Please contact CINPS office.", 'bot');
+      })
+      .catch((error) => {
+        loading.remove();
+        addMsg("Please contact CINPS office at +91 8101579839.", 'bot');
+      });
+    }
+    
+    sendBtn?.addEventListener('click', sendMessage);
+    input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
 
-fetch(CINPS_API, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "apikey": SUPABASE_KEY,
-    "Authorization": "Bearer " + SUPABASE_KEY
-  },
-  body: JSON.stringify({
-    message: val
-  })
-})
-.then(res => res.json())
-.then(data => {
-  addMsg(data.reply || "Please contact CINPS office.");
-})
-.catch(() => {
-  addMsg("Please contact CINPS office at +91 8101579839.");
-});
-
-    // Global Close
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeDrawer(); closeModal(); if(chatBox.classList.contains('active')) toggleChat(); } });
+    // ================= GLOBAL EVENT LISTENERS =================
+    window.addEventListener('keydown', (e)=>{ 
+      if(e.key === 'Escape'){ 
+        closeDrawer(); 
+        closeModal(); 
+        if(chatBox.classList.contains('active')) toggleChat(); 
+      } 
+    });
   </script>
 </body>
 </html>
