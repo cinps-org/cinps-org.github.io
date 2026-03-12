@@ -437,39 +437,39 @@
     chatBtn?.addEventListener('click', toggleChat);
     chatClose?.addEventListener('click', toggleChat);
 
-    function sendMessage(){
-      const val = input.value.trim();
-      if(!val) return;
+  function sendMessage() {
+  const val = input.value.trim();
+  if (!val) return;
 
-      addMsg(val, 'user');
-      input.value = '';
+  addMsg(val, 'user');
+  input.value = '';
 
-      // Add the visual loading indicator exactly as requested
-      const loading = addMsg("", 'bot');
-      loading.textContent = "🧠 Thinking…";
+  // Add the loading bubble
+  const loadingBubble = addMsg("🧠 Pulse AI is thinking...", 'bot');
 
-      // Replaced old Supabase URL with the new Cloud Run URL
-      const API_URL = "https://pulseai-krdxrelr2q-uc.a.run.app";
+  // Replace with your actual Firebase URL after deployment
+  const API_URL = "https://us-central1-YOUR_PROJECT_ID.cloudfunctions.net/pulseAI";
 
-      fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: val })
-      })
-      .then(res => res.json())
-      .then(data => {
-        loading.remove();
-        addMsg(data.reply || "Please contact CINPS office.", 'bot');
-      })
-      .catch((error) => {
-        console.error("Pulse AI Error:", error);
-        loading.remove();
-        addMsg("Please contact CINPS office at +91 8101579839.", 'bot');
-      });
-    }
-    
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: val })
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Network response was not ok");
+    return res.json();
+  })
+  .then(data => {
+    // Update the existing bubble instead of removing/adding
+    loadingBubble.textContent = data.reply || "Please contact the CINPS office.";
+  })
+  .catch((error) => {
+    console.error("Pulse AI Error:", error);
+    loadingBubble.textContent = "I'm having trouble connecting. Please contact CINPS at +91 8101579839.";
+  });
+}
     sendBtn?.addEventListener('click', sendMessage);
     input?.addEventListener('keypress', (e)=>{ if(e.key === 'Enter') sendMessage(); });
 
