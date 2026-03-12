@@ -444,7 +444,7 @@ function addMsg(txt, type='bot'){
     d.style.color='#333';
   }
 
-  d.textContent = txt;
+ d.innerHTML = txt.replace(/\n/g,"<br>");
   msgs.appendChild(d);
   msgs.scrollTop = msgs.scrollHeight;
 
