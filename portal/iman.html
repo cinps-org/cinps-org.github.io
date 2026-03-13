@@ -1,235 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>CINPS Admin Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>CINPS Admin Dashboard | Office Use Only</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" /> <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-/* --- Design System & Branding --- */
-:root {
-  --brand-primary: #0d3b8e;
-  --brand-secondary: #1e5dd6;
-  --accent: #f0b323;
-  --success: #10b981;
-  --danger: #e53935;
-  --bg-color: #f4f7fb;
-  --card-bg: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
-  --input-focus: rgba(13, 59, 142, 0.15);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-  --radius-md: 8px;
-  --radius-lg: 12px;
-}
+  <style>
+    /* --- Design System & Branding --- */
+    :root {
+      --brand-primary: #0d3b8e;
+      --brand-secondary: #1e5dd6;
+      --success: #10b981;
+      --success-hover: #059669;
+      --danger: #ef4444;
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --input-bg: #f8fafc;
+      --input-focus: rgba(13, 59, 142, 0.15);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* --- Layout & Header --- */
-header {
-  background: linear-gradient(135deg, var(--brand-primary) 0%, #0a2a66 100%);
-  color: #fff;
-  padding: 16px 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: var(--shadow-md);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+    /* --- Layout & Header --- */
+    header {
+      background: var(--brand-primary);
+      color: #fff;
+      padding: 16px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-header h2 { font-size: 1.25rem; font-weight: 600; }
-.admin-info { font-size: 0.85rem; opacity: 0.9; margin-right: 15px; display: none; }
+    header h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
+    .admin-info { font-size: 0.85rem; font-weight: 500; opacity: 0.9; margin-right: 16px; display: none; }
 
-@media (min-width: 768px) {
-  .admin-info { display: inline-block; }
-}
+    @media (min-width: 768px) {
+      .admin-info { display: inline-block; }
+    }
 
-/* --- Buttons --- */
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 10px 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  font-family: inherit;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
+    /* --- Buttons --- */
+    button {
+      cursor: pointer; border: none; border-radius: var(--radius-md);
+      padding: 10px 18px; font-size: 0.9rem; font-weight: 600; font-family: inherit;
+      transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-.btn-primary { background: var(--brand-primary); color: #fff; }
-.btn-primary:hover { background: var(--brand-secondary); transform: translateY(-1px); }
-.btn-success { background: var(--success); color: #fff; padding: 6px 12px; font-size: 0.8rem; }
-.btn-success:hover { filter: brightness(1.1); }
-.btn-outline { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); }
-.btn-outline:hover { background: var(--danger); border-color: var(--danger); }
+    .btn-primary { background: var(--brand-primary); color: #fff; box-shadow: var(--shadow-sm); }
+    .btn-primary:hover:not(:disabled) { background: var(--brand-secondary); transform: translateY(-1px); }
+    
+    .btn-success { background: var(--success); color: #fff; padding: 8px 14px; font-size: 0.85rem; }
+    .btn-success:hover:not(:disabled) { background: var(--success-hover); }
+    
+    .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.4); }
+    .btn-outline:hover:not(:disabled) { background: rgba(255,255,255,0.1); border-color: #fff; }
 
-/* --- Containers & Cards --- */
-.container {
-  width: 95%;
-  max-width: 1400px;
-  margin: 30px auto;
-}
+    /* --- Containers & Cards --- */
+    .container { width: 96%; max-width: 1400px; margin: 30px auto; }
 
-.card {
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: 24px;
-  margin-bottom: 24px;
-}
+    .card {
+      background: var(--card-bg); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+      padding: 24px; margin-bottom: 24px;
+    }
 
-.card-header {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-}
+    .card-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+    .card-header h3 { color: var(--text-main); font-size: 1.25rem; font-weight: 600; }
 
-.card-header h3 { color: var(--brand-primary); font-size: 1.2rem; }
+    /* --- Forms & Inputs --- */
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px; margin-bottom: 24px;
+    }
 
-/* --- Forms & Inputs --- */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
-}
+    .input-group { display: flex; flex-direction: column; gap: 8px; }
+    .input-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-.input-group { display: flex; flex-direction: column; gap: 6px; }
-.input-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+    input {
+      padding: 12px 14px; border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem;
+      color: var(--text-main); background: var(--input-bg);
+      transition: all 0.2s ease; width: 100%;
+    }
+    input:focus { outline: none; border-color: var(--brand-primary); background: #fff; box-shadow: 0 0 0 3px var(--input-focus); }
 
-input {
-  padding: 10px 12px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-family: inherit;
-  font-size: 0.9rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  width: 100%;
-}
+    /* --- Data Table --- */
+    .table-responsive {
+      width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--border-color); border-radius: var(--radius-md);
+      /* Setting a max height allows the sticky header to work within the card */
+      max-height: 60vh; 
+    }
 
-input:focus {
-  outline: none;
-  border-color: var(--brand-secondary);
-  box-shadow: 0 0 0 3px var(--input-focus);
-}
+    table { width: 100%; min-width: 1000px; border-collapse: collapse; text-align: left; }
+    
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+    
+    th {
+      background: #f8fafc; color: var(--text-muted); font-weight: 600;
+      text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px;
+      position: sticky; top: 0; z-index: 10;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    tbody tr:hover { background-color: #f8fafc; }
 
-/* --- Data Table (Responsive Grid) --- */
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
+    /* Inline Table Inputs */
+    td input {
+      padding: 8px 10px; border: 1px solid transparent; background: transparent;
+      border-radius: 6px; width: 100%; font-size: 0.9rem;
+      transition: background 0.2s, border 0.2s;
+    }
+    td input:hover { background: var(--input-bg); border-color: var(--border-color); }
+    td input:focus { background: #fff; border-color: var(--brand-primary); box-shadow: 0 0 0 3px var(--input-focus); }
 
-table {
-  width: 100%;
-  min-width: 900px;
-  border-collapse: separate;
-  border-spacing: 0;
-  text-align: left;
-}
+    .uid-cell { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
+    .due-cell { font-weight: 700; color: var(--danger); }
 
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
-}
+    /* --- Auth View --- */
+    .auth-view { min-height: 80vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .auth-card { max-width: 420px; width: 100%; text-align: center; padding: 40px 30px; }
+    .google-icon { width: 20px; height: 20px; }
 
-th {
-  background: #f9fafb;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
-}
+    /* --- Toast Notifications --- */
+    #toastContainer { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
+    .toast {
+      background: #1e293b; color: #fff; padding: 14px 24px; border-radius: var(--radius-md);
+      font-size: 0.95rem; font-weight: 500; box-shadow: var(--shadow-md);
+      opacity: 0; transform: translateY(20px); animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.success { border-left: 5px solid var(--success); }
+    .toast.error { border-left: 5px solid var(--danger); }
+    @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
 
-/* Make table inputs look like seamless cells until focused */
-td input {
-  padding: 8px;
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: 4px;
-  width: 100%;
-}
+    .hidden { display: none !important; }
 
-td input:hover { border-color: var(--border-color); background: #fff; }
-td input:focus { border-color: var(--brand-secondary); background: #fff; }
-
-.uid-cell { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
-.due-cell { font-weight: 600; color: var(--danger); }
-
-/* --- Auth View --- */
-.auth-view {
-  min-height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.auth-card {
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.google-icon { width: 18px; height: 18px; }
-
-/* --- Toast Notifications --- */
-#toastContainer {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 9999;
-}
-
-.toast {
-  background: var(--text-main);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideIn 0.3s forwards;
-}
-
-.toast.success { border-left: 4px solid var(--success); }
-.toast.error { border-left: 4px solid var(--danger); }
-
-@keyframes slideIn {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hidden { display: none !important; }
-</style>
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      .container { width: 100%; margin: 16px auto; padding: 0 16px; }
+      .card { padding: 20px 16px; }
+      .btn-outline { color: var(--brand-primary); border-color: var(--border-color); }
+      .table-responsive { max-height: 70vh; }
+    }
+  </style>
 </head>
 <body>
 
 <header>
-  <h2>CINPS Admin Panel</h2>
+  <h2>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+    CINPS Admin Panel
+  </h2>
   <div>
     <span id="adminInfo" class="admin-info"></span>
     <button id="logoutBtn" class="btn-outline hidden">Logout</button>
@@ -240,9 +184,9 @@ td input:focus { border-color: var(--brand-secondary); background: #fff; }
   
   <div id="authSection" class="auth-view">
     <div class="card auth-card">
-      <h3 style="color:var(--brand-primary); margin-bottom:10px;">Admin Login</h3>
-      <p style="color:var(--text-muted); margin-bottom:20px; font-size:0.9rem;">Secure access for authorized personnel only.</p>
-      <button id="loginBtn" class="btn-primary" style="width:100%;">
+      <h3 style="color:var(--text-main); margin-bottom:8px; font-size: 1.5rem;">Admin Login</h3>
+      <p style="color:var(--text-muted); margin-bottom:32px; font-size:0.95rem;">Secure access for authorized personnel only.</p>
+      <button id="loginBtn" class="btn-primary" style="width:100%; padding: 14px; font-size: 1rem;">
         <svg class="google-icon" viewBox="0 0 24 24"><path fill="#fff" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
         Sign in with Google
       </button>
@@ -262,7 +206,7 @@ td input:focus { border-color: var(--brand-secondary); background: #fff; }
         </div>
         <div class="input-group">
           <label>Full Name</label>
-          <input id="newName" placeholder="John Doe" />
+          <input id="newName" placeholder="e.g. John Doe" />
         </div>
         <div class="input-group">
           <label>Email Address</label>
@@ -270,24 +214,27 @@ td input:focus { border-color: var(--brand-secondary); background: #fff; }
         </div>
         <div class="input-group">
           <label>Course</label>
-          <input id="newCourse" placeholder="B.Sc Nursing" />
+          <input id="newCourse" placeholder="e.g. B.Sc Nursing" />
         </div>
         <div class="input-group">
           <label>Branch</label>
-          <input id="newBranch" placeholder="Main Campus" />
+          <input id="newBranch" placeholder="e.g. Main Campus" />
         </div>
         <div class="input-group">
           <label>Total Fee Applicable (₹)</label>
           <input id="newFee" type="number" placeholder="50000" min="0" />
         </div>
       </div>
-      <button id="addStudentBtn" class="btn-primary">Create Student Record</button>
+      <button id="addStudentBtn" class="btn-primary" style="width: 100%; max-width: 250px;">Create Student Record</button>
     </div>
 
     <div class="card">
-      <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 16px;">
         <h3>Manage Students</h3>
-        <button id="refreshBtn" class="btn-outline" style="color:var(--brand-primary); border-color:var(--brand-primary);">Refresh Data</button>
+        <button id="refreshBtn" class="btn-outline" style="color:var(--text-main); border: 1px solid var(--border-color);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          Refresh Data
+        </button>
       </div>
       <div class="table-responsive">
         <table id="studentsTable">
@@ -297,11 +244,11 @@ td input:focus { border-color: var(--brand-secondary); background: #fff; }
               <th>Student Name</th>
               <th>Course</th>
               <th>Branch</th>
-              <th>Attendance (%)</th>
-              <th>Total Fee (₹)</th>
-              <th>Fee Paid (₹)</th>
+              <th style="width: 100px;">Attnd. (%)</th>
+              <th style="width: 120px;">Total Fee (₹)</th>
+              <th style="width: 120px;">Fee Paid (₹)</th>
               <th>Fee Due (₹)</th>
-              <th>Action</th>
+              <th style="width: 100px;">Action</th>
             </tr>
           </thead>
           <tbody id="tableBody">
@@ -323,7 +270,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔐 PASTE YOUR REAL KEYS HERE */
+/* 🔐 FIREBASE CONFIGURATION */
 const firebaseConfig = {
   apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
   authDomain: "cinps-student-corner.firebaseapp.com",
@@ -353,8 +300,15 @@ const toastContainer = document.getElementById("toastContainer");
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerText = message;
+  
+  // Add icon based on type
+  const icon = type === 'success' 
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
+    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+  
+  toast.innerHTML = `${icon} <span>${message}</span>`;
   toastContainer.appendChild(toast);
+  
   setTimeout(() => {
     toast.style.opacity = '0';
     setTimeout(() => toast.remove(), 300);
@@ -363,10 +317,14 @@ function showToast(message, type = 'success') {
 
 // ===== AUTHENTICATION =====
 loginBtn.onclick = async () => {
+  loginBtn.innerText = "Authenticating...";
+  loginBtn.disabled = true;
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
     showToast("Login cancelled or failed.", "error");
+    loginBtn.innerHTML = `<svg class="google-icon" viewBox="0 0 24 24"><path fill="#fff" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg> Sign in with Google`;
+    loginBtn.disabled = false;
   }
 };
 
@@ -378,38 +336,45 @@ onAuthStateChanged(auth, async (user) => {
     adminArea.classList.add("hidden");
     logoutBtn.classList.add("hidden");
     adminInfo.textContent = "";
+    loginBtn.innerHTML = `<svg class="google-icon" viewBox="0 0 24 24"><path fill="#fff" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg> Sign in with Google`;
+    loginBtn.disabled = false;
     return;
   }
 
   // Verify Admin Role
-  const adminRef = doc(db, "admins", user.uid);
-  const adminSnap = await getDoc(adminRef);
+  try {
+    const adminRef = doc(db, "admins", user.uid);
+    const adminSnap = await getDoc(adminRef);
 
-  if (!adminSnap.exists()) {
-    showToast("Access Denied: You do not have administrator privileges.", "error");
+    if (!adminSnap.exists()) {
+      showToast("Access Denied: You do not have administrator privileges.", "error");
+      await signOut(auth);
+      return;
+    }
+
+    // Access Granted
+    authSection.classList.add("hidden");
+    adminArea.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+    adminInfo.textContent = `Admin: ${user.email}`;
+    
+    loadStudents();
+  } catch(err) {
+    showToast("Error verifying admin status.", "error");
     await signOut(auth);
-    return;
   }
-
-  // Access Granted
-  authSection.classList.add("hidden");
-  adminArea.classList.remove("hidden");
-  logoutBtn.classList.remove("hidden");
-  adminInfo.textContent = `Admin: ${user.email}`;
-  
-  loadStudents();
 });
 
 // ===== DATA OPERATIONS =====
 async function loadStudents() {
-  tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--text-muted);">Loading records...</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color:var(--text-muted);">Loading records...</td></tr>`;
   
   try {
     const snap = await getDocs(collection(db, "students"));
     tableBody.innerHTML = "";
 
     if (snap.empty) {
-      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No students found.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px;">No students found in the database.</td></tr>`;
       return;
     }
 
@@ -421,19 +386,19 @@ async function loadStudents() {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td class="uid-cell" title="${uid}">${uid.substring(0,8)}...</td>
-        <td><input type="text" data-field="name" data-uid="${uid}" value="${d.name || ''}" /></td>
-        <td><input type="text" data-field="course" data-uid="${uid}" value="${d.course || ''}" /></td>
-        <td><input type="text" data-field="branch" data-uid="${uid}" value="${d.branch || ''}" /></td>
-        <td><input type="number" data-field="attendance" data-uid="${uid}" value="${d.attendance || 0}" /></td>
-        <td><input type="number" data-field="total" data-uid="${uid}" value="${d.fees?.total || 0}" /></td>
-        <td><input type="number" data-field="paid" data-uid="${uid}" value="${d.fees?.paid || 0}" /></td>
+        <td><input type="text" data-field="name" value="${d.name || ''}" aria-label="Name" /></td>
+        <td><input type="text" data-field="course" value="${d.course || ''}" aria-label="Course" /></td>
+        <td><input type="text" data-field="branch" value="${d.branch || ''}" aria-label="Branch" /></td>
+        <td><input type="number" data-field="attendance" value="${d.attendance || 0}" aria-label="Attendance" /></td>
+        <td><input type="number" data-field="total" value="${d.fees?.total || 0}" aria-label="Total Fee" /></td>
+        <td><input type="number" data-field="paid" value="${d.fees?.paid || 0}" aria-label="Paid Fee" /></td>
         <td class="due-cell">₹${dueAmount.toLocaleString('en-IN')}</td>
         <td><button class="btn-success save-btn" data-uid="${uid}">Save</button></td>
       `;
       tableBody.appendChild(tr);
     });
   } catch (error) {
-    showToast("Error loading student data.", "error");
+    showToast("Error loading student data. Check console.", "error");
     console.error(error);
   }
 }
