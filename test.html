@@ -32,7 +32,7 @@
     html, body { height: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: #fff;
+      background: #fcfdfd; /* Slightly softer white to make cards pop */
       color: #222;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -43,19 +43,21 @@
     /* ================= HEADER ================= */
     .site-header {
       position: sticky; top: 0; z-index: 1200; background: rgba(255, 255, 255, 0.98); 
-      backdrop-filter: blur(10px); box-shadow: var(--shadow); transition: all 0.3s ease;
+      backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: all 0.3s ease;
     }
     .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
     .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--brand-blue); transition: transform 0.2s; }
     .logo-wrap:hover { transform: translateY(-1px); }
     .logo { height: 48px; object-fit: contain; }
-    .brand-text { display: flex; flex-direction: column; }
+    .brand-text { display: flex; flex-direction: column; justify-content: center; }
     .brand-text .title { font-weight: 700; font-size: 15px; line-height: 1.2; }
     .brand-text .subtitle { font-size: 12px; color: var(--muted); }
+    
+    .mobile-only { display: none; }
 
     /* Desktop Nav */
-    .nav { display: flex; align-items: center; gap: 18px; }
-    .nav-menu { display: flex; gap: 18px; list-style: none; }
+    .nav { display: flex; align-items: center; gap: 16px; }
+    .nav-menu { display: flex; gap: 16px; list-style: none; }
     .nav-menu a { 
       color: var(--brand-blue); text-decoration: none; font-weight: 600; 
       padding: 8px 12px; border-radius: 8px; transition: all 0.2s ease; font-size: 15px;
@@ -65,7 +67,7 @@
 
     /* Mobile Drawer */
     .mobile-drawer {
-      position: fixed; top: 0; right: -100%; height: 100%; width: 320px; max-width: 92%;
+      position: fixed; top: 0; right: -100%; height: 100%; width: 320px; max-width: 90%;
       background: #fff; box-shadow: -10px 0 40px rgba(0,0,0,0.15);
       transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 1300;
       display: flex; flex-direction: column;
@@ -83,15 +85,16 @@
     .hero {
       position: relative; color: #fff; padding: 120px 20px; min-height: 80vh;
       display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden;
+      background-color: var(--brand-blue); /* Fallback */
     }
     .hero::before {
       content: ''; position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to bottom, rgba(13,59,142,0.6), rgba(0,0,0,0.7));
+      background: linear-gradient(to bottom, rgba(13,59,142,0.65), rgba(0,0,0,0.8));
     }
     .hero .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
     .hero-inner { position: relative; z-index: 2; max-width: 900px; animation: fadeInUp 0.8s ease-out forwards; }
-    .hero h1 { font-size: 46px; font-weight: 800; margin-bottom: 20px; line-height: 1.2; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-    .hero p { font-size: 19px; opacity: 0.95; margin-bottom: 32px; max-width: 750px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .hero h1 { font-size: 46px; font-weight: 800; margin-bottom: 20px; line-height: 1.25; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    .hero p { font-size: 19px; opacity: 0.95; margin-bottom: 36px; max-width: 750px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
     /* Buttons */
@@ -113,13 +116,13 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
     
     .card { 
-      background: #fff; padding: 32px; border-radius: var(--radius); 
+      background: #fff; padding: 36px; border-radius: var(--radius); 
       box-shadow: var(--shadow); border: 1px solid #f2f6ff; height: 100%;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
-    .card h2 { color: var(--brand-blue); margin-bottom: 16px; font-size: 26px; line-height: 1.3; font-weight: 700; }
-    .card h3 { color: var(--brand-blue); margin-bottom: 14px; font-size: 20px; font-weight: 600; }
+    .card h2 { color: var(--brand-blue); margin-bottom: 20px; font-size: 26px; line-height: 1.3; font-weight: 700; }
+    .card h3 { color: var(--brand-blue); margin-bottom: 16px; font-size: 20px; font-weight: 600; }
     
     /* Feature Lists */
     .features { list-style: none; padding: 0; margin-top: 16px; }
@@ -134,7 +137,7 @@
     /* Highlight Box */
     .highlight-box {
       background: linear-gradient(145deg, #f6f9ff 0%, #ffffff 100%);
-      border: 1px solid var(--accent-blue);
+      border: 1px solid var(--accent-blue); flex: 1; /* Added flex:1 to align heights */
       padding: 28px; border-radius: var(--radius); height: 100%;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -149,10 +152,13 @@
     }
     .modal input:focus, .modal textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(13,59,142,0.1); }
 
+    /* Chat Button styling fixed for perfect centering */
     #cinps-chat-btn {
       position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; border-radius: 50%; 
       background: var(--brand-blue); color: #fff; border: 0; z-index: 3000; 
-      box-shadow: 0 15px 35px rgba(13,59,142,0.3); font-size: 28px; cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 15px 35px rgba(13,59,142,0.3); font-size: 28px; cursor: pointer; 
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex; align-items: center; justify-content: center; line-height: 1;
     }
     #cinps-chat-btn:hover { transform: scale(1.1) rotate(5deg); }
     
@@ -170,12 +176,12 @@
     .chat-bubble.user { background: var(--brand-blue); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
 
     /* ================= FOOTER ================= */
-    .site-footer { background: var(--brand-blue); color: #fff; padding: 60px 24px 24px; text-align: center; margin-top: 40px; }
-    .footer-logo { height: 56px; filter: brightness(0) invert(1); opacity: 0.95; margin-bottom: 16px; }
-    .footer-links { display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap; }
-    .footer-links a { color: #fff; text-decoration: none; font-size: 14px; opacity: 0.8; transition: opacity 0.2s, text-decoration 0.2s; }
+    .site-footer { background: var(--brand-blue); color: #fff; padding: 70px 24px 30px; text-align: center; margin-top: 40px; }
+    .footer-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin: 30px 0; flex-wrap: wrap; }
+    .footer-links a { color: #fff; text-decoration: none; font-size: 14.5px; opacity: 0.85; transition: opacity 0.2s, text-decoration 0.2s; }
     .footer-links a:hover { opacity: 1; text-decoration: underline; }
-    .footer-bottom { font-size: 14px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; margin-top: 24px; }
+    .footer-bottom { font-size: 14px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px; margin-top: 12px; }
 
     /* ================= ANIMATIONS & RESPONSIVE ================= */
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -187,13 +193,20 @@
       .hero h1 { font-size: 38px; }
     }
     @media(max-width: 768px) {
-      .nav-menu { display: none; } .nav-toggle { display: block; } .logo { height: 42px; }
-      .hero { padding: 80px 16px; min-height: auto; }
-      .hero h1 { font-size: 32px; } .hero p { font-size: 16px; }
-      .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+      /* Header mobile layout fix */
+      .desktop-only { display: none !important; }
+      .mobile-only { display: block !important; font-size: 20px !important; font-weight: 800; letter-spacing: 0.5px; }
+      .logo { height: 40px; }
+      
+      .nav-menu { display: none; } .nav-toggle { display: block; }
+      .hero { padding: 90px 16px; min-height: auto; }
+      .hero h1 { font-size: 32px; } .hero p { font-size: 16px; margin-bottom: 28px; }
+      .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; gap: 14px; }
       .hero-buttons .btn { width: 100%; }
       .section { padding: 50px 0; }
+      .grid-2 { gap: 24px; }
       .card, .highlight-box { padding: 24px; }
+      
       #cinps-chat-btn { bottom: 20px; right: 20px; width: 56px; height: 56px; font-size: 24px; }
       #cinps-chat-box { bottom: 85px; right: 16px; left: 16px; width: auto; max-width: none; }
     }
@@ -206,8 +219,9 @@
       <a href="/" class="logo-wrap" aria-label="CINPS Home">
         <img src="assets/images/logo.png" alt="CINPS Official Logo" class="logo" loading="lazy">
         <div class="brand-text" aria-hidden="true">
-          <span class="title">Chandidas Institute</span>
-          <span class="subtitle">Nursing & Paramedical Science</span>
+          <span class="title desktop-only">Chandidas Institute</span>
+          <span class="subtitle desktop-only">Nursing & Paramedical Science</span>
+          <span class="title mobile-only">CINPS</span>
         </div>
       </a>
 
@@ -229,8 +243,8 @@
   <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile navigation menu">
     <div class="drawer-header">
       <div style="display:flex;gap:12px;align-items:center">
-        <img src="assets/images/logo.png" alt="CINPS logo" style="height:38px">
-        <div style="font-weight:700;color:var(--brand-blue);line-height:1.2;font-size:15px;">CINPS</div>
+        <img src="assets/images/logo.png" alt="CINPS logo" style="height:36px">
+        <div style="font-weight:700;color:var(--brand-blue);line-height:1.2;font-size:16px;">CINPS</div>
       </div>
       <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer;padding:4px;">✕</button>
     </div>
@@ -250,7 +264,7 @@
 
   <main>
     <section class="hero" aria-label="Welcome to CINPS">
-      <img src="assets/images/hero.jpg" alt="Students in a paramedical training lab" class="hero-img" loading="eager" style="background-color: var(--brand-blue);" />
+      <img src="assets/images/hero.jpg" alt="Students in a paramedical training lab" class="hero-img" loading="eager" />
       <div class="hero-inner container">
         <h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
         <p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals — 100% internship & dedicated placement support.</p>
@@ -271,7 +285,7 @@
       </div>
     </section>
 
-    <section class="section" style="background:#f9fbff; padding-top:0;">
+    <section class="section" style="background:var(--accent-blue); padding-top:0;">
       <div class="container">
         <div class="grid-2">
           
@@ -287,7 +301,7 @@
             </ul>
           </div>
 
-          <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:24px;">
             <div class="highlight-box">
               <h3>100% Internship Assurance</h3>
               <ul class="features" style="margin-top:8px">
@@ -338,9 +352,9 @@
         </div>
 
         <div style="margin-top:48px; text-align:center">
-          <div class="card" style="background:var(--brand-blue); color:#fff; border:none; padding: 48px 32px;">
-            <h2 style="color:#fff; font-size: 32px;">Ready to Start Your Healthcare Career?</h2>
-            <p style="color:rgba(255,255,255,0.9); margin-bottom:32px; font-size: 18px;">Join CINPS to build a capable, ethical, and employment-ready future.</p>
+          <div class="card" style="background:var(--brand-blue); color:#fff; border:none; padding: 48px 24px;">
+            <h2 style="color:#fff; font-size: 32px; margin-bottom: 12px;">Ready to Start Your Healthcare Career?</h2>
+            <p style="color:rgba(255,255,255,0.9); margin-bottom:32px; font-size: 17px;">Join CINPS to build a capable, ethical, and employment-ready future.</p>
             <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap">
               <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" class="btn" style="background:#fff; color:var(--brand-blue)">Apply Now</a>
               <button onclick="openModal()" class="btn btn-outline">Contact Us</button>
@@ -353,9 +367,8 @@
 
   <footer class="site-footer">
     <div class="container">
-      <img src="assets/images/logo.png" alt="CINPS Logo" class="footer-logo" loading="lazy">
-      <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Chandidas Institute of Nursing & Paramedical Science</h2>
-      <p style="font-size: 14px; opacity: 0.8; max-width: 500px; margin: 0 auto;">Dedicated to delivering structured, skill-driven healthcare education and creating employment-ready professionals.</p>
+      <h2 class="footer-title">Chandidas Institute of Nursing & Paramedical Science</h2>
+      <p style="font-size: 15px; opacity: 0.85; max-width: 550px; margin: 0 auto;">Dedicated to delivering structured, skill-driven healthcare education and creating employment-ready professionals.</p>
       
       <div class="footer-links">
         <a href="https://cinps-org.github.io/legal/terms-and-conditions.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
@@ -436,7 +449,6 @@
 
     // 3. Modal Form Logic
     const modal = document.getElementById('modal');
-    // Save the element that had focus before opening the modal for accessibility
     let previousActiveElement;
 
     function openModal(){ 
@@ -444,7 +456,6 @@
       modal.style.display = 'flex'; 
       modal.setAttribute('aria-hidden','false'); 
       document.body.style.overflow = 'hidden';
-      // Focus the first input
       setTimeout(() => modal.querySelector('input')?.focus(), 100);
     }
     function closeModal(){ 
@@ -454,7 +465,6 @@
       if(previousActiveElement) previousActiveElement.focus();
     }
     
-    // Close modal on outside click
     modal.addEventListener('click', (e) => {
       if(e.target === modal) closeModal();
     });
@@ -512,11 +522,10 @@
       }
     }
 
-    // Fixed XSS vulnerability here: using textContent instead of innerHTML
     function addMsg(txt, type='bot'){
       const d = document.createElement('div');
       d.className = `chat-bubble ${type}`;
-      d.textContent = txt; // Secure data insertion
+      d.textContent = txt; 
       
       msgs.appendChild(d);
       msgs.scrollTop = msgs.scrollHeight;
@@ -548,7 +557,6 @@
         if (!response.ok) throw new Error("Server error");
         
         const data = await response.json();
-        // Update the loading bubble text safely
         loadingBubble.textContent = data.reply || "Please contact the CINPS admission office at +91 8101579839 for further details.";
 
       } catch (error) {
@@ -556,7 +564,6 @@
         loadingBubble.textContent = "⚠️ Pulse AI is temporarily unavailable. Please contact CINPS at +91 8101579839.";
       } finally {
         isSending = false;
-        // Adjust scroll one more time just in case text block was large
         msgs.scrollTop = msgs.scrollHeight;
       }
     }
