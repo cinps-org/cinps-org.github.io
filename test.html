@@ -16,6 +16,7 @@
       --success: #10b981;
       --success-hover: #059669;
       --danger: #ef4444;
+      --danger-hover: #dc2626;
       --bg-color: #f1f5f9;
       --card-bg: #ffffff;
       --text-main: #0f172a;
@@ -73,6 +74,9 @@
     
     .btn-success { background: var(--success); color: #fff; padding: 8px 14px; font-size: 0.85rem; }
     .btn-success:hover:not(:disabled) { background: var(--success-hover); }
+
+    .btn-danger { background: var(--danger); color: #fff; padding: 8px 14px; font-size: 0.85rem; }
+    .btn-danger:hover:not(:disabled) { background: var(--danger-hover); }
     
     .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.4); }
     .btn-outline:hover:not(:disabled) { background: rgba(255,255,255,0.1); border-color: #fff; }
@@ -110,11 +114,10 @@
     .table-responsive {
       width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
       border: 1px solid var(--border-color); border-radius: var(--radius-md);
-      /* Setting a max height allows the sticky header to work within the card */
       max-height: 60vh; 
     }
 
-    table { width: 100%; min-width: 1000px; border-collapse: collapse; text-align: left; }
+    table { width: 100%; min-width: 1100px; border-collapse: collapse; text-align: left; }
     
     th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
     
@@ -138,6 +141,8 @@
 
     .uid-cell { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
     .due-cell { font-weight: 700; color: var(--danger); }
+    
+    .action-buttons { display: flex; gap: 8px; }
 
     /* --- Auth View --- */
     .auth-view { min-height: 80vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
@@ -248,7 +253,7 @@
               <th style="width: 120px;">Total Fee (₹)</th>
               <th style="width: 120px;">Fee Paid (₹)</th>
               <th>Fee Due (₹)</th>
-              <th style="width: 100px;">Action</th>
+              <th style="width: 170px;">Actions</th>
             </tr>
           </thead>
           <tbody id="tableBody">
@@ -264,10 +269,11 @@
 
 <script type="module">
 // ===== FIREBASE IMPORTS =====
+// Added deleteDoc import for the delete functionality
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp } 
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* 🔐 FIREBASE CONFIGURATION */
@@ -382,18 +388,24 @@ async function loadStudents() {
       const d = docSnap.data();
       const uid = docSnap.id;
       const dueAmount = d.fees?.due ?? (Number(d.fees?.total) - Number(d.fees?.paid));
+      const studentName = d.name || 'Unknown';
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td class="uid-cell" title="${uid}">${uid.substring(0,8)}...</td>
-        <td><input type="text" data-field="name" value="${d.name || ''}" aria-label="Name" /></td>
+        <td><input type="text" data-field="name" value="${studentName}" aria-label="Name" /></td>
         <td><input type="text" data-field="course" value="${d.course || ''}" aria-label="Course" /></td>
         <td><input type="text" data-field="branch" value="${d.branch || ''}" aria-label="Branch" /></td>
         <td><input type="number" data-field="attendance" value="${d.attendance || 0}" aria-label="Attendance" /></td>
         <td><input type="number" data-field="total" value="${d.fees?.total || 0}" aria-label="Total Fee" /></td>
         <td><input type="number" data-field="paid" value="${d.fees?.paid || 0}" aria-label="Paid Fee" /></td>
         <td class="due-cell">₹${dueAmount.toLocaleString('en-IN')}</td>
-        <td><button class="btn-success save-btn" data-uid="${uid}">Save</button></td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-success save-btn" data-uid="${uid}">Save</button>
+            <button class="btn-danger delete-btn" data-uid="${uid}" data-name="${studentName}">Delete</button>
+          </div>
+        </td>
       `;
       tableBody.appendChild(tr);
     });
@@ -403,8 +415,10 @@ async function loadStudents() {
   }
 }
 
-// Event Delegation for Table Buttons
+// Event Delegation for Table Buttons (Save and Delete)
 tableBody.addEventListener('click', async (e) => {
+  
+  // Handle Save
   if (e.target.classList.contains('save-btn')) {
     const btn = e.target;
     const uid = btn.dataset.uid;
@@ -468,6 +482,35 @@ tableBody.addEventListener('click', async (e) => {
     } finally {
       btn.innerText = "Save";
       btn.disabled = false;
+    }
+  }
+
+  // Handle Delete
+  if (e.target.classList.contains('delete-btn')) {
+    const btn = e.target;
+    const uid = btn.dataset.uid;
+    const name = btn.dataset.name;
+    const row = btn.closest('tr');
+
+    // Extra confirmation to prevent accidental deletion in production
+    const confirmDelete = window.confirm(
+      `CRITICAL WARNING:\n\nAre you absolutely sure you want to delete the record for ${name}?\nThis action will permanently erase this student's data and cannot be undone.`
+    );
+
+    if (confirmDelete) {
+      btn.innerText = "Deleting...";
+      btn.disabled = true;
+      
+      try {
+        await deleteDoc(doc(db, "students", uid));
+        showToast(`${name}'s record was successfully deleted.`);
+        row.remove(); // Remove the row from the UI immediately
+      } catch (error) {
+        showToast("Failed to delete record.", "error");
+        console.error("Delete Error:", error);
+        btn.innerText = "Delete";
+        btn.disabled = false;
+      }
     }
   }
 });
