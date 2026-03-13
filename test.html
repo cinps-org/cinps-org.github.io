@@ -2,21 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Home | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
+  <title>About | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="CINPS offers structured paramedical diploma & certificate programs with 100% internship assurance and 100% job placement assistance. Develop into a competent healthcare professional.">
+  <meta name="description" content="Chandidas Institute of Nursing & Paramedical Science (CINPS) — Skill-focused paramedical diploma & certificate programs with strong practical training, 100% internship assurance and placement support.">
   
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Chandidas Institute of Nursing & Paramedical Science (CINPS)">
-  <meta property="og:description" content="Skill-Focused Healthcare Education with Structured Practical Exposure. 100% internship & dedicated placement support.">
-  <meta property="og:image" content="assets/images/hero.jpg">
-  
+  <meta property="og:title" content="About CINPS — Chandidas Institute of Nursing & Paramedical Science">
+  <meta property="og:description" content="CINPS: Career-focused paramedical education, established 2017. Internship & placement support, simulation labs, industry-aligned curriculum.">
+  <meta property="og:image" content="assets/images/banner.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.ico">
+  <link rel="preload" as="image" href="assets/images/banner.jpg">
 
   <style>
-    /* ================= THEME ================= */
+    /* ================= THEME (Synced with Home) ================= */
     :root {
       --brand-blue: #0d3b8e;
       --light-blue: #1f57b8;
@@ -32,7 +34,7 @@
     html, body { height: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: #fcfdfd; 
+      background: #fcfdfd;
       color: #222;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -42,7 +44,7 @@
 
     /* ================= HEADER ================= */
     .site-header {
-      position: sticky; top: 0; z-index: 1000; /* Adjusted z-index */
+      position: sticky; top: 0; z-index: 1000; 
       background: rgba(255, 255, 255, 0.98); 
       backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: all 0.3s ease;
     }
@@ -62,7 +64,7 @@
     .nav-menu a { 
       color: var(--brand-blue); text-decoration: none; font-weight: 600; 
       padding: 8px 12px; border-radius: 8px; transition: all 0.2s ease; font-size: 15px;
-      white-space: nowrap; /* FIX: Prevents text wrapping on desktop */
+      white-space: nowrap;
     }
     .nav-menu a:hover, .nav-menu a:focus { background: rgba(13,59,142,0.06); color: var(--light-blue); outline: none; }
     .nav-toggle { display: none; background: none; border: 0; font-size: 26px; color: var(--brand-blue); cursor: pointer; padding: 6px; border-radius: 8px; }
@@ -71,7 +73,7 @@
     .mobile-drawer {
       position: fixed; top: 0; right: -100%; height: 100%; width: 320px; max-width: 90%;
       background: #fff; box-shadow: -10px 0 40px rgba(0,0,0,0.15);
-      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 3001; /* FIX: Higher than chat button */
+      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 3001; 
       display: flex; flex-direction: column;
     }
     .mobile-drawer.open { right: 0; }
@@ -85,18 +87,18 @@
 
     /* ================= HERO ================= */
     .hero {
-      position: relative; color: #fff; padding: 120px 20px; min-height: 80vh;
+      position: relative; color: #fff; padding: 100px 20px; min-height: 48vh;
       display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden;
-      background-color: var(--brand-blue); 
+      background-color: var(--brand-blue);
     }
     .hero::before {
       content: ''; position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(to bottom, rgba(13,59,142,0.65), rgba(0,0,0,0.8));
     }
     .hero .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-    .hero-inner { position: relative; z-index: 2; max-width: 900px; animation: fadeInUp 0.8s ease-out forwards; }
-    .hero h1 { font-size: 46px; font-weight: 800; margin-bottom: 20px; line-height: 1.25; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-    .hero p { font-size: 19px; opacity: 0.95; margin-bottom: 36px; max-width: 750px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .hero-inner { position: relative; z-index: 2; max-width: 920px; animation: fadeInUp 0.8s ease-out forwards; }
+    .hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 16px; line-height: 1.25; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    .hero p { font-size: 18px; opacity: 0.95; margin-bottom: 28px; max-width: 800px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 
     /* Buttons */
@@ -115,37 +117,54 @@
 
     /* ================= LAYOUT & CARDS ================= */
     .section { padding: 80px 0; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    
+    .two-col { display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start; }
     .card { 
-      background: #fff; padding: 36px; border-radius: var(--radius); 
-      box-shadow: var(--shadow); border: 1px solid #f2f6ff; height: 100%;
+      background: #fff; padding: 32px; border-radius: var(--radius); 
+      box-shadow: var(--shadow); border: 1px solid #f2f6ff;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
-    .card h2 { color: var(--brand-blue); margin-bottom: 20px; font-size: 26px; line-height: 1.3; font-weight: 700; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .card h2 { color: var(--brand-blue); margin-bottom: 16px; font-size: 26px; line-height: 1.3; font-weight: 700; }
     .card h3 { color: var(--brand-blue); margin-bottom: 16px; font-size: 20px; font-weight: 600; }
-    
-    /* Feature Lists */
-    .features { list-style: none; padding: 0; margin-top: 16px; }
-    .features li { position: relative; padding-left: 36px; margin-bottom: 14px; font-size: 15.5px; color: #444; line-height: 1.6; }
-    .features li::before {
-      content: "✓"; position: absolute; left: 0; top: 2px;
-      width: 24px; height: 24px; background: var(--accent-blue);
-      color: var(--brand-blue); border-radius: 50%; font-size: 13px;
-      display: flex; align-items: center; justify-content: center; font-weight: 800;
-    }
 
-    /* Highlight Box */
-    .highlight-box {
-      background: linear-gradient(145deg, #f6f9ff 0%, #ffffff 100%);
-      border: 1px solid var(--accent-blue); flex: 1; 
-      padding: 28px; border-radius: var(--radius); height: 100%;
+    /* ================= QUOTE BOX ================= */
+    .quote-box {
+      position: relative; overflow: hidden; border-radius: var(--radius); padding: 32px;
+      display: flex; gap: 24px; align-items: center;
+      background: linear-gradient(135deg, #f6f8ff 0%, #ffffff 60%);
+      box-shadow: var(--shadow); border: 1px solid var(--accent-blue);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .highlight-box:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .quote-box:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .quote-art {
+      flex: 0 0 110px; display: flex; align-items: center; justify-content: center;
+      border-radius: 12px; background: linear-gradient(180deg, rgba(13,59,142,0.12), rgba(31,87,184,0.06));
+      padding: 10px; box-shadow: inset 0 -6px 18px rgba(13,59,142,0.02);
+    }
+    .quote-art .avatar {
+      width: 80px; height: 80px; border-radius: 12px; background: linear-gradient(180deg, #fff, #eef6ff);
+      display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--brand-blue);
+      font-size: 26px; border: 2px solid rgba(13,59,142,0.06);
+    }
+    .quote-content { flex: 1; z-index: 2; }
+    .quote-mark { font-size: 54px; color: var(--light-blue); opacity: 0.15; line-height: 1; margin-bottom: 4px; transform: translateY(-8px); font-family: serif; }
+    .quote-text { font-size: 17.5px; color: #222; line-height: 1.6; font-weight: 600; margin-bottom: 16px; text-wrap: balance; }
+    .founder { color: var(--brand-blue); font-weight: 700; margin-bottom: 16px; font-size: 16px; line-height: 1.4; }
+    .quote-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; background: rgba(13,59,142,0.08); color: var(--brand-blue); padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; }
+    .scholar-link {
+      margin-left: auto; text-decoration: none; background: linear-gradient(90deg, var(--light-blue), var(--brand-blue));
+      color: white; padding: 10px 18px; border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(13,59,142,0.15); font-size: 14px; transition: transform 0.2s;
+    }
+    .scholar-link:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(13,59,142,0.25); }
+    .quote-accent {
+      position: absolute; right: -40px; top: -30px; width: 160px; height: 160px;
+      background: radial-gradient(circle at 30% 30%, rgba(29,89,199,0.12), transparent 40%);
+      transform: rotate(18deg); pointer-events: none; z-index: 1;
+    }
 
-    /* ================= MODAL & CHAT ================= */
+    /* ================= MODAL & FORMS ================= */
     .modal-bg { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 4000; padding: 16px; backdrop-filter: blur(4px); }
     .modal { background: #fff; padding: 32px; border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 4001; }
     .modal input, .modal textarea { 
@@ -154,17 +173,16 @@
     }
     .modal input:focus, .modal textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(13,59,142,0.1); }
 
-    /* Chat Button */
+    /* ================= CHATBOT ================= */
     #cinps-chat-btn {
       position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; border-radius: 50%; 
-      background: var(--brand-blue); color: #fff; border: 0; z-index: 2000; /* FIX: Lower than mobile drawer */
+      background: var(--brand-blue); color: #fff; border: 0; z-index: 2000; 
       box-shadow: 0 15px 35px rgba(13,59,142,0.3); font-size: 28px; cursor: pointer; 
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex; align-items: center; justify-content: center; line-height: 1;
     }
     #cinps-chat-btn:hover { transform: scale(1.1) rotate(5deg); }
     
-    /* Chat Box */
     #cinps-chat-box {
       position: fixed; bottom: 100px; right: 24px; width: 380px; max-width: calc(100% - 48px); 
       display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; 
@@ -192,9 +210,7 @@
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
     @media(max-width: 980px) { 
-      .grid-2 { grid-template-columns: 1fr; } 
-      .hero h1 { font-size: 38px; }
-      /* Switch to mobile nav earlier to prevent desktop overlap */
+      .two-col { grid-template-columns: 1fr; } 
       .nav-menu { display: none; } .nav-toggle { display: block; }
     }
     
@@ -208,12 +224,15 @@
       .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; gap: 14px; }
       .hero-buttons .btn { width: 100%; }
       .section { padding: 50px 0; }
-      .grid-2 { gap: 24px; }
-      .card, .highlight-box { padding: 24px; }
+      .card { padding: 24px; }
+      
+      .quote-box { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px; }
+      .quote-art { width: 100%; flex-basis: auto; justify-content: flex-start; padding: 0; background: none; box-shadow: none; }
+      .quote-art .avatar { width: 64px; height: 64px; font-size: 22px; }
+      .quote-meta { flex-direction: column; align-items: stretch; width: 100%; gap: 10px; }
+      .scholar-link { margin-left: 0; justify-content: center; width: 100%; }
       
       #cinps-chat-btn { bottom: 20px; right: 20px; width: 56px; height: 56px; font-size: 24px; }
-      
-      /* FIX: Chat Box UI cutoff on mobile */
       #cinps-chat-box { bottom: 85px; right: 16px; width: calc(100% - 32px); max-width: none; }
       #cinps-chat-messages { height: 280px; max-height: 50vh; }
     }
@@ -234,12 +253,13 @@
 
       <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
-          <li><a href="/about">About</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about" aria-current="page">About</a></li>
           <li><a href="/courses">Courses</a></li>
           <li><a href="/admissions">Admissions</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener noreferrer">StudentCorner</a></li>
-          <li><a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener noreferrer">InstructorHub</a></li>
+          <li><a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener noreferrer">Student Corner</a></li>
+          <li><a href="https://cinps-org.github.io/instructor-hub.html" target="_blank" rel="noopener noreferrer">Instructor Hub</a></li>
         </ul>
         <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open mobile menu">☰</button>
       </nav>
@@ -247,6 +267,7 @@
   </header>
 
   <div id="drawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  
   <aside id="mobileDrawer" class="mobile-drawer" aria-hidden="true" aria-label="Mobile navigation menu">
     <div class="drawer-header">
       <div style="display:flex;gap:12px;align-items:center">
@@ -256,8 +277,8 @@
       <button id="drawerClose" aria-label="Close menu" style="background:none;border:0;font-size:24px;color:var(--brand-blue);cursor:pointer;padding:4px;">✕</button>
     </div>
     <nav class="drawer-links" aria-label="Mobile links">
-      <a href="/" aria-current="page">Home</a>
-      <a href="/about">About</a>
+      <a href="/">Home</a>
+      <a href="/about" aria-current="page">About</a>
       <a href="/courses">Courses</a>
       <a href="/admissions">Admissions</a>
       <a href="/contact">Contact</a>
@@ -269,103 +290,112 @@
     </div>
   </aside>
 
+  <section class="hero" aria-label="About CINPS hero">
+    <img src="assets/images/banner.jpg" alt="" class="hero-img" loading="eager" />
+    <div class="hero-inner container">
+      <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
+      <p>Established 2017 — developing competent, ethical and employment-ready paramedical professionals through disciplined, skill-focused training and measurable performance systems.</p>
+      <div class="hero-buttons">
+        <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <button onclick="openModal()" class="btn btn-outline">Contact Admissions</button>
+      </div>
+    </div>
+  </section>
+
   <main>
-    <section class="hero" aria-label="Welcome to CINPS">
-      <img src="assets/images/hero.jpg" alt="Students in a paramedical training lab" class="hero-img" loading="eager" />
-      <div class="hero-inner container">
-        <h1>Skill-Focused Healthcare Education with Structured Practical Exposure</h1>
-        <p>Developing Competent • Ethical • Employment-Ready Paramedical Professionals — 100% internship & dedicated placement support.</p>
-        <div class="hero-buttons">
-          <a class="btn btn-primary" href="/courses">Explore Courses</a>
-          <a class="btn btn-outline" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
-        </div>
-      </div>
-    </section>
-
     <section class="section">
-      <div class="container">
-        <div class="card">
-          <h2>Chandidas Institute of Nursing and Paramedical Science (CINPS)</h2>
-          <p style="margin-bottom:16px; color:#444; font-size: 16px;">Chandidas Institute of Nursing and Paramedical Science (CINPS) is a professionally governed paramedical institute committed to delivering structured, skill-driven, and career-oriented healthcare education. We prepare students for responsible roles in hospitals, diagnostic centers, and emergency services.</p>
-          <p style="color:#444; font-size: 16px;">CINPS operates with a clear academic vision: to transform aspiring healthcare learners into competent professionals through disciplined training systems, practical exposure, and measurable performance standards.</p>
-        </div>
-      </div>
-    </section>
+      <div class="container two-col">
 
-    <section class="section" style="background:var(--accent-blue); padding-top:0;">
-      <div class="container">
-        <div class="grid-2">
-          
+        <div>
           <div class="card">
-            <h3>Structured Academic System</h3>
-            <p style="font-size:15px;color:#555">Education is not limited to classroom instruction. Our framework integrates:</p>
-            <ul class="features">
-              <li>Concept-based theoretical learning</li>
-              <li>Procedure-oriented practical training</li>
-              <li>Continuous skill assessment</li>
-              <li>Professional behavior monitoring</li>
-              <li>Outcome-based evaluation methods</li>
+            <h2>Institution Overview</h2>
+            <p style="margin-bottom:20px; font-size:16px; color:#444;">Established in 2017, Chandidas Institute of Nursing & Paramedical Science (CINPS) is committed to delivering skill-focused healthcare education with structured practical exposure. The institute aims to produce disciplined, ethical and industry-ready paramedical professionals.</p>
+
+            <div style="display:grid;gap:12px">
+              <div style="background:var(--accent-blue);padding:16px;border-radius:12px;color:#222;"><strong>Established:</strong> 2017</div>
+              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;"><strong>Authorization Code:</strong> AI4826</div>
+              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;"><strong>Affiliation:</strong> All India Council of Vocational & Paramedical Science (Autonomous)</div>
+            </div>
+          </div>
+
+          <div style="height:36px"></div>
+
+          <div class="card">
+            <h3>Academic Approach</h3>
+            <p style="font-size:16px; color:#444;">CINPS integrates concept-based theory with procedure-oriented practical sessions, continuous skill assessment, and outcome-based evaluation. Simulation labs, real-time clinical exposure, and mentor-driven batches ensure workplace readiness.</p>
+            <ul style="margin-top:16px; margin-left:24px; display:flex; flex-direction:column; gap:10px; color:#444;">
+              <li>Small batch sizes & mentor supervision</li>
+              <li>Simulation labs for OT, ICU & DMLT</li>
+              <li>Structured internships & placement assistance</li>
             </ul>
           </div>
 
-          <div style="display:flex; flex-direction:column; gap:24px;">
-            <div class="highlight-box">
-              <h3>100% Internship Assurance</h3>
-              <ul class="features" style="margin-top:8px">
-                <li>Real-time clinical exposure</li>
-                <li>Apply concepts in practical settings</li>
-                <li>Workplace discipline & documentation</li>
-              </ul>
+          <div style="height:36px"></div>
+
+          <div class="quote-box" role="region" aria-label="Founder's quote">
+            <div class="quote-art" aria-hidden="true">
+              <div class="avatar">IK</div>
             </div>
-            
-            <div class="highlight-box">
-              <h3>100% Placement Assistance</h3>
-              <ul class="features" style="margin-top:8px">
-                <li>Career counseling & guidance</li>
-                <li>Interview preparation sessions</li>
-                <li>Resume development assistance</li>
-              </ul>
+
+            <div class="quote-content">
+              <div class="quote-mark">“</div>
+              <div class="quote-text">
+                True education is not just about acquiring knowledge; it is about transforming lives, igniting passion, and inspiring a commitment to serve humanity.
+              </div>
+
+              <div class="founder">
+                – Dr. Iman Khan<br>
+                <span style="font-size:13.5px;font-weight:600;color:#6b7280;line-height:1.5;display:inline-block;margin-top:4px;">Founder & Managing Director • Researcher in Cognitive Linguistics</span>
+              </div>
+
+              <div class="quote-meta">
+                <div class="badge">100% Internship Assurance</div>
+                <div class="badge">100% Placement Assistance</div>
+                <a class="scholar-link" href="https://scholar.google.com/citations?user=TYNvPygAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">
+                  View Academic Profile
+                </a>
+              </div>
             </div>
+            <div class="quote-accent" aria-hidden="true"></div>
           </div>
 
+          <div style="height:36px"></div>
+
+          <div class="card">
+            <h3>Student Support</h3>
+            <p style="font-size:16px; color:#444;">We provide regular performance feedback, doubt-clearing sessions, exam prep and career counselling to ensure every student crosses the competency threshold expected by employers.</p>
+          </div>
         </div>
+
+        <aside>
+          <div class="card">
+            <h3>Contact & Office</h3>
+            <p style="margin-bottom:16px; color:#444;"><strong>Head Office:</strong><br>Hospital Road, Nanoor<br>Birbhum, West Bengal — 731301</p>
+            <p style="color:#444;"><strong>Email:</strong> <a href="mailto:cinp.official@gmail.com" style="color:var(--brand-blue); text-decoration:none; font-weight:600;">cinp.official@gmail.com</a><br><strong>Phone:</strong> <a href="tel:+918101579839" style="color:var(--brand-blue); text-decoration:none; font-weight:600;">+91 8101579839</a></p>
+          </div>
+
+          <div style="height:36px"></div>
+
+          <div class="card">
+            <h3>Quick Facts</h3>
+            <div style="display:grid;gap:12px">
+              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Academic year: June – March</div>
+              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Courses: Diploma & Certificate</div>
+              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Branches & tie-ups across region</div>
+            </div>
+          </div>
+        </aside>
+
       </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="card">
-          <h2 style="text-align:center; margin-bottom:32px">Comprehensive Student Support</h2>
-          <div class="grid-2">
-            <div>
-              <h3>Academic Support</h3>
-              <ul class="features">
-                <li>Doubt-clearing sessions</li>
-                <li>Structured revision programs</li>
-                <li>Performance feedback discussions</li>
-                <li>Examination preparation assistance</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Professional Development</h3>
-              <ul class="features">
-                <li>Communication skill enhancement</li>
-                <li>Workplace behavior training</li>
-                <li>Documentation accuracy guidance</li>
-                <li>Time management coaching</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:48px; text-align:center">
-          <div class="card" style="background:var(--brand-blue); color:#fff; border:none; padding: 48px 24px;">
-            <h2 style="color:#fff; font-size: 32px; margin-bottom: 12px;">Ready to Start Your Healthcare Career?</h2>
-            <p style="color:rgba(255,255,255,0.9); margin-bottom:32px; font-size: 17px;">Join CINPS to build a capable, ethical, and employment-ready future.</p>
-            <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap">
-              <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" class="btn" style="background:#fff; color:var(--brand-blue)">Apply Now</a>
-              <button onclick="openModal()" class="btn btn-outline">Contact Us</button>
-            </div>
+      <div style="margin-top:56px" class="container">
+        <div class="card" style="display:flex;flex-direction:column;gap:16px; text-align:center; padding: 48px 24px; background:var(--brand-blue); border:none;">
+          <h2 style="color:#fff; font-size: 32px; margin-bottom: 0;">Ready to join CINPS?</h2>
+          <p style="color:rgba(255,255,255,0.9); font-size: 17px; margin-bottom: 16px;">Our admissions team will guide you through eligibility, fees, scholarships and placement pathways.</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+            <a class="btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" style="background:#fff; color:var(--brand-blue);">Apply Now</a>
+            <button class="btn btn-outline" onclick="openModal()">Contact Admissions</button>
+            <a class="btn" style="background:rgba(255,255,255,0.15);color:#fff;" href="tel:+918101579839">Call +91 8101579839</a>
           </div>
         </div>
       </div>
@@ -416,7 +446,7 @@
       <div class="chat-bubble bot">👋 Welcome to CINPS! Ask me anything about our courses, fees, or the admissions process.</div>
     </div>
     <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff;align-items:center;">
-      <input id="cinps-user-input" placeholder="Type your question..." aria-label="Chat input" style="flex:1 1 auto;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
+      <input id="cinps-user-input" placeholder="Ask CINPS Pulse AI…" aria-label="Chat input" style="flex:1 1 auto;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
       <button id="cinps-send-btn" class="btn btn-blue" style="padding:0 16px;height:46px;border-radius:12px;flex-shrink:0;white-space:nowrap;">Send</button>
     </div>
   </div>
@@ -453,7 +483,7 @@
     drawerBackdrop?.addEventListener('click', closeDrawer);
     mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-    // Modal Logic
+    // Modal Logic connected to Google Sheets Script
     const modal = document.getElementById('modal');
     let previousActiveElement;
 
@@ -506,7 +536,7 @@
       });
     });
 
-    // Chatbot Logic
+    // Chatbot Logic connected to Gemini Worker API
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
