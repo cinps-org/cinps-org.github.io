@@ -32,7 +32,7 @@
     html, body { height: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: #fcfdfd; /* Slightly softer white to make cards pop */
+      background: #fcfdfd; 
       color: #222;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -42,7 +42,8 @@
 
     /* ================= HEADER ================= */
     .site-header {
-      position: sticky; top: 0; z-index: 1200; background: rgba(255, 255, 255, 0.98); 
+      position: sticky; top: 0; z-index: 1000; /* Adjusted z-index */
+      background: rgba(255, 255, 255, 0.98); 
       backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: all 0.3s ease;
     }
     .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
@@ -61,6 +62,7 @@
     .nav-menu a { 
       color: var(--brand-blue); text-decoration: none; font-weight: 600; 
       padding: 8px 12px; border-radius: 8px; transition: all 0.2s ease; font-size: 15px;
+      white-space: nowrap; /* FIX: Prevents text wrapping on desktop */
     }
     .nav-menu a:hover, .nav-menu a:focus { background: rgba(13,59,142,0.06); color: var(--light-blue); outline: none; }
     .nav-toggle { display: none; background: none; border: 0; font-size: 26px; color: var(--brand-blue); cursor: pointer; padding: 6px; border-radius: 8px; }
@@ -69,7 +71,7 @@
     .mobile-drawer {
       position: fixed; top: 0; right: -100%; height: 100%; width: 320px; max-width: 90%;
       background: #fff; box-shadow: -10px 0 40px rgba(0,0,0,0.15);
-      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 1300;
+      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 3001; /* FIX: Higher than chat button */
       display: flex; flex-direction: column;
     }
     .mobile-drawer.open { right: 0; }
@@ -78,14 +80,14 @@
     .drawer-links a { text-decoration: none; color: var(--brand-blue); font-weight: 600; padding: 14px; border-radius: 10px; font-size: 16px; transition: background 0.2s; }
     .drawer-links a:hover { background: var(--accent-blue); }
     .drawer-cta { margin-top: auto; padding: 20px; border-top: 1px solid #f2f4f8; }
-    .drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 1250; backdrop-filter: blur(3px); }
+    .drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 3000; backdrop-filter: blur(3px); }
     .drawer-backdrop.show { opacity: 1; pointer-events: auto; }
 
     /* ================= HERO ================= */
     .hero {
       position: relative; color: #fff; padding: 120px 20px; min-height: 80vh;
       display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden;
-      background-color: var(--brand-blue); /* Fallback */
+      background-color: var(--brand-blue); 
     }
     .hero::before {
       content: ''; position: absolute; inset: 0; z-index: 1;
@@ -137,36 +139,37 @@
     /* Highlight Box */
     .highlight-box {
       background: linear-gradient(145deg, #f6f9ff 0%, #ffffff 100%);
-      border: 1px solid var(--accent-blue); flex: 1; /* Added flex:1 to align heights */
+      border: 1px solid var(--accent-blue); flex: 1; 
       padding: 28px; border-radius: var(--radius); height: 100%;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .highlight-box:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
     /* ================= MODAL & CHAT ================= */
-    .modal-bg { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2200; padding: 16px; backdrop-filter: blur(4px); }
-    .modal { background: #fff; padding: 32px; border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .modal-bg { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 4000; padding: 16px; backdrop-filter: blur(4px); }
+    .modal { background: #fff; padding: 32px; border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 4001; }
     .modal input, .modal textarea { 
       width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #e2e8f0; 
       margin-top: 12px; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit;
     }
     .modal input:focus, .modal textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(13,59,142,0.1); }
 
-    /* Chat Button styling fixed for perfect centering */
+    /* Chat Button */
     #cinps-chat-btn {
       position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; border-radius: 50%; 
-      background: var(--brand-blue); color: #fff; border: 0; z-index: 3000; 
+      background: var(--brand-blue); color: #fff; border: 0; z-index: 2000; /* FIX: Lower than mobile drawer */
       box-shadow: 0 15px 35px rgba(13,59,142,0.3); font-size: 28px; cursor: pointer; 
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex; align-items: center; justify-content: center; line-height: 1;
     }
     #cinps-chat-btn:hover { transform: scale(1.1) rotate(5deg); }
     
+    /* Chat Box */
     #cinps-chat-box {
       position: fixed; bottom: 100px; right: 24px; width: 380px; max-width: calc(100% - 48px); 
       display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; 
       box-shadow: 0 25px 60px rgba(0,0,0,0.2); background: #fff; opacity: 0; pointer-events: none; 
-      transform: translateY(20px) scale(.98); transition: all .4s cubic-bezier(0.2,0.8,0.2,1); z-index: 3000;
+      transform: translateY(20px) scale(.98); transition: all .4s cubic-bezier(0.2,0.8,0.2,1); z-index: 2001;
       border: 1px solid rgba(0,0,0,0.05);
     }
     #cinps-chat-box.active { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
@@ -191,14 +194,15 @@
     @media(max-width: 980px) { 
       .grid-2 { grid-template-columns: 1fr; } 
       .hero h1 { font-size: 38px; }
+      /* Switch to mobile nav earlier to prevent desktop overlap */
+      .nav-menu { display: none; } .nav-toggle { display: block; }
     }
+    
     @media(max-width: 768px) {
-      /* Header mobile layout fix */
       .desktop-only { display: none !important; }
       .mobile-only { display: block !important; font-size: 20px !important; font-weight: 800; letter-spacing: 0.5px; }
       .logo { height: 40px; }
       
-      .nav-menu { display: none; } .nav-toggle { display: block; }
       .hero { padding: 90px 16px; min-height: auto; }
       .hero h1 { font-size: 32px; } .hero p { font-size: 16px; margin-bottom: 28px; }
       .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; gap: 14px; }
@@ -208,7 +212,10 @@
       .card, .highlight-box { padding: 24px; }
       
       #cinps-chat-btn { bottom: 20px; right: 20px; width: 56px; height: 56px; font-size: 24px; }
-      #cinps-chat-box { bottom: 85px; right: 16px; left: 16px; width: auto; max-width: none; }
+      
+      /* FIX: Chat Box UI cutoff on mobile */
+      #cinps-chat-box { bottom: 85px; right: 16px; width: calc(100% - 32px); max-width: none; }
+      #cinps-chat-messages { height: 280px; max-height: 50vh; }
     }
   </style>
 </head>
@@ -408,17 +415,16 @@
     <div id="cinps-chat-messages" style="padding:20px;height:320px;overflow-y:auto;background:linear-gradient(to bottom, #ffffff, #f9fbff);">
       <div class="chat-bubble bot">👋 Welcome to CINPS! Ask me anything about our courses, fees, or the admissions process.</div>
     </div>
-    <div id="cinps-chat-input" style="display:flex;padding:16px;border-top:1px solid #f0f4f8;gap:10px;background:#fff">
-      <input id="cinps-user-input" placeholder="Type your question..." aria-label="Chat input" style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
-      <button id="cinps-send-btn" class="btn btn-blue" style="padding:0 20px; border-radius:12px;">Send</button>
+    <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff;align-items:center;">
+      <input id="cinps-user-input" placeholder="Type your question..." aria-label="Chat input" style="flex:1 1 auto;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
+      <button id="cinps-send-btn" class="btn btn-blue" style="padding:0 16px;height:46px;border-radius:12px;flex-shrink:0;white-space:nowrap;">Send</button>
     </div>
   </div>
 
   <script>
-    // 1. Dynamic Copyright Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // 2. Mobile Drawer Logic
+    // Drawer Logic
     const navToggle = document.getElementById('navToggle');
     const mobileDrawer = document.getElementById('mobileDrawer');
     const drawerBackdrop = document.getElementById('drawerBackdrop');
@@ -447,7 +453,7 @@
     drawerBackdrop?.addEventListener('click', closeDrawer);
     mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
-    // 3. Modal Form Logic
+    // Modal Logic
     const modal = document.getElementById('modal');
     let previousActiveElement;
 
@@ -500,7 +506,7 @@
       });
     });
 
-    // 4. Pulse AI Chatbot Logic
+    // Chatbot Logic
     const chatBtn = document.getElementById('cinps-chat-btn');
     const chatBox = document.getElementById('cinps-chat-box');
     const chatClose = document.getElementById('cinps-chat-close');
@@ -577,7 +583,7 @@
       }
     });
 
-    // 5. Global Esc Key Handler
+    // Global Esc Key Handler
     window.addEventListener('keydown', (e) => { 
       if(e.key === 'Escape'){ 
         if(mobileDrawer.classList.contains('open')) closeDrawer(); 
