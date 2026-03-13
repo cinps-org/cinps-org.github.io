@@ -2,23 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>About | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
+  <title>Courses | Chandidas Institute of Nursing & Paramedical Science (CINPS)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Chandidas Institute of Nursing & Paramedical Science (CINPS) — Skill-focused paramedical diploma & certificate programs with strong practical training, 100% internship assurance and placement support.">
+  <meta name="description" content="Explore Diploma & Certificate paramedical programs at CINPS — structured training, simulation labs, 100% internship assurance and placement support.">
   
   <meta property="og:type" content="website">
-  <meta property="og:title" content="About CINPS — Chandidas Institute of Nursing & Paramedical Science">
-  <meta property="og:description" content="CINPS: Career-focused paramedical education, established 2017. Internship & placement support, simulation labs, industry-aligned curriculum.">
-  <meta property="og:image" content="assets/images/banner.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-
+  <meta property="og:title" content="Courses | Chandidas Institute of Nursing & Paramedical Science (CINPS)">
+  <meta property="og:description" content="Explore our industry-aligned diploma and certificate programs designed to build competent and ethical healthcare professionals.">
+  <meta property="og:image" content="https://cinps-org.github.io/assets/images/Landscape%20Bannerii.jpg">
+  
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.ico">
-  <link rel="preload" as="image" href="assets/images/banner.jpg">
 
   <style>
-    /* ================= THEME (Synced with Home) ================= */
+    /* ================= THEME ================= */
     :root {
       --brand-blue: #0d3b8e;
       --light-blue: #1f57b8;
@@ -73,7 +71,7 @@
     .mobile-drawer {
       position: fixed; top: 0; right: -100%; height: 100%; width: 320px; max-width: 90%;
       background: #fff; box-shadow: -10px 0 40px rgba(0,0,0,0.15);
-      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 3001; 
+      transition: right .3s cubic-bezier(.2,.9,.2,1); z-index: 3001;
       display: flex; flex-direction: column;
     }
     .mobile-drawer.open { right: 0; }
@@ -87,7 +85,7 @@
 
     /* ================= HERO ================= */
     .hero {
-      position: relative; color: #fff; padding: 100px 20px; min-height: 48vh;
+      position: relative; color: #fff; padding: 120px 20px; min-height: 50vh;
       display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden;
       background-color: var(--brand-blue);
     }
@@ -96,12 +94,10 @@
       background: linear-gradient(to bottom, rgba(13,59,142,0.65), rgba(0,0,0,0.8));
     }
     .hero .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-    .hero-inner { position: relative; z-index: 2; max-width: 920px; animation: fadeInUp 0.8s ease-out forwards; }
-    .hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 16px; line-height: 1.25; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-    .hero p { font-size: 18px; opacity: 0.95; margin-bottom: 28px; max-width: 800px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .hero-inner { position: relative; z-index: 2; max-width: 900px; animation: fadeInUp 0.8s ease-out forwards; }
+    .hero h1 { font-size: 46px; font-weight: 800; margin-bottom: 20px; line-height: 1.25; text-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+    .hero p { font-size: 19px; opacity: 0.95; margin-bottom: 32px; max-width: 750px; margin-left: auto; margin-right: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 
-    /* Buttons */
     .btn {
       padding: 14px 28px; border-radius: 12px; font-weight: 700; text-decoration: none; 
       display: inline-flex; justify-content: center; align-items: center; gap: 10px; border: 0; 
@@ -110,61 +106,44 @@
     .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: #fff; color: var(--brand-blue); }
-    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.7); }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
     .btn-blue { background: var(--brand-blue); color: #fff; box-shadow: 0 8px 20px rgba(13,59,142,0.2); }
     .btn-blue:hover { background: var(--light-blue); box-shadow: 0 12px 28px rgba(13,59,142,0.3); }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.7); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 
-    /* ================= LAYOUT & CARDS ================= */
+    /* ================= COURSE CARDS ================= */
     .section { padding: 80px 0; }
-    .two-col { display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start; }
-    .card { 
-      background: #fff; padding: 32px; border-radius: var(--radius); 
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; }
+    
+    .course-card {
+      background: #fff; padding: 32px; border-radius: var(--radius);
       box-shadow: var(--shadow); border: 1px solid #f2f6ff;
+      display: flex; flex-direction: column;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-    .card h2 { color: var(--brand-blue); margin-bottom: 16px; font-size: 26px; line-height: 1.3; font-weight: 700; }
-    .card h3 { color: var(--brand-blue); margin-bottom: 16px; font-size: 20px; font-weight: 600; }
+    .course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+    
+    .course-card h3 { color: var(--brand-blue); margin-bottom: 12px; font-size: 22px; line-height: 1.3; font-weight: 700; }
+    .course-meta {
+      font-size: 14px; font-weight: 600; color: var(--light-blue); background: var(--accent-blue);
+      padding: 8px 14px; border-radius: 8px; display: inline-block; margin-bottom: 20px;
+    }
+    
+    .features { list-style: none; padding: 0; margin-bottom: 24px; flex: 1; }
+    .features li { position: relative; padding-left: 28px; margin-bottom: 12px; font-size: 15.5px; color: #444; line-height: 1.5; }
+    .features li::before {
+      content: "•"; position: absolute; left: 8px; top: 0px;
+      color: var(--brand-blue); font-size: 20px; font-weight: bold;
+    }
+    
+    .apply-link {
+      margin-top: auto; text-decoration: none; background: #f4f8ff; color: var(--brand-blue);
+      text-align: center; padding: 14px; border-radius: 10px; font-weight: 700;
+      transition: all 0.2s ease; font-size: 16px; border: 1px solid transparent;
+    }
+    .apply-link:hover { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); box-shadow: 0 4px 12px rgba(13,59,142,0.15); }
 
-    /* ================= QUOTE BOX ================= */
-    .quote-box {
-      position: relative; overflow: hidden; border-radius: var(--radius); padding: 32px;
-      display: flex; gap: 24px; align-items: center;
-      background: linear-gradient(135deg, #f6f8ff 0%, #ffffff 60%);
-      box-shadow: var(--shadow); border: 1px solid var(--accent-blue);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .quote-box:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-    .quote-art {
-      flex: 0 0 110px; display: flex; align-items: center; justify-content: center;
-      border-radius: 12px; background: linear-gradient(180deg, rgba(13,59,142,0.12), rgba(31,87,184,0.06));
-      padding: 10px; box-shadow: inset 0 -6px 18px rgba(13,59,142,0.02);
-    }
-    .quote-art .avatar {
-      width: 80px; height: 80px; border-radius: 12px; background: linear-gradient(180deg, #fff, #eef6ff);
-      display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--brand-blue);
-      font-size: 26px; border: 2px solid rgba(13,59,142,0.06);
-    }
-    .quote-content { flex: 1; z-index: 2; }
-    .quote-mark { font-size: 54px; color: var(--light-blue); opacity: 0.15; line-height: 1; margin-bottom: 4px; transform: translateY(-8px); font-family: serif; }
-    .quote-text { font-size: 17.5px; color: #222; line-height: 1.6; font-weight: 600; margin-bottom: 16px; text-wrap: balance; }
-    .founder { color: var(--brand-blue); font-weight: 700; margin-bottom: 16px; font-size: 16px; line-height: 1.4; }
-    .quote-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .badge { display: inline-flex; align-items: center; background: rgba(13,59,142,0.08); color: var(--brand-blue); padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; }
-    .scholar-link {
-      margin-left: auto; text-decoration: none; background: linear-gradient(90deg, var(--light-blue), var(--brand-blue));
-      color: white; padding: 10px 18px; border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;
-      box-shadow: 0 8px 24px rgba(13,59,142,0.15); font-size: 14px; transition: transform 0.2s;
-    }
-    .scholar-link:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(13,59,142,0.25); }
-    .quote-accent {
-      position: absolute; right: -40px; top: -30px; width: 160px; height: 160px;
-      background: radial-gradient(circle at 30% 30%, rgba(29,89,199,0.12), transparent 40%);
-      transform: rotate(18deg); pointer-events: none; z-index: 1;
-    }
-
-    /* ================= MODAL & FORMS ================= */
+    /* ================= MODAL & CHAT ================= */
     .modal-bg { display: none; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 4000; padding: 16px; backdrop-filter: blur(4px); }
     .modal { background: #fff; padding: 32px; border-radius: var(--radius); width: 100%; max-width: 440px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 4001; }
     .modal input, .modal textarea { 
@@ -173,7 +152,6 @@
     }
     .modal input:focus, .modal textarea:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(13,59,142,0.1); }
 
-    /* ================= CHATBOT ================= */
     #cinps-chat-btn {
       position: fixed; bottom: 24px; right: 24px; width: 64px; height: 64px; border-radius: 50%; 
       background: var(--brand-blue); color: #fff; border: 0; z-index: 2000; 
@@ -210,10 +188,9 @@
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
     @media(max-width: 980px) { 
-      .two-col { grid-template-columns: 1fr; } 
+      .hero h1 { font-size: 38px; }
       .nav-menu { display: none; } .nav-toggle { display: block; }
     }
-    
     @media(max-width: 768px) {
       .desktop-only { display: none !important; }
       .mobile-only { display: block !important; font-size: 20px !important; font-weight: 800; letter-spacing: 0.5px; }
@@ -221,16 +198,8 @@
       
       .hero { padding: 90px 16px; min-height: auto; }
       .hero h1 { font-size: 32px; } .hero p { font-size: 16px; margin-bottom: 28px; }
-      .hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; gap: 14px; }
-      .hero-buttons .btn { width: 100%; }
       .section { padding: 50px 0; }
-      .card { padding: 24px; }
-      
-      .quote-box { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px; }
-      .quote-art { width: 100%; flex-basis: auto; justify-content: flex-start; padding: 0; background: none; box-shadow: none; }
-      .quote-art .avatar { width: 64px; height: 64px; font-size: 22px; }
-      .quote-meta { flex-direction: column; align-items: stretch; width: 100%; gap: 10px; }
-      .scholar-link { margin-left: 0; justify-content: center; width: 100%; }
+      .course-card { padding: 24px; }
       
       #cinps-chat-btn { bottom: 20px; right: 20px; width: 56px; height: 56px; font-size: 24px; }
       #cinps-chat-box { bottom: 85px; right: 16px; width: calc(100% - 32px); max-width: none; }
@@ -254,8 +223,8 @@
       <nav class="nav" role="navigation" aria-label="Primary navigation">
         <ul class="nav-menu" id="mainNav">
           <li><a href="/">Home</a></li>
-          <li><a href="/about" aria-current="page">About</a></li>
-          <li><a href="/courses">Courses</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/courses" aria-current="page">Courses</a></li>
           <li><a href="/admissions">Admissions</a></li>
           <li><a href="/contact">Contact</a></li>
           <li><a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener noreferrer">Student Corner</a></li>
@@ -278,8 +247,8 @@
     </div>
     <nav class="drawer-links" aria-label="Mobile links">
       <a href="/">Home</a>
-      <a href="/about" aria-current="page">About</a>
-      <a href="/courses">Courses</a>
+      <a href="/about">About</a>
+      <a href="/courses" aria-current="page">Courses</a>
       <a href="/admissions">Admissions</a>
       <a href="/contact">Contact</a>
       <a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener noreferrer">Student Corner</a>
@@ -290,114 +259,124 @@
     </div>
   </aside>
 
-  <section class="hero" aria-label="About CINPS hero">
-    <img src="assets/images/banner.jpg" alt="" class="hero-img" loading="eager" />
+  <section class="hero" aria-label="Courses Hero">
+    <img src="https://cinps-org.github.io/assets/images/Landscape%20Bannerii.jpg" alt="CINPS Courses Banner" class="hero-img" loading="eager" />
     <div class="hero-inner container">
-      <h1>Chandidas Institute of Nursing & Paramedical Science</h1>
-      <p>Established 2017 — developing competent, ethical and employment-ready paramedical professionals through disciplined, skill-focused training and measurable performance systems.</p>
-      <div class="hero-buttons">
+      <h1>Our Academic Programs</h1>
+      <p>Industry-aligned diploma and certificate courses designed to build competent and ethical healthcare professionals.</p>
+      <div style="margin-top:20px">
         <a class="btn btn-primary" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
-        <button onclick="openModal()" class="btn btn-outline">Contact Admissions</button>
       </div>
     </div>
   </section>
 
   <main>
     <section class="section">
-      <div class="container two-col">
+      <div class="container">
+        
+        <div class="grid-3">
 
-        <div>
-          <div class="card">
-            <h2>Institution Overview</h2>
-            <p style="margin-bottom:20px; font-size:16px; color:#444;">Established in 2017, Chandidas Institute of Nursing & Paramedical Science (CINPS) is committed to delivering skill-focused healthcare education with structured practical exposure. The institute aims to produce disciplined, ethical and industry-ready paramedical professionals.</p>
-
-            <div style="display:grid;gap:12px">
-              <div style="background:var(--accent-blue);padding:16px;border-radius:12px;color:#222;"><strong>Established:</strong> 2017</div>
-              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;"><strong>Authorization Code:</strong> AI4826</div>
-              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;"><strong>Affiliation:</strong> All India Council of Vocational & Paramedical Science (Autonomous)</div>
+          <article class="course-card">
+            <div>
+              <h3>Diploma in Operation Theatre Technology (DOTT)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
+                <li>Surgical instrumentation</li>
+                <li>Anaesthesia assistance</li>
+                <li>Emergency OT management</li>
+              </ul>
             </div>
-          </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
 
-          <div style="height:36px"></div>
-
-          <div class="card">
-            <h3>Academic Approach</h3>
-            <p style="font-size:16px; color:#444;">CINPS integrates concept-based theory with procedure-oriented practical sessions, continuous skill assessment, and outcome-based evaluation. Simulation labs, real-time clinical exposure, and mentor-driven batches ensure workplace readiness.</p>
-            <ul style="margin-top:16px; margin-left:24px; display:flex; flex-direction:column; gap:10px; color:#444;">
-              <li>Small batch sizes & mentor supervision</li>
-              <li>Simulation labs for OT, ICU & DMLT</li>
-              <li>Structured internships & placement assistance</li>
-            </ul>
-          </div>
-
-          <div style="height:36px"></div>
-
-          <div class="quote-box" role="region" aria-label="Founder's quote">
-            <div class="quote-art" aria-hidden="true">
-              <div class="avatar">IK</div>
+          <article class="course-card">
+            <div>
+              <h3>Diploma in Medical Laboratory Technology (DMLT)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
+                <li>Clinical biochemistry</li>
+                <li>Microbiology & pathology</li>
+                <li>Blood banking procedures</li>
+              </ul>
             </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
 
-            <div class="quote-content">
-              <div class="quote-mark">“</div>
-              <div class="quote-text">
-                True education is not just about acquiring knowledge; it is about transforming lives, igniting passion, and inspiring a commitment to serve humanity.
-              </div>
-
-              <div class="founder">
-                – Dr. Iman Khan<br>
-                <span style="font-size:13.5px;font-weight:600;color:#6b7280;line-height:1.5;display:inline-block;margin-top:4px;">Founder & Managing Director • Researcher in Cognitive Linguistics</span>
-              </div>
-
-              <div class="quote-meta">
-                <div class="badge">100% Internship Assurance</div>
-                <div class="badge">100% Placement Assistance</div>
-                <a class="scholar-link" href="https://scholar.google.com/citations?user=TYNvPygAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">
-                  View Academic Profile
-                </a>
-              </div>
+          <article class="course-card">
+            <div>
+              <h3>Intensive Care Unit Technician (2 Year)</h3>
+              <div class="course-meta">2 Years + Internship | 10+2</div>
+              <ul class="features">
+                <li>Mechanical ventilation</li>
+                <li>Critical monitoring systems</li>
+                <li>Emergency response basics</li>
+              </ul>
             </div>
-            <div class="quote-accent" aria-hidden="true"></div>
-          </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
 
-          <div style="height:36px"></div>
+          <article class="course-card">
+            <div>
+              <h3>Emergency Medical Technician (EMT)</h3>
+              <div class="course-meta">6 Months – 2 Years | 10+2</div>
+              <ul class="features">
+                <li>Pre-hospital trauma life support</li>
+                <li>CPR & advanced first aid</li>
+                <li>Ambulance operations</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
 
-          <div class="card">
-            <h3>Student Support</h3>
-            <p style="font-size:16px; color:#444;">We provide regular performance feedback, doubt-clearing sessions, exam prep and career counselling to ensure every student crosses the competency threshold expected by employers.</p>
+          <article class="course-card">
+            <div>
+              <h3>ICU Technician (Fast Track)</h3>
+              <div class="course-meta">1 Year + Internship | 10th Pass</div>
+              <ul class="features">
+                <li>Core ICU skills</li>
+                <li>Patient monitoring documentation</li>
+                <li>Basic emergency response</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
+
+          <article class="course-card">
+            <div>
+              <h3>Registered Medical Practitioner (RMP)</h3>
+              <div class="course-meta">1 Year | 10th Pass</div>
+              <ul class="features">
+                <li>Basic clinical assessment</li>
+                <li>Common ailment management</li>
+                <li>Medical record keeping</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
+
+          <article class="course-card">
+            <div>
+              <h3>CMS & Essential Drugs (CMS & ED)</h3>
+              <div class="course-meta">18–24 Months | 10th Pass</div>
+              <ul class="features">
+                <li>Primary healthcare fundamentals</li>
+                <li>Preventive health education</li>
+                <li>Essential drug management</li>
+              </ul>
+            </div>
+            <a class="apply-link" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer">Apply Now</a>
+          </article>
+
+        </div>
+
+        <div style="margin-top:56px; text-align:center">
+          <div class="course-card" style="background:var(--brand-blue); color:#fff; border:none; display:block; padding: 48px 24px;">
+            <h2 style="color:#fff; margin-bottom:12px; font-size:32px;">Need guidance choosing a course?</h2>
+            <p style="color:rgba(255,255,255,0.9); margin-bottom:28px; font-size:17px;">Our admission counselors can help you select the right program based on your qualifications.</p>
+            <button onclick="openModal()" class="btn btn-primary" style="background:#fff; color:var(--brand-blue); border:none;">Contact Admission Team</button>
           </div>
         </div>
 
-        <aside>
-          <div class="card">
-            <h3>Contact & Office</h3>
-            <p style="margin-bottom:16px; color:#444;"><strong>Head Office:</strong><br>Hospital Road, Nanoor<br>Birbhum, West Bengal — 731301</p>
-            <p style="color:#444;"><strong>Email:</strong> <a href="mailto:cinp.official@gmail.com" style="color:var(--brand-blue); text-decoration:none; font-weight:600;">cinp.official@gmail.com</a><br><strong>Phone:</strong> <a href="tel:+918101579839" style="color:var(--brand-blue); text-decoration:none; font-weight:600;">+91 8101579839</a></p>
-          </div>
-
-          <div style="height:36px"></div>
-
-          <div class="card">
-            <h3>Quick Facts</h3>
-            <div style="display:grid;gap:12px">
-              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Academic year: June – March</div>
-              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Courses: Diploma & Certificate</div>
-              <div style="background:#fff;padding:16px;border-radius:12px;border:1px solid #f2f6ff;color:#444;">Branches & tie-ups across region</div>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-
-      <div style="margin-top:56px" class="container">
-        <div class="card" style="display:flex;flex-direction:column;gap:16px; text-align:center; padding: 48px 24px; background:var(--brand-blue); border:none;">
-          <h2 style="color:#fff; font-size: 32px; margin-bottom: 0;">Ready to join CINPS?</h2>
-          <p style="color:rgba(255,255,255,0.9); font-size: 17px; margin-bottom: 16px;">Our admissions team will guide you through eligibility, fees, scholarships and placement pathways.</p>
-          <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
-            <a class="btn" href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" style="background:#fff; color:var(--brand-blue);">Apply Now</a>
-            <button class="btn btn-outline" onclick="openModal()">Contact Admissions</button>
-            <a class="btn" style="background:rgba(255,255,255,0.15);color:#fff;" href="tel:+918101579839">Call +91 8101579839</a>
-          </div>
-        </div>
       </div>
     </section>
   </main>
@@ -446,7 +425,7 @@
       <div class="chat-bubble bot">👋 Welcome to CINPS! Ask me anything about our courses, fees, or the admissions process.</div>
     </div>
     <div id="cinps-chat-input" style="display:flex;padding:12px;border-top:1px solid #f0f4f8;gap:8px;background:#fff;align-items:center;">
-      <input id="cinps-user-input" placeholder="Ask CINPS Pulse AI…" aria-label="Chat input" style="flex:1 1 auto;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
+      <input id="cinps-user-input" placeholder="Type your question..." aria-label="Chat input" style="flex:1 1 auto;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e2e8f0;font-size:15px;outline:none;transition:border 0.2s;" />
       <button id="cinps-send-btn" class="btn btn-blue" style="padding:0 16px;height:46px;border-radius:12px;flex-shrink:0;white-space:nowrap;">Send</button>
     </div>
   </div>
