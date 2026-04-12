@@ -15,9 +15,9 @@
     fbq('track', 'PageView');
   </script>
 
-  <title>Admission Application 2026 | CINPS Paramedical Institute</title>
-  
-  <meta name="description" content="Apply now for the 2026 academic session at Chandidas Institute of Nursing and Paramedical Science. Secure your seat in DMLT, ICU, and OT Technician courses.">
+  <title>Medical Lab Problems & Solutions 2026 | The CINPS System Approach</title>
+
+  <meta name="description" content="Explore the critical workflow and data management challenges in modern medical labs, and see how CINPS trains students to solve them with structured, practical systems.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -68,141 +68,159 @@
 
     .nav-link:hover { color: var(--primary-light); }
 
-    /* --- Hero Section --- */
+    /* --- Premium Hero Section --- */
     .hero {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
       color: white;
-      padding: 60px 20px 80px 20px;
+      padding: 100px 20px;
       text-align: center;
       border-radius: 0 0 30px 30px;
-      margin-bottom: -50px;
+      margin-bottom: -40px; /* Pulls next section up for overlap effect */
     }
 
     .hero h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      font-size: 2.8em;
+      margin-bottom: 15px;
+      line-height: 1.2;
       font-weight: 700;
     }
 
     .hero p {
-      font-size: 1.1em;
+      font-size: 1.2em;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
       opacity: 0.9;
     }
 
-    /* --- Split Layout Grid --- */
+    .badge {
+      background: rgba(255,255,255,0.2);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    /* --- Grid System for Cards --- */
     .section-padding { padding: 80px 0; }
     
-    .application-grid {
+    .grid-3 {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
       position: relative;
       z-index: 10;
     }
 
-    /* --- Form Styling --- */
-    .form-card {
+    .card {
       background: white;
-      padding: 40px;
+      padding: 35px 25px;
       border-radius: 16px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-      border-top: 5px solid var(--accent-green);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-top: 4px solid transparent;
     }
 
-    .form-card h2 {
-      margin-top: 0;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    .card.danger { border-top-color: #e74c3c; }
+    .card.success { border-top-color: var(--accent-green); }
+
+    .card h2 {
       color: var(--primary-dark);
-      margin-bottom: 25px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: var(--text-main);
-      font-size: 0.9em;
-    }
-
-    .input-field {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1em;
-      box-sizing: border-box;
-      transition: border-color 0.3s;
-    }
-
-    .input-field:focus {
-      outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(30, 55, 153, 0.1);
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent-green);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1em;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      margin-top: 10px;
-    }
-
-    .submit-btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-    }
-
-    /* --- Info Panel --- */
-    .info-panel {
-      background: #e8f4f8;
-      padding: 40px;
-      border-radius: 16px;
-    }
-
-    .info-panel h3 {
-      color: var(--primary-dark);
+      font-size: 1.4em;
       margin-top: 0;
     }
 
-    .benefit-list {
+    .features {
       list-style: none;
       padding: 0;
-      margin-bottom: 30px;
+      margin: 20px 0 0 0;
     }
 
-    .benefit-list li {
+    .features li {
       position: relative;
-      padding-left: 30px;
-      margin-bottom: 15px;
+      padding-left: 28px;
+      margin-bottom: 12px;
       color: var(--text-muted);
-      font-weight: 600;
+      font-size: 0.95em;
     }
 
-    .benefit-list li::before {
-      content: '✓';
+    .features li::before {
+      content: '✘';
+      color: #e74c3c;
       position: absolute;
       left: 0;
-      color: var(--accent-green);
-      font-size: 1.2em;
       font-weight: bold;
     }
 
-    .contact-box {
+    .features.check li::before {
+      content: '✔';
+      color: var(--accent-green);
+    }
+
+    /* --- Solution Section --- */
+    .solution-box {
+      background: #e8f4f8;
+      border-radius: 20px;
+      padding: 50px;
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .solution-content { flex: 1; min-width: 300px; }
+    
+    .solution-content h2 {
+      font-size: 2.2em;
+      color: var(--primary-dark);
+      margin-top: 0;
+    }
+
+    /* --- Trust & Authority Banner --- */
+    .trust-banner {
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #eee;
+      margin: 40px 0;
+    }
+
+    .trust-banner h3 { margin: 0 0 10px 0; color: var(--primary-dark); }
+    .trust-banner p { margin: 0; color: var(--text-muted); font-style: italic; }
+
+    /* --- Buttons & CTA --- */
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: var(--accent-green);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.3s;
+      font-size: 1.1em;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: var(--accent-hover); }
+
+    .cta-section {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      border-radius: 20px;
+      margin-bottom: 40px;
     }
 
     /* --- WhatsApp Float --- */
@@ -219,14 +237,16 @@
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
       z-index: 1000;
       transition: transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .whatsapp-float:hover { transform: translateY(-5px); }
 
-    @media (max-width: 900px) {
-      .application-grid { grid-template-columns: 1fr; }
-      .hero { padding: 40px 20px 60px 20px; }
+    @media (max-width: 768px) {
       .hero h1 { font-size: 2em; }
+      .solution-box { padding: 30px; }
     }
   </style>
 </head>
@@ -235,90 +255,100 @@
 
 <div class="top-nav">
   <div class="container">
-    <a href="/" class="nav-link">&larr; Back to Main Website</a>
+    <a href="/" class="nav-link">&larr; Back to CINPS Main Site</a>
   </div>
 </div>
 
 <section class="hero">
   <div class="container">
-    <h1>2026 Admissions Now Open</h1>
-    <p>Take the first step toward a high-value healthcare career. Seats are limited for the upcoming session.</p>
+    <span class="badge">Industry Insight 2026</span>
+    <h1>The Biggest Workflow Problems in Modern Medical Labs</h1>
+    <p>Workflow inefficiency, fragmented data systems, and a severe practical skill gap. Discover why the industry is struggling—and how the CINPS methodology builds professionals who solve these crises.</p>
   </div>
 </section>
 
 <section class="section-padding">
-  <div class="container application-grid">
+  <div class="container grid-3">
     
-    <div class="form-card">
-      <h2>Student Application Form</h2>
-      <form action="/submit-application" method="POST" onsubmit="fbq('track', 'CompleteRegistration');">
-        
-        <div class="input-group">
-          <label for="fullName">Full Name *</label>
-          <input type="text" id="fullName" name="fullName" class="input-field" placeholder="Enter your full name" required>
-        </div>
-
-        <div class="input-group">
-          <label for="phone">Phone / WhatsApp Number *</label>
-          <input type="tel" id="phone" name="phone" class="input-field" placeholder="+91" required>
-        </div>
-
-        <div class="input-group">
-          <label for="course">Select Course *</label>
-          <select id="course" name="course" class="input-field" required>
-            <option value="" disabled selected>Choose a paramedical course...</option>
-            <option value="dmlt">DMLT (Diploma in Medical Laboratory Technology)</option>
-            <option value="icu">ICU Technician</option>
-            <option value="ot">Operation Theatre (OT) Technician</option>
-            <option value="emt">Emergency Medical Technician (EMT)</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="campus">Preferred Campus *</label>
-          <select id="campus" name="campus" class="input-field" required>
-            <option value="" disabled selected>Choose a campus location...</option>
-            <option value="nanoor">Nanoor Campus</option>
-            <option value="sainthia">Sainthia Campus</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="qualification">Highest Qualification *</label>
-          <select id="qualification" name="qualification" class="input-field" required>
-            <option value="" disabled selected>Select your current education level...</option>
-            <option value="hs_appearing">HS Appearing (2026)</option>
-            <option value="hs_passed">HS Passed</option>
-            <option value="graduate">Graduate / Other</option>
-          </select>
-        </div>
-
-        <button type="submit" class="submit-btn">Submit Application</button>
-      </form>
+    <div class="card danger">
+      <h2>⚠️ Workflow Breakdown</h2>
+      <p>Most laboratories lack a structured, cognitive process flow from initial sample collection to final reporting, leading to critical bottlenecks.</p>
+      <ul class="features">
+        <li>Severe delays in testing protocols</li>
+        <li>Miscommunication between departments</li>
+        <li>High rates of manual, preventable errors</li>
+      </ul>
     </div>
 
-    <div>
-      <div class="info-panel">
-        <h3>Why Choose CINPS?</h3>
-        <ul class="benefit-list">
-          <li>Guaranteed clinical internships across major government hospitals in Birbhum.</li>
-          <li>System-based learning led by expert faculty (DMLT, OT, ICU).</li>
-          <li>Highly affordable fee structures with dedicated placement assistance upon graduation.</li>
-          <li>Exclusive tie-ups with leading institutions in Jharkhand.</li>
-        </ul>
+    <div class="card danger">
+      <h2>⚠️ Data Management Failure</h2>
+      <p>As healthcare digitizes, labs relying on outdated data infrastructures face massive operational liabilities.</p>
+      <ul class="features">
+        <li>Over-reliance on manual record keeping</li>
+        <li>Slow patient report retrieval times</li>
+        <li>High risk of critical data loss</li>
+      </ul>
+    </div>
 
-        <hr style="border: 0; border-top: 1px solid #cfdbe0; margin: 25px 0;">
+    <div class="card danger">
+      <h2>⚠️ The Clinical Skill Gap</h2>
+      <p>Many technicians enter the workforce with theoretical knowledge but zero understanding of modern workflow optimization or digital systems.</p>
+      <ul class="features">
+        <li>Inability to operate under pressure</li>
+        <li>Lack of system-based problem solving</li>
+        <li>Poor adaptability to automated machines</li>
+      </ul>
+    </div>
 
-        <h3>Need Help Applying?</h3>
-        <p style="color: var(--text-muted); font-size: 0.9em;">Our admissions team is available to help you select the right course for your career goals.</p>
+  </div>
+</section>
+
+<section class="section-padding" style="padding-top: 0;">
+  <div class="container">
+    <div class="solution-box">
+      <div class="solution-content">
+        <span class="badge" style="background: var(--primary-light); color: white;">The Solution</span>
+        <h2>The CINPS System-Based Approach</h2>
+        <p>At the Chandidas Institute of Nursing and Paramedical Science, we don't just teach theory; we engineer problem-solvers. We bridge the gap between academic learning and real-world clinical demands through a rigorous, systematic methodology.</p>
         
-        <div class="contact-box">
-          <strong style="color: var(--primary-dark); display: block; margin-bottom: 5px;">Direct Contact:</strong>
-          <a href="https://wa.me/918101579839" style="color: var(--accent-green); font-weight: bold; text-decoration: none; font-size: 1.1em;" onclick="fbq('track', 'Contact');">📞 8101579839</a>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+          <div>
+            <strong style="color: var(--primary-dark);">Structured Academics</strong>
+            <ul class="features check">
+              <li>Theory + Practical integration</li>
+              <li>Workflow discipline training</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="color: var(--primary-dark);">Clinical Exposure</strong>
+            <ul class="features check">
+              <li>Govt. Hospital Internships (Birbhum)</li>
+              <li>Live lab workflow experience</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
+<section>
+  <div class="container">
+    <div class="trust-banner">
+      <h3>📈 The Future of Paramedical Sciences</h3>
+      <p>"Laboratories are rapidly moving towards automation and digital integration. Only highly trained, system-oriented professionals will thrive in this environment. Education must evolve from rote memorization to active problem-solving."</p>
+      <div style="margin-top: 15px; font-weight: 600; color: var(--primary-dark);">— Dr. Iman Khan, Founder & MD, CINPS</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding" style="padding-top: 0;">
+  <div class="container">
+    <div class="cta-section">
+      <h2 style="font-size: 2.5em; margin-top: 0;">Ready to Master the System?</h2>
+      <p style="font-size: 1.1em; opacity: 0.9; max-width: 600px; margin: 0 auto 30px auto;">Join our Nanoor or Sainthia campuses today. Secure your seat in our DMLT or ICU Technician programs and become the professional the healthcare industry is desperately seeking.</p>
+      <a href="/admission-form.html" class="btn" onclick="fbq('track', 'Lead');">👉 Apply Now for 2026</a>
+    </div>
   </div>
 </section>
 
