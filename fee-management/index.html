@@ -184,13 +184,6 @@
     }
         from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    import {
-        initializeAppCheck,
-        ReCaptchaEnterpriseProvider
-    }
-        from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js";
-
-
     /* ==========================================
        CINPS FEE MANAGEMENT - FIREBASE CONFIG
        ========================================== */
@@ -210,20 +203,6 @@
        ========================================== */
 
     const app = initializeApp(firebaseConfig);
-
-
-    /* ==========================================
-       FIREBASE APP CHECK
-       Fraud Defense / reCAPTCHA Enterprise
-       ========================================== */
-
-    const appCheck = initializeAppCheck(app, {
-        provider: new ReCaptchaEnterpriseProvider(
-            "6LCvldwtAAAAAKg2ccnb3j-szK-1DRIzn4Y8dHjM"
-        ),
-        isTokenAutoRefreshEnabled: true
-    });
-
 
     /* ==========================================
        FIREBASE AUTHENTICATION
