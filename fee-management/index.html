@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
 
         .container {
             width: 100%;
-            max-width: 430px;
+            max-width: 460px;
             padding: 20px;
         }
 
@@ -32,7 +33,7 @@
             background: white;
             border-radius: 18px;
             padding: 40px 32px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
             text-align: center;
         }
 
@@ -71,6 +72,7 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -91,6 +93,7 @@
             font-size: 13px;
             color: #667085;
             min-height: 20px;
+            line-height: 1.5;
         }
 
         .footer {
@@ -100,21 +103,62 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .user-box {
             margin-top: 20px;
-            padding: 15px;
+            padding: 18px;
             background: #f8fafc;
             border-radius: 10px;
             text-align: left;
             font-size: 13px;
         }
 
-        .logout-btn {
+        .user-row {
+            margin-bottom: 10px;
+        }
+
+        .user-label {
+            font-weight: bold;
+            color: #344054;
+        }
+
+        .user-value {
+            margin-top: 3px;
+            color: #667085;
+            word-break: break-word;
+        }
+
+        .role-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #eef6ff;
+            color: #1261a0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .dashboard-btn {
             width: 100%;
             margin-top: 15px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #1261a0;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dashboard-btn:hover {
+            background: #0d4f84;
+        }
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 10px;
             padding: 11px;
             border: none;
             border-radius: 8px;
@@ -122,8 +166,37 @@
             color: white;
             cursor: pointer;
         }
+
+        .logout-btn:hover {
+            background: #0d1422;
+        }
+
+        .access-denied {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fff1f0;
+            color: #b42318;
+            font-size: 13px;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .success {
+            color: #027a48 !important;
+        }
+
+        .error {
+            color: #b42318 !important;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
     </style>
 </head>
+
 
 <body>
 
@@ -131,6 +204,7 @@
 
     <div class="card">
 
+        <!-- CINPS LOGO PLACEHOLDER -->
         <div class="logo">
             C
         </div>
@@ -142,23 +216,80 @@
             Chandidas Institute of Nursing & Paramedical Science
         </div>
 
+
+        <!-- GOOGLE LOGIN -->
+
         <button id="googleLogin" class="google-btn">
             <span class="google-icon">G</span>
             Continue with Google
         </button>
 
+
+        <!-- STATUS -->
+
         <div id="status">
             Secure login required.
         </div>
 
+
+        <!-- USER INFORMATION -->
+
         <div id="userBox" class="user-box hidden">
-            <strong>Signed in as:</strong>
-            <div id="userEmail"></div>
+
+            <div class="user-row">
+                <div class="user-label">
+                    Signed in as
+                </div>
+
+                <div id="userEmail" class="user-value">
+                </div>
+            </div>
+
+
+            <div class="user-row">
+                <div class="user-label">
+                    Firebase UID
+                </div>
+
+                <div id="userUid" class="user-value">
+                </div>
+            </div>
+
+
+            <div id="roleBox" class="role-box">
+                Role
+            </div>
+
+
+            <button id="dashboardBtn" class="dashboard-btn">
+                Open Fee Management Dashboard
+            </button>
+
 
             <button id="logoutBtn" class="logout-btn">
                 Sign Out
             </button>
+
         </div>
+
+
+        <!-- ACCESS DENIED -->
+
+        <div id="accessDenied" class="access-denied hidden">
+
+            <strong>Access denied.</strong>
+
+            <br><br>
+
+            Your Google account is authenticated, but it is not
+            registered as an active CINPS administrator.
+
+            <br><br>
+
+            Please contact the CINPS Super Administrator.
+
+        </div>
+
 
         <div class="footer">
             CINPS Fee Management System
@@ -169,11 +300,26 @@
 </div>
 
 
-<!-- Firebase -->
+<!-- =========================================================
+     FIREBASE
+     ========================================================= -->
+
 <script type="module">
 
-    import { initializeApp }
-        from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    /* =========================================================
+       FIREBASE APP
+       ========================================================= */
+
+    import {
+        initializeApp
+    }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+    /* =========================================================
+       FIREBASE AUTHENTICATION
+       ========================================================= */
 
     import {
         getAuth,
@@ -182,128 +328,528 @@
         signOut,
         onAuthStateChanged
     }
-        from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    /* ==========================================
-       CINPS FEE MANAGEMENT - FIREBASE CONFIG
-       ========================================== */
+
+    /* =========================================================
+       FIREBASE FIRESTORE
+       ========================================================= */
+
+    import {
+        getFirestore,
+        doc,
+        getDoc
+    }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    /* =========================================================
+       CINPS FIREBASE CONFIG
+       ========================================================= */
 
     const firebaseConfig = {
-        apiKey: "AIzaSyDqN3aY4RHIBX_roHaNopjX3TeYcAjJwho",
-        authDomain: "cinps-fee-management.firebaseapp.com",
-        projectId: "cinps-fee-management",
-        storageBucket: "cinps-fee-management.firebasestorage.app",
-        messagingSenderId: "806314606010",
-        appId: "1:806314606010:web:18bce6d813e56fe14f183"
+
+        apiKey:
+            "AIzaSyDqN3aY4RHIBX_roHaNopjX3TeYcAjJwho",
+
+        authDomain:
+            "cinps-fee-management.firebaseapp.com",
+
+        projectId:
+            "cinps-fee-management",
+
+        storageBucket:
+            "cinps-fee-management.firebasestorage.app",
+
+        messagingSenderId:
+            "806314606010",
+
+        appId:
+            "1:806314606010:web:18bce6d813e56fe14f183"
+
     };
 
 
-    /* ==========================================
+    /* =========================================================
        INITIALIZE FIREBASE
-       ========================================== */
+       ========================================================= */
 
-    const app = initializeApp(firebaseConfig);
-
-    /* ==========================================
-       FIREBASE AUTHENTICATION
-       ========================================== */
-
-    const auth = getAuth(app);
-
-    const googleProvider = new GoogleAuthProvider();
+    const app =
+        initializeApp(firebaseConfig);
 
 
-    /* ==========================================
+    /* =========================================================
+       INITIALIZE AUTH
+       ========================================================= */
+
+    const auth =
+        getAuth(app);
+
+
+    /* =========================================================
+       INITIALIZE FIRESTORE
+       ========================================================= */
+
+    const db =
+        getFirestore(app);
+
+
+    /* =========================================================
+       GOOGLE PROVIDER
+       ========================================================= */
+
+    const googleProvider =
+        new GoogleAuthProvider();
+
+
+    /* =========================================================
        PAGE ELEMENTS
-       ========================================== */
+       ========================================================= */
 
-    const googleLogin = document.getElementById("googleLogin");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const status = document.getElementById("status");
-    const userBox = document.getElementById("userBox");
-    const userEmail = document.getElementById("userEmail");
+    const googleLogin =
+        document.getElementById("googleLogin");
+
+    const logoutBtn =
+        document.getElementById("logoutBtn");
+
+    const dashboardBtn =
+        document.getElementById("dashboardBtn");
+
+    const status =
+        document.getElementById("status");
+
+    const userBox =
+        document.getElementById("userBox");
+
+    const userEmail =
+        document.getElementById("userEmail");
+
+    const userUid =
+        document.getElementById("userUid");
+
+    const roleBox =
+        document.getElementById("roleBox");
+
+    const accessDenied =
+        document.getElementById("accessDenied");
 
 
-    /* ==========================================
+    /* =========================================================
+       RESET PAGE
+       ========================================================= */
+
+    function resetPage() {
+
+        googleLogin.classList.remove("hidden");
+
+        userBox.classList.add("hidden");
+
+        accessDenied.classList.add("hidden");
+
+        status.classList.remove("success");
+        status.classList.remove("error");
+
+        status.textContent =
+            "Secure login required.";
+
+        userEmail.textContent = "";
+        userUid.textContent = "";
+        roleBox.textContent = "Role";
+
+    }
+
+
+    /* =========================================================
        GOOGLE LOGIN
-       ========================================== */
+       ========================================================= */
 
-    googleLogin.addEventListener("click", async () => {
+    googleLogin.addEventListener(
+        "click",
+        async () => {
 
-        try {
+            try {
 
-            status.textContent = "Opening secure Google login...";
+                googleLogin.classList.add("loading");
 
-            await signInWithPopup(auth, googleProvider);
+                status.textContent =
+                    "Opening secure Google login...";
 
-        } catch (error) {
+                await signInWithPopup(
+                    auth,
+                    googleProvider
+                );
 
-            console.error(error);
+            }
 
-            status.textContent =
-                "Login failed: " + error.message;
+            catch (error) {
+
+                console.error(
+                    "Google login error:",
+                    error
+                );
+
+                status.classList.add("error");
+
+                status.textContent =
+                    "Login failed: " +
+                    error.message;
+
+                googleLogin.classList.remove(
+                    "loading"
+                );
+
+            }
 
         }
+    );
 
-    });
 
-
-    /* ==========================================
+    /* =========================================================
        LOGOUT
-       ========================================== */
+       ========================================================= */
 
-    logoutBtn.addEventListener("click", async () => {
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+                resetPage();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+                status.classList.add("error");
+
+                status.textContent =
+                    "Sign out failed.";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       CHECK ADMIN ROLE
+       ========================================================= */
+
+    async function checkAdminAccess(user) {
 
         try {
 
-            await signOut(auth);
-
-            status.textContent = "You have been signed out.";
-
-        } catch (error) {
-
-            console.error(error);
+            status.classList.remove("error");
 
             status.textContent =
-                "Sign out failed.";
+                "Checking CINPS administrator access...";
+
+
+            /*
+             * Firestore structure:
+             *
+             * admins
+             *   └── USER_FIREBASE_UID
+             *       ├── email
+             *       ├── name
+             *       ├── role
+             *       └── active
+             */
+
+            const adminRef =
+                doc(
+                    db,
+                    "admins",
+                    user.uid
+                );
+
+
+            const adminSnapshot =
+                await getDoc(adminRef);
+
+
+            /* =================================================
+               ADMIN DOCUMENT DOES NOT EXIST
+               ================================================= */
+
+            if (!adminSnapshot.exists()) {
+
+                console.warn(
+                    "No admin record found for UID:",
+                    user.uid
+                );
+
+                googleLogin.classList.add("hidden");
+
+                userBox.classList.remove("hidden");
+
+                accessDenied.classList.remove(
+                    "hidden"
+                );
+
+                status.classList.add("error");
+
+                status.textContent =
+                    "Authentication successful, but administrator access was not granted.";
+
+                return;
+
+            }
+
+
+            /* =================================================
+               READ ADMIN DATA
+               ================================================= */
+
+            const adminData =
+                adminSnapshot.data();
+
+
+            console.log(
+                "CINPS Admin Data:",
+                adminData
+            );
+
+
+            /* =================================================
+               CHECK ACTIVE STATUS
+               ================================================= */
+
+            if (adminData.active !== true) {
+
+                googleLogin.classList.add("hidden");
+
+                userBox.classList.remove("hidden");
+
+                accessDenied.classList.remove(
+                    "hidden"
+                );
+
+                status.classList.add("error");
+
+                status.textContent =
+                    "This CINPS administrator account is inactive.";
+
+                return;
+
+            }
+
+
+            /* =================================================
+               CHECK ROLE
+               ================================================= */
+
+            const role =
+                adminData.role;
+
+
+            if (
+                role !== "admin"
+                &&
+                role !== "superAdmin"
+            ) {
+
+                googleLogin.classList.add("hidden");
+
+                userBox.classList.remove("hidden");
+
+                accessDenied.classList.remove(
+                    "hidden"
+                );
+
+                status.classList.add("error");
+
+                status.textContent =
+                    "Your account does not have a valid CINPS administrator role.";
+
+                return;
+
+            }
+
+
+            /* =================================================
+               AUTHORIZED USER
+               ================================================= */
+
+            googleLogin.classList.add("hidden");
+
+            accessDenied.classList.add("hidden");
+
+            userBox.classList.remove("hidden");
+
+            status.classList.remove("error");
+
+            status.classList.add("success");
+
+            status.textContent =
+                "CINPS administrator authentication successful.";
+
+
+            userEmail.textContent =
+                user.email ||
+                adminData.email ||
+                "Google account";
+
+
+            userUid.textContent =
+                user.uid;
+
+
+            /* =================================================
+               DISPLAY ROLE
+               ================================================= */
+
+            if (role === "superAdmin") {
+
+                roleBox.textContent =
+                    "CINPS SUPER ADMINISTRATOR";
+
+            }
+
+            else if (role === "admin") {
+
+                roleBox.textContent =
+                    "CINPS FEE ADMINISTRATOR";
+
+            }
+
+
+            /* =================================================
+               LOGGING
+               ================================================= */
+
+            console.log(
+                "Firebase UID:",
+                user.uid
+            );
+
+            console.log(
+                "CINPS Role:",
+                role
+            );
+
+            console.log(
+                "Admin Name:",
+                adminData.name
+            );
 
         }
 
-    });
 
+        catch (error) {
 
-    /* ==========================================
-       AUTH STATE
-       ========================================== */
+            console.error(
+                "Admin access check failed:",
+                error
+            );
 
-    onAuthStateChanged(auth, (user) => {
-
-        if (user) {
 
             googleLogin.classList.add("hidden");
 
             userBox.classList.remove("hidden");
 
-            userEmail.textContent =
-                user.email || "Google account";
+            accessDenied.classList.remove(
+                "hidden"
+            );
 
-            status.textContent =
-                "Authentication successful.";
+            status.classList.add("error");
 
-            console.log("Firebase UID:", user.uid);
 
-        } else {
+            /*
+             * Permission denied here is expected for
+             * unauthorized users because Firestore Rules
+             * protect the admins collection.
+             */
 
-            googleLogin.classList.remove("hidden");
+            if (
+                error.code ===
+                "permission-denied"
+            ) {
 
-            userBox.classList.add("hidden");
+                status.textContent =
+                    "Access denied by CINPS Firestore Security Rules.";
 
-            status.textContent =
-                "Secure login required.";
+            }
+
+            else {
+
+                status.textContent =
+                    "Unable to verify administrator access.";
+
+            }
 
         }
 
-    });
+    }
+
+
+    /* =========================================================
+       AUTH STATE
+       ========================================================= */
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (user) {
+
+                console.log(
+                    "Firebase UID:",
+                    user.uid
+                );
+
+                await checkAdminAccess(
+                    user
+                );
+
+            }
+
+            else {
+
+                resetPage();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       DASHBOARD BUTTON
+       ========================================================= */
+
+    dashboardBtn.addEventListener(
+        "click",
+        () => {
+
+            /*
+             * Dashboard will be built next.
+             *
+             * For now we keep the authenticated
+             * administrator on this page.
+             */
+
+            status.classList.remove(
+                "error"
+            );
+
+            status.classList.add(
+                "success"
+            );
+
+            status.textContent =
+                "Dashboard module will be activated next.";
+
+        }
+    );
+
 
 </script>
 
