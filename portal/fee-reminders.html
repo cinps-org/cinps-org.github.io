@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#123f8c" />
+  <title>CINPS Fee Reminder Dashboard</title>
+  <style>
+    :root{--blue:#123f8c;--blue2:#0b4a99;--ink:#172033;--muted:#65738b;--line:#e2e8f0;--bg:#f3f6fb;--white:#fff;--green:#087f5b;--red:#c62828;--amber:#9a6700}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+    button,input,select{font:inherit} button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.5}
+    .topbar{background:var(--blue);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 3px 10px #0b28531a}
+    .brand{display:flex;align-items:center;gap:12px}.logo{width:38px;height:38px;border:2px solid #ffffffaa;border-radius:10px;display:grid;place-items:center;font-weight:800;letter-spacing:.5px}.brand h1{font-size:19px;margin:0}.brand p{margin:3px 0 0;color:#dbeafe;font-size:12px}
+    .top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-label{font-size:13px;color:#e6efff}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:9px 13px;border-radius:9px;font-weight:650}.btn.primary{background:var(--blue2);border-color:var(--blue2);color:white}.btn.top{background:transparent;color:white;border-color:#ffffff77}.btn.danger{color:var(--red);border-color:#f1b7b7}.btn.small{padding:7px 10px;font-size:12px}
+    .wrap{max-width:1450px;margin:24px auto;padding:0 18px 32px}.notice{padding:12px 14px;border-radius:10px;border:1px solid #bfdbfe;background:#eff6ff;color:#1e40af;margin-bottom:16px;font-size:13px;line-height:1.5}.notice.error{background:#fff1f2;border-color:#fecdd3;color:#9f1239}.notice.success{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.hidden{display:none!important}
+    .login-card{max-width:480px;margin:70px auto;background:white;padding:32px;border:1px solid var(--line);border-radius:18px;text-align:center;box-shadow:0 12px 35px #1e293b12}.login-card h2{margin:8px 0}.login-card p{color:var(--muted);line-height:1.55;font-size:14px}.login-mark{margin:auto;background:#e7efff;color:var(--blue);width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:23px;font-weight:800}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin:0 0 18px}.section-head h2{margin:0;font-size:23px}.section-head p{margin:6px 0 0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+    .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.kpi{background:white;border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:0 3px 12px #0f172a05}.kpi .label{color:var(--muted);font-size:12px;font-weight:650}.kpi .value{font-size:25px;font-weight:800;margin-top:8px;letter-spacing:-.5px}.kpi .sub{font-size:12px;color:var(--muted);margin-top:5px}.kpi.due .value{color:var(--red)}
+    .panel{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #0f172a05;margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.panel-head h3{margin:0;font-size:16px}.muted{color:var(--muted);font-size:12px}
+    .filters{display:grid;grid-template-columns:minmax(220px,2fr) repeat(2,minmax(150px,1fr));gap:10px;margin-bottom:14px}.field{width:100%;border:1px solid #d5deeb;border-radius:9px;padding:10px 11px;background:#fff;color:var(--ink);min-width:0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:1000px;font-size:13px}th,td{padding:12px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}th{background:#f8fafc;color:#526078;font-size:11px;text-transform:uppercase;letter-spacing:.45px;white-space:nowrap}tbody tr:hover{background:#f8fbff}tbody tr:last-child td{border-bottom:0}.student-name{font-weight:700}.student-email{font-size:11px;color:var(--muted);margin-top:3px}.money{font-variant-numeric:tabular-nums;white-space:nowrap}.due-money{color:var(--red);font-weight:750}.pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}.pill.due{background:#fee2e2;color:#991b1b}.pill.clear{background:#dcfce7;color:#166534}.pill.warn{background:#fef3c7;color:#92400e}.row-actions{display:flex;gap:6px;flex-wrap:wrap}.empty{text-align:center;padding:30px;color:var(--muted)}
+    .bottom-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}.mini-list{display:grid;gap:10px}.mini-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.mini-row:last-child{border-bottom:0}.bar-track{height:9px;background:#e8edf5;border-radius:99px;overflow:hidden;margin-top:8px}.bar-fill{height:100%;background:var(--blue2);border-radius:99px;width:0}
+    .footer{color:var(--muted);font-size:11px;text-align:center;margin-top:18px}.toast{position:fixed;bottom:20px;right:20px;max-width:min(420px,calc(100vw - 40px));background:#172033;color:white;padding:13px 16px;border-radius:10px;box-shadow:0 10px 30px #0f172a33;z-index:10;font-size:13px}
+    @media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.bottom-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.wrap{padding:0 10px 24px;margin-top:14px}.topbar{padding:13px}.brand h1{font-size:16px}.cards{gap:8px}.kpi{padding:13px}.kpi .value{font-size:21px}.filters{grid-template-columns:1fr}.panel{padding:12px}.section-head h2{font-size:20px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="logo">C</div><div><h1>CINPS Fee Reminder Dashboard</h1><p>Chandidas Institute of Nursing &amp; Paramedical Science</p></div></div>
+    <div class="top-actions"><a class="btn top" href="./admin.html" style="text-decoration:none">Open Student Admin Panel</a><span id="userLabel" class="user-label">Not signed in</span><button id="refreshBtn" class="btn top hidden" type="button">Refresh data</button><button id="logoutBtn" class="btn top hidden" type="button">Sign out</button></div>
+  </header>
+
+  <main class="wrap">
+    <div id="globalNotice" class="notice">This dashboard reads student fee summaries from the existing <strong>cinps-student-corner</strong> Firebase project. It does not create, edit, or delete student or payment records.</div>
+
+    <section id="loginCard" class="login-card">
+      <div class="login-mark">C</div><h2>Administrator sign-in</h2>
+      <p>Sign in with an authorised CINPS administrator Google account to view student records and outstanding fees.</p>
+      <button id="loginBtn" class="btn primary" type="button">Sign in with Google</button>
+      <p class="muted">Access is checked against the existing <code>admins</code> collection and Firestore Security Rules.</p>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="section-head"><div><h2>Fee overview</h2><p id="lastUpdated">Waiting for Firebase data…</p></div><div class="actions"><button id="exportBtn" class="btn" type="button">Export CSV</button><button id="remindAllBtn" class="btn primary" type="button" disabled title="Configure Google Apps Script first">Remind all students with dues</button></div></div>
+      <div id="connectionNotice" class="notice">Connecting to Firebase…</div>
+      <div class="cards">
+        <div class="kpi"><div class="label">Total students</div><div id="kpiStudents" class="value">—</div><div class="sub">Records in the students collection</div></div>
+        <div class="kpi"><div class="label">Total fees assessed</div><div id="kpiTotal" class="value">—</div><div class="sub">Sum of each student’s fees.total</div></div>
+        <div class="kpi"><div class="label">Fees collected</div><div id="kpiPaid" class="value">—</div><div class="sub">Sum of each student’s fees.paid</div></div>
+        <div class="kpi due"><div class="label">Outstanding fees</div><div id="kpiDue" class="value">—</div><div id="kpiDueSub" class="sub">Students with outstanding balances</div></div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head"><h3>Student fee accounts</h3><span id="resultCount" class="muted">0 students</span></div>
+        <div class="filters"><input id="searchInput" class="field" type="search" placeholder="Search name, email, course, branch or student UID…" aria-label="Search students"><select id="branchFilter" class="field" aria-label="Filter by branch"><option value="">All branches</option></select><select id="dueFilter" class="field" aria-label="Filter by fee status"><option value="all">All fee statuses</option><option value="due">Outstanding balance</option><option value="clear">No outstanding balance</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Student</th><th>Course</th><th>Branch</th><th>Total fee</th><th>Paid</th><th>Outstanding</th><th>Status</th><th>Reminder</th></tr></thead><tbody id="studentsBody"><tr><td colspan="8" class="empty">Sign in to load student records.</td></tr></tbody></table></div>
+      </section>
+
+      <div class="bottom-grid">
+        <section class="panel"><div class="panel-head"><h3>Fee collection progress</h3><span id="collectionPercent" class="muted">—</span></div><div class="mini-row"><span>Collected</span><strong id="progressPaid">—</strong></div><div class="bar-track"><div id="progressBar" class="bar-fill"></div></div><div class="mini-row" style="margin-top:12px"><span>Outstanding</span><strong id="progressDue">—</strong></div><p class="muted">Calculated from student fee summaries. This is not an expense or profit report.</p></section>
+        <section class="panel"><div class="panel-head"><h3>Reminder readiness</h3></div><div class="mini-list"><div class="mini-row"><span>Students with outstanding fees</span><strong id="reminderDueCount">—</strong></div><div class="mini-row"><span>Students with an email address</span><strong id="emailCount">—</strong></div><div class="mini-row"><span>Students needing an email address</span><strong id="noEmailCount">—</strong></div><div class="mini-row"><span>Google Apps Script / Gmail</span><strong id="gasStatus" class="pill warn">Not connected</strong></div></div><p class="muted" style="margin-top:12px">The reminder buttons remain disabled until a verified Apps Script endpoint is configured. No message is sent by this HTML file alone.</p></section>
+      </div>
+    </section>
+    <div class="footer">CINPS internal administration tool · Uses the existing portal/firebase-init.js configuration · Read-only student fee view</div>
+  </main>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script type="module">
+    import { auth, provider, db } from "./firebase-init.js";
+    import { signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { collection, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Deploy this file as /portal/fee-reminders.html so it reuses the same Firebase project config.
+    // Leave blank until the Google Apps Script endpoint is implemented and security-tested.
+    const GAS_WEB_APP_URL = "";
+
+    const $ = (id) => document.getElementById(id);
+    const loginCard = $("loginCard"), dashboard = $("dashboard"), loginBtn = $("loginBtn");
+    let currentUser = null, allStudents = [], unsubscribeStudents = null, toastTimer = null;
+
+    const money = (n) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(Number.isFinite(Number(n)) ? Number(n) : 0);
+    const safeNumber = (v) => Number.isFinite(Number(v)) ? Math.max(0, Number(v)) : 0;
+    const text = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
+    const esc = (v) => String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+
+    function notify(message, isError = false) {
+      const toast = $("toast"); toast.textContent = message; toast.classList.remove("hidden");
+      toast.style.background = isError ? "#991b1b" : "#172033";
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.add("hidden"), 4200);
+    }
+    function setNotice(message, type = "info") {
+      const el = $("connectionNotice"); el.textContent = message; el.className = "notice" + (type === "error" ? " error" : type === "success" ? " success" : "");
+    }
+    function feeValues(student) {
+      const fees = student.fees && typeof student.fees === "object" ? student.fees : {};
+      const total = safeNumber(fees.total), paid = safeNumber(fees.paid);
+      // Prefer the stored due amount when valid, while preserving the expected total = paid + due model.
+      const due = fees.due !== undefined ? safeNumber(fees.due) : Math.max(0, total - paid);
+      return { total, paid, due };
+    }
+    function normalizeStudent(id, data) {
+      const f = feeValues(data);
+      return { uid:id, name:text(data.name), email:text(data.email), course:text(data.course), branch:text(data.branch), total:f.total, paid:f.paid, due:f.due };
+    }
+    function setSignedInUI(user) {
+      $("userLabel").textContent = user?.email || "Not signed in";
+      $("logoutBtn").classList.toggle("hidden", !user);
+      $("refreshBtn").classList.toggle("hidden", !user);
+      loginCard.classList.toggle("hidden", !!user);
+      dashboard.classList.toggle("hidden", !user);
+    }
+    async function checkAdmin(user) {
+      const adminSnap = await getDoc(doc(db, "admins", user.uid));
+      if (!adminSnap.exists()) return false;
+      const admin = adminSnap.data();
+      const role = String(admin.role || "").toLowerCase();
+      return admin.active === true && (role === "admin" || role === "superadmin");
+    }
+    function startStudentListener() {
+      if (unsubscribeStudents) unsubscribeStudents();
+      setNotice("Connected. Loading the students collection…");
+      unsubscribeStudents = onSnapshot(collection(db, "students"), (snapshot) => {
+        allStudents = snapshot.docs.map(s => normalizeStudent(s.id, s.data()));
+        renderDashboard();
+        $("lastUpdated").textContent = "Live Firestore data · Updated " + new Date().toLocaleTimeString();
+        setNotice(`Connected to cinps-student-corner. Loaded ${allStudents.length} student record(s).`, "success");
+      }, (error) => {
+        console.error("Student listener failed:", error);
+        setNotice("Could not read students from Firestore. Check that this signed-in admin is active and the Firestore rules allow admin reads. Details: " + (error.code || error.message), "error");
+        $("studentsBody").innerHTML = '<tr><td colspan="8" class="empty">Unable to load records. Review the access error above.</td></tr>';
+      });
+    }
+    function renderDashboard() {
+      const total = allStudents.reduce((sum, s) => sum + s.total, 0);
+      const paid = allStudents.reduce((sum, s) => sum + s.paid, 0);
+      const due = allStudents.reduce((sum, s) => sum + s.due, 0);
+      const dueStudents = allStudents.filter(s => s.due > 0);
+      const withEmail = allStudents.filter(s => s.email !== "—" && s.email.includes("@")).length;
+      $("kpiStudents").textContent = allStudents.length.toLocaleString("en-IN");
+      $("kpiTotal").textContent = money(total); $("kpiPaid").textContent = money(paid); $("kpiDue").textContent = money(due);
+      $("kpiDueSub").textContent = `${dueStudents.length} student(s) with an outstanding balance`;
+      $("progressPaid").textContent = money(paid); $("progressDue").textContent = money(due);
+      const percent = total > 0 ? Math.min(100, (paid / total) * 100) : 0;
+      $("collectionPercent").textContent = `${percent.toFixed(1)}% collected`;
+      $("progressBar").style.width = `${percent}%`;
+      $("reminderDueCount").textContent = dueStudents.length;
+      $("emailCount").textContent = withEmail;
+      $("noEmailCount").textContent = allStudents.length - withEmail;
+      $("gasStatus").textContent = GAS_WEB_APP_URL ? "Endpoint configured" : "Not connected";
+      $("gasStatus").className = "pill " + (GAS_WEB_APP_URL ? "clear" : "warn");
+      $("remindAllBtn").disabled = !GAS_WEB_APP_URL || dueStudents.length === 0;
+      renderBranchOptions(); renderTable();
+    }
+    function renderBranchOptions() {
+      const select = $("branchFilter"), previous = select.value;
+      const branches = [...new Set(allStudents.map(s => s.branch).filter(v => v && v !== "—"))].sort((a,b) => a.localeCompare(b));
+      select.innerHTML = '<option value="">All branches</option>' + branches.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join("");
+      if (branches.includes(previous)) select.value = previous;
+    }
+    function renderTable() {
+      const query = $("searchInput").value.trim().toLowerCase(), branch = $("branchFilter").value, dueFilter = $("dueFilter").value;
+      const filtered = allStudents.filter(s => {
+        const matchesQuery = [s.name,s.email,s.course,s.branch,s.uid].some(v => String(v).toLowerCase().includes(query));
+        const matchesBranch = !branch || s.branch === branch;
+        const matchesDue = dueFilter === "all" || (dueFilter === "due" ? s.due > 0 : s.due <= 0);
+        return matchesQuery && matchesBranch && matchesDue;
+      }).sort((a,b) => b.due - a.due || a.name.localeCompare(b.name));
+      $("resultCount").textContent = `${filtered.length} of ${allStudents.length} student(s)`;
+      if (!filtered.length) { $("studentsBody").innerHTML = '<tr><td colspan="8" class="empty">No matching student records.</td></tr>'; return; }
+      $("studentsBody").innerHTML = filtered.map(s => {
+        const hasDue = s.due > 0;
+        const reminderButton = hasDue
+          ? `<button class="btn small primary" data-remind="${esc(s.uid)}" ${GAS_WEB_APP_URL ? "" : "disabled title=\"Connect Apps Script to enable\""}>Send reminder</button>`
+          : '<span class="muted">Not needed</span>';
+        return `<tr>
+          <td><div class="student-name">${esc(s.name)}</div><div class="student-email">${esc(s.email)} · UID ${esc(s.uid.slice(0,9))}${s.uid.length>9?"…":""}</div></td>
+          <td>${esc(s.course)}</td><td>${esc(s.branch)}</td>
+          <td class="money">${money(s.total)}</td><td class="money">${money(s.paid)}</td>
+          <td class="money ${hasDue ? "due-money" : ""}">${money(s.due)}</td>
+          <td><span class="pill ${hasDue ? "due" : "clear"}">${hasDue ? "Due" : "Clear"}</span></td>
+          <td><div class="row-actions">${reminderButton}</div></td>
+        </tr>`;
+      }).join("");
+      $("studentsBody").querySelectorAll("[data-remind]").forEach(button => button.addEventListener("click", () => sendSingleReminder(button.dataset.remind, button)));
+    }
+    async function postReminder(payload) {
+      if (!GAS_WEB_APP_URL) throw new Error("Google Apps Script is not connected yet. The reminder endpoint must be deployed and security-tested first.");
+      if (!currentUser) throw new Error("Please sign in again.");
+      const idToken = await currentUser.getIdToken();
+      // The Apps Script endpoint must validate this Firebase ID token and re-check the admin role server-side.
+      const response = await fetch(GAS_WEB_APP_URL, {
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...payload, idToken })
+      });
+      if (!response.ok) throw new Error(`Reminder endpoint returned HTTP ${response.status}.`);
+      return response.json();
+    }
+    async function sendSingleReminder(uid, button) {
+      const student = allStudents.find(s => s.uid === uid);
+      if (!student || student.due <= 0) return notify("This student has no outstanding balance.", true);
+      if (!student.email || !student.email.includes("@")) return notify("This student has no valid email address.", true);
+      if (!GAS_WEB_APP_URL) return notify("Apps Script + Gmail is not connected yet. No email was sent.", true);
+      if (!confirm(`Request a fee reminder for ${student.name} (${money(student.due)} outstanding)?`)) return;
+      button.disabled = true;
+      try {
+        const result = await postReminder({ action:"sendReminder", studentUid:uid, reminderType:"normal" });
+        if (result?.ok !== true) throw new Error(result?.message || "The reminder service did not confirm success.");
+        notify(`Reminder accepted for ${student.name}.`);
+      } catch (error) { console.error(error); notify(error.message || "Could not send reminder.", true); }
+      finally { button.disabled = false; }
+    }
+    $("remindAllBtn").addEventListener("click", async () => {
+      const eligible = allStudents.filter(s => s.due > 0 && s.email.includes("@"));
+      if (!eligible.length) return notify("No students with both outstanding fees and an email address.", true);
+      if (!confirm(`Request reminders for ${eligible.length} students with outstanding fees and valid email addresses? This should send one email per eligible student.`)) return;
+      const button = $("remindAllBtn"); button.disabled = true; button.textContent = "Submitting…";
+      try {
+        const result = await postReminder({ action:"sendReminderAll" });
+        if (result?.ok !== true) throw new Error(result?.message || "The reminder service did not confirm success.");
+        notify(result.message || "Bulk reminder request accepted.");
+      } catch (error) { console.error(error); notify(error.message || "Bulk reminder request failed.", true); }
+      finally { button.textContent = "Remind all students with dues"; button.disabled = !GAS_WEB_APP_URL || !allStudents.some(s => s.due > 0); }
+    });
+    $("loginBtn").addEventListener("click", async () => { try { await signInWithPopup(auth, provider); } catch (error) { console.error(error); notify(error.message || "Google sign-in failed.", true); } });
+    $("logoutBtn").addEventListener("click", async () => { if (unsubscribeStudents) unsubscribeStudents(); unsubscribeStudents = null; await signOut(auth); });
+    $("refreshBtn").addEventListener("click", () => { if (currentUser) startStudentListener(); });
+    $("searchInput").addEventListener("input", renderTable); $("branchFilter").addEventListener("change", renderTable); $("dueFilter").addEventListener("change", renderTable);
+    $("exportBtn").addEventListener("click", () => {
+      if (!allStudents.length) return notify("No student records to export.", true);
+      const rows = [["UID","Name","Email","Course","Branch","Total Fee","Paid","Outstanding"] , ...allStudents.map(s => [s.uid,s.name,s.email,s.course,s.branch,s.total,s.paid,s.due])];
+      const csv = rows.map(row => row.map(v => `"${String(v ?? "").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+      const blob = new Blob(["\uFEFF" + csv], {type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = "cinps-fee-summary.csv"; a.click(); URL.revokeObjectURL(url);
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (!user) {
+        if (unsubscribeStudents) unsubscribeStudents(); unsubscribeStudents = null; allStudents = [];
+        setSignedInUI(null); $("userLabel").textContent = "Not signed in"; return;
+      }
+      try {
+        const authorised = await checkAdmin(user);
+        if (!authorised) {
+          setSignedInUI(null); notify("Access denied. Use an active CINPS administrator account.", true);
+          await signOut(auth); return;
+        }
+        setSignedInUI(user); startStudentListener();
+      } catch (error) {
+        console.error("Admin verification failed:", error);
+        setSignedInUI(null); setNotice("Could not verify administrator access. Check Firebase Authentication and the admins/{UID} document.", "error");
+        notify("Administrator verification failed.", true);
+      }
+    });
+  </script>
+</body>
+</html>
