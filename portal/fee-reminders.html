@@ -114,7 +114,8 @@
       if (!adminSnap.exists()) return false;
       const admin = adminSnap.data();
       const role = String(admin.role || "").toLowerCase();
-      return admin.active === true && (role === "admin" || role === "superadmin");
+      // Existing CINPS admin documents do not include an active field. Match the established admin panel: require the UID document and an allowed role.
+      return role === "admin" || role === "superadmin";
     }
     function startStudentListener() {
       if (unsubscribeStudents) unsubscribeStudents();
@@ -126,7 +127,7 @@
         setNotice(`Connected to cinps-student-corner. Loaded ${allStudents.length} student record(s).`, "success");
       }, (error) => {
         console.error("Student listener failed:", error);
-        setNotice("Could not read students from Firestore. Check that this signed-in admin is active and the Firestore rules allow admin reads. Details: " + (error.code || error.message), "error");
+        setNotice("Could not read students from Firestore. Check that the Firestore rules allow this administrator to read student records. Details: " + (error.code || error.message), "error");
         $("studentsBody").innerHTML = '<tr><td colspan="8" class="empty">Unable to load records. Review the access error above.</td></tr>';
       });
     }
@@ -242,13 +243,13 @@
       try {
         const authorised = await checkAdmin(user);
         if (!authorised) {
-          setSignedInUI(null); notify("Access denied. Use an active CINPS administrator account.", true);
+          setSignedInUI(null); notify("Access denied. This Google account has no matching CINPS administrator record with an allowed role.", true);
           await signOut(auth); return;
         }
         setSignedInUI(user); startStudentListener();
       } catch (error) {
         console.error("Admin verification failed:", error);
-        setSignedInUI(null); setNotice("Could not verify administrator access. Check Firebase Authentication and the admins/{UID} document.", "error");
+        setSignedInUI(null); setNotice("Could not verify administrator access. Check Firebase Authentication and the admins/{UID} document and role.", "error");
         notify("Administrator verification failed.", true);
       }
     });
