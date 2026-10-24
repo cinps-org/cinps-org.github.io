@@ -204,11 +204,29 @@
       if (!confirm(`Request a fee reminder for ${student.name} (${money(student.due)} outstanding)?`)) return;
       button.disabled = true;
       try {
-        const result = await postReminder({ action:"sendReminder", studentUid:uid, reminderType:"normal" });
-        if (result?.ok !== true) throw new Error(result?.message || "The reminder service did not confirm success.");
-        notify(`Reminder accepted for ${student.name}.`);
-      } catch (error) { console.error(error); notify(error.message || "Could not send reminder.", true); }
-      finally { button.disabled = false; }
+        const result = await postReminder({
+          action: "sendReminder",
+          studentUid: uid,
+          reminderType: "normal"
+        });
+
+        if (result.ok !== true) {
+          throw new Error(result.message || "The reminder service did not confirm success.");
+        }
+
+        if (result.status === "DRY_RUN") {
+          notify(`Preview only for ${student.name}. No email was sent.`);
+        } else if (result.status === "SENT") {
+          notify(result.message || `Email submitted for ${student.name}.`);
+        } else {
+          notify(result.message || "Reminder requires review.", true);
+        }
+      } catch (error) {
+        console.error(error);
+        notify(error.message || "Could not send reminder.", true);
+      } finally {
+        button.disabled = false;
+      }
     }
     $("remindAllBtn").addEventListener("click", async () => {
       const eligible = allStudents.filter(s => s.due > 0 && s.email.includes("@"));
