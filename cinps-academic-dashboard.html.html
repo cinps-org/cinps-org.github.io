@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CINPS Academic Dashboard — Administrator Setup</title>
+  <style>
+    :root { --navy:#103b82; --blue:#1769e0; --pale:#eef5ff; --ink:#15253e; --muted:#63748b; --line:#d8e5f6; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,Arial,sans-serif; color:var(--ink); background:linear-gradient(135deg,#f5f9ff,#eaf2ff); min-height:100vh; }
+    header { background:#fff; border-bottom:1px solid var(--line); padding:18px clamp(18px,4vw,56px); display:flex; gap:18px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .brand { display:flex; gap:14px; align-items:center; }
+    .mark { width:48px;height:48px;border:3px solid var(--blue);border-radius:12px;display:grid;place-items:center;color:var(--blue);font-weight:900;font-size:20px; }
+    .brand-name { font-weight:800;color:var(--navy);font-size:17px; }
+    .brand-sub { color:var(--muted);font-size:10px;letter-spacing:1.1px;margin-top:5px;font-weight:700; }
+    .header-tag { background:var(--navy);color:#fff;padding:12px 17px;border-radius:12px;font-weight:800;letter-spacing:.5px; }
+    main { max-width:1050px;margin:42px auto;padding:0 18px 40px; }
+    .intro { margin-bottom:22px; }
+    .eyebrow { color:var(--blue);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase; }
+    h1 { margin:8px 0;font-size:clamp(28px,4vw,40px);letter-spacing:-1px; }
+    .intro p { color:var(--muted);margin:0;line-height:1.6; }
+    .panel { background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 14px 35px #163f7710;padding:clamp(20px,4vw,34px); }
+    .panel-grid { display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch; }
+    .signin-box { background:var(--pale);border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:center; }
+    h2 { margin:0 0 10px;font-size:20px; }
+    .muted { color:var(--muted);line-height:1.55;font-size:14px; }
+    button { border:0;border-radius:11px;background:var(--blue);color:white;font-size:15px;font-weight:800;padding:14px 18px;cursor:pointer;margin-top:18px;width:100%; }
+    button:disabled { opacity:.55;cursor:wait; }
+    .status { margin-top:14px;padding:12px 14px;border-radius:10px;background:#f5f7fa;color:#42536b;font-size:13px;line-height:1.5;overflow-wrap:anywhere; }
+    .status.error { background:#fff0f0;color:#a12323; }
+    .status.ok { background:#e9f8ef;color:#17643b; }
+    .steps { display:grid;gap:14px;align-content:center; }
+    .step { display:flex;gap:12px;align-items:flex-start; }
+    .num { flex:0 0 30px;height:30px;border-radius:50%;background:#dceaff;color:var(--navy);display:grid;place-items:center;font-weight:900; }
+    .step strong { display:block;margin:2px 0 4px; }
+    .uid { margin-top:12px;padding:12px;border:1px dashed #a8bfdf;border-radius:10px;background:#fbfdff;display:none;overflow-wrap:anywhere;font-size:13px; }
+    .small { font-size:12px;color:var(--muted);line-height:1.5;margin-top:16px; }
+    footer { text-align:center;color:var(--muted);font-size:12px;padding:0 18px 26px; }
+    @media(max-width:760px){.panel-grid{grid-template-columns:1fr}.header-tag{width:100%;text-align:center}main{margin-top:26px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="mark">+</div>
+    <div>
+      <div class="brand-name">C.I.N.P.S — Chandidas Institute of Nursing &amp; Paramedical Science</div>
+      <div class="brand-sub">PARAMEDICAL &amp; ALLIED HEALTHCARE EDUCATION · ESTABLISHED 2017</div>
+    </div>
+  </div>
+  <div class="header-tag">ACADEMIC INTELLIGENCE</div>
+</header>
+<main>
+  <div class="intro">
+    <div class="eyebrow">Secure administrator setup</div>
+    <h1>Register your administrator identity</h1>
+    <p>This first step signs you into the new Firebase project. It does not grant administrator privileges by itself.</p>
+  </div>
+  <section class="panel panel-grid">
+    <div class="signin-box">
+      <h2>Administrator Google Sign-In</h2>
+      <p class="muted">Sign in with the Google account that should own the CINPS dashboard. After sign-in, this page will show your Firebase UID for the next security setup step.</p>
+      <button id="signInBtn">Continue with Google</button>
+      <button id="signOutBtn" style="display:none;background:#52657d">Sign out</button>
+      <div id="status" class="status" role="status">Firebase is loading…</div>
+      <div id="uidBox" class="uid"></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><strong>Authenticate identity</strong><div class="muted">Google sign-in creates a Firebase Authentication user.</div></div></div>
+      <div class="step"><div class="num">2</div><div><strong>Assign Super Admin securely</strong><div class="muted">We will grant the role separately; this page cannot promote itself.</div></div></div>
+      <div class="step"><div class="num">3</div><div><strong>Protect academic records</strong><div class="muted">Firestore rules will be configured before student or instructor data is connected.</div></div></div>
+      <p class="small">For setup only. Do not share your UID publicly. Firebase web configuration is not a server secret; Firestore Security Rules and authorized identities provide the actual protection.</p>
+    </div>
+  </section>
+</main>
+<footer>CINPS Academic Intelligence · Administrator setup · Firebase Spark</footer>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXpLXm0nceiQDSAmjG819Ww-6Rx9XMrLo",
+    authDomain: "cinps-academic-intelligence.firebaseapp.com",
+    projectId: "cinps-academic-intelligence",
+    storageBucket: "cinps-academic-intelligence.firebasestorage.app",
+    messagingSenderId: "10345484796386",
+    appId: "1:10345484796386:web:f9e5896a68ad80c3bc82bb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  const signInBtn = document.getElementById("signInBtn");
+  const signOutBtn = document.getElementById("signOutBtn");
+  const statusBox = document.getElementById("status");
+  const uidBox = document.getElementById("uidBox");
+
+  function setStatus(message, type = "") {
+    statusBox.textContent = message;
+    statusBox.className = "status" + (type ? " " + type : "");
+  }
+
+  signInBtn.addEventListener("click", async () => {
+    signInBtn.disabled = true;
+    setStatus("Opening Google sign-in…");
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error(error);
+      setStatus(`${error.code || "Sign-in error"}: ${error.message}`, "error");
+    } finally {
+      signInBtn.disabled = false;
+    }
+  });
+
+  signOutBtn.addEventListener("click", async () => {
+    try { await signOut(auth); }
+    catch (error) { setStatus(error.message, "error"); }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      signInBtn.style.display = "none";
+      signOutBtn.style.display = "block";
+      setStatus(`Signed in as ${user.email || "Google user"}. Authentication succeeded; administrator access has not yet been granted.`, "ok");
+      uidBox.style.display = "block";
+      uidBox.textContent = `Firebase UID: ${user.uid}`;
+    } else {
+      signInBtn.style.display = "block";
+      signOutBtn.style.display = "none";
+      uidBox.style.display = "none";
+      uidBox.textContent = "";
+      setStatus("Ready. Sign in with the intended Super Admin Google account.");
+    }
+  });
+</script>
+</body>
+</html>
