@@ -587,7 +587,7 @@
       import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
       const firebaseConfig = {
-        apiKey: "AIzaSyAXpLXm8nceiQDSAmjG819ww-6Rx9XmR1o",
+        apiKey: "AIzaSyAXpLXm0nceiQDSAmjG819Ww-6Rx9XMrLo",
         authDomain: "cinps-academic-intelligence.firebaseapp.com",
         projectId: "cinps-academic-intelligence",
         storageBucket: "cinps-academic-intelligence.firebasestorage.app",
@@ -606,6 +606,7 @@
       const form = document.getElementById("classUpdateForm");
       const submitBtn = document.getElementById("submitBtn");
       let redirectStarted = false;
+      const redirectPendingKey = "cinpsInstructorGoogleRedirectPending";
 
       // Hide the class form until Firebase confirms that this account is an active instructor.
       form.style.display = "none";
@@ -639,23 +640,29 @@
         submitBtn.disabled = false;
       }
 
-      // Resolve the redirect result, then automatically request Google sign-in when the page is opened.
+      // Process the redirect result before considering a new sign-in attempt.
+      let redirectResultUser = null;
       try {
-        await getRedirectResult(auth);
+        const redirectResult = await getRedirectResult(auth);
+        redirectResultUser = redirectResult?.user || null;
+        if (redirectResultUser) sessionStorage.removeItem(redirectPendingKey);
       } catch (err) {
         console.error("Instructor sign-in redirect error:", err);
+        sessionStorage.removeItem(redirectPendingKey);
         loginBox.style.display = "block";
-        authMessage.textContent = "Google sign-in could not be completed. Reload this page to try again.";
+        authMessage.textContent = "Google sign-in failed. Reload this page and try again.";
       }
 
       onAuthStateChanged(auth, async (user) => {
-        if (user) {
+        const activeUser = user || redirectResultUser;
+        if (activeUser) {
+          sessionStorage.removeItem(redirectPendingKey);
           try {
-            await authorizeInstructor(user);
+            await authorizeInstructor(activeUser);
           } catch (err) {
             console.error("Instructor authorization error:", err);
             loginBox.style.display = "block";
-            authMessage.textContent = "Could not verify instructor access. Please reload the page or contact the CINPS administrator.";
+            authMessage.textContent = "Could not verify instructor access. Please contact the CINPS administrator.";
           }
           return;
         }
@@ -664,7 +671,13 @@
         form.style.display = "none";
         submitBtn.disabled = true;
 
-        // Do not repeatedly redirect if the signed-in account was rejected.
+        if (sessionStorage.getItem(redirectPendingKey) === "1") {
+          sessionStorage.removeItem(redirectPendingKey);
+          loginBox.style.display = "block";
+          authMessage.textContent = "Google sign-in returned without an authenticated session. Reload once to retry, or contact the CINPS administrator.";
+          return;
+        }
+
         if (sessionStorage.getItem("cinpsInstructorAccessDenied") === "1") {
           loginBox.style.display = "block";
           authMessage.textContent = "Access is not enabled for this Google account. Please contact the CINPS Super Admin.";
@@ -673,13 +686,15 @@
 
         if (!redirectStarted) {
           redirectStarted = true;
+          sessionStorage.setItem(redirectPendingKey, "1");
           loginBox.style.display = "block";
-          authMessage.textContent = "Redirecting to Google sign-in…";
+          authMessage.textContent = "Opening Google sign-in…";
           try {
             await signInWithRedirect(auth, provider);
           } catch (err) {
+            sessionStorage.removeItem(redirectPendingKey);
             console.error("Could not start Google sign-in:", err);
-            authMessage.textContent = "Google sign-in could not be started. Check the Firebase Authorized Domains settings and reload this page.";
+            authMessage.textContent = "Google sign-in could not be started. Check Firebase Authentication settings and reload this page.";
           }
         }
       });
