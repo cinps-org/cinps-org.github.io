@@ -434,8 +434,6 @@ button[type="submit"]:active {
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyyM_ebdCh27Zq3vkqli-Lu8bR0cZiucs0N7DGU64lBpZWWBCMRpvwzw0IhIl1PWZDx/exec";
-  
   // DOM Elements
   const attendanceForm = document.getElementById('attendanceForm');
   const dateInput = document.getElementById('date');
@@ -449,11 +447,14 @@ button[type="submit"]:active {
   const stateSuccess = document.getElementById('stateSuccess');
   const stateError = document.getElementById('stateError');
 
-  // Auto date/time logic (Kept exactly as requested)
-  const now = new Date();
-  dateInput.value = now.toLocaleDateString("en-GB");
-  dayInput.value = now.toLocaleDateString("en-US", { weekday: "long" });
-  endTimeInput.value = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  // Auto date/time logic
+  function refreshAutoFields() {
+    const current = new Date();
+    dateInput.value = current.toLocaleDateString("en-GB");
+    dayInput.value = current.toLocaleDateString("en-US", { weekday: "long" });
+    endTimeInput.value = current.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  }
+  refreshAutoFields();
 
   // Modal Control Functions
   function showModalState(stateElement) {
@@ -461,46 +462,20 @@ button[type="submit"]:active {
     stateProcessing.classList.remove('active');
     stateSuccess.classList.remove('active');
     stateError.classList.remove('active');
-    
     stateElement.classList.add('active');
   }
+
+  // Share modal controls with the Firebase module below.
+  window.cinpsShowModalState = showModalState;
+  window.cinpsStateProcessing = stateProcessing;
+  window.cinpsStateSuccess = stateSuccess;
+  window.cinpsStateError = stateError;
+  window.cinpsRefreshAutoFields = refreshAutoFields;
 
   function closeModal() {
     modalOverlay.classList.remove('active');
     submitBtn.disabled = false;
   }
-
-  // Form Submission
-  attendanceForm.addEventListener("submit", e => {
-    e.preventDefault();
-    
-    // Disable button to prevent double submission
-    submitBtn.disabled = true;
-    
-    // Show Processing Animation
-    showModalState(stateProcessing);
-
-    fetch(scriptURL, {
-      method: "POST",
-      body: new FormData(attendanceForm)
-    })
-    .then(r => r.json()) // Assumes AppScript returns JSON
-    .then(() => {
-      // Show Green Tick Success Animation
-      showModalState(stateSuccess);
-      attendanceForm.reset();
-      
-      // Reset auto fields after form reset clears them
-      dateInput.value = now.toLocaleDateString("en-GB");
-      dayInput.value = now.toLocaleDateString("en-US", { weekday: "long" });
-      endTimeInput.value = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-    })
-    .catch((error) => {
-      console.error('Error!', error.message);
-      // Show Error Modal if submission fails
-      showModalState(stateError);
-    });
-  });
 
   // JS Fallback for styling radio button wrappers (Ensures cross-browser support)
   const reviewLabels = document.querySelectorAll('.review label');
@@ -519,6 +494,99 @@ button[type="submit"]:active {
         if(input.value === "Bad") { parent.style.borderColor = 'var(--bad)'; parent.style.background = 'rgba(239, 68, 68, 0.05)'; }
       }
     });
+  });
+</script>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const form = document.getElementById("attendanceForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const dateInput = document.getElementById("date");
+  const dayInput = document.getElementById("day");
+  const endTimeInput = document.getElementById("endTime");
+  const showState = window.cinpsShowModalState;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    submitBtn.disabled = true;
+    showState(window.cinpsStateProcessing);
+
+    try {
+      const submittedAt = new Date();
+      // Capture date and end time at submission, not only at page-load time.
+      dateInput.value = submittedAt.toLocaleDateString("en-GB");
+      dayInput.value = submittedAt.toLocaleDateString("en-US", { weekday: "long" });
+      endTimeInput.value = submittedAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+
+      const data = new FormData(form);
+      const studentName = String(data.get("studentName") || "").trim();
+      const studentId = String(data.get("studentId") || "").trim();
+      const branch = String(data.get("branch") || "").trim();
+      const courseType = String(data.get("courseType") || "").trim();
+      const course = String(data.get("course") || "").trim();
+      const year = String(data.get("year") || "").trim();
+      const classType = String(data.get("classType") || "").trim();
+      const review = String(data.get("review") || "").trim();
+      const startTime = String(data.get("startTime") || "").trim();
+      const endTime = endTimeInput.value;
+      const recordDate = dateInput.value;
+      const recordDay = dayInput.value;
+      const notes = `Branch: ${branch}; Academic year: ${year}; Class type: ${classType}; Review: ${review}; Class time: ${startTime}–${endTime}.`;
+
+      const record = {
+        // Compatibility fields used by the CINPS Academic Dashboard.
+        personName: studentName,
+        personId: studentId,
+        course,
+        recordDate,
+        notes,
+        topic: classType,
+        status: "Submitted",
+        attendanceStatus: "Submitted",
+
+        // Original Student Corner attendance fields retained for future use.
+        studentName,
+        studentId,
+        date: recordDate,
+        day: recordDay,
+        startTime,
+        endTime,
+        branch,
+        courseType,
+        year,
+        classType,
+        review,
+        source: "studentupdate-form",
+        createdAt: serverTimestamp()
+      };
+
+      await addDoc(collection(db, "attendance"), record);
+      form.reset();
+      window.cinpsRefreshAutoFields();
+      showState(window.cinpsStateSuccess);
+    } catch (error) {
+      console.error("CINPS attendance submission failed:", error);
+      const message = error?.code ? `${error.code}: ${error.message || "Submission failed."}` : (error?.message || "Submission failed. Please try again.");
+      const errorText = window.cinpsStateError.querySelector("p");
+      if (errorText) errorText.textContent = `Your attendance was not saved. ${message}`;
+      showState(window.cinpsStateError);
+    }
   });
 </script>
 
