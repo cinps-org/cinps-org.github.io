@@ -330,7 +330,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-    getFirestore, doc, collection, getDoc, getDocs, query, orderBy, limit, runTransaction, serverTimestamp 
+    getFirestore, doc, collection, getDoc, getDocs, query, orderBy, limit,
+    runTransaction, addDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -339,9 +340,25 @@ const firebaseConfig = {
     projectId: "cinps-student-corner"
 };
 
+// Keep Student Corner's existing Firebase project for login, student profile,
+// clinicalHours and the student-specific clinicalLogs subcollection.
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Separately mirror each successful clinical log into CINPS Core System so
+// the Academic Dashboard can count and display clinical_updates. This does
+// not introduce another sign-in flow.
+const reportingFirebaseConfig = {
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
+const reportingApp = initializeApp(reportingFirebaseConfig, "CINPSAcademicReporting");
+const reportingDb = getFirestore(reportingApp);
 
 let currentUser = null;
 
@@ -473,7 +490,49 @@ form.addEventListener("submit", async (e) => {
             });
         });
 
-        // Trigger Success UI
+        // Mirror the successfully saved log into the Academic Dashboard project.
+        // The Student Corner transaction is already committed at this point; if
+        // the dashboard mirror fails, report that separately and don't mislabel
+        // the original clinical log as failed.
+        let dashboardSyncSucceeded = true;
+        const studentName = document.getElementById("fullName").value.trim();
+        const course = document.getElementById("course").value.trim();
+        const clinicalDate = document.getElementById("clinicalDate").value;
+        const hospital = document.getElementById("hospitalName").value.trim();
+        const department = document.getElementById("department").value.trim();
+        const skills = document.getElementById("skills").value.trim();
+        const dashboardNotes = `${skills} · Hospital: ${hospital} · Department: ${department} · Time: ${startStr}–${endStr} · Hours: ${hoursWorked}`;
+
+        try {
+            await addDoc(collection(reportingDb, "clinical_updates"), {
+                personName: studentName,
+                personId: currentUser.uid,
+                course,
+                recordDate: clinicalDate,
+                notes: dashboardNotes,
+                topic: skills,
+                startTime: startStr,
+                endTime: endStr,
+                hoursLogged: hoursWorked,
+                hospital,
+                department,
+                skills,
+                createdBy: currentUser.uid,
+                createdByEmail: currentUser.email || "",
+                createdAt: serverTimestamp(),
+                source: "clinical-exposure-portal"
+            });
+        } catch (mirrorError) {
+            dashboardSyncSucceeded = false;
+            console.error("Clinical log saved to Student Corner, but Academic Dashboard sync failed:", mirrorError);
+        }
+
+        const successMessage = document.querySelector("#stateSuccess p");
+        if (successMessage) {
+            successMessage.textContent = dashboardSyncSucceeded
+                ? "Clinical log saved successfully and synced to the Academic Dashboard."
+                : "Clinical log saved to your student record, but Academic Dashboard sync failed. Please notify administration.";
+        }
         showModalState(stateSuccess);
         
     } catch (error) {
