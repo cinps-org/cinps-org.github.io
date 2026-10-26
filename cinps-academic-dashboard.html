@@ -211,6 +211,26 @@ function formatDate(value) {
   if(value.toDate) return value.toDate().toLocaleDateString();
   return "—";
 }
+// Display stored times consistently in 12-hour format (e.g. 01:20 PM).
+function formatTime(value) {
+  if(value == null || String(value).trim() === "") return "";
+  const text = String(value).trim();
+  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
+  if(twelveHour) {
+    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
+    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
+  }
+  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if(twentyFourHour) {
+    const hours = Number(twentyFourHour[1]);
+    if(hours >= 0 && hours <= 23) {
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const hour12 = hours % 12 || 12;
+      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
+    }
+  }
+  return text;
+}
 function setSignedOut(message="Please sign in with your CINPS administrator account.") {
   currentUser = null;
   $("app").classList.add("hidden");
@@ -339,20 +359,32 @@ function renderRecent(data) {
   }
   rows.forEach(item=>{
     const tr=document.createElement("tr");
+    const isAttendance = item._collection === "attendance";
+    let notes = item.notes || "";
+    // Attendance notes include the time range already; normalize it there and avoid
+    // repeating status/topic/time fields that are already described in the notes.
+    if(isAttendance && item.startTime && item.endTime) {
+      const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+      if(/Class time:\s*[^.;]+/i.test(notes)) {
+        notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
+      } else {
+        notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
+      }
+    }
     const details=[
-      item.notes,
-      item.topic,
-      item.status,
-      item.attendanceStatus,
+      notes,
+      isAttendance ? "" : item.topic,
+      isAttendance ? "" : item.status,
+      isAttendance ? "" : item.attendanceStatus,
       item.courseType,
       item.mode,
-      item.startTime ? `Start: ${item.startTime}` : "",
-      item.endTime ? `End: ${item.endTime}` : ""
+      !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
+      !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
     ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
     const values=[
       formatDate(item.recordDate || item.date),
       types[item._collection] || item._collection,
-      item.personName || item.name || item.instructorName || "—",
+      item.personName || item.name || item.instructorName || item.studentName || "—",
       item.course || "—",
       details
     ];
