@@ -6,7 +6,6 @@
     <title>Teacher Class Update | CINPS Instructor Hub</title>
     <meta name="description" content="CINPS Faculty Dashboard and Reporting Portal for logging class updates.">
     
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -287,19 +286,8 @@
             <p>Faculty Dashboard & Reporting Portal</p>
         </div>
 
-        <div class="login-box" id="loginBox">
-            <p>Please verify your faculty identity to submit logs.</p>
-            <div id="g_id_onload"
-                 data-client_id="1090859121308-jk9gph8hg92cfdivi6n1u6bq8tbquc6t.apps.googleusercontent.com"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin"
-                 data-type="standard"
-                 data-size="large"
-                 data-theme="outline"
-                 data-shape="rectangular">
-            </div>
+        <div class="login-box" id="loginBox" role="status" style="display:none;">
+            <p id="authMessage">Checking instructor access…</p>
         </div>
 
         <form id="classUpdateForm">
@@ -459,24 +447,11 @@
         drawerClose?.addEventListener('click', closeDrawer);
         drawerBackdrop?.addEventListener('click', closeDrawer);
 
-        // --- Core Application Logic (Preserved exactly as requested) ---
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHpuX4WLBGDImZdmBOSWLyRaQa6EBFBNYwlD7pvIjpKR7D-TZ4wDPTSfCA_MhDMzPugw/exec";
-        
+        // --- Core form presentation logic ---
         const now = new Date();
         document.getElementById('date').value = now.toLocaleDateString("en-GB");
         document.getElementById('day').value = now.toLocaleDateString("en-US", {weekday: "long"});
         document.getElementById('endTime').value = now.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"});
-
-        // Google Auth
-        function handleCredentialResponse(response) {
-            const data = JSON.parse(atob(response.credential.split('.')[1]));
-            document.getElementById('instructorDisplay').value = data.name + " (Verified)";
-            document.getElementById('instructorName').value = data.name;
-            document.getElementById('instructorEmail').value = data.email;
-            
-            document.getElementById('loginBox').style.display = "none";
-            document.getElementById('submitBtn').disabled = false;
-        }
 
         function updateCharCount() {
             const length = document.getElementById('topicInput').value.length;
@@ -520,27 +495,7 @@
             setTimeout(() => { popupOverlay.style.display = "none"; }, 3500);
         }
 
-        document.getElementById('classUpdateForm').addEventListener("submit", function(e) {
-            e.preventDefault();
-            showLoading();
-            
-            fetch(SCRIPT_URL, { method: "POST", body: new FormData(this) })
-            .then(r => r.json())
-            .then(() => { 
-                showSuccess(); 
-                this.reset();
-                updateCharCount();
-                document.getElementById('durationDisplay').innerText = "";
-                // Restore auto-filled time after reset
-                document.getElementById('date').value = new Date().toLocaleDateString("en-GB");
-                document.getElementById('day').value = new Date().toLocaleDateString("en-US", {weekday: "long"});
-                document.getElementById('endTime').value = new Date().toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"});
-            })
-            .catch(() => { 
-                popupCard.innerHTML = "<h3 style='color:#ef4444;'>❌ Submission Failed</h3><p>Please check your connection and try again.</p>"; 
-                setTimeout(() => { popupOverlay.style.display = "none"; }, 3000);
-            });
-        });
+        // Firestore submission/authentication is handled by the Firebase module below.
 
         // --- Pulse AI Chatbot Logic ---
         const chatBtn = document.getElementById('cinps-chat-btn');
@@ -625,5 +580,162 @@
             } 
         });
     </script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { getFirestore, doc, getDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAXpLXm0nceiQDSAmjG819Ww-6Rx9XMrLo",
+        authDomain: "cinps-academic-intelligence.firebaseapp.com",
+        projectId: "cinps-academic-intelligence",
+        storageBucket: "cinps-academic-intelligence.firebasestorage.app",
+        messagingSenderId: "10345484796386",
+        appId: "1:10345484796386:web:f9e5896a68ad80c3bc82bb"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      let currentInstructor = null;
+      const authMessage = document.getElementById("authMessage");
+      const loginBox = document.getElementById("loginBox");
+      const form = document.getElementById("classUpdateForm");
+      const submitBtn = document.getElementById("submitBtn");
+      let redirectStarted = false;
+
+      // Hide the class form until Firebase confirms that this account is an active instructor.
+      form.style.display = "none";
+
+      async function authorizeInstructor(user) {
+        const profileRef = doc(db, "instructors", user.uid);
+        const profileSnap = await getDoc(profileRef);
+        if (!profileSnap.exists() ||
+            profileSnap.data().active !== true ||
+            (profileSnap.data().email || "").toLowerCase() !== (user.email || "").toLowerCase()) {
+          currentInstructor = null;
+          await signOut(auth);
+          loginBox.style.display = "block";
+          authMessage.textContent = "Access is not enabled for this Google account. Please contact the CINPS Super Admin to authorize your instructor account.";
+          sessionStorage.setItem("cinpsInstructorAccessDenied", "1");
+          return;
+        }
+
+        sessionStorage.removeItem("cinpsInstructorAccessDenied");
+        const profile = profileSnap.data();
+        currentInstructor = {
+          uid: user.uid,
+          email: user.email,
+          name: profile.name || user.displayName || user.email
+        };
+        document.getElementById("instructorDisplay").value = currentInstructor.name + " (Verified)";
+        document.getElementById("instructorName").value = currentInstructor.name;
+        document.getElementById("instructorEmail").value = currentInstructor.email;
+        loginBox.style.display = "none";
+        form.style.display = "";
+        submitBtn.disabled = false;
+      }
+
+      // Resolve the redirect result, then automatically request Google sign-in when the page is opened.
+      try {
+        await getRedirectResult(auth);
+      } catch (err) {
+        console.error("Instructor sign-in redirect error:", err);
+        loginBox.style.display = "block";
+        authMessage.textContent = "Google sign-in could not be completed. Reload this page to try again.";
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            await authorizeInstructor(user);
+          } catch (err) {
+            console.error("Instructor authorization error:", err);
+            loginBox.style.display = "block";
+            authMessage.textContent = "Could not verify instructor access. Please reload the page or contact the CINPS administrator.";
+          }
+          return;
+        }
+
+        currentInstructor = null;
+        form.style.display = "none";
+        submitBtn.disabled = true;
+
+        // Do not repeatedly redirect if the signed-in account was rejected.
+        if (sessionStorage.getItem("cinpsInstructorAccessDenied") === "1") {
+          loginBox.style.display = "block";
+          authMessage.textContent = "Access is not enabled for this Google account. Please contact the CINPS Super Admin.";
+          return;
+        }
+
+        if (!redirectStarted) {
+          redirectStarted = true;
+          loginBox.style.display = "block";
+          authMessage.textContent = "Redirecting to Google sign-in…";
+          try {
+            await signInWithRedirect(auth, provider);
+          } catch (err) {
+            console.error("Could not start Google sign-in:", err);
+            authMessage.textContent = "Google sign-in could not be started. Check the Firebase Authorized Domains settings and reload this page.";
+          }
+        }
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentInstructor || !auth.currentUser || auth.currentUser.uid !== currentInstructor.uid) {
+          alert("Your instructor access is not verified. Reload the page or contact the CINPS administrator.");
+          return;
+        }
+        if (!form.reportValidity()) return;
+        const topic = document.getElementById("topicInput").value.trim();
+        if (!topic) { alert("Please enter the topic taught."); return; }
+        submitBtn.disabled = true;
+        showLoading();
+        const data = new FormData(form);
+        const now = new Date();
+        const startTime = `${data.get("startHour")}:${data.get("startMinute")} ${data.get("ampm")}`;
+        const record = {
+          date: data.get("date"),
+          day: data.get("day"),
+          instructorUid: currentInstructor.uid,
+          instructorName: currentInstructor.name,
+          instructorEmail: currentInstructor.email,
+          startHour: data.get("startHour"),
+          startMinute: data.get("startMinute"),
+          ampm: data.get("ampm"),
+          startTime,
+          endTime: now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+          mode: data.get("mode"),
+          courseType: data.get("courseType"),
+          course: data.get("course"),
+          topic,
+          submittedAt: serverTimestamp(),
+          source: "instructor-hub"
+        };
+        try {
+          await addDoc(collection(db, "class_updates"), record);
+          showSuccess();
+          form.reset();
+          document.getElementById("date").value = new Date().toLocaleDateString("en-GB");
+          document.getElementById("day").value = new Date().toLocaleDateString("en-US", { weekday: "long" });
+          document.getElementById("instructorDisplay").value = currentInstructor.name + " (Verified)";
+          document.getElementById("instructorName").value = currentInstructor.name;
+          document.getElementById("instructorEmail").value = currentInstructor.email;
+          document.getElementById("durationDisplay").innerText = "";
+          updateCharCount();
+        } catch (err) {
+          console.error("Firestore class update write failed:", err);
+          popupCard.innerHTML = `<h3 style="color:#ef4444;">Submission Failed</h3><p>${(err.message || "Could not save the class record.").replace(/[<>]/g, "")}</p><p style="font-size:12px;">If this says permission denied, Firestore Rules must authorize active instructor profiles to create class_updates.</p>`;
+          setTimeout(() => { popupOverlay.style.display = "none"; }, 6000);
+        } finally {
+          submitBtn.disabled = !currentInstructor;
+        }
+      });
+    </script>
+
 </body>
 </html>
