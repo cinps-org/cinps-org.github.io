@@ -324,9 +324,11 @@ function renderChart(data) {
   });
 }
 function renderRecent(data) {
+  // Instructor Hub records use submittedAt/date/instructorName; dashboard-form
+  // records use createdAt/recordDate/personName. Support both schemas.
   const rows=Object.values(data).flat().sort((a,b)=>{
-    const ta=a.createdAt?.toMillis?.() || 0;
-    const tb=b.createdAt?.toMillis?.() || 0;
+    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
+    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
     return tb-ta;
   }).slice(0,30);
   const body=$("recentRows");body.replaceChildren();
@@ -337,12 +339,22 @@ function renderRecent(data) {
   }
   rows.forEach(item=>{
     const tr=document.createElement("tr");
+    const details=[
+      item.notes,
+      item.topic,
+      item.status,
+      item.attendanceStatus,
+      item.courseType,
+      item.mode,
+      item.startTime ? `Start: ${item.startTime}` : "",
+      item.endTime ? `End: ${item.endTime}` : ""
+    ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
     const values=[
-      formatDate(item.recordDate),
+      formatDate(item.recordDate || item.date),
       types[item._collection] || item._collection,
-      item.personName || item.name || "—",
+      item.personName || item.name || item.instructorName || "—",
       item.course || "—",
-      item.notes || item.topic || item.status || item.attendanceStatus || "—"
+      details
     ];
     values.forEach(value=>{const td=document.createElement("td");td.textContent=safeText(value);tr.append(td)});
     body.append(tr);
