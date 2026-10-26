@@ -375,15 +375,30 @@ import {
     getFirestore, doc, collection, getDoc, getDocs, query, orderBy, limit, addDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey:"AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
+// Keep Student Corner's existing Firebase app for sign-in, student profile,
+// and the six-hour cooldown. This preserves the current login flow.
+const studentCornerFirebaseConfig = {
+    apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
     authDomain: "cinps-student-corner.firebaseapp.com",
-    projectId:  "cinps-student-corner"
+    projectId: "cinps-student-corner"
 };
 
-const app = initializeApp(firebaseConfig);
+// Central CINPS Core System project used by the Academic Dashboard.
+const coreFirebaseConfig = {
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
+
+// Do not rename the existing default app: Firebase Auth persistence may rely on it.
+const app = initializeApp(studentCornerFirebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const coreApp = initializeApp(coreFirebaseConfig, "CINPSCoreSystem");
+const coreDb = getFirestore(coreApp);
 
 let currentUser = null;
 
@@ -476,28 +491,68 @@ form.addEventListener("submit", async (e) => {
 
     const logsCollectionRef = collection(db, "students", currentUser.uid, "internshipLogs");
 
-    try {
-        // Write the log directly to the subcollection to adhere to strict Firestore Rules
-        await addDoc(logsCollectionRef, {
-            studentName: document.getElementById("fullName").value,
-            course: document.getElementById("course").value,
-            date: document.getElementById("logDate").value,
-            shift: document.getElementById("shiftType").value,
-            startTime: document.getElementById("startTime").value,
-            endTime: document.getElementById("endTime").value,
-            hospital: document.getElementById("hospitalName").value,
-            department: document.getElementById("department").value,
-            supervisor: document.getElementById("supervisorName").value,
-            tasks: document.getElementById("tasksHandled").value,
-            createdAt: serverTimestamp()
-        });
+    const studentName = document.getElementById("fullName").value.trim();
+    const course = document.getElementById("course").value;
+    const date = document.getElementById("logDate").value;
+    const shift = document.getElementById("shiftType").value;
+    const startTime = document.getElementById("startTime").value;
+    const endTime = document.getElementById("endTime").value;
+    const hospital = document.getElementById("hospitalName").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const supervisor = document.getElementById("supervisorName").value.trim();
+    const tasks = document.getElementById("tasksHandled").value.trim();
 
-        // Trigger Success UI after database write is confirmed
+    // Keep the original Student Corner log format for its six-hour cooldown.
+    const studentCornerRecord = {
+        studentName, course, date, shift, startTime, endTime,
+        hospital, department, supervisor, tasks,
+        createdAt: serverTimestamp()
+    };
+
+    // Mirror the internship log into the central collection read by the Academic Dashboard.
+    const dashboardRecord = {
+        studentUid: currentUser.uid,
+        studentName,
+        personName: studentName,
+        course,
+        date,
+        recordDate: date,
+        shift,
+        startTime,
+        endTime,
+        hospital,
+        department,
+        supervisor,
+        tasks,
+        notes: `Shift: ${shift} · Hospital: ${hospital} · Department: ${department} · Supervisor: ${supervisor} · Tasks: ${tasks}`,
+        createdBy: currentUser.uid,
+        createdByEmail: currentUser.email || "",
+        source: "student-corner-internship-portal",
+        createdAt: serverTimestamp()
+    };
+
+    let studentCornerSaved = false;
+    let coreSystemSaved = false;
+    try {
+        // Maintain the original log first so the Student Corner cooldown remains functional.
+        await addDoc(logsCollectionRef, studentCornerRecord);
+        studentCornerSaved = true;
+
+        // The dashboard reads this top-level collection from CINPS Core System.
+        await addDoc(collection(coreDb, "internship_updates"), dashboardRecord);
+        coreSystemSaved = true;
+
         showModalState(stateSuccess);
-        
+
     } catch (error) {
-        console.error("Submission failed: ", error);
-        alert("Failed to submit data. Please check your network connection and try again.");
+        console.error("Internship submission/sync failed:", error);
+        let message = "Failed to submit the internship log. Please check your connection and try again.";
+        if (studentCornerSaved && !coreSystemSaved) {
+            message = "The log was saved to Student Corner, but it could not sync to the Academic Dashboard. Do not submit it again now; contact the CINPS administrator to avoid a duplicate.";
+        } else if (!studentCornerSaved && coreSystemSaved) {
+            message = "The log reached the Academic Dashboard, but the Student Corner cooldown record failed. Please contact the CINPS administrator before submitting again.";
+        }
+        alert(message);
         modalOverlay.classList.remove('active');
         submitBtn.disabled = false;
     }
