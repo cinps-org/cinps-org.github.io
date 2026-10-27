@@ -1,1 +1,437 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CINPS Academic Intelligence</title>
+<style>
+:root{--navy:#103b82;--blue:#1769e0;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7fd;color:var(--ink);font:15px Arial,sans-serif}
+header{background:white;border-bottom:1px solid var(--line);padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{background:var(--navy);color:white;font-weight:900;border-radius:12px;padding:13px}
+h1{font-size:21px;margin:0}
+.sub{font-size:12px;color:var(--muted);margin-top:5px}
+button,input,select,textarea{font:inherit}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+button.secondary{background:#e7effc;color:var(--navy)}
+main{max-width:1200px;margin:28px auto;padding:0 18px}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 5px 22px #163f7108}
+h2{font-size:19px;margin:0 0 16px}
+.muted{color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{background:var(--pale);border:1px solid var(--line);border-radius:13px;padding:18px}
+.stat label{display:block;color:var(--muted);font-size:13px}
+.stat strong{display:block;font-size:30px;margin-top:10px;color:var(--navy)}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd8ea;border-radius:8px;background:white;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+.status{padding:12px;border-radius:9px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.status.error{background:#fff0f0;color:var(--red)}
+.hidden{display:none!important}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f5f8fd;color:var(--muted)}
+.barrow{display:grid;grid-template-columns:120px 1fr 35px;gap:10px;align-items:center;margin:15px 0;font-size:13px}
+.track{height:10px;background:#e8eff9;border-radius:10px;overflow:hidden}
+.fill{height:100%;background:var(--blue);width:0}
+footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
+@media(max-width:480px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stat{padding:13px}.stat strong{font-size:25px}header{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">CINPS</div>
+    <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
+  </div>
+  <div id="accountArea"><button id="loginBtn">Continue with Google</button></div>
+</header>
+
+<main>
+  <section class="panel" id="welcome">
+    <h2>Academic Intelligence Dashboard</h2>
+    <p class="muted">Secure academic records, attendance, instructor updates and institutional insights in one place.</p>
+    <p class="muted">Sign in with an active CINPS administrator account to continue.</p>
+    <div id="welcomeStatus" class="muted"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="panel">
+      <h2>Academic overview</h2>
+      <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
+      <div class="grid">
+        <div class="stat"><label>Students</label><strong id="nStudents">0</strong></div>
+        <div class="stat"><label>Instructors</label><strong id="nInstructors">0</strong></div>
+        <div class="stat"><label>Attendance records</label><strong id="nAttendance">0</strong></div>
+        <div class="stat"><label>Class updates</label><strong id="nClasses">0</strong></div>
+      </div>
+      <div id="overviewStatus" class="muted" style="margin-top:14px">Loading academic data…</div>
+    </div>
+
+    <div class="columns">
+      <section class="panel">
+        <h2>Register an academic update</h2>
+        <p class="muted">Create a new student, instructor, attendance, class, clinical or internship record.</p>
+        <form id="recordForm">
+          <div class="field full">
+            <label for="recordType">Record type</label>
+            <select id="recordType" required>
+              <option value="students">Student registration</option>
+              <option value="instructors">Instructor registration</option>
+              <option value="attendance">Student attendance</option>
+              <option value="class_updates">Class update</option>
+              <option value="clinical_updates">Clinical update</option>
+              <option value="internship_updates">Internship update</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="personName">Student / instructor name</label>
+            <input id="personName" maxlength="120" required>
+          </div>
+          <div class="field">
+            <label for="personId">Student / staff ID (optional)</label>
+            <input id="personId" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="course">Course</label>
+            <input id="course" maxlength="120" placeholder="e.g. DMLT" required>
+          </div>
+          <div class="field">
+            <label for="recordDate">Record date</label>
+            <input id="recordDate" type="date" required>
+          </div>
+          <div class="field" id="attendanceField">
+            <label for="attendanceStatus">Attendance status</label>
+            <select id="attendanceStatus">
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+              <option value="Leave">Leave</option>
+            </select>
+          </div>
+          <div class="field" id="topicField">
+            <label for="topic">Subject / topic</label>
+            <input id="topic" maxlength="180" placeholder="Class or activity">
+          </div>
+          <div class="field full">
+            <label for="notes">Details / update</label>
+            <textarea id="notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
+          </div>
+          <div class="field full">
+            <button id="saveBtn" type="submit">Save new record</button>
+          </div>
+        </form>
+        <div id="formStatus" class="hidden"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Academic activity</h2>
+        <p class="muted">Record counts by category.</p>
+        <div id="activityChart"></div>
+        <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
+      </section>
+    </div>
+
+    <section class="panel">
+      <h2>Latest academic records</h2>
+      <p class="muted">The most recent records across the connected academic collections.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead>
+          <tbody id="recentRows"><tr><td colspan="5">Loading records…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    <div id="appError" class="status error hidden"></div>
+  </section>
+</main>
+<footer>CINPS Academic Intelligence · Firebase Authentication & Cloud Firestore</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, collection, addDoc, getDocs,
+  query, orderBy, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+  };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({prompt:"select_account"});
+
+const types = {
+  students:"Student",
+  instructors:"Instructor",
+  attendance:"Attendance",
+  class_updates:"Class update",
+  clinical_updates:"Clinical update",
+  internship_updates:"Internship update"
+};
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let refreshInProgress = false;
+
+function showStatus(id, message, error=false) {
+  const el = $(id);
+  el.textContent = message;
+  el.classList.remove("hidden","error");
+  if(error) el.classList.add("error");
+}
+function hideStatus(id){$(id).classList.add("hidden")}
+function safeText(value) {
+  return value == null ? "" : String(value);
+}
+function formatDate(value) {
+  if(!value) return "—";
+  if(typeof value === "string") return value;
+  if(value.toDate) return value.toDate().toLocaleDateString();
+  return "—";
+}
+// Display stored times consistently in 12-hour format (e.g. 01:20 PM).
+function formatTime(value) {
+  if(value == null || String(value).trim() === "") return "";
+  const text = String(value).trim();
+  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
+  if(twelveHour) {
+    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
+    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
+  }
+  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if(twentyFourHour) {
+    const hours = Number(twentyFourHour[1]);
+    if(hours >= 0 && hours <= 23) {
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const hour12 = hours % 12 || 12;
+      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
+    }
+  }
+  return text;
+}
+function setSignedOut(message="Please sign in with your CINPS administrator account.") {
+  currentUser = null;
+  $("app").classList.add("hidden");
+  $("welcome").classList.remove("hidden");
+  $("accountArea").replaceChildren();
+  const btn=document.createElement("button");
+  btn.id="loginBtn"; btn.textContent="Continue with Google";
+  btn.addEventListener("click",login);
+  $("accountArea").append(btn);
+  $("welcomeStatus").textContent=message;
+}
+async function login() {
+  $("loginBtn").disabled=true;
+  $("welcomeStatus").textContent="Opening Google sign-in…";
+  try { await signInWithPopup(auth,provider); }
+  catch(error) {
+    console.error(error);
+    showStatus("welcomeStatus",`${error.code || "Sign-in error"}: ${error.message}`,true);
+    $("loginBtn").disabled=false;
+  }
+}
+$("loginBtn").addEventListener("click",login);
+
+async function authorize(user) {
+  const adminRef=doc(db,"admins",user.uid);
+  const adminSnap=await getDoc(adminRef);
+  if(!adminSnap.exists()) throw new Error("This Google account is not registered as a CINPS administrator.");
+  const data=adminSnap.data();
+  if(data.active !== true || !["superAdmin","admin"].includes(data.role)) {
+    throw new Error("This administrator account is inactive or has no valid role.");
+  }
+  return data;
+}
+
+onAuthStateChanged(auth, async user => {
+  if(!user) { setSignedOut(); return; }
+  $("welcomeStatus").textContent="Verifying administrator permissions…";
+  try {
+    const admin=await authorize(user);
+    currentUser=user;
+    $("welcome").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("accountArea").replaceChildren();
+    const who=document.createElement("span");
+    who.style.cssText="color:#63748b;font-size:12px;margin-right:10px";
+    who.textContent=`${user.displayName || user.email} · ${admin.role}`;
+    const out=document.createElement("button");
+    out.className="secondary";out.textContent="Sign out";
+    out.addEventListener("click",()=>signOut(auth));
+    $("accountArea").append(who,out);
+    await refreshDashboard();
+  } catch(error) {
+    console.error(error);
+    await signOut(auth);
+    setSignedOut(error.message || "Administrator verification failed.");
+  }
+});
+
+$("recordType").addEventListener("change",()=>{
+  const type=$("recordType").value;
+  $("attendanceField").classList.toggle("hidden",type!=="attendance");
+  $("topicField").classList.toggle("hidden",type==="students"||type==="instructors");
+  $("personName").previousElementSibling.textContent =
+    type==="instructors" ? "Instructor name" : type==="students" ? "Student name" : "Student / instructor name";
+});
+
+$("recordDate").value=new Date().toLocaleDateString("en-CA");
+
+async function readCollection(name) {
+  const snap=await getDocs(collection(db,name));
+  return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
+}
+async function refreshDashboard() {
+  if(!currentUser || refreshInProgress) return;
+  refreshInProgress=true;
+  $("overviewStatus").textContent="Loading current records…";
+  hideStatus("appError");
+  try {
+    const names=Object.keys(types);
+    const results=await Promise.all(names.map(readCollection));
+    const data={};
+    names.forEach((name,i)=>data[name]=results[i]);
+    $("nStudents").textContent=data.students.length;
+    $("nInstructors").textContent=data.instructors.length;
+    $("nAttendance").textContent=data.attendance.length;
+    $("nClasses").textContent=data.class_updates.length;
+    $("overviewStatus").textContent=`Loaded ${names.reduce((sum,n)=>sum+data[n].length,0)} records from six Firestore collections.`;
+    renderChart(data);
+    renderRecent(data);
+  } catch(error) {
+    console.error(error);
+    showStatus("appError",`Could not load academic records: ${error.message}. Check Firestore rules and network access.`,true);
+    $("overviewStatus").textContent="Some data could not be loaded.";
+  } finally {
+    refreshInProgress=false;
+  }
+}
+function renderChart(data) {
+  const chart=$("activityChart");
+  chart.replaceChildren();
+  const counts=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));
+  const max=Math.max(1,...counts.map(x=>x.count));
+  counts.forEach(item=>{
+    const row=document.createElement("div");row.className="barrow";
+    const label=document.createElement("span");label.textContent=item.label;
+    const track=document.createElement("div");track.className="track";
+    const fill=document.createElement("div");fill.className="fill";
+    fill.style.width=`${item.count/max*100}%`;track.append(fill);
+    const count=document.createElement("strong");count.textContent=item.count;
+    row.append(label,track,count);chart.append(row);
+  });
+}
+function renderRecent(data) {
+  // Instructor Hub records use submittedAt/date/instructorName; dashboard-form
+  // records use createdAt/recordDate/personName. Support both schemas.
+  const rows=Object.values(data).flat().sort((a,b)=>{
+    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
+    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
+    return tb-ta;
+  }).slice(0,30);
+  const body=$("recentRows");body.replaceChildren();
+  if(!rows.length) {
+    const tr=document.createElement("tr"),td=document.createElement("td");
+    td.colSpan=5;td.textContent="No records yet. Add the first academic record using the form.";
+    tr.append(td);body.append(tr);return;
+  }
+  rows.forEach(item=>{
+    const tr=document.createElement("tr");
+    const isAttendance = item._collection === "attendance";
+    let notes = item.notes || "";
+    // Attendance notes include the time range already; normalize it there and avoid
+    // repeating status/topic/time fields that are already described in the notes.
+    if(isAttendance && item.startTime && item.endTime) {
+      const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+      if(/Class time:\s*[^.;]+/i.test(notes)) {
+        notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
+      } else {
+        notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
+      }
+    }
+    const details=[
+      notes,
+      isAttendance ? "" : item.topic,
+      isAttendance ? "" : item.status,
+      isAttendance ? "" : item.attendanceStatus,
+      item.courseType,
+      item.mode,
+      !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
+      !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
+    ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
+    const values=[
+      formatDate(item.recordDate || item.date),
+      types[item._collection] || item._collection,
+      item.personName || item.name || item.instructorName || item.studentName || "—",
+      item.course || "—",
+      details
+    ];
+    values.forEach(value=>{const td=document.createElement("td");td.textContent=safeText(value);tr.append(td)});
+    body.append(tr);
+  });
+}
+$("recordForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!currentUser) {showStatus("formStatus","Sign in again to continue.",true);return}
+  const type=$("recordType").value;
+  const personName=$("personName").value.trim();
+  const course=$("course").value.trim();
+  const recordDate=$("recordDate").value;
+  if(!personName||!course||!recordDate) {
+    showStatus("formStatus","Please complete the name, course and date.",true);return;
+  }
+  const record={
+    personName,
+    personId:$("personId").value.trim(),
+    course,
+    recordDate,
+    notes:$("notes").value.trim(),
+    topic:$("topic").value.trim(),
+    createdBy:currentUser.uid,
+    createdByEmail:currentUser.email || "",
+    createdAt:serverTimestamp()
+  };
+  if(type==="attendance") record.attendanceStatus=$("attendanceStatus").value;
+  $("saveBtn").disabled=true;
+  $("saveBtn").textContent="Saving…";
+  try {
+    await addDoc(collection(db,type),record);
+    showStatus("formStatus",`${types[type]} record saved successfully.`);
+    $("recordForm").reset();
+    $("recordDate").value=new Date().toLocaleDateString("en-CA");
+    $("recordType").dispatchEvent(new Event("change"));
+    await refreshDashboard();
+  } catch(error) {
+    console.error(error);
+    showStatus("formStatus",`Record not saved: ${error.message}`,true);
+  } finally {
+    $("saveBtn").disabled=false;
+    $("saveBtn").textContent="Save new record";
+  }
+});
+$("recordType").dispatchEvent(new Event("change"));
+</script>
+</body>
+</html>
