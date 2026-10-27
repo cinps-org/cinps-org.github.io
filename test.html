@@ -1,101 +1,437 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#103b82">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CINPS Academic Intelligence</title>
 <style>
-:root{--navy:#103b82;--blue:#1769e0;--blue2:#0b57c4;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323;--amber:#9a5b00;--surface:#fff;--bg:#f3f7fd;--shadow:0 8px 28px rgba(16,59,130,.07)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,Arial,sans-serif}button,input,select,textarea{font:inherit}button,.navbtn{border:1px solid transparent;border-radius:10px;padding:10px 14px;background:var(--blue);color:white;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:background .15s,transform .15s}button:hover,.navbtn:hover{background:var(--blue2)}button:active,.navbtn:active{transform:translateY(1px)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #8db8ff;outline-offset:2px}button:disabled{opacity:.55;cursor:wait}.secondary{background:#e7effc!important;color:var(--navy)!important;border-color:#d4e2f8!important}.outline{background:#fff!important;color:var(--navy)!important;border-color:var(--line)!important}.topbar{background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 12px #163f7108;position:sticky;top:0;z-index:10}.header-inner{max-width:1440px;margin:auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:13px;min-width:230px}.logo{background:var(--navy);color:#fff;font-weight:900;letter-spacing:.3px;border-radius:12px;padding:14px 12px;box-shadow:inset 0 -3px 0 #ffffff22}.brand h1{font-size:20px;line-height:1.2;margin:0}.sub{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.45px}.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.account{font-size:12px;color:var(--muted);margin-right:5px;max-width:230px;overflow-wrap:anywhere}.wrap{max-width:1440px;margin:24px auto;padding:0 24px}.welcome{max-width:720px;margin:50px auto}.panel{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:22px;margin-bottom:20px;box-shadow:var(--shadow);min-width:0}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}.panel h2{font-size:18px;line-height:1.3;margin:0 0 7px}.panel h3{font-size:15px;margin:0}.muted{color:var(--muted);line-height:1.55}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.stat{position:relative;background:linear-gradient(145deg,#f8fbff,#eef5ff);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0;overflow:hidden}.stat:after{content:"";position:absolute;width:4px;left:0;top:0;bottom:0;background:var(--blue)}.stat label{display:block;color:var(--muted);font-size:12px;line-height:1.4}.stat strong{display:block;font-size:29px;line-height:1.1;margin-top:10px;color:var(--navy);font-variant-numeric:tabular-nums}.stat small{display:block;color:var(--muted);font-size:11px;margin-top:7px}.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:750;color:#405570}input,select,textarea{width:100%;min-width:0;padding:11px 12px;border:1px solid #cbd8ea;border-radius:9px;background:#fff;color:var(--ink)}input::placeholder,textarea::placeholder{color:#93a0b2}textarea{min-height:95px;resize:vertical}.form-actions{display:flex;gap:10px;flex-wrap:wrap}.activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.activity-item{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;min-width:0}.activity-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;font-weight:700}.activity-count{font-size:20px;color:var(--navy);font-weight:800;font-variant-numeric:tabular-nums}.track{height:7px;background:#e8eff9;border-radius:20px;overflow:hidden;margin-top:10px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#6da5ff);border-radius:20px;transition:width .3s}.activity-foot{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:11px;margin-top:7px}.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.search{max-width:280px}.tablewrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:collapse;font-size:12px;min-width:680px}th,td{text-align:left;padding:12px 13px;border-bottom:1px solid #e6edf7;vertical-align:top}th{background:#f5f8fd;color:#56677f;font-size:11px;letter-spacing:.35px;text-transform:uppercase;white-space:nowrap;position:sticky;top:0}tbody tr:hover{background:#f8fbff}tbody tr:last-child td{border-bottom:0}.pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:30px;background:#eaf2ff;color:var(--navy);font-size:11px;font-weight:750;white-space:nowrap}.pill.green{background:#eaf7ef;color:var(--green)}.pill.amber{background:#fff5df;color:var(--amber)}.empty{padding:22px!important;text-align:center;color:var(--muted)}.status{padding:12px 14px;border-radius:10px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}.status.error{background:#fff0f0;color:var(--red)}.status.info{background:#edf4ff;color:var(--navy)}.hidden{display:none!important}.updated{font-size:12px;color:var(--muted)}.table-note{font-size:12px;color:var(--muted);margin:10px 0 0}footer{text-align:center;color:var(--muted);padding:24px 16px;font-size:12px}#overviewStatus{margin-top:14px;font-size:12px}.refresh-spin{display:inline-block}.loading{opacity:.7;pointer-events:none}
-@media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.header-inner{padding:13px 18px}.wrap{padding:0 18px}}
-@media(max-width:820px){.layout,.section-grid{grid-template-columns:1fr}.header-inner{align-items:flex-start}.header-actions{justify-content:flex-start}.account{max-width:100%}}
-@media(max-width:560px){.header-inner{padding:12px}.brand{min-width:0}.brand h1{font-size:17px}.logo{padding:11px 10px}.sub{font-size:9px}.header-actions{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.account{grid-column:1/-1}.header-actions button,.header-actions .navbtn{width:100%;font-size:12px;padding:10px 8px}.wrap{margin:14px auto;padding:0 10px}.panel{padding:15px;border-radius:13px;margin-bottom:13px}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat strong{font-size:25px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.activity-grid{grid-template-columns:1fr 1fr}.panel-head{gap:10px}.tools{width:100%}.search{max-width:none;flex:1;min-width:140px}.form-actions button{flex:1}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+:root{--navy:#103b82;--blue:#1769e0;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7fd;color:var(--ink);font:15px Arial,sans-serif}
+header{background:white;border-bottom:1px solid var(--line);padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{background:var(--navy);color:white;font-weight:900;border-radius:12px;padding:13px}
+h1{font-size:21px;margin:0}
+.sub{font-size:12px;color:var(--muted);margin-top:5px}
+button,input,select,textarea{font:inherit}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+button.secondary{background:#e7effc;color:var(--navy)}
+main{max-width:1200px;margin:28px auto;padding:0 18px}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 5px 22px #163f7108}
+h2{font-size:19px;margin:0 0 16px}
+.muted{color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{background:var(--pale);border:1px solid var(--line);border-radius:13px;padding:18px}
+.stat label{display:block;color:var(--muted);font-size:13px}
+.stat strong{display:block;font-size:30px;margin-top:10px;color:var(--navy)}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd8ea;border-radius:8px;background:white;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+.status{padding:12px;border-radius:9px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.status.error{background:#fff0f0;color:var(--red)}
+.hidden{display:none!important}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f5f8fd;color:var(--muted)}
+.barrow{display:grid;grid-template-columns:120px 1fr 35px;gap:10px;align-items:center;margin:15px 0;font-size:13px}
+.track{height:10px;background:#e8eff9;border-radius:10px;overflow:hidden}
+.fill{height:100%;background:var(--blue);width:0}
+footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
+@media(max-width:480px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stat{padding:13px}.stat strong{font-size:25px}header{padding:14px}}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="header-inner">
-  <div class="brand"><div class="logo">CINPS</div><div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL &amp; ALLIED HEALTHCARE EDUCATION</div></div></div>
-  <div class="header-actions" id="accountArea"><button id="loginBtn">Continue with Google</button></div>
-</div></header>
-<main class="wrap">
-  <section class="panel welcome" id="welcome"><div class="eyebrow">CINPS · Administration</div><h2 style="font-size:24px;margin-top:8px">Academic Intelligence Dashboard</h2><p class="muted">A central view of student records, instructor activity, attendance and academic updates.</p><p class="muted">Sign in with an active CINPS administrator account to continue.</p><div id="welcomeStatus" class="muted" role="status" aria-live="polite"></div></section>
+<header>
+  <div class="brand">
+    <div class="logo">CINPS</div>
+    <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
+  </div>
+  <div id="accountArea"><button id="loginBtn">Continue with Google</button></div>
+</header>
+
+<main>
+  <section class="panel" id="welcome">
+    <h2>Academic Intelligence Dashboard</h2>
+    <p class="muted">Secure academic records, attendance, instructor updates and institutional insights in one place.</p>
+    <p class="muted">Sign in with an active CINPS administrator account to continue.</p>
+    <div id="welcomeStatus" class="muted"></div>
+  </section>
+
   <section id="app" class="hidden">
-    <section class="panel"><div class="panel-head"><div><div class="eyebrow">Institutional snapshot</div><h2>Academic overview</h2><div class="muted">Live counts from the six connected Firestore collections.</div></div><div class="updated" id="lastUpdated">Not refreshed yet</div></div>
-      <div class="stats">
-        <div class="stat"><label>Student profiles</label><strong id="nStudents">0</strong><small>Registered student records</small></div>
-        <div class="stat"><label>Instructor profiles</label><strong id="nInstructors">0</strong><small>Instructor records</small></div>
-        <div class="stat"><label>Attendance records</label><strong id="nAttendance">0</strong><small>Attendance entries</small></div>
-        <div class="stat"><label>Class updates</label><strong id="nClasses">0</strong><small>Teaching activity logs</small></div>
-        <div class="stat"><label>Clinical updates</label><strong id="nClinical">0</strong><small>Clinical learning logs</small></div>
-        <div class="stat"><label>Internship updates</label><strong id="nInternship">0</strong><small>Internship learning logs</small></div>
-      </div><div id="overviewStatus" class="muted" role="status" aria-live="polite">Loading academic data…</div>
-    </section>
-    <div class="layout">
-      <section class="panel"><div class="panel-head"><div><div class="eyebrow">Data entry</div><h2>Register an academic update</h2><div class="muted">Create a record in the selected Firestore collection.</div></div></div>
-        <form id="recordForm" class="form-grid">
-          <div class="field full"><label for="recordType">Record type</label><select id="recordType" required><option value="students">Student registration</option><option value="instructors">Instructor registration</option><option value="attendance">Student attendance</option><option value="class_updates">Class update</option><option value="clinical_updates">Clinical update</option><option value="internship_updates">Internship update</option></select></div>
-          <div class="field"><label for="personName" id="personNameLabel">Student name</label><input id="personName" maxlength="120" autocomplete="name" required></div>
-          <div class="field"><label for="personId">Student / staff ID (optional)</label><input id="personId" maxlength="80"></div>
-          <div class="field"><label for="course">Course</label><input id="course" maxlength="120" placeholder="e.g. DMLT" required></div>
-          <div class="field"><label for="recordDate">Record date</label><input id="recordDate" type="date" required></div>
-          <div class="field hidden" id="attendanceField"><label for="attendanceStatus">Attendance status</label><select id="attendanceStatus"><option value="Present">Present</option><option value="Absent">Absent</option><option value="Late">Late</option><option value="Leave">Leave</option></select></div>
-          <div class="field" id="topicField"><label for="topic">Subject / topic</label><input id="topic" maxlength="180" placeholder="Class or activity"></div>
-          <div class="field full"><label for="notes">Details / update</label><textarea id="notes" maxlength="3000" placeholder="Enter factual academic details"></textarea></div>
-          <div class="field full form-actions"><button id="saveBtn" type="submit">Save new record</button><button id="clearFormBtn" class="secondary" type="button">Clear form</button></div>
-        </form><div id="formStatus" class="hidden" role="status" aria-live="polite"></div>
+    <div class="panel">
+      <h2>Academic overview</h2>
+      <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
+      <div class="grid">
+        <div class="stat"><label>Students</label><strong id="nStudents">0</strong></div>
+        <div class="stat"><label>Instructors</label><strong id="nInstructors">0</strong></div>
+        <div class="stat"><label>Attendance records</label><strong id="nAttendance">0</strong></div>
+        <div class="stat"><label>Class updates</label><strong id="nClasses">0</strong></div>
+      </div>
+      <div id="overviewStatus" class="muted" style="margin-top:14px">Loading academic data…</div>
+    </div>
+
+    <div class="columns">
+      <section class="panel">
+        <h2>Register an academic update</h2>
+        <p class="muted">Create a new student, instructor, attendance, class, clinical or internship record.</p>
+        <form id="recordForm">
+          <div class="field full">
+            <label for="recordType">Record type</label>
+            <select id="recordType" required>
+              <option value="students">Student registration</option>
+              <option value="instructors">Instructor registration</option>
+              <option value="attendance">Student attendance</option>
+              <option value="class_updates">Class update</option>
+              <option value="clinical_updates">Clinical update</option>
+              <option value="internship_updates">Internship update</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="personName">Student / instructor name</label>
+            <input id="personName" maxlength="120" required>
+          </div>
+          <div class="field">
+            <label for="personId">Student / staff ID (optional)</label>
+            <input id="personId" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="course">Course</label>
+            <input id="course" maxlength="120" placeholder="e.g. DMLT" required>
+          </div>
+          <div class="field">
+            <label for="recordDate">Record date</label>
+            <input id="recordDate" type="date" required>
+          </div>
+          <div class="field" id="attendanceField">
+            <label for="attendanceStatus">Attendance status</label>
+            <select id="attendanceStatus">
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+              <option value="Leave">Leave</option>
+            </select>
+          </div>
+          <div class="field" id="topicField">
+            <label for="topic">Subject / topic</label>
+            <input id="topic" maxlength="180" placeholder="Class or activity">
+          </div>
+          <div class="field full">
+            <label for="notes">Details / update</label>
+            <textarea id="notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
+          </div>
+          <div class="field full">
+            <button id="saveBtn" type="submit">Save new record</button>
+          </div>
+        </form>
+        <div id="formStatus" class="hidden"></div>
       </section>
-      <section class="panel"><div class="panel-head"><div><div class="eyebrow">Engagement &amp; operations</div><h2>Academic activity</h2><div class="muted">Compare record volume across all academic categories.</div></div><span class="pill" id="activityTotal">0 records</span></div>
-        <div id="activityChart" class="activity-grid"><div class="muted">Activity summary will appear after data loads.</div></div><p class="table-note">Counts represent stored records, not unique people or attendance percentages.</p>
+
+      <section class="panel">
+        <h2>Academic activity</h2>
+        <p class="muted">Record counts by category.</p>
+        <div id="activityChart"></div>
+        <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
       </section>
     </div>
-    <section class="panel"><div class="panel-head"><div><div class="eyebrow">People directory</div><h2>Student records</h2><div class="muted">Student documents from the connected <code>students</code> collection.</div></div><div class="tools"><input class="search" id="studentSearch" type="search" placeholder="Search students…" aria-label="Search students"></div></div>
-      <div class="tablewrap"><table><thead><tr><th>Student</th><th>Student ID / UID</th><th>Course</th><th>Branch</th><th>Email</th><th>Record date</th></tr></thead><tbody id="studentRows"><tr><td colspan="6" class="empty">Loading student records…</td></tr></tbody></table></div><p class="table-note" id="studentTableNote">Student directory</p>
+
+    <section class="panel">
+      <h2>Latest academic records</h2>
+      <p class="muted">The most recent records across the connected academic collections.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead>
+          <tbody id="recentRows"><tr><td colspan="5">Loading records…</td></tr></tbody>
+        </table>
+      </div>
     </section>
-    <section class="panel"><div class="panel-head"><div><div class="eyebrow">Teaching team</div><h2>Instructor records</h2><div class="muted">Instructor documents from the connected <code>instructors</code> collection.</div></div><div class="tools"><input class="search" id="instructorSearch" type="search" placeholder="Search instructors…" aria-label="Search instructors"></div></div>
-      <div class="tablewrap"><table><thead><tr><th>Instructor</th><th>Staff ID / UID</th><th>Email</th><th>Course / subject</th><th>Branch</th><th>Status</th></tr></thead><tbody id="instructorRows"><tr><td colspan="6" class="empty">Loading instructor records…</td></tr></tbody></table></div><p class="table-note" id="instructorTableNote">Instructor directory</p>
-    </section>
-    <section class="panel"><div class="panel-head"><div><div class="eyebrow">Recent activity log</div><h2>Latest academic records</h2><div class="muted">Latest 30 records across attendance, class, clinical and internship activity.</div></div><div class="tools"><input class="search" id="recentSearch" type="search" placeholder="Search academic records…" aria-label="Search latest academic records"></div></div>
-      <div class="tablewrap"><table><thead><tr><th>Date</th><th>Record type</th><th>Student / instructor</th><th>Course</th><th>Details</th></tr></thead><tbody id="recentRows"><tr><td colspan="5" class="empty">Loading records…</td></tr></tbody></table></div><p class="table-note" id="recentTableNote">Showing up to 30 recent activity records.</p>
-    </section>
-    <div id="appError" class="status error hidden" role="alert"></div>
+    <div id="appError" class="status error hidden"></div>
   </section>
-</main><footer>CINPS Academic Intelligence · Firebase Authentication &amp; Cloud Firestore</footer>
+</main>
+<footer>CINPS Academic Intelligence · Firebase Authentication & Cloud Firestore</footer>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",authDomain:"cinps-core-system.firebaseapp.com",projectId:"cinps-core-system",storageBucket:"cinps-core-system.firebasestorage.app",messagingSenderId:"1026808169095",appId:"1:1026808169095:web:4929f0cbfdde3a9a876e22"};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});
-const types={students:"Student",instructors:"Instructor",attendance:"Attendance",class_updates:"Class update",clinical_updates:"Clinical update",internship_updates:"Internship update"};
-const activityTypes={attendance:types.attendance,class_updates:types.class_updates,clinical_updates:types.clinical_updates,internship_updates:types.internship_updates};
-const $=id=>document.getElementById(id);let currentUser=null,refreshInProgress=false,lastData=null;
-function showStatus(id,message,error=false,info=false){const el=$(id);el.textContent=message;el.classList.remove("hidden","error","info");if(error)el.classList.add("error");else if(info)el.classList.add("info");}
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, collection, addDoc, getDocs,
+  query, orderBy, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+  };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({prompt:"select_account"});
+
+const types = {
+  students:"Student",
+  instructors:"Instructor",
+  attendance:"Attendance",
+  class_updates:"Class update",
+  clinical_updates:"Clinical update",
+  internship_updates:"Internship update"
+};
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let refreshInProgress = false;
+
+function showStatus(id, message, error=false) {
+  const el = $(id);
+  el.textContent = message;
+  el.classList.remove("hidden","error");
+  if(error) el.classList.add("error");
+}
 function hideStatus(id){$(id).classList.add("hidden")}
-function safe(value){return value==null?"":String(value)}
-function asDate(value){if(!value)return null;if(typeof value==="string"){const d=new Date(value.length===10?value+"T00:00:00":value);return Number.isNaN(d.getTime())?null:d}if(typeof value.toDate==="function")return value.toDate();return null}
-function formatDate(value){const d=asDate(value);return d?new Intl.DateTimeFormat("en-IN",{day:"2-digit",month:"short",year:"numeric"}).format(d):(value?String(value):"—")}
-function timestamp(item){for(const key of ["createdAt","submittedAt","updatedAt"]){const v=item[key];if(v?.toMillis)return v.toMillis();const d=asDate(v);if(d)return d.getTime()}return asDate(item.recordDate||item.date)?.getTime()||0}
-function formatTime(value){if(value==null||String(value).trim()==="")return"";const text=String(value).trim(),m=text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);if(m)return `${String(Math.min(12,Math.max(1,+m[1]))).padStart(2,"0")}:${m[2]} ${m[3].toUpperCase()}`;const t=text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);if(t&&+t[1]<=23){const h=+t[1];return `${String(h%12||12).padStart(2,"0")}:${t[2]} ${h>=12?"PM":"AM"}`}return text}
-function addCell(row,value){const td=document.createElement("td");td.textContent=safe(value)||"—";row.append(td);return td}
-function emptyRow(body,span,message){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=span;td.className="empty";td.textContent=message;tr.append(td);body.replaceChildren(tr)}
-function setSignedOut(message="Please sign in with your CINPS administrator account."){currentUser=null;$("app").classList.add("hidden");$("welcome").classList.remove("hidden");$("accountArea").replaceChildren();const b=document.createElement("button");b.id="loginBtn";b.textContent="Continue with Google";b.addEventListener("click",login);$("accountArea").append(b);$("welcomeStatus").textContent=message}
-async function login(){const b=$("loginBtn");if(b)b.disabled=true;$("welcomeStatus").textContent="Opening Google sign-in…";try{await signInWithPopup(auth,provider)}catch(e){console.error(e);showStatus("welcomeStatus",`${e.code||"Sign-in error"}: ${e.message}`,true);if(b)b.disabled=false}}
+function safeText(value) {
+  return value == null ? "" : String(value);
+}
+function formatDate(value) {
+  if(!value) return "—";
+  if(typeof value === "string") return value;
+  if(value.toDate) return value.toDate().toLocaleDateString();
+  return "—";
+}
+// Display stored times consistently in 12-hour format (e.g. 01:20 PM).
+function formatTime(value) {
+  if(value == null || String(value).trim() === "") return "";
+  const text = String(value).trim();
+  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
+  if(twelveHour) {
+    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
+    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
+  }
+  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if(twentyFourHour) {
+    const hours = Number(twentyFourHour[1]);
+    if(hours >= 0 && hours <= 23) {
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const hour12 = hours % 12 || 12;
+      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
+    }
+  }
+  return text;
+}
+function setSignedOut(message="Please sign in with your CINPS administrator account.") {
+  currentUser = null;
+  $("app").classList.add("hidden");
+  $("welcome").classList.remove("hidden");
+  $("accountArea").replaceChildren();
+  const btn=document.createElement("button");
+  btn.id="loginBtn"; btn.textContent="Continue with Google";
+  btn.addEventListener("click",login);
+  $("accountArea").append(btn);
+  $("welcomeStatus").textContent=message;
+}
+async function login() {
+  $("loginBtn").disabled=true;
+  $("welcomeStatus").textContent="Opening Google sign-in…";
+  try { await signInWithPopup(auth,provider); }
+  catch(error) {
+    console.error(error);
+    showStatus("welcomeStatus",`${error.code || "Sign-in error"}: ${error.message}`,true);
+    $("loginBtn").disabled=false;
+  }
+}
 $("loginBtn").addEventListener("click",login);
-async function authorize(user){const snap=await getDoc(doc(db,"admins",user.uid));if(!snap.exists())throw new Error("This Google account is not registered as a CINPS administrator.");const d=snap.data();if(d.active!==true||!["superAdmin","admin"].includes(d.role))throw new Error("This administrator account is inactive or has no valid role.");return d}
-function renderAccount(user,admin){$("accountArea").replaceChildren();const who=document.createElement("span");who.className="account";who.textContent=`${user.displayName||user.email} · ${admin.role}`;const refresh=document.createElement("button");refresh.className="outline";refresh.id="refreshBtn";refresh.textContent="↻ Refresh data";refresh.addEventListener("click",()=>refreshDashboard(true));const fee=document.createElement("a");fee.className="navbtn secondary";fee.href="https://cinps.org/portal/fee-reminders.html";fee.textContent="Fee Reminder";const profile=document.createElement("a");profile.className="navbtn secondary";profile.href="https://cinps.org/intelligence/management-md.html";profile.textContent="Student Profile";const out=document.createElement("button");out.className="outline";out.textContent="Sign out";out.addEventListener("click",()=>signOut(auth));$("accountArea").append(who,refresh,fee,profile,out)}
-onAuthStateChanged(auth,async user=>{if(!user){setSignedOut();return}$("welcomeStatus").textContent="Verifying administrator permissions…";try{const admin=await authorize(user);currentUser=user;$("welcome").classList.add("hidden");$("app").classList.remove("hidden");renderAccount(user,admin);await refreshDashboard()}catch(e){console.error(e);await signOut(auth);setSignedOut(e.message||"Administrator verification failed.")}});
-$("recordType").addEventListener("change",()=>{const type=$("recordType").value;$("attendanceField").classList.toggle("hidden",type!=="attendance");$("topicField").classList.toggle("hidden",type==="students"||type==="instructors");$("personNameLabel").textContent=type==="instructors"?"Instructor name":type==="students"?"Student name":"Student / instructor name"});
-function localDateInput(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-$("recordDate").value=localDateInput();$("clearFormBtn").addEventListener("click",()=>{$("recordForm").reset();$("recordDate").value=localDateInput();$("recordType").dispatchEvent(new Event("change"));hideStatus("formStatus")});
-async function readCollection(name){const snap=await getDocs(collection(db,name));return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}))}
-async function refreshDashboard(manual=false){if(!currentUser||refreshInProgress)return;refreshInProgress=true;const btn=$("refreshBtn");if(btn){btn.disabled=true;btn.textContent="↻ Refreshing…"}$("app").classList.add("loading");$("overviewStatus").textContent="Loading current records from Firestore…";hideStatus("appError");try{const names=Object.keys(types),results=await Promise.all(names.map(readCollection)),data={};names.forEach((n,i)=>data[n]=results[i]);lastData=data;for(const [id,key] of [["nStudents","students"],["nInstructors","instructors"],["nAttendance","attendance"],["nClasses","class_updates"],["nClinical","clinical_updates"],["nInternship","internship_updates"]])$(id).textContent=data[key].length.toLocaleString("en-IN");const total=names.reduce((sum,n)=>sum+data[n].length,0);$("overviewStatus").textContent=`Successfully loaded ${total.toLocaleString("en-IN")} records from six Firestore collections.`;$("lastUpdated").textContent=`Last refreshed ${new Intl.DateTimeFormat("en-IN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"short"}).format(new Date())}`;renderActivity(data);renderStudents(data.students);renderInstructors(data.instructors);renderRecent(data);if(manual)showStatus("appError","Dashboard data refreshed successfully.",false,true)}catch(e){console.error(e);showStatus("appError",`Could not load all academic data: ${e.message}. Check Firestore rules and network access.`,true);$("overviewStatus").textContent="Data refresh failed. Existing displayed data may be out of date."}finally{refreshInProgress=false;$("app").classList.remove("loading");if(btn){btn.disabled=false;btn.textContent="↻ Refresh data"}}}
-function renderActivity(data){const chart=$("activityChart");chart.replaceChildren();const items=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));const max=Math.max(1,...items.map(x=>x.count)),total=items.reduce((s,x)=>s+x.count,0);$("activityTotal").textContent=`${total} total records`;items.forEach(item=>{const box=document.createElement("div");box.className="activity-item";const top=document.createElement("div");top.className="activity-top";const label=document.createElement("span");label.textContent=item.label;const count=document.createElement("span");count.className="activity-count";count.textContent=item.count.toLocaleString("en-IN");top.append(label,count);const track=document.createElement("div");track.className="track";track.setAttribute("aria-label",`${item.label}: ${item.count}`);const fill=document.createElement("div");fill.className="fill";fill.style.width=`${item.count/max*100}%`;track.append(fill);const foot=document.createElement("div");foot.className="activity-foot";const share=document.createElement("span");share.textContent=total?`${(item.count/total*100).toFixed(1)}% of records`:"0% of records";const category=document.createElement("span");category.textContent=item.key.replaceAll("_"," ");foot.append(share,category);box.append(top,track,foot);chart.append(box)})}
-function field(item,...keys){for(const k of keys){if(item[k]!=null&&String(item[k]).trim()!=="")return item[k]}return"—"}
-function renderStudents(rows){const q=$("studentSearch").value.trim().toLowerCase(),body=$("studentRows");const filtered=rows.filter(x=>[x.personName,x.name,x.studentName,x.personId,x.studentId,x.uid,x.course,x.branch,x.email,x.studentEmail,x.authUid,x.id].some(v=>safe(v).toLowerCase().includes(q)));body.replaceChildren();if(!filtered.length)emptyRow(body,6,rows.length?"No student records match your search.":"No student profiles found in the students collection.");else filtered.slice(0,500).forEach(x=>{const tr=document.createElement("tr");addCell(tr,field(x,"personName","studentName","name","fullName"));addCell(tr,field(x,"personId","studentId","authUid","uid","id"));addCell(tr,field(x,"course","courseName"));addCell(tr,field(x,"branch","branchName"));addCell(tr,field(x,"email","studentEmail"));addCell(tr,formatDate(x.recordDate||x.createdAt||x.date));body.append(tr)});$("studentTableNote").textContent=`Showing ${Math.min(filtered.length,500)} of ${filtered.length} matching student records${filtered.length>500?" (first 500 shown)":""}.`}
-function renderInstructors(rows){const q=$("instructorSearch").value.trim().toLowerCase(),body=$("instructorRows");const filtered=rows.filter(x=>[x.personName,x.name,x.instructorName,x.fullName,x.personId,x.staffId,x.uid,x.email,x.instructorEmail,x.course,x.subject,x.branch,x.id].some(v=>safe(v).toLowerCase().includes(q)));body.replaceChildren();if(!filtered.length)emptyRow(body,6,rows.length?"No instructor records match your search.":"No instructor profiles found in the instructors collection.");else filtered.slice(0,500).forEach(x=>{const tr=document.createElement("tr");addCell(tr,field(x,"personName","instructorName","name","fullName"));addCell(tr,field(x,"personId","staffId","uid","id"));addCell(tr,field(x,"email","instructorEmail"));addCell(tr,field(x,"course","courseName","subject"));addCell(tr,field(x,"branch","branchName"));const td=document.createElement("td"),pill=document.createElement("span");pill.className=`pill ${x.active===true?"green":x.active===false?"amber":""}`;pill.textContent=x.active===true?"Active":x.active===false?"Inactive":"Not specified";td.append(pill);tr.append(td);body.append(tr)});$("instructorTableNote").textContent=`Showing ${Math.min(filtered.length,500)} of ${filtered.length} matching instructor records${filtered.length>500?" (first 500 shown)":""}.`}
-function renderRecent(data){const q=$("recentSearch").value.trim().toLowerCase(),body=$("recentRows");const rows=Object.keys(activityTypes).flatMap(k=>data[k]||[]).sort((a,b)=>timestamp(b)-timestamp(a));const filtered=rows.filter(x=>[formatDate(x.recordDate||x.date),types[x._collection],x.personName,x.name,x.instructorName,x.studentName,x.course,x.notes,x.topic,x.status,x.attendanceStatus,x.courseType,x.mode,x.department,x.hospital,x.tasks].some(v=>safe(v).toLowerCase().includes(q))).slice(0,30);body.replaceChildren();if(!filtered.length)emptyRow(body,5,rows.length?"No academic records match your search.":"No attendance, class, clinical or internship activity records found yet.");else filtered.forEach(item=>{const tr=document.createElement("tr");addCell(tr,formatDate(item.recordDate||item.date));const typeCell=addCell(tr,types[item._collection]||item._collection);const pill=document.createElement("span");pill.className="pill";pill.textContent=types[item._collection]||item._collection;typeCell.replaceChildren(pill);addCell(tr,field(item,"personName","name","instructorName","studentName","personId"));addCell(tr,field(item,"course","courseName"));let notes=safe(item.notes||item.tasks||item.details||item.topic);if(item.startTime||item.endTime){const range=[item.startTime?formatTime(item.startTime):"",item.endTime?formatTime(item.endTime):""].filter(Boolean).join("–");if(range)notes+=`${notes?" · ":""}Time: ${range}`}const extras=[item.attendanceStatus||item.status,item.courseType,item.mode,item.department,item.hospital].filter(v=>v&&String(v).trim());if(extras.length)notes+=`${notes?" · ":""}${extras.join(" · ")}`;addCell(tr,notes||"—");body.append(tr)});$("recentTableNote").textContent=`Showing ${filtered.length} of ${rows.length} academic activity records (maximum 30 shown).`}
-for(const [id,fn] of [["studentSearch",()=>lastData&&renderStudents(lastData.students)],["instructorSearch",()=>lastData&&renderInstructors(lastData.instructors)],["recentSearch",()=>lastData&&renderRecent(lastData)]])$(id).addEventListener("input",fn);
-$("recordForm").addEventListener("submit",async event=>{event.preventDefault();if(!currentUser){showStatus("formStatus","Sign in again to continue.",true);return}const type=$("recordType").value,personName=$("personName").value.trim(),course=$("course").value.trim(),recordDate=$("recordDate").value;if(!personName||!course||!recordDate){showStatus("formStatus","Please complete the name, course and date.",true);return}const record={personName,personId:$("personId").value.trim(),course,recordDate,notes:$("notes").value.trim(),topic:$("topic").value.trim(),createdBy:currentUser.uid,createdByEmail:currentUser.email||"",createdAt:serverTimestamp()};if(type==="attendance")record.attendanceStatus=$("attendanceStatus").value;const save=$("saveBtn");save.disabled=true;save.textContent="Saving…";hideStatus("formStatus");try{await addDoc(collection(db,type),record);showStatus("formStatus",`${types[type]} record saved successfully.`);$("recordForm").reset();$("recordDate").value=localDateInput();$("recordType").dispatchEvent(new Event("change"));await refreshDashboard()}catch(e){console.error(e);showStatus("formStatus",`Record not saved: ${e.message}`,true)}finally{save.disabled=false;save.textContent="Save new record"}});
+
+async function authorize(user) {
+  const adminRef=doc(db,"admins",user.uid);
+  const adminSnap=await getDoc(adminRef);
+  if(!adminSnap.exists()) throw new Error("This Google account is not registered as a CINPS administrator.");
+  const data=adminSnap.data();
+  if(data.active !== true || !["superAdmin","admin"].includes(data.role)) {
+    throw new Error("This administrator account is inactive or has no valid role.");
+  }
+  return data;
+}
+
+onAuthStateChanged(auth, async user => {
+  if(!user) { setSignedOut(); return; }
+  $("welcomeStatus").textContent="Verifying administrator permissions…";
+  try {
+    const admin=await authorize(user);
+    currentUser=user;
+    $("welcome").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("accountArea").replaceChildren();
+    const who=document.createElement("span");
+    who.style.cssText="color:#63748b;font-size:12px;margin-right:10px";
+    who.textContent=`${user.displayName || user.email} · ${admin.role}`;
+    const out=document.createElement("button");
+    out.className="secondary";out.textContent="Sign out";
+    out.addEventListener("click",()=>signOut(auth));
+    $("accountArea").append(who,out);
+    await refreshDashboard();
+  } catch(error) {
+    console.error(error);
+    await signOut(auth);
+    setSignedOut(error.message || "Administrator verification failed.");
+  }
+});
+
+$("recordType").addEventListener("change",()=>{
+  const type=$("recordType").value;
+  $("attendanceField").classList.toggle("hidden",type!=="attendance");
+  $("topicField").classList.toggle("hidden",type==="students"||type==="instructors");
+  $("personName").previousElementSibling.textContent =
+    type==="instructors" ? "Instructor name" : type==="students" ? "Student name" : "Student / instructor name";
+});
+
+$("recordDate").value=new Date().toLocaleDateString("en-CA");
+
+async function readCollection(name) {
+  const snap=await getDocs(collection(db,name));
+  return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
+}
+async function refreshDashboard() {
+  if(!currentUser || refreshInProgress) return;
+  refreshInProgress=true;
+  $("overviewStatus").textContent="Loading current records…";
+  hideStatus("appError");
+  try {
+    const names=Object.keys(types);
+    const results=await Promise.all(names.map(readCollection));
+    const data={};
+    names.forEach((name,i)=>data[name]=results[i]);
+    $("nStudents").textContent=data.students.length;
+    $("nInstructors").textContent=data.instructors.length;
+    $("nAttendance").textContent=data.attendance.length;
+    $("nClasses").textContent=data.class_updates.length;
+    $("overviewStatus").textContent=`Loaded ${names.reduce((sum,n)=>sum+data[n].length,0)} records from six Firestore collections.`;
+    renderChart(data);
+    renderRecent(data);
+  } catch(error) {
+    console.error(error);
+    showStatus("appError",`Could not load academic records: ${error.message}. Check Firestore rules and network access.`,true);
+    $("overviewStatus").textContent="Some data could not be loaded.";
+  } finally {
+    refreshInProgress=false;
+  }
+}
+function renderChart(data) {
+  const chart=$("activityChart");
+  chart.replaceChildren();
+  const counts=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));
+  const max=Math.max(1,...counts.map(x=>x.count));
+  counts.forEach(item=>{
+    const row=document.createElement("div");row.className="barrow";
+    const label=document.createElement("span");label.textContent=item.label;
+    const track=document.createElement("div");track.className="track";
+    const fill=document.createElement("div");fill.className="fill";
+    fill.style.width=`${item.count/max*100}%`;track.append(fill);
+    const count=document.createElement("strong");count.textContent=item.count;
+    row.append(label,track,count);chart.append(row);
+  });
+}
+function renderRecent(data) {
+  // Instructor Hub records use submittedAt/date/instructorName; dashboard-form
+  // records use createdAt/recordDate/personName. Support both schemas.
+  const rows=Object.values(data).flat().sort((a,b)=>{
+    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
+    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
+    return tb-ta;
+  }).slice(0,30);
+  const body=$("recentRows");body.replaceChildren();
+  if(!rows.length) {
+    const tr=document.createElement("tr"),td=document.createElement("td");
+    td.colSpan=5;td.textContent="No records yet. Add the first academic record using the form.";
+    tr.append(td);body.append(tr);return;
+  }
+  rows.forEach(item=>{
+    const tr=document.createElement("tr");
+    const isAttendance = item._collection === "attendance";
+    let notes = item.notes || "";
+    // Attendance notes include the time range already; normalize it there and avoid
+    // repeating status/topic/time fields that are already described in the notes.
+    if(isAttendance && item.startTime && item.endTime) {
+      const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+      if(/Class time:\s*[^.;]+/i.test(notes)) {
+        notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
+      } else {
+        notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
+      }
+    }
+    const details=[
+      notes,
+      isAttendance ? "" : item.topic,
+      isAttendance ? "" : item.status,
+      isAttendance ? "" : item.attendanceStatus,
+      item.courseType,
+      item.mode,
+      !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
+      !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
+    ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
+    const values=[
+      formatDate(item.recordDate || item.date),
+      types[item._collection] || item._collection,
+      item.personName || item.name || item.instructorName || item.studentName || "—",
+      item.course || "—",
+      details
+    ];
+    values.forEach(value=>{const td=document.createElement("td");td.textContent=safeText(value);tr.append(td)});
+    body.append(tr);
+  });
+}
+$("recordForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!currentUser) {showStatus("formStatus","Sign in again to continue.",true);return}
+  const type=$("recordType").value;
+  const personName=$("personName").value.trim();
+  const course=$("course").value.trim();
+  const recordDate=$("recordDate").value;
+  if(!personName||!course||!recordDate) {
+    showStatus("formStatus","Please complete the name, course and date.",true);return;
+  }
+  const record={
+    personName,
+    personId:$("personId").value.trim(),
+    course,
+    recordDate,
+    notes:$("notes").value.trim(),
+    topic:$("topic").value.trim(),
+    createdBy:currentUser.uid,
+    createdByEmail:currentUser.email || "",
+    createdAt:serverTimestamp()
+  };
+  if(type==="attendance") record.attendanceStatus=$("attendanceStatus").value;
+  $("saveBtn").disabled=true;
+  $("saveBtn").textContent="Saving…";
+  try {
+    await addDoc(collection(db,type),record);
+    showStatus("formStatus",`${types[type]} record saved successfully.`);
+    $("recordForm").reset();
+    $("recordDate").value=new Date().toLocaleDateString("en-CA");
+    $("recordType").dispatchEvent(new Event("change"));
+    await refreshDashboard();
+  } catch(error) {
+    console.error(error);
+    showStatus("formStatus",`Record not saved: ${error.message}`,true);
+  } finally {
+    $("saveBtn").disabled=false;
+    $("saveBtn").textContent="Save new record";
+  }
+});
 $("recordType").dispatchEvent(new Event("change"));
 </script>
-</body></html>
+</body>
+</html>
