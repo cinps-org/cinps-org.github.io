@@ -160,8 +160,8 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
-  onAuthStateChanged
+  getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult,
+  signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, collection, addDoc, getDocs,
@@ -194,6 +194,7 @@ const types = {
 const $ = id => document.getElementById(id);
 let currentUser = null;
 let refreshInProgress = false;
+let authFailureMessage = "";
 
 function showStatus(id, message, error=false) {
   const el = $(id);
@@ -231,8 +232,9 @@ function formatTime(value) {
   }
   return text;
 }
-function setSignedOut(message="Please sign in with your CINPS administrator account.") {
+function setSignedOut(message) {
   currentUser = null;
+  message = message || authFailureMessage || "Please sign in with your CINPS administrator account.";
   $("app").classList.add("hidden");
   $("welcome").classList.remove("hidden");
   $("accountArea").replaceChildren();
@@ -243,16 +245,29 @@ function setSignedOut(message="Please sign in with your CINPS administrator acco
   $("welcomeStatus").textContent=message;
 }
 async function login() {
-  $("loginBtn").disabled=true;
-  $("welcomeStatus").textContent="Opening Google sign-in…";
-  try { await signInWithPopup(auth,provider); }
-  catch(error) {
-    console.error(error);
-    showStatus("welcomeStatus",`${error.code || "Sign-in error"}: ${error.message}`,true);
-    $("loginBtn").disabled=false;
+  authFailureMessage = "";
+  const button = $("loginBtn");
+  if (button) button.disabled = true;
+  $("welcomeStatus").textContent = "Redirecting to Google sign-in…";
+  try {
+    await signInWithRedirect(auth, provider);
+  } catch(error) {
+    console.error("Google redirect sign-in failed:", error);
+    authFailureMessage = `${error.code || "Sign-in error"}: ${error.message || "Google sign-in could not be started."}`;
+    showStatus("welcomeStatus", authFailureMessage, true);
+    if (button) button.disabled = false;
   }
 }
-$("loginBtn").addEventListener("click",login);
+$("loginBtn").addEventListener("click", login);
+
+// Resolve the return from Google before the auth-state listener can replace
+// a useful redirect error with the generic signed-out message.
+const redirectResultPromise = getRedirectResult(auth).catch(error => {
+  console.error("Google redirect result failed:", error);
+  authFailureMessage = `${error.code || "Redirect sign-in error"}: ${error.message || "Google sign-in did not complete."}`;
+  showStatus("welcomeStatus", authFailureMessage, true);
+  return null;
+});
 
 async function authorize(user) {
   const adminRef=doc(db,"admins",user.uid);
@@ -266,10 +281,12 @@ async function authorize(user) {
 }
 
 onAuthStateChanged(auth, async user => {
+  await redirectResultPromise;
   if(!user) { setSignedOut(); return; }
   $("welcomeStatus").textContent="Verifying administrator permissions…";
   try {
     const admin=await authorize(user);
+    authFailureMessage = "";
     currentUser=user;
     $("welcome").classList.add("hidden");
     $("app").classList.remove("hidden");
@@ -283,9 +300,14 @@ onAuthStateChanged(auth, async user => {
     $("accountArea").append(who,out);
     await refreshDashboard();
   } catch(error) {
-    console.error(error);
-    await signOut(auth);
-    setSignedOut(error.message || "Administrator verification failed.");
+    console.error("Administrator authorization failed:", error);
+    authFailureMessage = `${error.code ? error.code + ": " : ""}${error.message || "Administrator verification failed."}`;
+    try {
+      await signOut(auth);
+    } catch(signOutError) {
+      console.error("Sign-out after authorization failure failed:", signOutError);
+    }
+    setSignedOut(authFailureMessage);
   }
 });
 
