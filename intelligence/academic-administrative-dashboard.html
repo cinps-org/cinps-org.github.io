@@ -159,7 +159,7 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut,
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
@@ -193,12 +193,7 @@ const types = {
 const $ = id => document.getElementById(id);
 let currentUser = null;
 let refreshInProgress = false;
-
-// Handle potential errors returning from the Google Redirect
-getRedirectResult(auth).catch(error => {
-  console.error("Redirect auth error:", error);
-  showStatus("welcomeStatus", `${error.code || "Sign-in error"}: ${error.message}`, true);
-});
+let authFailureMessage = "";
 
 function showStatus(id, message, error=false) {
   const el = $(id);
@@ -235,8 +230,9 @@ function formatTime(value) {
   }
   return text;
 }
-function setSignedOut(message="Please sign in with your CINPS administrator account.") {
+function setSignedOut(message) {
   currentUser = null;
+  message = message || authFailureMessage || "Please sign in with your CINPS administrator account.";
   $("app").classList.add("hidden");
   $("welcome").classList.remove("hidden");
   $("accountArea").replaceChildren();
@@ -247,16 +243,18 @@ function setSignedOut(message="Please sign in with your CINPS administrator acco
   $("welcomeStatus").textContent=message;
 }
 
-// Switched to signInWithRedirect to bypass COOP header blocks
 async function login() {
-  $("loginBtn").disabled=true;
-  $("welcomeStatus").textContent="Redirecting to Google sign-in…";
-  try { 
-    await signInWithRedirect(auth, provider); 
+  const button = $("loginBtn");
+  if(button) button.disabled = true;
+  authFailureMessage = "";
+  $("welcomeStatus").textContent = "Opening Google sign-in…";
+  try {
+    await signInWithPopup(auth, provider);
   } catch(error) {
-    console.error(error);
-    showStatus("welcomeStatus",`${error.code || "Sign-in error"}: ${error.message}`,true);
-    $("loginBtn").disabled=false;
+    console.error("Google popup sign-in failed:", error);
+    authFailureMessage = `${error.code || "Sign-in error"}: ${error.message || "Google sign-in could not be completed."}`;
+    showStatus("welcomeStatus", authFailureMessage, true);
+    if(button) button.disabled = false;
   }
 }
 
@@ -291,9 +289,11 @@ onAuthStateChanged(auth, async user => {
     $("accountArea").append(who,out);
     await refreshDashboard();
   } catch(error) {
-    console.error(error);
-    await signOut(auth);
-    setSignedOut(error.message || "Administrator verification failed.");
+    console.error("Administrator authorization failed:", error);
+    authFailureMessage = `${error.code ? error.code + ": " : ""}${error.message || "Administrator verification failed."}`;
+    try { await signOut(auth); }
+    catch(signOutError) { console.error("Sign-out after authorization failure failed:", signOutError); }
+    setSignedOut(authFailureMessage);
   }
 });
 
