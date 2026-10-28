@@ -84,7 +84,7 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
         <form id="recordForm">
           <div class="field full">
             <label for="recordType">Record type</label>
-            <select id="recordType" required>
+            <select id="recordType" name="recordType" aria-label="Record type" required>
               <option value="students">Student registration</option>
               <option value="instructors">Instructor registration</option>
               <option value="attendance">Student attendance</option>
@@ -95,23 +95,23 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
           </div>
           <div class="field">
             <label for="personName">Student / instructor name</label>
-            <input id="personName" maxlength="120" required>
+            <input id="personName" name="personName" aria-label="Student or instructor name" maxlength="120" required>
           </div>
           <div class="field">
             <label for="personId">Student / staff ID (optional)</label>
-            <input id="personId" maxlength="80">
+            <input id="personId" name="personId" aria-label="Student or staff ID" maxlength="80">
           </div>
           <div class="field">
             <label for="course">Course</label>
-            <input id="course" maxlength="120" placeholder="e.g. DMLT" required>
+            <input id="course" name="course" aria-label="Course name" maxlength="120" placeholder="e.g. DMLT" required>
           </div>
           <div class="field">
             <label for="recordDate">Record date</label>
-            <input id="recordDate" type="date" required>
+            <input id="recordDate" name="recordDate" aria-label="Record date" type="date" required>
           </div>
           <div class="field" id="attendanceField">
             <label for="attendanceStatus">Attendance status</label>
-            <select id="attendanceStatus">
+            <select id="attendanceStatus" name="attendanceStatus" aria-label="Attendance status">
               <option value="Present">Present</option>
               <option value="Absent">Absent</option>
               <option value="Late">Late</option>
@@ -120,11 +120,11 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
           </div>
           <div class="field" id="topicField">
             <label for="topic">Subject / topic</label>
-            <input id="topic" maxlength="180" placeholder="Class or activity">
+            <input id="topic" name="topic" aria-label="Subject or topic" maxlength="180" placeholder="Class or activity">
           </div>
           <div class="field full">
             <label for="notes">Details / update</label>
-            <textarea id="notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
+            <textarea id="notes" name="notes" aria-label="Details and update notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
           </div>
           <div class="field full">
             <button id="saveBtn" type="submit">Save new record</button>
