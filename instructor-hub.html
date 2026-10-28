@@ -481,7 +481,7 @@
             `;
         }
 
-        function showSuccess() {
+        function showSuccess(documentId) {
             popupCard.innerHTML = `
                 <div class="checkmark">
                     <svg viewBox="0 0 100 100">
@@ -489,10 +489,16 @@
                         <path d="M30 52 L45 65 L70 38"/>
                     </svg>
                 </div>
-                <h3 style="margin-top:20px; color:var(--success-color); font-weight:700;">Submission Complete</h3>
-                <p style="color:var(--muted); font-weight:500;">Your class record has been saved.</p>
+                <h3 style="margin-top:20px; color:var(--success-color); font-weight:700;">Submission Saved</h3>
+                <p style="color:var(--muted); font-weight:500;">Firestore confirmed the class update was saved.</p>
+                <p style="font-size:12px; overflow-wrap:anywhere; margin-top:12px;"><strong>Firestore document ID:</strong><br>${documentId}</p>
+                <button type="button" id="closeSaveResult" class="btn-submit" style="margin-top:12px;">Close</button>
             `;
-            setTimeout(() => { popupOverlay.style.display = "none"; }, 3500);
+            document.getElementById("closeSaveResult").addEventListener("click", () => {
+                popupOverlay.style.display = "none";
+            });
+            // Leave the saved ID visible long enough to record it; users can close it sooner.
+            setTimeout(() => { popupOverlay.style.display = "none"; }, 12000);
         }
 
         // --- Pulse AI Chatbot Logic ---
@@ -729,8 +735,16 @@
           source: "instructor-hub"
         };
         try {
-          await addDoc(collection(db, "class_updates"), record);
-          showSuccess();
+          // addDoc resolves only after Firestore accepts and commits the write.
+          // Keep the returned document ID so the administrator can trace this exact submission.
+          const savedDocument = await addDoc(collection(db, "class_updates"), record);
+          console.info("CINPS class update saved", {
+            documentId: savedDocument.id,
+            instructorUid: record.instructorUid,
+            instructorEmail: record.instructorEmail,
+            source: record.source
+          });
+          showSuccess(savedDocument.id);
           form.reset();
           document.getElementById("date").value = new Date().toLocaleDateString("en-GB");
           document.getElementById("day").value = new Date().toLocaleDateString("en-US", { weekday: "long" });
@@ -741,8 +755,12 @@
           updateCharCount();
         } catch (err) {
           console.error("Firestore class update write failed:", err);
-          popupCard.innerHTML = `<h3 style="color:#ef4444;">Submission Failed</h3><p>${(err.message || "Could not save the class record.").replace(/[<>]/g, "")}</p><p style="font-size:12px;">If this says permission denied, Firestore Rules must authorize active instructor profiles to create class_updates.</p>`;
-          setTimeout(() => { popupOverlay.style.display = "none"; }, 6000);
+          const safeMessage = (err.message || "Could not save the class record.").replace(/[<>]/g, "");
+          const safeCode = (err.code || "unknown-error").replace(/[<>]/g, "");
+          popupCard.innerHTML = `<h3 style="color:#ef4444;">Submission Failed</h3><p><strong>Error code:</strong> ${safeCode}</p><p>${safeMessage}</p><p style="font-size:12px;">Your entered details have not been cleared. Please share this exact error with the CINPS administrator instead of submitting repeatedly.</p><button type="button" id="closeSaveError" class="btn-submit" style="margin-top:12px;">Close</button>`;
+          document.getElementById("closeSaveError").addEventListener("click", () => {
+            popupOverlay.style.display = "none";
+          });
         } finally {
           submitBtn.disabled = !currentInstructor;
         }
