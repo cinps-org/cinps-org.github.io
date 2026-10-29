@@ -5,46 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CINPS Academic Intelligence</title>
 <style>
-:root{--navy:#103b82;--blue:#1769e0;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323}
-*{box-sizing:border-box}
-body{margin:0;background:#f3f7fd;color:var(--ink);font:15px Arial,sans-serif}
-header{background:white;border-bottom:1px solid var(--line);padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{background:var(--navy);color:white;font-weight:900;border-radius:12px;padding:13px}
-h1{font-size:21px;margin:0}
-.sub{font-size:12px;color:var(--muted);margin-top:5px}
-button,input,select,textarea{font:inherit}
-button{border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
-button:disabled{opacity:.55;cursor:wait}
-button.secondary{background:#e7effc;color:var(--navy)}
-main{max-width:1200px;margin:28px auto;padding:0 18px}
-.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 5px 22px #163f7108}
-h2{font-size:19px;margin:0 0 16px}
-.muted{color:var(--muted);line-height:1.55}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.stat{background:var(--pale);border:1px solid var(--line);border-radius:13px;padding:18px}
-.stat label{display:block;color:var(--muted);font-size:13px}
-.stat strong{display:block;font-size:30px;margin-top:10px;color:var(--navy)}
-.columns{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field.full{grid-column:1/-1}
-label{font-size:13px;font-weight:700}
-input,select,textarea{width:100%;padding:11px;border:1px solid #cbd8ea;border-radius:8px;background:white;color:var(--ink)}
-textarea{min-height:90px;resize:vertical}
-.status{padding:12px;border-radius:9px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
-.status.error{background:#fff0f0;color:var(--red)}
-.hidden{display:none!important}
-.tablewrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{background:#f5f8fd;color:var(--muted)}
-.barrow{display:grid;grid-template-columns:120px 1fr 35px;gap:10px;align-items:center;margin:15px 0;font-size:13px}
-.track{height:10px;background:#e8eff9;border-radius:10px;overflow:hidden}
-.fill{height:100%;background:var(--blue);width:0}
-footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
-@media(max-width:480px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stat{padding:13px}.stat strong{font-size:25px}header{padding:14px}}
+:root{--navy:#103b82;--blue:#1769e0;--blue-dark:#0d4fb5;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323;--surface:#fff;--bg:#f4f7fc;--shadow:0 8px 28px rgba(16,59,130,.065)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}header{background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);padding:16px clamp(16px,4vw,56px);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #163f7108}.brand{display:flex;align-items:center;gap:13px;min-width:230px}.logo{background:linear-gradient(145deg,var(--navy),var(--blue));color:#fff;font-weight:900;letter-spacing:.5px;border-radius:13px;padding:13px 12px;box-shadow:0 5px 14px #1769e033}h1{font-size:clamp(18px,2vw,22px);line-height:1.2;margin:0;font-weight:800;letter-spacing:-.35px}.sub{font-size:10px;letter-spacing:1px;font-weight:700;color:var(--muted);margin-top:5px}.header-right{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}#accountArea{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#accountArea .user-label{color:var(--muted);font-size:12px;padding:0 5px;max-width:220px;overflow-wrap:anywhere}button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;transition:background .16s,transform .16s,box-shadow .16s;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}button:hover{background:var(--blue-dark);box-shadow:0 4px 12px #1769e026}button:active{transform:translateY(1px)}button:disabled{opacity:.55;cursor:wait;box-shadow:none}button.secondary{background:#e7effc;color:var(--navy)}button.secondary:hover{background:#d9e8ff}button.outline{background:#fff;color:var(--navy);border:1px solid var(--line)}button.outline:hover{background:#f4f8ff}button.success{background:#e8f6ee;color:#146b42}button.success:hover{background:#d8efdf}button .btn-icon{font-size:16px;line-height:1}main{max-width:1380px;margin:26px auto;padding:0 clamp(14px,2.4vw,30px)}.page-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:0 2px 18px;flex-wrap:wrap}.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--blue);font-weight:800;margin-bottom:5px}.page-intro h2{font-size:25px;letter-spacing:-.6px;margin:0}.page-intro p{margin:5px 0 0}.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,24px);margin-bottom:18px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:17px;letter-spacing:-.2px;margin:0 0 6px;font-weight:800}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.panel-head p{margin:5px 0 0}.muted{color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:linear-gradient(145deg,#f8fbff,#eef5ff);border:1px solid #dce8f8;border-radius:13px;padding:17px 18px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:60px;height:60px;border-radius:50%;background:#1769e00b;right:-16px;top:-18px}.stat label{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.1px}.stat strong{display:block;font-size:clamp(25px,2.4vw,32px);line-height:1.2;margin-top:8px;color:var(--navy);letter-spacing:-.8px}.stat .stat-note{font-size:11px;color:var(--muted);margin-top:6px}.columns{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:18px;align-items:start}form{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:750;color:#34445d}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd8ea;border-radius:9px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}input:focus,select:focus,textarea:focus{border-color:#6aa1f4;box-shadow:0 0 0 3px #1769e018}textarea{min-height:96px;resize:vertical}.form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.status{padding:12px 14px;border-radius:10px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.status.error{background:#fff0f0;color:var(--red)}.hidden{display:none!important}.table-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 13px}.table-tools input{flex:1;min-width:190px}.table-tools select{width:auto;min-width:155px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:680px}th,td{text-align:left;padding:12px 13px;border-bottom:1px solid #e8eef7;vertical-align:top}th{background:#f5f8fd;color:#52647e;font-size:11px;text-transform:uppercase;letter-spacing:.55px;font-weight:800;position:sticky;top:0}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#f8fbff}td{overflow-wrap:anywhere}.record-type{display:inline-flex;padding:4px 8px;border-radius:20px;background:#edf4ff;color:#174e9e;font-size:11px;font-weight:750}.barrow{display:grid;grid-template-columns:minmax(90px,120px) minmax(50px,1fr) 30px;gap:10px;align-items:center;margin:17px 0;font-size:12px}.barrow span{color:#455873}.barrow strong{text-align:right;color:var(--navy)}.track{height:9px;background:#e8eff9;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#1769e0,#58a0ff);width:0;border-radius:10px;transition:width .35s}.chart-empty{padding:24px;text-align:center;background:#f7faff;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}.overview-status{display:flex;align-items:center;gap:8px;font-size:12px;margin-top:15px}.status-dot{width:7px;height:7px;border-radius:50%;background:#16a267;display:inline-block;flex:none}footer{text-align:center;color:var(--muted);padding:24px 16px;font-size:11px}#welcome{max-width:760px;margin:55px auto;padding:32px}#welcome h2{font-size:24px}#welcome .welcome-mark{display:inline-flex;background:#edf4ff;color:var(--navy);padding:10px;border-radius:12px;margin-bottom:15px}.small-note{font-size:11px;color:var(--muted)}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}.header-right{width:100%;justify-content:flex-start}header{position:static}}
+@media(max-width:560px){header{padding:13px}.brand{min-width:0}.logo{padding:11px;font-size:13px}.sub{font-size:9px;letter-spacing:.5px}.header-right,#accountArea{width:100%;justify-content:flex-start}#accountArea button{flex:1}.user-label{width:100%}main{margin:16px auto;padding:0 12px}.page-intro h2{font-size:22px}.grid{gap:9px}.stat{padding:13px}.stat strong{font-size:25px}.stat label{font-size:11px}.panel{padding:15px;border-radius:13px}form{grid-template-columns:1fr}.field.full{grid-column:auto}.table-tools input,.table-tools select{width:100%;min-width:0}.barrow{grid-template-columns:95px minmax(40px,1fr) 24px;gap:7px}.form-actions button{width:100%}}
 </style>
 </head>
 <body>
@@ -53,7 +17,7 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
     <div class="logo">CINPS</div>
     <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
   </div>
-  <div id="accountArea"><button id="loginBtn">Continue with Google</button></div>
+  <div class="header-right"><div id="accountArea"><button id="loginBtn">Continue with Google</button></div></div>
 </header>
 
 <main>
@@ -65,22 +29,25 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
   </section>
 
   <section id="app" class="hidden">
+    <div class="page-intro">
+      <div><div class="eyebrow">CINPS · Academic administration</div><h2>Academic overview</h2><p class="muted">A consolidated view of the records currently stored in your academic database.</p></div>
+      <div class="small-note">Live data from Firestore</div>
+    </div>
     <div class="panel">
-      <h2>Academic overview</h2>
+      <div class="panel-head"><div><h2>Academic snapshot</h2><p class="muted">Figures below reflect the current records in this Firebase project.</p></div></div>
       <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
       <div class="grid">
-        <div class="stat"><label>Students</label><strong id="nStudents">0</strong></div>
-        <div class="stat"><label>Instructors</label><strong id="nInstructors">0</strong></div>
-        <div class="stat"><label>Attendance records</label><strong id="nAttendance">0</strong></div>
-        <div class="stat"><label>Class updates</label><strong id="nClasses">0</strong></div>
+        <div class="stat"><label>STUDENTS</label><strong id="nStudents">0</strong><div class="stat-note">Student records</div></div>
+        <div class="stat"><label>INSTRUCTORS</label><strong id="nInstructors">0</strong><div class="stat-note">Instructor records</div></div>
+        <div class="stat"><label>ATTENDANCE RECORDS</label><strong id="nAttendance">0</strong><div class="stat-note">Attendance entries</div></div>
+        <div class="stat"><label>CLASS UPDATES</label><strong id="nClasses">0</strong><div class="stat-note">Class submissions</div></div>
       </div>
-      <div id="overviewStatus" class="muted" style="margin-top:14px">Loading academic data…</div>
+      <div id="overviewStatus" class="overview-status muted"><span class="status-dot"></span>Loading academic data…</div>
     </div>
 
     <div class="columns">
       <section class="panel">
-        <h2>Register an academic update</h2>
-        <p class="muted">Create a new student, instructor, attendance, class, clinical or internship record.</p>
+        <div class="panel-head"><div><h2>Register an academic update</h2><p class="muted">Add a student, instructor, attendance, class, clinical or internship record.</p></div></div>
         <form id="recordForm">
           <div class="field full">
             <label for="recordType">Record type</label>
@@ -127,7 +94,7 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
             <textarea id="notes" name="notes" aria-label="Details and update notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
           </div>
           <div class="field full">
-            <button id="saveBtn" type="submit">Save new record</button>
+            <div class="form-actions"><button id="saveBtn" type="submit">Save new record</button><button id="resetFormBtn" class="outline" type="button">Clear form</button></div>
           </div>
         </form>
         <div id="formStatus" class="hidden"></div>
@@ -135,15 +102,15 @@ footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
 
       <section class="panel">
         <h2>Academic activity</h2>
-        <p class="muted">Record counts by category.</p>
+        <p class="muted">Record counts across the six connected collections.</p>
         <div id="activityChart"></div>
         <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
       </section>
     </div>
 
     <section class="panel">
-      <h2>Latest academic records</h2>
-      <p class="muted">The most recent records across the connected academic collections.</p>
+      <div class="panel-head"><div><h2>Latest academic records</h2><p class="muted">Search and filter the most recent records across connected collections.</p></div></div>
+      <div class="table-tools"><input id="recordSearch" type="search" placeholder="Search name, course, details or ID…" aria-label="Search academic records"><select id="recordFilter" aria-label="Filter records by type"><option value="all">All record types</option><option value="students">Students</option><option value="instructors">Instructors</option><option value="attendance">Attendance</option><option value="class_updates">Class updates</option><option value="clinical_updates">Clinical updates</option><option value="internship_updates">Internship updates</option></select><span id="recordCount" class="small-note">0 records</span></div>
       <div class="tablewrap">
         <table>
           <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead>
@@ -194,6 +161,8 @@ const $ = id => document.getElementById(id);
 let currentUser = null;
 let refreshInProgress = false;
 let authFailureMessage = "";
+let loadedRecords = {};
+let allRecentRows = [];
 
 function showStatus(id, message, error=false) {
   const el = $(id);
@@ -281,12 +250,21 @@ onAuthStateChanged(auth, async user => {
     $("app").classList.remove("hidden");
     $("accountArea").replaceChildren();
     const who=document.createElement("span");
-    who.style.cssText="color:#63748b;font-size:12px;margin-right:10px";
+    who.className="user-label";
     who.textContent=`${user.displayName || user.email} · ${admin.role}`;
+    const refreshBtn=document.createElement("button");
+    refreshBtn.className="outline";refreshBtn.id="refreshDataBtn";refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';
+    refreshBtn.addEventListener("click",()=>refreshDashboard(true));
+    const downloadBtn=document.createElement("button");
+    downloadBtn.className="success";downloadBtn.id="downloadReportBtn";downloadBtn.innerHTML='<span class="btn-icon">⇩</span> Download Report';
+    downloadBtn.addEventListener("click",downloadCsvReport);
+    const feeBtn=document.createElement("button");
+    feeBtn.className="secondary";feeBtn.id="feeReminderBtn";feeBtn.innerHTML='<span class="btn-icon">₹</span> Fee Reminder';
+    feeBtn.addEventListener("click",()=>{window.location.href="https://cinps.org/portal/fee-reminders.html";});
     const out=document.createElement("button");
     out.className="secondary";out.textContent="Sign out";
     out.addEventListener("click",()=>signOut(auth));
-    $("accountArea").append(who,out);
+    $("accountArea").append(who,refreshBtn,downloadBtn,feeBtn,out);
     await refreshDashboard();
   } catch(error) {
     console.error("Administrator authorization failed:", error);
@@ -311,9 +289,11 @@ async function readCollection(name) {
   const snap=await getDocs(collection(db,name));
   return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
 }
-async function refreshDashboard() {
+async function refreshDashboard(manual=false) {
   if(!currentUser || refreshInProgress) return;
   refreshInProgress=true;
+  const refreshBtn=$("refreshDataBtn");
+  if(refreshBtn){refreshBtn.disabled=true;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refreshing…';}
   $("overviewStatus").textContent="Loading current records…";
   hideStatus("appError");
   try {
@@ -321,11 +301,13 @@ async function refreshDashboard() {
     const results=await Promise.all(names.map(readCollection));
     const data={};
     names.forEach((name,i)=>data[name]=results[i]);
+    loadedRecords=data;
     $("nStudents").textContent=data.students.length;
     $("nInstructors").textContent=data.instructors.length;
     $("nAttendance").textContent=data.attendance.length;
     $("nClasses").textContent=data.class_updates.length;
-    $("overviewStatus").textContent=`Loaded ${names.reduce((sum,n)=>sum+data[n].length,0)} records from six Firestore collections.`;
+    const total=names.reduce((sum,n)=>sum+data[n].length,0);
+    $("overviewStatus").textContent=`${manual ? "Refreshed" : "Loaded"} ${total} records from six Firestore collections · ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
     renderChart(data);
     renderRecent(data);
   } catch(error) {
@@ -334,6 +316,7 @@ async function refreshDashboard() {
     $("overviewStatus").textContent="Some data could not be loaded.";
   } finally {
     refreshInProgress=false;
+    if(refreshBtn){refreshBtn.disabled=false;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';}
   }
 }
 function renderChart(data) {
@@ -352,49 +335,61 @@ function renderChart(data) {
   });
 }
 function renderRecent(data) {
-  const rows=Object.values(data).flat().sort((a,b)=>{
+  allRecentRows=Object.values(data).flat().sort((a,b)=>{
     const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
     const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
     return tb-ta;
-  }).slice(0,30);
-  const body=$("recentRows");body.replaceChildren();
-  if(!rows.length) {
-    const tr=document.createElement("tr"),td=document.createElement("td");
-    td.colSpan=5;td.textContent="No records yet. Add the first academic record using the form.";
-    tr.append(td);body.append(tr);return;
+  }).slice(0,100);
+  applyRecordFilters();
+}
+function rowDetails(item) {
+  const isAttendance=item._collection==="attendance";
+  let notes=item.notes || "";
+  if(isAttendance && item.startTime && item.endTime) {
+    const timeRange=`Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+    if(/Class time:\s*[^.;]+/i.test(notes)) notes=notes.replace(/Class time:\s*[^.;]+/i,timeRange);
+    else notes=`${notes}${notes ? "; " : ""}${timeRange}.`;
   }
+  return [notes,isAttendance ? "" : item.topic,isAttendance ? "" : item.status,isAttendance ? "" : item.attendanceStatus,item.courseType,item.mode,!isAttendance&&item.startTime?`Start: ${formatTime(item.startTime)}`:"",!isAttendance&&item.endTime?`End: ${formatTime(item.endTime)}`:""].filter(value=>value!=null&&String(value).trim()!=="").join(" · ") || "—";
+}
+function applyRecordFilters() {
+  const query=($("recordSearch")?.value || "").trim().toLowerCase();
+  const type= $("recordFilter")?.value || "all";
+  const rows=allRecentRows.filter(item=>{
+    if(type!=="all"&&item._collection!==type)return false;
+    const haystack=[item.id,item.personName,item.name,item.instructorName,item.studentName,item.course,rowDetails(item),item.personId,types[item._collection]].map(safeText).join(" ").toLowerCase();
+    return !query||haystack.includes(query);
+  });
+  const body=$("recentRows");body.replaceChildren();
+  $("recordCount").textContent=`${rows.length} record${rows.length===1?"":"s"}${allRecentRows.length===100?" · latest 100":""}`;
+  if(!rows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent=allRecentRows.length?"No records match your search or filter.":"No records yet. Add the first academic record using the form.";tr.append(td);body.append(tr);return;}
   rows.forEach(item=>{
     const tr=document.createElement("tr");
-    const isAttendance = item._collection === "attendance";
-    let notes = item.notes || "";
-    if(isAttendance && item.startTime && item.endTime) {
-      const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
-      if(/Class time:\s*[^.;]+/i.test(notes)) {
-        notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
-      } else {
-        notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
-      }
-    }
-    const details=[
-      notes,
-      isAttendance ? "" : item.topic,
-      isAttendance ? "" : item.status,
-      isAttendance ? "" : item.attendanceStatus,
-      item.courseType,
-      item.mode,
-      !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
-      !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
-    ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
-    const values=[
-      formatDate(item.recordDate || item.date),
-      types[item._collection] || item._collection,
-      item.personName || item.name || item.instructorName || item.studentName || "—",
-      item.course || "—",
-      details
-    ];
-    values.forEach(value=>{const td=document.createElement("td");td.textContent=safeText(value);tr.append(td)});
+    const values=[formatDate(item.recordDate||item.date),types[item._collection]||item._collection,item.personName||item.name||item.instructorName||item.studentName||"—",item.course||"—",rowDetails(item)];
+    values.forEach((value,index)=>{const td=document.createElement("td");if(index===1){const badge=document.createElement("span");badge.className="record-type";badge.textContent=safeText(value);td.append(badge);}else td.textContent=safeText(value);tr.append(td);});
     body.append(tr);
   });
+}
+function csvCell(value) {
+  let text= value==null ? "" : String(value);
+  // Prevent spreadsheet formula execution in exported cells.
+  if(/^[\s]*[=+@]/.test(text) || /^[\s]*-[0-9]/.test(text)) text="'"+text;
+  return '"'+text.replace(/"/g,'""')+'"';
+}
+function downloadCsvReport() {
+  if(!currentUser){showStatus("appError","Please sign in to download the report.",true);return;}
+  const names=Object.keys(types);
+  if(!Object.keys(loadedRecords).length){showStatus("appError","Academic data has not loaded yet. Use Refresh Data and try again.",true);return;}
+  const rows=[["CINPS Academic Intelligence — Academic Report"],["Generated at",new Date().toLocaleString()],["Generated by",currentUser.email||currentUser.uid],["Collection","Record count"],...names.map(name=>[types[name],(loadedRecords[name]||[]).length]),[],["Record ID","Collection","Record Type","Record Date","Name","Person ID","Course","Topic","Attendance Status","Status","Start Time","End Time","Mode","Course Type","Details","Created By","Created By Email","Created At"]];
+  names.forEach(name=>(loadedRecords[name]||[]).forEach(item=>{
+    rows.push([item.id,name,types[name],item.recordDate||item.date||"",item.personName||item.name||item.instructorName||item.studentName||"",item.personId||item.studentId||item.instructorId||"",item.course||"",item.topic||"",item.attendanceStatus||"",item.status||"",item.startTime||"",item.endTime||"",item.mode||"",item.courseType||"",item.notes||"",item.createdBy||"",item.createdByEmail||"",formatDate(item.createdAt||item.submittedAt)]);
+  }));
+  const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);const link=document.createElement("a");
+  link.href=url;link.download=`CINPS_Academic_Report_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.append(link);link.click();link.remove();URL.revokeObjectURL(url);
+  showStatus("appError","CSV report downloaded successfully.",false);
 }
 $("recordForm").addEventListener("submit",async event=>{
   event.preventDefault();
@@ -436,6 +431,14 @@ $("recordForm").addEventListener("submit",async event=>{
   }
 });
 $("recordType").dispatchEvent(new Event("change"));
+$("recordSearch").addEventListener("input",applyRecordFilters);
+$("recordFilter").addEventListener("change",applyRecordFilters);
+$("resetFormBtn").addEventListener("click",()=>{
+  $("recordForm").reset();
+  $("recordDate").value=new Date().toLocaleDateString("en-CA");
+  $("recordType").dispatchEvent(new Event("change"));
+  hideStatus("formStatus");
+});
 </script>
 </body>
 </html>
