@@ -1,437 +1,202 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CINPS Academic Intelligence</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CINPS Examination Dashboard</title>
 <style>
-:root{--navy:#103b82;--blue:#1769e0;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323}
-*{box-sizing:border-box}
-body{margin:0;background:#f3f7fd;color:var(--ink);font:15px Arial,sans-serif}
-header{background:white;border-bottom:1px solid var(--line);padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{background:var(--navy);color:white;font-weight:900;border-radius:12px;padding:13px}
-h1{font-size:21px;margin:0}
-.sub{font-size:12px;color:var(--muted);margin-top:5px}
-button,input,select,textarea{font:inherit}
-button{border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
-button:disabled{opacity:.55;cursor:wait}
-button.secondary{background:#e7effc;color:var(--navy)}
-main{max-width:1200px;margin:28px auto;padding:0 18px}
-.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 5px 22px #163f7108}
-h2{font-size:19px;margin:0 0 16px}
-.muted{color:var(--muted);line-height:1.55}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.stat{background:var(--pale);border:1px solid var(--line);border-radius:13px;padding:18px}
-.stat label{display:block;color:var(--muted);font-size:13px}
-.stat strong{display:block;font-size:30px;margin-top:10px;color:var(--navy)}
-.columns{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field.full{grid-column:1/-1}
-label{font-size:13px;font-weight:700}
-input,select,textarea{width:100%;padding:11px;border:1px solid #cbd8ea;border-radius:8px;background:white;color:var(--ink)}
-textarea{min-height:90px;resize:vertical}
-.status{padding:12px;border-radius:9px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere}
-.status.error{background:#fff0f0;color:var(--red)}
-.hidden{display:none!important}
-.tablewrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{background:#f5f8fd;color:var(--muted)}
-.barrow{display:grid;grid-template-columns:120px 1fr 35px;gap:10px;align-items:center;margin:15px 0;font-size:13px}
-.track{height:10px;background:#e8eff9;border-radius:10px;overflow:hidden}
-.fill{height:100%;background:var(--blue);width:0}
-footer{text-align:center;color:var(--muted);padding:24px;font-size:12px}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}}
-@media(max-width:480px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stat{padding:13px}.stat strong{font-size:25px}header{padding:14px}}
+:root{--navy:#102a56;--blue:#2463eb;--bg:#f4f7fb;--line:#e1e8f0;--text:#182338;--muted:#66758b;--white:#fff;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 13px;font-weight:650}.primary{background:var(--blue);color:#fff}.secondary{background:#eaf0ff;color:#1e40af}.danger{background:#fee2e2;color:#991b1b}.plain{background:#fff;border:1px solid var(--line);color:var(--text)}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #ccd6e3;border-radius:8px;background:#fff;color:var(--text)}textarea{min-height:82px;resize:vertical}label{display:block;font-weight:650;margin:10px 0 5px}.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}.side{background:var(--navy);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:22px}.brand{display:flex;gap:10px;align-items:center;padding:0 8px}.logo{background:#fff;color:var(--navy);border-radius:10px;padding:10px;font-weight:900}.brand strong{display:block}.brand small{color:#bfcee5;letter-spacing:.08em;font-size:10px}.nav button{width:100%;text-align:left;margin:3px 0;background:transparent;color:#dbe7fa}.nav button.active,.nav button:hover{background:#254577;color:#fff}.sidefoot{margin-top:auto;color:#bfcee5;font-size:12px;padding:8px}.main{min-width:0}.top{background:#fff;border-bottom:1px solid var(--line);padding:18px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px}.top h1{font-size:21px;margin:0}.top small{color:var(--muted)}.content{padding:24px;max-width:1500px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.heading h2{margin:0 0 4px;font-size:22px}.muted{color:var(--muted)}.banner{border:1px solid #f4d28b;background:#fff8e7;color:#795214;border-radius:10px;padding:12px 14px;margin-bottom:18px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:0 2px 7px #172b4d08}.card small{color:var(--muted)}.card strong{display:block;font-size:27px;margin:5px 0}.panel{margin-bottom:16px}.panel h3{margin:0 0 12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:700px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);background:#f8fafc}td{font-size:13px}.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#eaf0ff;color:#244ca0;font-size:12px}.tag.green{background:#dcfce7;color:#166534}.tag.red{background:#fee2e2;color:#991b1b}.hidden{display:none!important}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.full{grid-column:1/-1}.question{border:1px solid var(--line);border-radius:9px;padding:12px;margin:10px 0}.question p{margin:4px 0}.authwrap{max-width:500px;margin:9vh auto;padding:24px}.status{margin:12px 0;padding:10px;border-radius:8px;background:#eff6ff;color:#1d4ed8}.status.error{background:#fee2e2;color:#991b1b}.status.success{background:#dcfce7;color:#166534}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{padding:7px 9px}.empty{padding:22px;text-align:center;color:var(--muted)}.section{display:none}.section.active{display:block}.note{font-size:12px;color:var(--muted)}.chip{padding:6px 10px;border-radius:20px;background:#edf2f7;color:#334155}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:12px}.side .nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;width:auto}.sidefoot{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:14px}.top{padding:14px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">CINPS</div>
-    <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
+<div id="loginScreen" class="authwrap">
+ <div class="panel">
+  <div class="brand" style="padding:0;color:var(--navy)"><div class="logo">CINPS</div><div><strong>Examination Hub</strong><small style="color:var(--muted)">ACADEMIC INTELLIGENCE</small></div></div>
+  <h2 style="margin-bottom:6px">Administrator sign-in</h2><p class="muted">Sign in with the Google account already authorised in the CINPS Core System administrators collection.</p>
+  <div id="loginMessage" class="status hidden"></div>
+  <button id="loginBtn" class="primary" style="width:100%">Continue with Google</button>
+  <p class="note">This page uses Firebase Authentication and the existing <code>admins/{UID}</code> role profile. Signing in alone does not grant access.</p>
+ </div>
+</div>
+<div id="app" class="app hidden">
+ <aside class="side">
+  <div class="brand"><div class="logo">CINPS</div><div><strong>Examination Hub</strong><small>ACADEMIC INTELLIGENCE</small></div></div>
+  <nav class="nav">
+   <button class="active" data-page="overview">▦ &nbsp; Overview</button>
+   <button data-page="courses">▤ &nbsp; Courses & Chapters</button>
+   <button data-page="questions">☷ &nbsp; Question Bank</button>
+   <button data-page="exams">◷ &nbsp; Examinations</button>
+   <button data-page="results">▥ &nbsp; Results Centre</button>
+  </nav>
+  <div class="sidefoot">CINPS · Examination Management<br>Firebase project: cinps-core-system</div>
+ </aside>
+ <main class="main">
+  <header class="top"><div><h1 id="pageTitle">Overview</h1><small id="identity">Checking administrator…</small></div><button id="logoutBtn" class="plain">Sign out</button></header>
+  <div class="content">
+   <div class="banner"><strong>Integration status:</strong> connected dashboard scaffold. It uses the existing CINPS Core System project. Examination collections must be permitted by Firestore Rules before saving. This dashboard does not yet publish exams to students.</div>
+   <section id="page-overview" class="section active">
+    <div class="heading"><div><h2>Examination overview</h2><div class="muted">Manage chapter-wise MCQs, exams and results in one place.</div></div><button class="primary" onclick="showPage('exams');openExamForm()">＋ Create examination</button></div>
+    <div class="cards"><div class="card"><small>Courses</small><strong id="statCourses">—</strong><small>Saved in Firestore</small></div><div class="card"><small>Question bank</small><strong id="statQuestions">—</strong><small>Saved MCQs</small></div><div class="card"><small>Examinations</small><strong id="statExams">—</strong><small>Draft and published status</small></div><div class="card"><small>Submissions</small><strong id="statSubs">—</strong><small>Results awaiting review</small></div></div>
+    <div class="panel"><h3>Getting started</h3><ol><li>Add courses, subjects and chapters.</li><li>Add MCQs and mark the correct option.</li><li>Create an examination from selected chapter questions.</li><li>After the student portal is connected, review submissions and download results as CSV.</li></ol><p class="note">Correct answers stay in the admin-only question bank. Do not copy answer keys into student-visible exam documents.</p></div>
+   </section>
+   <section id="page-courses" class="section">
+    <div class="heading"><div><h2>Courses & chapters</h2><div class="muted">Manage course structure used by the question bank.</div></div><button class="primary" onclick="openCourseForm()">＋ Add course</button></div>
+    <div class="panel"><div class="tablewrap"><table><thead><tr><th>Course</th><th>Code</th><th>Subjects / chapters</th><th>Actions</th></tr></thead><tbody id="coursesTable"></tbody></table></div></div>
+   </section>
+   <section id="page-questions" class="section">
+    <div class="heading"><div><h2>Question bank</h2><div class="muted">MCQs with answer keys, saved only for authorised administrators.</div></div><button class="primary" onclick="openQuestionForm()">＋ Add MCQ</button></div>
+    <div class="panel"><div class="row"><input id="questionSearch" placeholder="Search questions…" oninput="renderQuestions()"><select id="questionCourseFilter" onchange="renderQuestions()"><option value="">All courses</option></select></div><div id="questionsList"></div></div>
+   </section>
+   <section id="page-exams" class="section">
+    <div class="heading"><div><h2>Examinations</h2><div class="muted">Build chapter-based exams from saved MCQs.</div></div><button class="primary" onclick="openExamForm()">＋ Create examination</button></div>
+    <div class="panel"><div class="tablewrap"><table><thead><tr><th>Exam</th><th>Course / chapter</th><th>Questions</th><th>Marks</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead><tbody id="examsTable"></tbody></table></div></div>
+   </section>
+   <section id="page-results" class="section">
+    <div class="heading"><div><h2>Results centre</h2><div class="muted">Review saved submissions and export a CSV for manual announcement.</div></div><button class="primary" onclick="exportResults()">↓ Download results CSV</button></div>
+    <div class="panel"><div class="row"><select id="resultExamFilter" onchange="renderResults()"><option value="">All exams</option></select><input id="resultSearch" placeholder="Search student / exam…" oninput="renderResults()"></div><div class="tablewrap"><table><thead><tr><th>Student</th><th>Exam</th><th>Submitted</th><th>Score</th><th>Result</th><th>Actions</th></tr></thead><tbody id="resultsTable"></tbody></table></div><p class="note">This dashboard can display and export saved results. Student submission and grading workflow must be enabled after the student portal and matching security rules are implemented.</p></div>
+   </section>
+   <div id="appMessage" class="status hidden"></div>
   </div>
-  <div id="accountArea"><button id="loginBtn">Continue with Google</button></div>
-</header>
-
-<main>
-  <section class="panel" id="welcome">
-    <h2>Academic Intelligence Dashboard</h2>
-    <p class="muted">Secure academic records, attendance, instructor updates and institutional insights in one place.</p>
-    <p class="muted">Sign in with an active CINPS administrator account to continue.</p>
-    <div id="welcomeStatus" class="muted"></div>
-  </section>
-
-  <section id="app" class="hidden">
-    <div class="panel">
-      <h2>Academic overview</h2>
-      <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
-      <div class="grid">
-        <div class="stat"><label>Students</label><strong id="nStudents">0</strong></div>
-        <div class="stat"><label>Instructors</label><strong id="nInstructors">0</strong></div>
-        <div class="stat"><label>Attendance records</label><strong id="nAttendance">0</strong></div>
-        <div class="stat"><label>Class updates</label><strong id="nClasses">0</strong></div>
-      </div>
-      <div id="overviewStatus" class="muted" style="margin-top:14px">Loading academic data…</div>
-    </div>
-
-    <div class="columns">
-      <section class="panel">
-        <h2>Register an academic update</h2>
-        <p class="muted">Create a new student, instructor, attendance, class, clinical or internship record.</p>
-        <form id="recordForm">
-          <div class="field full">
-            <label for="recordType">Record type</label>
-            <select id="recordType" required>
-              <option value="students">Student registration</option>
-              <option value="instructors">Instructor registration</option>
-              <option value="attendance">Student attendance</option>
-              <option value="class_updates">Class update</option>
-              <option value="clinical_updates">Clinical update</option>
-              <option value="internship_updates">Internship update</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="personName">Student / instructor name</label>
-            <input id="personName" maxlength="120" required>
-          </div>
-          <div class="field">
-            <label for="personId">Student / staff ID (optional)</label>
-            <input id="personId" maxlength="80">
-          </div>
-          <div class="field">
-            <label for="course">Course</label>
-            <input id="course" maxlength="120" placeholder="e.g. DMLT" required>
-          </div>
-          <div class="field">
-            <label for="recordDate">Record date</label>
-            <input id="recordDate" type="date" required>
-          </div>
-          <div class="field" id="attendanceField">
-            <label for="attendanceStatus">Attendance status</label>
-            <select id="attendanceStatus">
-              <option value="Present">Present</option>
-              <option value="Absent">Absent</option>
-              <option value="Late">Late</option>
-              <option value="Leave">Leave</option>
-            </select>
-          </div>
-          <div class="field" id="topicField">
-            <label for="topic">Subject / topic</label>
-            <input id="topic" maxlength="180" placeholder="Class or activity">
-          </div>
-          <div class="field full">
-            <label for="notes">Details / update</label>
-            <textarea id="notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
-          </div>
-          <div class="field full">
-            <button id="saveBtn" type="submit">Save new record</button>
-          </div>
-        </form>
-        <div id="formStatus" class="hidden"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Academic activity</h2>
-        <p class="muted">Record counts by category.</p>
-        <div id="activityChart"></div>
-        <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
-      </section>
-    </div>
-
-    <section class="panel">
-      <h2>Latest academic records</h2>
-      <p class="muted">The most recent records across the connected academic collections.</p>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead>
-          <tbody id="recentRows"><tr><td colspan="5">Loading records…</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-    <div id="appError" class="status error hidden"></div>
-  </section>
-</main>
-<footer>CINPS Academic Intelligence · Firebase Authentication & Cloud Firestore</footer>
-
+ </main>
+</div>
+<div id="modal" class="authwrap hidden" style="position:fixed;inset:0;max-width:none;margin:0;background:#0b1c3380;z-index:10;overflow:auto;padding:4vh 14px">
+ <div class="panel" style="max-width:720px;margin:0 auto">
+  <div class="row"><h2 id="modalTitle" style="margin:0">Edit</h2><button class="plain" style="flex:0" onclick="closeModal()">Close</button></div>
+  <div id="modalBody"></div><div class="actions" style="margin-top:16px"><button class="primary" id="modalSave">Save</button><button class="plain" onclick="closeModal()">Cancel</button></div>
+ </div>
+</div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc, collection, addDoc, getDocs,
-  query, orderBy, limit, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
-    authDomain: "cinps-core-system.firebaseapp.com",
-    projectId: "cinps-core-system",
-    storageBucket: "cinps-core-system.firebasestorage.app",
-    messagingSenderId: "1026808169095",
-    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
-  };
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+ apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+ authDomain: "cinps-core-system.firebaseapp.com",
+ projectId: "cinps-core-system",
+ storageBucket: "cinps-core-system.firebasestorage.app",
+ messagingSenderId: "1026808169095",
+ appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const db = getFirestore(appFirebase);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 
-const types = {
-  students:"Student",
-  instructors:"Instructor",
-  attendance:"Attendance",
-  class_updates:"Class update",
-  clinical_updates:"Clinical update",
-  internship_updates:"Internship update"
-};
-const $ = id => document.getElementById(id);
-let currentUser = null;
-let refreshInProgress = false;
+let currentUser=null, currentRole=null, courses=[], questions=[], exams=[], submissions=[];
+const $=id=>document.getElementById(id);
+const coll=name=>collection(db,name);
+const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function message(text,error=false){const el=$("appMessage");el.textContent=text;el.className="status"+(error?" error":"");el.classList.remove("hidden");}
+function loginMessage(text){$("loginMessage").textContent=text;$("loginMessage").classList.remove("hidden");}
+function showPage(page){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));$("page-"+page).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));$("pageTitle").textContent=({overview:"Overview",courses:"Courses & Chapters",questions:"Question Bank",exams:"Examinations",results:"Results Centre"})[page]||page;}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("loginBtn").addEventListener("click",()=>signInWithRedirect(auth,provider).catch(e=>loginMessage(e.message)));
+$("logoutBtn").addEventListener("click",()=>signOut(auth));
+try { await getRedirectResult(auth); } catch(e) { loginMessage("Sign-in issue: "+e.message); }
 
-function showStatus(id, message, error=false) {
-  const el = $(id);
-  el.textContent = message;
-  el.classList.remove("hidden","error");
-  if(error) el.classList.add("error");
-}
-function hideStatus(id){$(id).classList.add("hidden")}
-function safeText(value) {
-  return value == null ? "" : String(value);
-}
-function formatDate(value) {
-  if(!value) return "—";
-  if(typeof value === "string") return value;
-  if(value.toDate) return value.toDate().toLocaleDateString();
-  return "—";
-}
-// Display stored times consistently in 12-hour format (e.g. 01:20 PM).
-function formatTime(value) {
-  if(value == null || String(value).trim() === "") return "";
-  const text = String(value).trim();
-  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
-  if(twelveHour) {
-    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
-    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
-  }
-  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
-  if(twentyFourHour) {
-    const hours = Number(twentyFourHour[1]);
-    if(hours >= 0 && hours <= 23) {
-      const suffix = hours >= 12 ? "PM" : "AM";
-      const hour12 = hours % 12 || 12;
-      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
-    }
-  }
-  return text;
-}
-function setSignedOut(message="Please sign in with your CINPS administrator account.") {
-  currentUser = null;
-  $("app").classList.add("hidden");
-  $("welcome").classList.remove("hidden");
-  $("accountArea").replaceChildren();
-  const btn=document.createElement("button");
-  btn.id="loginBtn"; btn.textContent="Continue with Google";
-  btn.addEventListener("click",login);
-  $("accountArea").append(btn);
-  $("welcomeStatus").textContent=message;
-}
-async function login() {
-  $("loginBtn").disabled=true;
-  $("welcomeStatus").textContent="Opening Google sign-in…";
-  try { await signInWithPopup(auth,provider); }
-  catch(error) {
-    console.error(error);
-    showStatus("welcomeStatus",`${error.code || "Sign-in error"}: ${error.message}`,true);
-    $("loginBtn").disabled=false;
-  }
-}
-$("loginBtn").addEventListener("click",login);
-
-async function authorize(user) {
-  const adminRef=doc(db,"admins",user.uid);
-  const adminSnap=await getDoc(adminRef);
-  if(!adminSnap.exists()) throw new Error("This Google account is not registered as a CINPS administrator.");
-  const data=adminSnap.data();
-  if(data.active !== true || !["superAdmin","admin"].includes(data.role)) {
-    throw new Error("This administrator account is inactive or has no valid role.");
-  }
-  return data;
-}
-
-onAuthStateChanged(auth, async user => {
-  if(!user) { setSignedOut(); return; }
-  $("welcomeStatus").textContent="Verifying administrator permissions…";
-  try {
-    const admin=await authorize(user);
-    currentUser=user;
-    $("welcome").classList.add("hidden");
-    $("app").classList.remove("hidden");
-    $("accountArea").replaceChildren();
-    const who=document.createElement("span");
-    who.style.cssText="color:#63748b;font-size:12px;margin-right:10px";
-    who.textContent=`${user.displayName || user.email} · ${admin.role}`;
-    const out=document.createElement("button");
-    out.className="secondary";out.textContent="Sign out";
-    out.addEventListener("click",()=>signOut(auth));
-    $("accountArea").append(who,out);
-    await refreshDashboard();
-  } catch(error) {
-    console.error(error);
-    await signOut(auth);
-    setSignedOut(error.message || "Administrator verification failed.");
-  }
+onAuthStateChanged(auth,async user=>{
+ currentUser=user; currentRole=null;
+ if(!user){$("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");return;}
+ try{
+  const snap=await getDoc(doc(db,"admins",user.uid));
+  if(!snap.exists()) throw new Error("No administrator profile exists for this account. Ask the CINPS Super Admin to authorise your UID.");
+  const a=snap.data();
+  if(a.active!==true || !["admin","superAdmin"].includes(a.role) || String(a.email||"").toLowerCase()!==String(user.email||"").toLowerCase()) throw new Error("This account is not an active CINPS administrator.");
+  currentRole=a.role;
+  $("identity").textContent=(user.email||"Signed in")+" · "+a.role;
+  $("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");
+  await loadAll();
+ }catch(e){$("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");loginMessage(e.message);await signOut(auth).catch(()=>{});}
 });
 
-$("recordType").addEventListener("change",()=>{
-  const type=$("recordType").value;
-  $("attendanceField").classList.toggle("hidden",type!=="attendance");
-  $("topicField").classList.toggle("hidden",type==="students"||type==="instructors");
-  $("personName").previousElementSibling.textContent =
-    type==="instructors" ? "Instructor name" : type==="students" ? "Student name" : "Student / instructor name";
-});
-
-$("recordDate").value=new Date().toLocaleDateString("en-CA");
-
-async function readCollection(name) {
-  const snap=await getDocs(collection(db,name));
-  return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
+async function loadAll(){
+ try{
+  const [c,q,e,s]=await Promise.all(["exam_courses","exam_questions","exams","exam_submissions"].map(n=>getDocs(coll(n))));
+  courses=c.docs.map(d=>({id:d.id,...d.data()}));
+  questions=q.docs.map(d=>({id:d.id,...d.data()}));
+  exams=e.docs.map(d=>({id:d.id,...d.data()}));
+  submissions=s.docs.map(d=>({id:d.id,...d.data()}));
+  renderAll();
+ }catch(e){message("Could not load examination data. Firestore may deny these new collections until the examination rules are added. Details: "+e.message,true);}
 }
-async function refreshDashboard() {
-  if(!currentUser || refreshInProgress) return;
-  refreshInProgress=true;
-  $("overviewStatus").textContent="Loading current records…";
-  hideStatus("appError");
-  try {
-    const names=Object.keys(types);
-    const results=await Promise.all(names.map(readCollection));
-    const data={};
-    names.forEach((name,i)=>data[name]=results[i]);
-    $("nStudents").textContent=data.students.length;
-    $("nInstructors").textContent=data.instructors.length;
-    $("nAttendance").textContent=data.attendance.length;
-    $("nClasses").textContent=data.class_updates.length;
-    $("overviewStatus").textContent=`Loaded ${names.reduce((sum,n)=>sum+data[n].length,0)} records from six Firestore collections.`;
-    renderChart(data);
-    renderRecent(data);
-  } catch(error) {
-    console.error(error);
-    showStatus("appError",`Could not load academic records: ${error.message}. Check Firestore rules and network access.`,true);
-    $("overviewStatus").textContent="Some data could not be loaded.";
-  } finally {
-    refreshInProgress=false;
-  }
+function renderAll(){
+ $("statCourses").textContent=courses.length;$("statQuestions").textContent=questions.length;$("statExams").textContent=exams.length;$("statSubs").textContent=submissions.length;
+ renderCourses();renderQuestions();renderExams();renderResults();fillFilters();
 }
-function renderChart(data) {
-  const chart=$("activityChart");
-  chart.replaceChildren();
-  const counts=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));
-  const max=Math.max(1,...counts.map(x=>x.count));
-  counts.forEach(item=>{
-    const row=document.createElement("div");row.className="barrow";
-    const label=document.createElement("span");label.textContent=item.label;
-    const track=document.createElement("div");track.className="track";
-    const fill=document.createElement("div");fill.className="fill";
-    fill.style.width=`${item.count/max*100}%`;track.append(fill);
-    const count=document.createElement("strong");count.textContent=item.count;
-    row.append(label,track,count);chart.append(row);
-  });
+function fillFilters(){
+ const current=$("questionCourseFilter").value;
+ $("questionCourseFilter").innerHTML='<option value="">All courses</option>'+courses.map(c=>`<option value="${safe(c.code)}">${safe(c.code)} — ${safe(c.name)}</option>`).join("");
+ $("questionCourseFilter").value=current;
+ const f=$("resultExamFilter").value;
+ $("resultExamFilter").innerHTML='<option value="">All exams</option>'+exams.map(e=>`<option value="${safe(e.id)}">${safe(e.title)}</option>`).join("");$("resultExamFilter").value=f;
 }
-function renderRecent(data) {
-  // Instructor Hub records use submittedAt/date/instructorName; dashboard-form
-  // records use createdAt/recordDate/personName. Support both schemas.
-  const rows=Object.values(data).flat().sort((a,b)=>{
-    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
-    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
-    return tb-ta;
-  }).slice(0,30);
-  const body=$("recentRows");body.replaceChildren();
-  if(!rows.length) {
-    const tr=document.createElement("tr"),td=document.createElement("td");
-    td.colSpan=5;td.textContent="No records yet. Add the first academic record using the form.";
-    tr.append(td);body.append(tr);return;
-  }
-  rows.forEach(item=>{
-    const tr=document.createElement("tr");
-    const isAttendance = item._collection === "attendance";
-    let notes = item.notes || "";
-    // Attendance notes include the time range already; normalize it there and avoid
-    // repeating status/topic/time fields that are already described in the notes.
-    if(isAttendance && item.startTime && item.endTime) {
-      const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
-      if(/Class time:\s*[^.;]+/i.test(notes)) {
-        notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
-      } else {
-        notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
-      }
-    }
-    const details=[
-      notes,
-      isAttendance ? "" : item.topic,
-      isAttendance ? "" : item.status,
-      isAttendance ? "" : item.attendanceStatus,
-      item.courseType,
-      item.mode,
-      !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
-      !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
-    ].filter(value=>value != null && String(value).trim() !== "").join(" · ") || "—";
-    const values=[
-      formatDate(item.recordDate || item.date),
-      types[item._collection] || item._collection,
-      item.personName || item.name || item.instructorName || item.studentName || "—",
-      item.course || "—",
-      details
-    ];
-    values.forEach(value=>{const td=document.createElement("td");td.textContent=safeText(value);tr.append(td)});
-    body.append(tr);
-  });
+function renderCourses(){
+ $("coursesTable").innerHTML=courses.map(c=>`<tr><td><strong>${safe(c.name)}</strong></td><td>${safe(c.code)}</td><td>${(c.subjects||[]).map(s=>`<div><strong>${safe(s.name)}</strong>: ${(s.chapters||[]).map(safe).join(", ")}</div>`).join("")}</td><td><div class="actions"><button class="plain" data-edit-course="${safe(c.id)}">Edit</button><button class="danger" data-delete-course="${safe(c.id)}">Delete</button></div></td></tr>`).join("")||'<tr><td colspan="4" class="empty">No courses yet. Add a course to begin.</td></tr>';
+ document.querySelectorAll("[data-edit-course]").forEach(b=>b.onclick=()=>openCourseForm(b.dataset.editCourse));document.querySelectorAll("[data-delete-course]").forEach(b=>b.onclick=()=>removeRecord("exam_courses",b.dataset.deleteCourse,"course"));
 }
-$("recordForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!currentUser) {showStatus("formStatus","Sign in again to continue.",true);return}
-  const type=$("recordType").value;
-  const personName=$("personName").value.trim();
-  const course=$("course").value.trim();
-  const recordDate=$("recordDate").value;
-  if(!personName||!course||!recordDate) {
-    showStatus("formStatus","Please complete the name, course and date.",true);return;
-  }
-  const record={
-    personName,
-    personId:$("personId").value.trim(),
-    course,
-    recordDate,
-    notes:$("notes").value.trim(),
-    topic:$("topic").value.trim(),
-    createdBy:currentUser.uid,
-    createdByEmail:currentUser.email || "",
-    createdAt:serverTimestamp()
-  };
-  if(type==="attendance") record.attendanceStatus=$("attendanceStatus").value;
-  $("saveBtn").disabled=true;
-  $("saveBtn").textContent="Saving…";
-  try {
-    await addDoc(collection(db,type),record);
-    showStatus("formStatus",`${types[type]} record saved successfully.`);
-    $("recordForm").reset();
-    $("recordDate").value=new Date().toLocaleDateString("en-CA");
-    $("recordType").dispatchEvent(new Event("change"));
-    await refreshDashboard();
-  } catch(error) {
-    console.error(error);
-    showStatus("formStatus",`Record not saved: ${error.message}`,true);
-  } finally {
-    $("saveBtn").disabled=false;
-    $("saveBtn").textContent="Save new record";
-  }
-});
-$("recordType").dispatchEvent(new Event("change"));
+function renderQuestions(){
+ const search=$("questionSearch").value.toLowerCase(), course=$("questionCourseFilter").value;
+ const list=questions.filter(q=>(!course||q.courseCode===course)&&(`${q.text} ${q.chapter} ${q.subject} ${q.courseCode}`).toLowerCase().includes(search));
+ $("questionsList").innerHTML=list.map(q=>`<div class="question"><div class="row"><strong>${safe(q.courseCode)} · ${safe(q.chapter)}</strong><span class="chip">${Number(q.marks)||1} mark(s)</span></div><p>${safe(q.text)}</p><p class="note">Correct option: ${"ABCD"[Number(q.correctIndex)]||"?"}. ${safe((q.options||[])[Number(q.correctIndex)])}</p><div class="actions"><button class="plain" data-edit-q="${safe(q.id)}">Edit</button><button class="danger" data-delete-q="${safe(q.id)}">Delete</button></div></div>`).join("")||'<div class="empty">No matching MCQs.</div>';
+ document.querySelectorAll("[data-edit-q]").forEach(b=>b.onclick=()=>openQuestionForm(b.dataset.editQ));document.querySelectorAll("[data-delete-q]").forEach(b=>b.onclick=()=>removeRecord("exam_questions",b.dataset.deleteQ,"question"));
+}
+function renderExams(){
+ $("examsTable").innerHTML=exams.map(e=>`<tr><td><strong>${safe(e.title)}</strong><div class="note">${safe(e.id)}</div></td><td>${safe(e.courseCode)}<div class="note">${safe(e.subject)} · ${safe(e.chapter)}</div></td><td>${(e.questionIds||[]).length}</td><td>${(e.questionIds||[]).reduce((n,id)=>n+(Number(questions.find(q=>q.id===id)?.marks)||1),0)}</td><td>${Number(e.durationMinutes)||0} min</td><td><span class="tag ${e.status==="published"?"green":""}">${safe(e.status||"draft")}</span></td><td><div class="actions"><button class="plain" data-toggle-exam="${safe(e.id)}">${e.status==="published"?"Close":"Publish"}</button><button class="danger" data-delete-exam="${safe(e.id)}">Delete</button></div></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No examinations created.</td></tr>';
+ document.querySelectorAll("[data-toggle-exam]").forEach(b=>b.onclick=()=>toggleExam(b.dataset.toggleExam));document.querySelectorAll("[data-delete-exam]").forEach(b=>b.onclick=()=>removeRecord("exams",b.dataset.deleteExam,"exam"));
+}
+function renderResults(){
+ const f=$("resultExamFilter").value, term=$("resultSearch").value.toLowerCase();
+ const list=submissions.filter(s=>(!f||s.examId===f)&&(`${s.studentName||""} ${s.studentId||""} ${s.examTitle||""}`).toLowerCase().includes(term));
+ $("resultsTable").innerHTML=list.map(s=>`<tr><td>${safe(s.studentName||"Student")}<div class="note">${safe(s.studentId||s.studentUid||"")}</div></td><td>${safe(s.examTitle||exams.find(e=>e.id===s.examId)?.title||s.examId||"")}</td><td>${safe(s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():s.submittedAt||"—")}</td><td>${s.score==null?"Not graded":safe(s.score)+" / "+safe(s.totalMarks??"—")}</td><td>${s.result?`<span class="tag ${s.result==="Pass"?"green":"red"}">${safe(s.result)}</span>`:'<span class="tag">Pending</span>'}</td><td><button class="plain" data-grade="${safe(s.id)}">Grade / refresh</button></td></tr>`).join("")||'<tr><td colspan="6" class="empty">No submissions found.</td></tr>';
+ document.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>message("Grading requires the student portal submission schema and answer-key collection to be connected first. No result was changed.",true));
+}
+function openModal(title,html,onSave){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;$("modal").classList.remove("hidden");$("modalSave").onclick=onSave;}
+function closeModal(){$("modal").classList.add("hidden");}
+window.closeModal=closeModal;window.showPage=showPage;
+function openCourseForm(id=null){
+ const old=courses.find(c=>c.id===id);
+ openModal(id?"Edit course":"Add course",`<div class="formgrid"><div><label>Course name</label><input id="cName" value="${safe(old?.name||"")}" required></div><div><label>Course code (unique)</label><input id="cCode" value="${safe(old?.code||"")}" required ${id?'disabled':''}></div><div class="full"><label>Subjects and chapters</label><textarea id="cStructure" placeholder="One subject per line: Subject Name | Chapter 1, Chapter 2">${safe((old?.subjects||[]).map(s=>s.name+" | "+(s.chapters||[]).join(", ")).join("\n"))}</textarea><p class="note">Use one line per subject. Separate subject and chapters with | and chapters with commas.</p></div></div>`,async()=>{
+  const name=$("cName").value.trim(),code=$("cCode").value.trim().toUpperCase(),lines=$("cStructure").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  if(!name||!code){message("Course name and code are required.",true);return}
+  if(!id&&courses.some(c=>c.code===code)){message("Course code already exists.",true);return}
+  const subjects=lines.map(line=>{const [sn="",ch=""]=line.split("|");return {name:sn.trim(),chapters:ch.split(",").map(x=>x.trim()).filter(Boolean)}}).filter(s=>s.name);
+  const payload={name,code,subjects,updatedAt:serverTimestamp(),updatedBy:currentUser.uid};
+  try{if(id)await updateDoc(doc(db,"exam_courses",id),payload);else await addDoc(coll("exam_courses"),{...payload,createdAt:serverTimestamp(),createdBy:currentUser.uid});closeModal();await loadAll();message("Course saved.");}catch(e){message("Course save failed: "+e.message,true)}
+ });
+}
+function openQuestionForm(id=null){
+ const old=questions.find(q=>q.id===id);
+ const opts=old?.options||["","","",""];
+ openModal(id?"Edit MCQ":"Add MCQ",`<div class="formgrid"><div><label>Course</label><select id="qCourse">${courses.map(c=>`<option value="${safe(c.code)}" ${old?.courseCode===c.code?"selected":""}>${safe(c.code)} — ${safe(c.name)}</option>`).join("")}</select></div><div><label>Subject</label><input id="qSubject" value="${safe(old?.subject||"")}" required></div><div class="full"><label>Chapter</label><input id="qChapter" value="${safe(old?.chapter||"")}" required></div><div class="full"><label>Question text</label><textarea id="qText" required>${safe(old?.text||"")}</textarea></div>${opts.map((v,i)=>`<div><label>Option ${"ABCD"[i]}</label><input id="qOpt${i}" value="${safe(v)}" required></div>`).join("")}<div><label>Correct option</label><select id="qCorrect">${["A","B","C","D"].map((x,i)=>`<option value="${i}" ${Number(old?.correctIndex||0)===i?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Marks</label><input id="qMarks" type="number" min="1" max="100" value="${Number(old?.marks)||1}"></div></div>`,async()=>{
+  const courseCode=$("qCourse").value,subject=$("qSubject").value.trim(),chapter=$("qChapter").value.trim(),textq=$("qText").value.trim(),options=[0,1,2,3].map(i=>$("qOpt"+i).value.trim()),correctIndex=Number($("qCorrect").value),marks=Number($("qMarks").value);
+  if(!courseCode||!subject||!chapter||!textq||options.some(x=>!x)||!Number.isFinite(marks)||marks<1){message("Complete all MCQ fields and use at least 1 mark.",true);return}
+  const payload={courseCode,subject,chapter,text:textq,options,correctIndex,marks,active:true,updatedAt:serverTimestamp(),updatedBy:currentUser.uid};
+  try{if(id)await updateDoc(doc(db,"exam_questions",id),payload);else await addDoc(coll("exam_questions"),{...payload,createdAt:serverTimestamp(),createdBy:currentUser.uid});closeModal();await loadAll();message("MCQ saved.");}catch(e){message("Question save failed: "+e.message,true)}
+ });
+}
+function openExamForm(){
+ if(!courses.length){message("Add a course before creating an examination.",true);return}
+ openModal("Create examination",`<label>Examination title</label><input id="eTitle" placeholder="e.g. DOTT — Sterilization Basics Test" required><div class="formgrid"><div><label>Course</label><select id="eCourse">${courses.map(c=>`<option value="${safe(c.code)}">${safe(c.code)} — ${safe(c.name)}</option>`).join("")}</select></div><div><label>Subject</label><input id="eSubject" required></div><div><label>Chapter</label><input id="eChapter" required></div><div><label>Duration (minutes)</label><input id="eDuration" type="number" min="1" max="240" value="30"></div><div><label>Pass mark (%)</label><input id="ePass" type="number" min="0" max="100" value="40"></div></div><label>Select questions</label><div id="examQuestionChecks" class="panel" style="max-height:220px;overflow:auto;padding:8px"></div><p class="note">The answer key remains in the admin-only question bank. This action creates a draft; it does not publish to students yet.</p>`,async()=>{
+  const title=$("eTitle").value.trim(),courseCode=$("eCourse").value,subject=$("eSubject").value.trim(),chapter=$("eChapter").value.trim(),durationMinutes=Number($("eDuration").value),passPercent=Number($("ePass").value),questionIds=[...document.querySelectorAll(".exam-q-check:checked")].map(x=>x.value);
+  if(!title||!subject||!chapter||!questionIds.length||durationMinutes<1||passPercent<0||passPercent>100){message("Enter exam details and select at least one question.",true);return}
+  const payload={title,courseCode,subject,chapter,durationMinutes,passPercent,questionIds,status:"draft",createdAt:serverTimestamp(),createdBy:currentUser.uid,updatedAt:serverTimestamp()};
+  try{await addDoc(coll("exams"),payload);closeModal();await loadAll();message("Draft examination saved to Firestore. Student publishing is not enabled yet.");}catch(e){message("Exam save failed: "+e.message,true)}
+ });
+ const updateQuestionList=()=>{const code=$("eCourse").value;const qs=questions.filter(q=>q.courseCode===code);$("examQuestionChecks").innerHTML=qs.map(q=>`<label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input class="exam-q-check" type="checkbox" value="${safe(q.id)}" style="width:auto;margin-top:4px"><span>${safe(q.chapter)} — ${safe(q.text)}</span></label>`).join("")||'<p class="empty">No questions for this course yet.</p>'};
+ $("eCourse").addEventListener("change",updateQuestionList);updateQuestionList();
+}
+async function toggleExam(id){const e=exams.find(x=>x.id===id);if(!e)return;const next=e.status==="published"?"draft":"published";if(next==="published"&&!confirm("Mark this exam published in the admin database? The student portal is not yet enabled, so this does not make it available to students."))return;try{await updateDoc(doc(db,"exams",id),{status:next,updatedAt:serverTimestamp(),updatedBy:currentUser.uid});await loadAll();message("Exam status updated. Student access is not enabled by this dashboard version.");}catch(err){message("Exam update failed: "+err.message,true)}}
+async function removeRecord(collectionName,id,label){if(!confirm("Delete this "+label+"? This cannot be undone."))return;try{await deleteDoc(doc(db,collectionName,id));await loadAll();message(label+" deleted.");}catch(e){message("Delete failed: "+e.message,true)}}
+function exportResults(){
+ const f=$("resultExamFilter").value,term=$("resultSearch").value.toLowerCase(),list=submissions.filter(s=>(!f||s.examId===f)&&(`${s.studentName||""} ${s.studentId||""} ${s.examTitle||""}`).toLowerCase().includes(term));
+ const rows=[["Student","Student ID","Exam","Submitted At","Score","Total Marks","Result"],...list.map(s=>[s.studentName||"",s.studentId||s.studentUid||"",s.examTitle||exams.find(e=>e.id===s.examId)?.title||s.examId||"",s.submittedAt?.toDate?s.submittedAt.toDate().toISOString():s.submittedAt||"",s.score??"",s.totalMarks??"",s.result||"Pending"])];
+ const csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="CINPS-Examination-Results.csv";a.click();URL.revokeObjectURL(url);
+}
+window.openCourseForm=openCourseForm;window.openQuestionForm=openQuestionForm;window.openExamForm=openExamForm;window.exportResults=exportResults;
 </script>
-</body>
-</html>
+</body></html>
