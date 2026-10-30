@@ -15,10 +15,10 @@ input,select,textarea{width:100%;padding:10px 11px;border:1px solid #ccd6e3;bord
 <div id="loginScreen" class="authwrap">
  <div class="panel">
   <div class="brand" style="padding:0;color:var(--navy)"><div class="logo">CINPS</div><div><strong>Examination Hub</strong><small style="color:var(--muted)">ACADEMIC INTELLIGENCE</small></div></div>
-  <h2 style="margin-bottom:6px">Administrator sign-in</h2><p class="muted">Sign in with the Google account already authorised in the CINPS Core System administrators collection.</p>
+  <h2 style="margin-bottom:6px">Administrator sign-in</h2><p class="muted">Sign in with a Google account authorised in this Examination System project.</p>
   <div id="loginMessage" class="status hidden"></div>
   <button id="loginBtn" class="primary" style="width:100%">Continue with Google</button>
-  <p class="note">This page uses Firebase Authentication and the existing <code>admins/{UID}</code> role profile. Signing in alone does not grant access.</p>
+  <p class="note">This page uses Firebase Authentication and an <code>admins/{UID}</code> role profile in this Examination System project. Signing in alone does not grant access.</p>
  </div>
 </div>
 <div id="app" class="app hidden">
@@ -31,12 +31,12 @@ input,select,textarea{width:100%;padding:10px 11px;border:1px solid #ccd6e3;bord
    <button data-page="exams">◷ &nbsp; Examinations</button>
    <button data-page="results">▥ &nbsp; Results Centre</button>
   </nav>
-  <div class="sidefoot">CINPS · Examination Management<br>Firebase project: cinps-core-system</div>
+  <div class="sidefoot">CINPS · Examination Management<br>Firebase project: cinps-examination-system</div>
  </aside>
  <main class="main">
   <header class="top"><div><h1 id="pageTitle">Overview</h1><small id="identity">Checking administrator…</small></div><button id="logoutBtn" class="plain">Sign out</button></header>
   <div class="content">
-   <div class="banner"><strong>Integration status:</strong> connected dashboard scaffold. It uses the existing CINPS Core System project. Examination collections must be permitted by Firestore Rules before saving. This dashboard does not yet publish exams to students.</div>
+   <div class="banner"><strong>Integration status:</strong> connected dashboard scaffold. It uses the new CINPS Examination System project. Authentication, administrator profiles and examination collections must be configured in this project before live operations. This dashboard does not yet publish exams to students.</div>
    <section id="page-overview" class="section active">
     <div class="heading"><div><h2>Examination overview</h2><div class="muted">Manage chapter-wise MCQs, exams and results in one place.</div></div><button class="primary" onclick="showPage('exams');openExamForm()">＋ Create examination</button></div>
     <div class="cards"><div class="card"><small>Courses</small><strong id="statCourses">—</strong><small>Saved in Firestore</small></div><div class="card"><small>Question bank</small><strong id="statQuestions">—</strong><small>Saved MCQs</small></div><div class="card"><small>Examinations</small><strong id="statExams">—</strong><small>Draft and published status</small></div><div class="card"><small>Submissions</small><strong id="statSubs">—</strong><small>Results awaiting review</small></div></div>
@@ -74,12 +74,12 @@ import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onA
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
- apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
- authDomain: "cinps.org",
- projectId: "cinps-core-system",
- storageBucket: "cinps-core-system.firebasestorage.app",
- messagingSenderId: "1026808169095",
- appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+ apiKey: "AIzaSyC2LKONNftFEOXLEg_Qnu7Jb9ZCokM0_4",
+ authDomain: "cinps-examination-system.firebaseapp.com",
+ projectId: "cinps-examination-system",
+ storageBucket: "cinps-examination-system.firebasestorage.app",
+ messagingSenderId: "703818173153",
+ appId: "1:703818173153:web:a32212f5bef0b1fc9045a0"
 };
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
