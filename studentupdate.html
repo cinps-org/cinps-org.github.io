@@ -536,6 +536,7 @@ button[type="submit"]:active {
     getAuth,
     GoogleAuthProvider,
     signInWithRedirect,
+    getRedirectResult,
     signOut,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -552,7 +553,7 @@ button[type="submit"]:active {
   // CINPS CORE SYSTEM — this is intentionally different from Student Corner.
   const firebaseConfig = {
     apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
-    authDomain: "cinps-core-system.firebaseapp.com",
+    authDomain: "cinps.org",
     projectId: "cinps-core-system",
     storageBucket: "cinps-core-system.firebasestorage.app",
     messagingSenderId: "1026808169095",
@@ -582,6 +583,19 @@ button[type="submit"]:active {
     authTitle.textContent = title;
     authMessage.textContent = message;
     authStatus.textContent = status;
+  }
+
+  // Resolve the Google redirect explicitly so Firebase redirect errors
+  // are visible instead of silently returning to the signed-out screen.
+  let redirectError = null;
+  try {
+    const redirectResult = await getRedirectResult(auth);
+    if (redirectResult?.user) {
+      console.info("CINPS Core Google redirect completed:", redirectResult.user.uid);
+    }
+  } catch (error) {
+    redirectError = error;
+    console.error("CINPS Google redirect result failed:", error);
   }
 
   function lockAttendance() {
@@ -646,10 +660,18 @@ button[type="submit"]:active {
     if (!user) {
       signInBtn.hidden = false;
       signOutBtn.hidden = true;
-      setAuthMessage(
-        "Student Verification",
-        "Sign in with the Google account registered with CINPS to verify your identity before submitting attendance."
-      );
+      if (redirectError) {
+        setAuthMessage(
+          "Google sign-in could not be completed",
+          redirectError.message || "Firebase could not restore the Google sign-in session.",
+          redirectError.code || "Check the Firebase redirect configuration."
+        );
+      } else {
+        setAuthMessage(
+          "Student Verification",
+          "Sign in with the Google account registered with CINPS to verify your identity before submitting attendance."
+        );
+      }
       return;
     }
 
