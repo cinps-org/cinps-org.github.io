@@ -206,6 +206,30 @@ button[type="submit"]:active {
   transform: translateY(0);
 }
 
+/* ===== STUDENT AUTHENTICATION GATE ===== */
+.auth-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.auth-card h3 { margin: 0 0 10px; color: var(--text-main); }
+.auth-card p { color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
+.auth-btn, .auth-signout {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth-btn { background: var(--primary); color: #fff; width: 100%; }
+.auth-signout { background: #eef2ff; color: var(--primary); margin-top: 12px; }
+.auth-status { font-size: 14px; margin-top: 12px; color: var(--text-muted); }
+#attendanceForm[hidden] { display: none !important; }
+
 /* ===== MODAL POP-UP ===== */
 .modal-overlay {
   position: fixed;
@@ -314,7 +338,15 @@ button[type="submit"]:active {
     <p>Attendance Form</p>
   </div>
 
-  <form id="attendanceForm">
+  <div class="auth-card" id="authCard">
+    <h3 id="authTitle">Student Verification</h3>
+    <p id="authMessage">Sign in with the Google account registered with CINPS to verify your identity before submitting attendance.</p>
+    <button type="button" class="auth-btn" id="studentSignInBtn">Sign in with Google</button>
+    <button type="button" class="auth-signout" id="studentSignOutBtn" hidden>Sign out</button>
+    <div class="auth-status" id="authStatus" aria-live="polite"></div>
+  </div>
+
+  <form id="attendanceForm" hidden>
     <div class="card">
       <h3>Class Details</h3>
 
@@ -399,8 +431,8 @@ button[type="submit"]:active {
 
     <div class="card">
       <h3>Student Information</h3>
-      <input type="text" name="studentName" placeholder="Full Name" required>
-      <input type="text" name="studentId" placeholder="Student ID No." required>
+      <input type="text" name="studentName" placeholder="Verified student name" readonly required>
+      <input type="text" name="studentId" placeholder="Verified student ID" readonly required>
     </div>
 
     <button type="submit" id="submitBtn">Submit Attendance</button>
@@ -500,8 +532,24 @@ button[type="submit"]:active {
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithRedirect,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+  // CINPS CORE SYSTEM — this is intentionally different from Student Corner.
   const firebaseConfig = {
     apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
     authDomain: "cinps-core-system.firebaseapp.com",
@@ -512,16 +560,176 @@ button[type="submit"]:active {
   };
 
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
   const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+
   const form = document.getElementById("attendanceForm");
   const submitBtn = document.getElementById("submitBtn");
-  const dateInput = document.getElementById("date");
-  const dayInput = document.getElementById("day");
-  const endTimeInput = document.getElementById("endTime");
+  const authCard = document.getElementById("authCard");
+  const authTitle = document.getElementById("authTitle");
+  const authMessage = document.getElementById("authMessage");
+  const authStatus = document.getElementById("authStatus");
+  const signInBtn = document.getElementById("studentSignInBtn");
+  const signOutBtn = document.getElementById("studentSignOutBtn");
+
   const showState = window.cinpsShowModalState;
+  let verifiedStudent = null;
+  let currentUser = null;
+
+  function setAuthMessage(title, message, status = "") {
+    authTitle.textContent = title;
+    authMessage.textContent = message;
+    authStatus.textContent = status;
+  }
+
+  function lockAttendance() {
+    verifiedStudent = null;
+    form.hidden = true;
+  }
+
+  function unlockAttendance(profile) {
+    verifiedStudent = profile;
+    form.hidden = false;
+
+    // Identity comes from the administrator-approved profile, not user input.
+    const nameInput = form.querySelector('[name="studentName"]');
+    const idInput = form.querySelector('[name="studentId"]');
+    nameInput.value = profile.name;
+    nameInput.readOnly = true;
+    idInput.value = profile.studentId;
+    idInput.readOnly = true;
+
+    // Display the approved course and branch. The database rules independently
+    // validate these values against the student's approved profile.
+    const branchSelect = form.querySelector('[name="branch"]');
+    const courseSelect = form.querySelector('[name="course"]');
+    branchSelect.value = profile.branch;
+    courseSelect.value = profile.course;
+    branchSelect.disabled = true;
+    courseSelect.disabled = true;
+
+    setAuthMessage(
+      "Student verified",
+      `Signed in as ${profile.name}. You may now submit your attendance.`,
+      `Registered course: ${profile.course} | Branch: ${profile.branch}`
+    );
+  }
+
+  signInBtn.addEventListener("click", async () => {
+    try {
+      signInBtn.disabled = true;
+      authStatus.textContent = "Redirecting to Google sign-in...";
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      console.error("CINPS student sign-in failed:", error);
+      signInBtn.disabled = false;
+      authStatus.textContent = `${error.code || "Authentication error"}: ${error.message}`;
+    }
+  });
+
+  signOutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("CINPS student sign-out failed:", error);
+      authStatus.textContent = "Sign-out failed. Please try again.";
+    }
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    lockAttendance();
+    signInBtn.disabled = false;
+
+    if (!user) {
+      signInBtn.hidden = false;
+      signOutBtn.hidden = true;
+      setAuthMessage(
+        "Student Verification",
+        "Sign in with the Google account registered with CINPS to verify your identity before submitting attendance."
+      );
+      return;
+    }
+
+    signInBtn.hidden = true;
+    signOutBtn.hidden = false;
+    setAuthMessage("Checking student registration...", "Please wait while CINPS verifies your account.");
+
+    try {
+      if (!user.email || !user.emailVerified) {
+        throw new Error("A verified Google email address is required.");
+      }
+
+      const accessRef = doc(db, "student_access", user.uid);
+      const accessSnap = await getDoc(accessRef);
+
+      if (!accessSnap.exists()) {
+        // First-time login creates a pending request only. It does not grant
+        // attendance access or create an approved student profile.
+        await setDoc(accessRef, {
+          name: user.displayName || user.email.split("@")[0],
+          email: user.email,
+          active: false,
+          requestedAt: serverTimestamp()
+        });
+
+        setAuthMessage(
+          "Verification pending",
+          "Your request has been registered. CINPS administration must verify and approve your student profile before you can submit attendance.",
+          `Signed in: ${user.email}`
+        );
+        return;
+      }
+
+      const profile = accessSnap.data();
+
+      if (profile.active !== true) {
+        setAuthMessage(
+          "Approval pending",
+          "Your account is registered but has not yet been approved by CINPS administration.",
+          `Signed in: ${user.email}`
+        );
+        return;
+      }
+
+      if (
+        profile.email !== user.email ||
+        typeof profile.name !== "string" ||
+        typeof profile.studentId !== "string" ||
+        typeof profile.course !== "string" ||
+        typeof profile.branch !== "string"
+      ) {
+        throw new Error("Your student profile is incomplete or does not match your signed-in account. Please contact CINPS administration.");
+      }
+
+      unlockAttendance(profile);
+    } catch (error) {
+      console.error("CINPS student verification failed:", error);
+      lockAttendance();
+      setAuthMessage(
+        "Verification could not be completed",
+        error.message || "Please contact CINPS administration.",
+        error.code ? `${error.code}` : ""
+      );
+    }
+  });
+
+  // Auto date/time logic is refreshed again at submission.
+  window.cinpsRefreshAutoFields();
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    if (!currentUser || !verifiedStudent) {
+      setAuthMessage("Verification required", "Please sign in and wait for CINPS approval before submitting attendance.");
+      lockAttendance();
+      return;
+    }
+
+    // Disabled identity selectors are omitted from FormData; all identity,
+    // course and branch values below come from the approved Firestore profile.
     if (!form.reportValidity()) return;
 
     submitBtn.disabled = true;
@@ -529,63 +737,65 @@ button[type="submit"]:active {
 
     try {
       const submittedAt = new Date();
-      // Capture date and end time at submission, not only at page-load time.
+      const dateInput = document.getElementById("date");
+      const dayInput = document.getElementById("day");
+      const endTimeInput = document.getElementById("endTime");
+
       dateInput.value = submittedAt.toLocaleDateString("en-GB");
       dayInput.value = submittedAt.toLocaleDateString("en-US", { weekday: "long" });
-      endTimeInput.value = submittedAt.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+      endTimeInput.value = submittedAt.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
       const data = new FormData(form);
-      const studentName = String(data.get("studentName") || "").trim();
-      const studentId = String(data.get("studentId") || "").trim();
-      const branch = String(data.get("branch") || "").trim();
-      const courseType = String(data.get("courseType") || "").trim();
-      const course = String(data.get("course") || "").trim();
       const year = String(data.get("year") || "").trim();
       const classType = String(data.get("classType") || "").trim();
       const review = String(data.get("review") || "").trim();
       const startTime = String(data.get("startTime") || "").trim();
       const endTime = endTimeInput.value;
       const recordDate = dateInput.value;
-      const recordDay = dayInput.value;
-      const notes = `Branch: ${branch}; Academic year: ${year}; Class type: ${classType}; Review: ${review}; Class time: ${startTime}–${endTime}.`;
+      const notes =
+        `Academic year: ${year}; Class type: ${classType}; Review: ${review}; Class time: ${startTime}–${endTime}.`;
 
       const record = {
-        // Compatibility fields used by the CINPS Academic Dashboard.
-        personName: studentName,
-        personId: studentId,
-        course,
+        personName: verifiedStudent.name,
+        personId: verifiedStudent.studentId,
+        course: verifiedStudent.course,
+        branch: verifiedStudent.branch,
         recordDate,
         notes,
         topic: classType,
         status: "Submitted",
         attendanceStatus: "Submitted",
-
-        // Original Student Corner attendance fields retained for future use.
-        studentName,
-        studentId,
-        date: recordDate,
-        day: recordDay,
-        startTime,
-        endTime,
-        branch,
-        courseType,
-        year,
-        classType,
-        review,
         source: "studentupdate-form",
+        studentUid: currentUser.uid,
+        studentEmail: currentUser.email,
+        createdBy: currentUser.uid,
+        createdByEmail: currentUser.email,
         createdAt: serverTimestamp()
       };
 
       await addDoc(collection(db, "attendance"), record);
+
       form.reset();
+      // Restore the approved identity fields after reset.
+      document.querySelector('[name="studentName"]').value = verifiedStudent.name;
+      document.querySelector('[name="studentId"]').value = verifiedStudent.studentId;
+      document.querySelector('[name="branch"]').value = verifiedStudent.branch;
+      document.querySelector('[name="course"]').value = verifiedStudent.course;
       window.cinpsRefreshAutoFields();
       showState(window.cinpsStateSuccess);
     } catch (error) {
       console.error("CINPS attendance submission failed:", error);
-      const message = error?.code ? `${error.code}: ${error.message || "Submission failed."}` : (error?.message || "Submission failed. Please try again.");
+      const message = error?.code
+        ? `${error.code}: ${error.message || "Submission failed."}`
+        : (error?.message || "Submission failed. Please try again.");
       const errorText = window.cinpsStateError.querySelector("p");
       if (errorText) errorText.textContent = `Your attendance was not saved. ${message}`;
       showState(window.cinpsStateError);
+    } finally {
+      submitBtn.disabled = false;
     }
   });
 </script>
