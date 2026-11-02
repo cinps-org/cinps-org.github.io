@@ -45,6 +45,24 @@
       <div id="overviewStatus" class="overview-status muted"><span class="status-dot"></span>Loading academic data…</div>
     </div>
 
+    <section class="panel" id="studentApprovalPanel">
+      <div class="panel-head">
+        <div>
+          <h2>Student registration approvals</h2>
+          <p class="muted">Review Google sign-ins waiting for CINPS verification. Assign the official student ID, course and branch before approval.</p>
+        </div>
+        <span id="pendingStudentCount" class="record-type">0 pending</span>
+      </div>
+      <div class="tablewrap">
+        <table style="min-width:900px">
+          <thead><tr><th>Registered name / email</th><th>Requested</th><th>Student ID</th><th>Course</th><th>Branch</th><th>Action</th></tr></thead>
+          <tbody id="pendingStudentRows"><tr><td colspan="6">Loading pending registrations…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="small-note" style="margin-top:10px">Approval activates the student's access and creates or updates the matching record in the students collection. Existing records are merged, not replaced.</p>
+      <div id="approvalStatus" class="hidden"></div>
+    </section>
+
     <div class="columns">
       <section class="panel">
         <div class="panel-head"><div><h2>Register an academic update</h2><p class="muted">Add a student, instructor, attendance, class, clinical or internship record.</p></div></div>
@@ -129,7 +147,7 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, collection, addDoc, getDocs,
+  getFirestore, doc, getDoc, collection, addDoc, getDocs, setDoc, writeBatch,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -312,10 +330,22 @@ async function refreshDashboard(manual=false) {
   hideStatus("appError");
   try {
     const names=Object.keys(types);
-    const results=await Promise.all(names.map(readCollection));
+    const [results, accessResult]=await Promise.all([
+      Promise.all(names.map(readCollection)),
+      getDocs(collection(db,"student_access"))
+        .then(snap=>({ok:true,records:snap.docs.map(d=>({id:d.id,...d.data()}))}))
+        .catch(error=>({ok:false,error}))
+    ]);
     const data={};
     names.forEach((name,i)=>data[name]=results[i]);
+    data.student_access=accessResult.ok ? accessResult.records : [];
     loadedRecords=data;
+    renderPendingStudents(data.student_access);
+    if(!accessResult.ok) {
+      showStatus("approvalStatus",`Could not load pending registrations: ${accessResult.error.message}. The existing academic dashboard is still available; check student_access read permissions.`,true);
+    } else {
+      hideStatus("approvalStatus");
+    }
     $("nStudents").textContent=data.students.length;
     $("nInstructors").textContent=data.instructors.length;
     $("nAttendance").textContent=data.attendance.length;
@@ -333,6 +363,86 @@ async function refreshDashboard(manual=false) {
     if(refreshBtn){refreshBtn.disabled=false;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';}
   }
 }
+function renderPendingStudents(records) {
+  const pending=(records||[]).filter(item=>item.active!==true);
+  $("pendingStudentCount").textContent=`${pending.length} pending`;
+  const body=$("pendingStudentRows");
+  body.replaceChildren();
+  if(!pending.length) {
+    const tr=document.createElement("tr"),td=document.createElement("td");
+    td.colSpan=6;td.textContent="No pending student registrations.";
+    tr.append(td);body.append(tr);return;
+  }
+  pending.sort((a,b)=>dateSortValue(b.requestedAt)-dateSortValue(a.requestedAt)).forEach(item=>{
+    const tr=document.createElement("tr");
+    const identity=document.createElement("td");
+    const strong=document.createElement("strong");strong.textContent=item.name||"Name not provided";
+    const email=document.createElement("div");email.className="small-note";email.textContent=item.email||"Email not available";
+    identity.append(strong,email);
+    const requested=document.createElement("td");requested.textContent=formatDate(item.requestedAt);
+    const studentId=document.createElement("td");
+    const idInput=document.createElement("input");idInput.type="text";idInput.placeholder="e.g. CINPS-001";idInput.maxLength=80;idInput.value=item.studentId||"";idInput.setAttribute("aria-label","Official student ID");
+    studentId.append(idInput);
+    const courseCell=document.createElement("td");
+    const courseInput=document.createElement("input");courseInput.type="text";courseInput.placeholder="e.g. OTT";courseInput.maxLength=120;courseInput.value=item.course||"";courseInput.setAttribute("aria-label","Student course");
+    courseCell.append(courseInput);
+    const branchCell=document.createElement("td");
+    const branchInput=document.createElement("input");branchInput.type="text";branchInput.placeholder="e.g. Nanoor";branchInput.maxLength=120;branchInput.value=item.branch||"";branchInput.setAttribute("aria-label","Student branch");
+    branchCell.append(branchInput);
+    const action=document.createElement("td");
+    const approve=document.createElement("button");approve.className="success";approve.textContent="Approve";
+    approve.addEventListener("click",()=>approveStudent(item,idInput.value.trim(),courseInput.value.trim(),branchInput.value.trim(),approve));
+    action.append(approve);
+    tr.append(identity,requested,studentId,courseCell,branchCell,action);
+    body.append(tr);
+  });
+}
+
+async function approveStudent(student,idValue,courseValue,branchValue,button) {
+  if(!currentUser) {showStatus("approvalStatus","Your administrator session has expired. Sign in again.",true);return;}
+  if(!student.id||!student.email||!student.name||!idValue||!courseValue||!branchValue) {
+    showStatus("approvalStatus","Complete the student's name, email, official student ID, course and branch before approval.",true);return;
+  }
+  button.disabled=true;button.textContent="Approving…";
+  try {
+    const batch=writeBatch(db);
+    const studentData={
+      uid:student.id,
+      name:student.name,
+      personName:student.name,
+      email:student.email,
+      studentId:idValue,
+      course:courseValue,
+      branch:branchValue,
+      active:true,
+      status:"Active",
+      approvedAt:serverTimestamp(),
+      approvedBy:currentUser.uid
+    };
+    batch.set(doc(db,"students",student.id),{
+      ...studentData,
+      createdAt:serverTimestamp()
+    },{merge:true});
+    batch.set(doc(db,"student_access",student.id),{
+      active:true,
+      studentId:idValue,
+      course:courseValue,
+      branch:branchValue,
+      name:student.name,
+      email:student.email,
+      approvedAt:serverTimestamp(),
+      approvedBy:currentUser.uid
+    },{merge:true});
+    await batch.commit();
+    showStatus("approvalStatus",`${student.name} has been approved. Their student record is now active.`);
+    await refreshDashboard(true);
+  } catch(error) {
+    console.error("Student approval failed:",error);
+    showStatus("approvalStatus",`Approval failed: ${error.message}. Check the Firestore rules for student_access and students.`,true);
+    button.disabled=false;button.textContent="Approve";
+  }
+}
+
 function renderChart(data) {
   const chart=$("activityChart");
   chart.replaceChildren();
