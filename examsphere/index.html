@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CINPS ExamSphere — ExamSphere Hub</title>
+<style>
+:root{--navy:#102a56;--blue:#2463eb;--bg:#f4f7fb;--line:#e1e8f0;--text:#182338;--muted:#66758b;--white:#fff;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 13px;font-weight:650}.primary{background:var(--blue);color:#fff}.secondary{background:#eaf0ff;color:#1e40af}.danger{background:#fee2e2;color:#991b1b}.plain{background:#fff;border:1px solid var(--line);color:var(--text)}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #ccd6e3;border-radius:8px;background:#fff;color:var(--text)}textarea{min-height:82px;resize:vertical}label{display:block;font-weight:650;margin:10px 0 5px}.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}.side{background:var(--navy);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:22px}.brand{display:flex;gap:10px;align-items:center;padding:0 8px}.logo{background:#fff;color:var(--navy);border-radius:10px;padding:10px;font-weight:900}.brand strong{display:block}.brand small{color:#bfcee5;letter-spacing:.08em;font-size:10px}.nav button{width:100%;text-align:left;margin:3px 0;background:transparent;color:#dbe7fa}.nav button.active,.nav button:hover{background:#254577;color:#fff}.sidefoot{margin-top:auto;color:#bfcee5;font-size:12px;padding:8px}.main{min-width:0}.top{background:#fff;border-bottom:1px solid var(--line);padding:18px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px}.top h1{font-size:21px;margin:0}.top small{color:var(--muted)}.content{padding:24px;max-width:1500px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.heading h2{margin:0 0 4px;font-size:22px}.muted{color:var(--muted)}.banner{border:1px solid #f4d28b;background:#fff8e7;color:#795214;border-radius:10px;padding:12px 14px;margin-bottom:18px}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:0 2px 7px #172b4d08}.card small{color:var(--muted)}.card strong{display:block;font-size:27px;margin:5px 0}.panel{margin-bottom:16px}.panel h3{margin:0 0 12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:700px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);background:#f8fafc}td{font-size:13px}.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#eaf0ff;color:#244ca0;font-size:12px}.tag.green{background:#dcfce7;color:#166534}.tag.red{background:#fee2e2;color:#991b1b}.hidden{display:none!important}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.full{grid-column:1/-1}.question{border:1px solid var(--line);border-radius:9px;padding:12px;margin:10px 0}.question p{margin:4px 0}.authwrap{max-width:500px;margin:9vh auto;padding:24px}.status{margin:12px 0;padding:10px;border-radius:8px;background:#eff6ff;color:#1d4ed8}.status.error{background:#fee2e2;color:#991b1b}.status.success{background:#dcfce7;color:#166534}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{padding:7px 9px}.empty{padding:22px;text-align:center;color:var(--muted)}.section{display:none}.section.active{display:block}.note{font-size:12px;color:var(--muted)}.chip{padding:6px 10px;border-radius:20px;background:#edf2f7;color:#334155}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{padding:12px}.side .nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;width:auto}.sidefoot{display:none}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:14px}.top{padding:14px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="authwrap">
+ <div class="panel">
+  <div class="brand" style="padding:0;color:var(--navy)"><div class="logo">CINPS</div><div><strong>ExamSphere Hub</strong><small style="color:var(--muted)">ACADEMIC INTELLIGENCE</small></div></div>
+  <h2 style="margin-bottom:6px">Administrator sign-in</h2><p class="muted">Sign in with a Google account authorised in this Examination System project.</p>
+  <div id="loginMessage" class="status hidden"></div>
+  <button id="loginBtn" class="primary" style="width:100%">Continue with Google</button>
+   <div id="bootstrapPanel" class="status hidden" style="margin-top:14px">
+    <strong>Sign-in received — access profile required</strong>
+    <p id="bootstrapText"></p>
+    <label style="margin-top:8px">Firebase Authentication UID</label>
+    <div class="row"><input id="bootstrapUid" readonly><button type="button" id="copyUidBtn" class="secondary" style="flex:0 0 auto">Copy UID</button></div>
+    <p class="note">For the first Super Admin only: create <code>admins/{UID}</code> manually in Firestore with role <code>superAdmin</code>, active <code>true</code>, and the exact Google email. Then click Check access again. Never create a Super Admin profile from client-side code.</p>
+    <div class="actions"><button type="button" id="retryAccessBtn" class="primary">Check access again</button><button type="button" id="bootstrapSignOutBtn" class="plain">Sign out</button></div>
+   </div>
+  <p class="note">Google sign-in is available to authorised administrators and instructors. Access is granted only by an active Firestore role profile.</p>
+ </div>
+</div>
+<div id="app" class="app hidden">
+ <aside class="side">
+  <div class="brand"><div class="logo">CINPS</div><div><strong>ExamSphere Hub</strong><small>ACADEMIC INTELLIGENCE</small></div></div>
+  <nav class="nav">
+   <button class="active" data-page="overview">▦ &nbsp; Overview</button>
+   <button data-page="courses">▤ &nbsp; Courses & Chapters</button>
+   <button data-page="questions">☷ &nbsp; Question Bank</button>
+   <button data-page="exams">◷ &nbsp; Examinations</button>
+   <button data-page="results">▥ &nbsp; Results Centre</button>
+  </nav>
+  <div class="sidefoot">CINPS · Examination Management<br>Firebase project: cinps-examsphere</div>
+ </aside>
+ <main class="main">
+  <header class="top"><div><h1 id="pageTitle">Overview</h1><small id="identity">Checking administrator…</small></div><button id="logoutBtn" class="plain">Sign out</button></header>
+  <div class="content">
+   <div class="banner"><strong>ExamSphere status:</strong> connected to the new <code>cinps-examsphere</code> Firebase project. Administrators manage system-wide academic structure; instructors independently create, publish, conduct and manage examinations within their assigned course scope. Student examination delivery requires the separate student portal and public-question workflow.</div>
+   <section id="page-overview" class="section active">
+    <div class="heading"><div><h2>Examination overview</h2><div class="muted">Manage chapter-wise MCQs, exams and results in one place.</div></div><button class="primary" onclick="showPage('exams');openExamForm()">＋ Create examination</button></div>
+    <div class="cards"><div class="card"><small>Courses</small><strong id="statCourses">—</strong><small>Saved in Firestore</small></div><div class="card"><small>Question bank</small><strong id="statQuestions">—</strong><small>Saved MCQs</small></div><div class="card"><small>Examinations</small><strong id="statExams">—</strong><small>Draft and published status</small></div><div class="card"><small>Submissions</small><strong id="statSubs">—</strong><small>Results awaiting review</small></div></div>
+    <div class="panel"><h3>Getting started</h3><ol><li>Add courses, subjects and chapters.</li><li>Add MCQs and mark the correct option.</li><li>Create an examination from selected chapter questions.</li><li>After the student portal is connected, review submissions and download results as CSV.</li></ol><p class="note">Correct answers stay in the admin-only question bank. Do not copy answer keys into student-visible exam documents.</p></div>
+   </section>
+   <section id="page-courses" class="section">
+    <div class="heading"><div><h2>Courses & chapters</h2><div class="muted">Manage course structure used by the question bank.</div></div><button class="primary" onclick="openCourseForm()">＋ Add course</button></div>
+    <div class="panel"><div class="tablewrap"><table><thead><tr><th>Course</th><th>Code</th><th>Subjects / chapters</th><th>Actions</th></tr></thead><tbody id="coursesTable"></tbody></table></div></div>
+   </section>
+   <section id="page-questions" class="section">
+    <div class="heading"><div><h2>Question bank</h2><div class="muted">MCQs with answer keys, saved only for authorised administrators.</div></div><button class="primary" onclick="openQuestionForm()">＋ Add MCQ</button></div>
+    <div class="panel"><div class="row"><input id="questionSearch" placeholder="Search questions…" oninput="renderQuestions()"><select id="questionCourseFilter" onchange="renderQuestions()"><option value="">All courses</option></select></div><div id="questionsList"></div></div>
+   </section>
+   <section id="page-exams" class="section">
+    <div class="heading"><div><h2>Examinations</h2><div class="muted">Build chapter-based exams from saved MCQs.</div></div><button class="primary" onclick="openExamForm()">＋ Create examination</button></div>
+    <div class="panel"><div class="tablewrap"><table><thead><tr><th>Exam</th><th>Course / chapter</th><th>Questions</th><th>Marks</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead><tbody id="examsTable"></tbody></table></div></div>
+   </section>
+   <section id="page-results" class="section">
+    <div class="heading"><div><h2>Results centre</h2><div class="muted">Review saved submissions and export a CSV for manual announcement.</div></div><button class="primary" onclick="exportResults()">↓ Download results CSV</button></div>
+    <div class="panel"><div class="row"><select id="resultExamFilter" onchange="renderResults()"><option value="">All exams</option></select><input id="resultSearch" placeholder="Search student / exam…" oninput="renderResults()"></div><div class="tablewrap"><table><thead><tr><th>Student</th><th>Exam</th><th>Submitted</th><th>Score</th><th>Result</th><th>Actions</th></tr></thead><tbody id="resultsTable"></tbody></table></div><p class="note">This dashboard currently displays and exports saved submissions. Automated grading and result-publication controls are not implemented in this file; do not treat a submission as a published result until the student portal and grading workflow are connected.</p></div>
+   </section>
+   <div id="appMessage" class="status hidden"></div>
+  </div>
+ </main>
+</div>
+<div id="modal" class="authwrap hidden" style="position:fixed;inset:0;max-width:none;margin:0;background:#0b1c3380;z-index:10;overflow:auto;padding:4vh 14px">
+ <div class="panel" style="max-width:720px;margin:0 auto">
+  <div class="row"><h2 id="modalTitle" style="margin:0">Edit</h2><button class="plain" style="flex:0" onclick="closeModal()">Close</button></div>
+  <div id="modalBody"></div><div class="actions" style="margin-top:16px"><button class="primary" id="modalSave">Save</button><button class="plain" onclick="closeModal()">Cancel</button></div>
+ </div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDyUua6DYQtwjE_M5Mq0_4yFtDIlse560Mo",
+  authDomain: "cinps-examsphere.firebaseapp.com",
+  projectId: "cinps-examsphere",
+  storageBucket: "cinps-examsphere.firebasestorage.app",
+  messagingSenderId: "19147326496",
+  appId: "1:19147326496:web:cf6eef6d2213f3971ba845"
+};
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const db = getFirestore(appFirebase);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({prompt:"select_account"});
+
+let currentUser=null, currentRole=null, currentProfile=null, courses=[], questions=[], exams=[], submissions=[];
+const $=id=>document.getElementById(id);
+const coll=name=>collection(db,name);
+const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function message(text,error=false){const el=$("appMessage");el.textContent=text;el.className="status"+(error?" error":"");el.classList.remove("hidden");}
+function loginMessage(text){$("loginMessage").textContent=text;$("loginMessage").classList.remove("hidden");}
+function showPage(page){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));$("page-"+page).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));$("pageTitle").textContent=({overview:"Overview",courses:"Courses & Chapters",questions:"Question Bank",exams:"Examinations",results:"Results Centre"})[page]||page;}
+const isAdmin=()=>["admin","superAdmin"].includes(currentRole);
+const canManageCourses=()=>isAdmin();
+const assignedCourseCodes=()=>Array.isArray(currentProfile?.courseCodes)?currentProfile.courseCodes:[];
+function showBootstrap(user,detail){
+  $("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");
+  $("bootstrapPanel").classList.remove("hidden");
+  $("bootstrapUid").value=user.uid;
+  $("bootstrapText").textContent=`Signed in as ${user.email||"Google account"}. ${detail}`;
+  $("loginBtn").classList.add("hidden");
+}
+function clearBootstrap(){
+  $("bootstrapPanel").classList.add("hidden");$("loginBtn").classList.remove("hidden");
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("loginBtn").addEventListener("click",()=>signInWithRedirect(auth,provider).catch(e=>loginMessage("Google sign-in failed: "+e.message)));
+$("logoutBtn").addEventListener("click",()=>signOut(auth));
+$("copyUidBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("bootstrapUid").value);$("bootstrapText").textContent="UID copied. Create or correct the Firestore profile, then check access again.";}catch(e){$("bootstrapText").textContent="Copy failed. Select and copy the UID manually.";}});
+$("retryAccessBtn").addEventListener("click",()=>checkUserAccess(auth.currentUser));
+$("bootstrapSignOutBtn").addEventListener("click",()=>signOut(auth));
+try { await getRedirectResult(auth); } catch(e) { loginMessage("Sign-in issue: "+e.message); }
+
+async function checkUserAccess(user){
+  if(!user)return;
+  currentUser=user;currentRole=null;currentProfile=null;
+  clearBootstrap();
+  try{
+    const adminSnap=await getDoc(doc(db,"admins",user.uid));
+    if(adminSnap.exists()){
+      const profile=adminSnap.data();
+      if(profile.active!==true || !["admin","superAdmin"].includes(profile.role) || String(profile.email||"").toLowerCase()!==String(user.email||"").toLowerCase()){
+        showBootstrap(user,"An administrator profile exists but is inactive or does not match this Google email. Ask the Super Admin to correct it.");
+        return;
+      }
+      currentRole=profile.role;currentProfile=profile;
+    }else{
+      const instructorSnap=await getDoc(doc(db,"instructors",user.uid));
+      if(instructorSnap.exists()){
+        const profile=instructorSnap.data();
+        if(profile.active!==true || String(profile.email||"").toLowerCase()!==String(user.email||"").toLowerCase()){
+          showBootstrap(user,"An instructor profile exists but is inactive or does not match this Google email. Ask the Super Admin to correct it.");
+          return;
+        }
+        currentRole="instructor";currentProfile=profile;
+      }else{
+        showBootstrap(user,"No active administrator or instructor profile was found. If this is the first setup, use this UID to create the initial Super Admin profile manually in Firestore.");
+        return;
+      }
+    }
+    $("identity").textContent=(user.email||"Signed in")+" · "+currentRole;
+    $("loginScreen").classList.add("hidden");$("app").classList.remove("hidden");
+    document.querySelector('[data-page="courses"]').classList.toggle("hidden",!canManageCourses());
+    document.querySelector('#page-courses .heading button').classList.toggle("hidden",!canManageCourses());
+    await loadAll();
+  }catch(e){
+    const detail=e.code==="permission-denied"
+      ?"Firestore denied profile access. Publish the supplied ExamSphere Firestore rules first, then click Check access again."
+      :"Could not verify the role profile: "+e.message;
+    showBootstrap(user,detail);
+  }
+}
+onAuthStateChanged(auth,user=>{
+  currentUser=user;
+  if(!user){
+    currentRole=null;currentProfile=null;clearBootstrap();
+    $("app").classList.add("hidden");$("loginScreen").classList.remove("hidden");
+    return;
+  }
+  checkUserAccess(user);
+});
+
+async function loadAll(){
+ try{
+   let cQuery=coll("exam_courses"),qQuery=coll("exam_questions"),eQuery=coll("exams"),sQuery=coll("exam_submissions");
+   if(currentRole==="instructor"){
+     const codes=assignedCourseCodes();
+     if(!codes.length){courses=[];questions=[];exams=[];submissions=[];renderAll();message("Your instructor profile has no assigned courseCodes. Ask an administrator to assign your courses.",true);return;}
+     qQuery=query(coll("exam_questions"),where("courseCode","in",codes.slice(0,30)));
+     eQuery=query(coll("exams"),where("courseCode","in",codes.slice(0,30)));
+     sQuery=query(coll("exam_submissions"),where("examOwnerUid","==",currentUser.uid));
+   }
+   const [c,q,e,s]=await Promise.all([getDocs(cQuery),getDocs(qQuery),getDocs(eQuery),getDocs(sQuery)]);
+   courses=c.docs.map(d=>({id:d.id,...d.data()}));
+   questions=q.docs.map(d=>({id:d.id,...d.data()}));
+   exams=e.docs.map(d=>({id:d.id,...d.data()}));
+   submissions=s.docs.map(d=>({id:d.id,...d.data()}));
+   renderAll();
+ }catch(e){message("Could not load examination data. Check that the ExamSphere Firestore rules match the supplied rules file. Details: "+e.message,true);}
+}
+function renderAll(){
+ $("statCourses").textContent=courses.length;$("statQuestions").textContent=questions.length;$("statExams").textContent=exams.length;$("statSubs").textContent=submissions.length;
+ renderCourses();renderQuestions();renderExams();renderResults();fillFilters();
+}
+function fillFilters(){
+ const current=$("questionCourseFilter").value;
+ $("questionCourseFilter").innerHTML='<option value="">All courses</option>'+courses.map(c=>`<option value="${safe(c.code)}">${safe(c.code)} — ${safe(c.name)}</option>`).join("");
+ $("questionCourseFilter").value=current;
+ const f=$("resultExamFilter").value;
+ $("resultExamFilter").innerHTML='<option value="">All exams</option>'+exams.map(e=>`<option value="${safe(e.id)}">${safe(e.title)}</option>`).join("");$("resultExamFilter").value=f;
+}
+function renderCourses(){
+ $("coursesTable").innerHTML=courses.map(c=>`<tr><td><strong>${safe(c.name)}</strong></td><td>${safe(c.code)}</td><td>${(c.subjects||[]).map(s=>`<div><strong>${safe(s.name)}</strong>: ${(s.chapters||[]).map(safe).join(", ")}</div>`).join("")}</td><td><div class="actions"><button class="plain" data-edit-course="${safe(c.id)}">Edit</button><button class="danger" data-delete-course="${safe(c.id)}">Delete</button></div></td></tr>`).join("")||'<tr><td colspan="4" class="empty">No courses yet. Add a course to begin.</td></tr>';
+ document.querySelectorAll("[data-edit-course]").forEach(b=>b.onclick=()=>openCourseForm(b.dataset.editCourse));document.querySelectorAll("[data-delete-course]").forEach(b=>b.onclick=()=>removeRecord("exam_courses",b.dataset.deleteCourse,"course"));
+}
+function renderQuestions(){
+ const search=$("questionSearch").value.toLowerCase(), course=$("questionCourseFilter").value;
+ const list=questions.filter(q=>(!course||q.courseCode===course)&&(`${q.text} ${q.chapter} ${q.subject} ${q.courseCode}`).toLowerCase().includes(search));
+ $("questionsList").innerHTML=list.map(q=>`<div class="question"><div class="row"><strong>${safe(q.courseCode)} · ${safe(q.chapter)}</strong><span class="chip">${Number(q.marks)||1} mark(s)</span></div><p>${safe(q.text)}</p><p class="note">Correct option: ${"ABCD"[Number(q.correctIndex)]||"?"}. ${safe((q.options||[])[Number(q.correctIndex)])}</p><div class="actions"><button class="plain" data-edit-q="${safe(q.id)}">Edit</button><button class="danger" data-delete-q="${safe(q.id)}">Delete</button></div></div>`).join("")||'<div class="empty">No matching MCQs.</div>';
+ document.querySelectorAll("[data-edit-q]").forEach(b=>b.onclick=()=>openQuestionForm(b.dataset.editQ));document.querySelectorAll("[data-delete-q]").forEach(b=>b.onclick=()=>removeRecord("exam_questions",b.dataset.deleteQ,"question"));
+}
+function renderExams(){
+ $("examsTable").innerHTML=exams.map(e=>`<tr><td><strong>${safe(e.title)}</strong><div class="note">${safe(e.id)}</div></td><td>${safe(e.courseCode)}<div class="note">${safe(e.subject)} · ${safe(e.chapter)}</div></td><td>${(e.questionIds||[]).length}</td><td>${(e.questionIds||[]).reduce((n,id)=>n+(Number(questions.find(q=>q.id===id)?.marks)||1),0)}</td><td>${Number(e.durationMinutes)||0} min</td><td><span class="tag ${e.status==="published"?"green":""}">${safe(e.status||"draft")}</span></td><td><div class="actions"><button class="plain" data-toggle-exam="${safe(e.id)}">${e.status==="published"?"Close":"Publish"}</button><button class="danger" data-delete-exam="${safe(e.id)}">Delete</button></div></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No examinations created.</td></tr>';
+ document.querySelectorAll("[data-toggle-exam]").forEach(b=>b.onclick=()=>toggleExam(b.dataset.toggleExam));document.querySelectorAll("[data-delete-exam]").forEach(b=>b.onclick=()=>removeRecord("exams",b.dataset.deleteExam,"exam"));
+}
+function renderResults(){
+ const f=$("resultExamFilter").value, term=$("resultSearch").value.toLowerCase();
+ const list=submissions.filter(s=>(!f||s.examId===f)&&(`${s.studentName||""} ${s.studentId||""} ${s.examTitle||""}`).toLowerCase().includes(term));
+ $("resultsTable").innerHTML=list.map(s=>`<tr><td>${safe(s.studentName||"Student")}<div class="note">${safe(s.studentId||s.studentUid||"")}</div></td><td>${safe(s.examTitle||exams.find(e=>e.id===s.examId)?.title||s.examId||"")}</td><td>${safe(s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():s.submittedAt||"—")}</td><td>${s.score==null?"Not graded":safe(s.score)+" / "+safe(s.totalMarks??"—")}</td><td>${s.result?`<span class="tag ${s.result==="Pass"?"green":"red"}">${safe(s.result)}</span>`:'<span class="tag">Pending</span>'}</td><td><span class="note">Review / export</span></td></tr>`).join("")||'<tr><td colspan="6" class="empty">No submissions found.</td></tr>';
+ document.querySelectorAll("[data-grade]").forEach(b=>b.onclick=()=>message("Grading requires the student portal submission schema and answer-key collection to be connected first. No result was changed.",true));
+}
+function openModal(title,html,onSave){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;$("modal").classList.remove("hidden");$("modalSave").onclick=onSave;}
+function closeModal(){$("modal").classList.add("hidden");}
+window.closeModal=closeModal;window.showPage=showPage;
+function openCourseForm(id=null){
+ const old=courses.find(c=>c.id===id);
+ openModal(id?"Edit course":"Add course",`<div class="formgrid"><div><label>Course name</label><input id="cName" value="${safe(old?.name||"")}" required></div><div><label>Course code (unique)</label><input id="cCode" value="${safe(old?.code||"")}" required ${id?'disabled':''}></div><div class="full"><label>Subjects and chapters</label><textarea id="cStructure" placeholder="One subject per line: Subject Name | Chapter 1, Chapter 2">${safe((old?.subjects||[]).map(s=>s.name+" | "+(s.chapters||[]).join(", ")).join("\n"))}</textarea><p class="note">Use one line per subject. Separate subject and chapters with | and chapters with commas.</p></div></div>`,async()=>{
+  const name=$("cName").value.trim(),code=$("cCode").value.trim().toUpperCase(),lines=$("cStructure").value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  if(!name||!code){message("Course name and code are required.",true);return}
+  if(!id&&courses.some(c=>c.code===code)){message("Course code already exists.",true);return}
+  const subjects=lines.map(line=>{const [sn="",ch=""]=line.split("|");return {name:sn.trim(),chapters:ch.split(",").map(x=>x.trim()).filter(Boolean)}}).filter(s=>s.name);
+  const payload={name,code,subjects,updatedAt:serverTimestamp(),updatedBy:currentUser.uid};
+  try{if(id)await updateDoc(doc(db,"exam_courses",id),payload);else await addDoc(coll("exam_courses"),{...payload,createdAt:serverTimestamp(),createdBy:currentUser.uid});closeModal();await loadAll();message("Course saved.");}catch(e){message("Course save failed: "+e.message,true)}
+ });
+}
+function openQuestionForm(id=null){
+ const old=questions.find(q=>q.id===id);
+ const opts=old?.options||["","","",""];
+ openModal(id?"Edit MCQ":"Add MCQ",`<div class="formgrid"><div><label>Course</label><select id="qCourse">${courses.map(c=>`<option value="${safe(c.code)}" ${old?.courseCode===c.code?"selected":""}>${safe(c.code)} — ${safe(c.name)}</option>`).join("")}</select></div><div><label>Subject</label><input id="qSubject" value="${safe(old?.subject||"")}" required></div><div class="full"><label>Chapter</label><input id="qChapter" value="${safe(old?.chapter||"")}" required></div><div class="full"><label>Question text</label><textarea id="qText" required>${safe(old?.text||"")}</textarea></div>${opts.map((v,i)=>`<div><label>Option ${"ABCD"[i]}</label><input id="qOpt${i}" value="${safe(v)}" required></div>`).join("")}<div><label>Correct option</label><select id="qCorrect">${["A","B","C","D"].map((x,i)=>`<option value="${i}" ${Number(old?.correctIndex||0)===i?"selected":""}>${x}</option>`).join("")}</select></div><div><label>Marks</label><input id="qMarks" type="number" min="1" max="100" value="${Number(old?.marks)||1}"></div></div>`,async()=>{
+  const courseCode=$("qCourse").value,subject=$("qSubject").value.trim(),chapter=$("qChapter").value.trim(),textq=$("qText").value.trim(),options=[0,1,2,3].map(i=>$("qOpt"+i).value.trim()),correctIndex=Number($("qCorrect").value),marks=Number($("qMarks").value);
+  if(!courseCode||!subject||!chapter||!textq||options.some(x=>!x)||!Number.isFinite(marks)||marks<1){message("Complete all MCQ fields and use at least 1 mark.",true);return}
+  const payload={courseCode,subject,chapter,text:textq,options,correctIndex,marks,active:true,updatedAt:serverTimestamp(),updatedBy:currentUser.uid};
+  try{if(id)await updateDoc(doc(db,"exam_questions",id),payload);else await addDoc(coll("exam_questions"),{...payload,createdAt:serverTimestamp(),createdBy:currentUser.uid});closeModal();await loadAll();message("MCQ saved.");}catch(e){message("Question save failed: "+e.message,true)}
+ });
+}
+function openExamForm(){
+ if(!courses.length){message("Add a course before creating an examination.",true);return}
+ openModal("Create examination",`<label>Examination title</label><input id="eTitle" placeholder="e.g. DOTT — Sterilization Basics Test" required><div class="formgrid"><div><label>Course</label><select id="eCourse">${courses.map(c=>`<option value="${safe(c.code)}">${safe(c.code)} — ${safe(c.name)}</option>`).join("")}</select></div><div><label>Subject</label><input id="eSubject" required></div><div><label>Chapter</label><input id="eChapter" required></div><div><label>Duration (minutes)</label><input id="eDuration" type="number" min="1" max="240" value="30"></div><div><label>Pass mark (%)</label><input id="ePass" type="number" min="0" max="100" value="40"></div></div><label>Select questions</label><div id="examQuestionChecks" class="panel" style="max-height:220px;overflow:auto;padding:8px"></div><p class="note">The answer key remains in the admin-only question bank. This action creates a draft; it does not publish to students yet.</p>`,async()=>{
+  const title=$("eTitle").value.trim(),courseCode=$("eCourse").value,subject=$("eSubject").value.trim(),chapter=$("eChapter").value.trim(),durationMinutes=Number($("eDuration").value),passPercent=Number($("ePass").value),questionIds=[...document.querySelectorAll(".exam-q-check:checked")].map(x=>x.value);
+  if(!title||!subject||!chapter||!questionIds.length||durationMinutes<1||passPercent<0||passPercent>100){message("Enter exam details and select at least one question.",true);return}
+  const payload={title,courseCode,subject,chapter,durationMinutes,passPercent,questionIds,status:"draft",ownerUid:currentUser.uid,createdAt:serverTimestamp(),createdBy:currentUser.uid,updatedAt:serverTimestamp(),updatedBy:currentUser.uid};
+  try{await addDoc(coll("exams"),payload);closeModal();await loadAll();message("Draft examination saved to Firestore. Student publishing is not enabled yet.");}catch(e){message("Exam save failed: "+e.message,true)}
+ });
+ const updateQuestionList=()=>{const code=$("eCourse").value;const qs=questions.filter(q=>q.courseCode===code);$("examQuestionChecks").innerHTML=qs.map(q=>`<label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input class="exam-q-check" type="checkbox" value="${safe(q.id)}" style="width:auto;margin-top:4px"><span>${safe(q.chapter)} — ${safe(q.text)}</span></label>`).join("")||'<p class="empty">No questions for this course yet.</p>'};
+ $("eCourse").addEventListener("change",updateQuestionList);updateQuestionList();
+}
+async function toggleExam(id){const e=exams.find(x=>x.id===id);if(!e)return;const next=e.status==="published"?"draft":"published";if(next==="published"&&!confirm("Publish this examination in ExamSphere? The student portal and public-question delivery must also be configured before students can take it."))return;try{await updateDoc(doc(db,"exams",id),{status:next,updatedAt:serverTimestamp(),updatedBy:currentUser.uid});await loadAll();message("Examination status updated. Student delivery still requires the student portal and public-question workflow.");}catch(err){message("Exam update failed: "+err.message,true)}}
+async function removeRecord(collectionName,id,label){if(!confirm("Delete this "+label+"? This cannot be undone."))return;try{await deleteDoc(doc(db,collectionName,id));await loadAll();message(label+" deleted.");}catch(e){message("Delete failed: "+e.message,true)}}
+function exportResults(){
+ const f=$("resultExamFilter").value,term=$("resultSearch").value.toLowerCase(),list=submissions.filter(s=>(!f||s.examId===f)&&(`${s.studentName||""} ${s.studentId||""} ${s.examTitle||""}`).toLowerCase().includes(term));
+ const rows=[["Student","Student ID","Exam","Submitted At","Score","Total Marks","Result"],...list.map(s=>[s.studentName||"",s.studentId||s.studentUid||"",s.examTitle||exams.find(e=>e.id===s.examId)?.title||s.examId||"",s.submittedAt?.toDate?s.submittedAt.toDate().toISOString():s.submittedAt||"",s.score??"",s.totalMarks??"",s.result||"Pending"])];
+ const csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="CINPS-Examination-Results.csv";a.click();URL.revokeObjectURL(url);
+}
+window.openCourseForm=openCourseForm;window.openQuestionForm=openQuestionForm;window.openExamForm=openExamForm;window.exportResults=exportResults;
+</script>
+</body></html>
