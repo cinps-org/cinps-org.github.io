@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CINPS ExamSphere</title>
+<style>
+:root{--navy:#102a56;--blue:#245de8;--bg:#f3f6fb;--ink:#182338;--muted:#64748b;--line:#dce4ef;--white:#fff;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}.primary{background:var(--blue);color:#fff}.plain{background:#fff;border:1px solid var(--line);color:var(--ink)}.danger{background:#fee2e2;color:#991b1b}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white}textarea{min-height:90px}label{display:block;font-weight:650;margin:12px 0 5px}.hidden{display:none!important}.auth{max-width:460px;margin:9vh auto;padding:22px}.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;margin-bottom:15px}.brand{display:flex;gap:12px;align-items:center;color:var(--navy)}.logo{background:var(--navy);color:#fff;padding:11px;border-radius:10px;font-weight:900}.muted,.note{color:var(--muted)}.note{font-size:12px}.status{padding:11px;border-radius:8px;background:#eff6ff;color:#1d4ed8;margin:12px 0}.status.error{background:#fee2e2;color:#991b1b}.status.ok{background:#dcfce7;color:#166534}.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.side{background:var(--navy);color:white;padding:18px;display:flex;flex-direction:column;gap:18px}.side .logo{background:white;color:var(--navy)}nav button{width:100%;text-align:left;background:transparent;color:#dbeafe;margin:3px 0}nav button.active,nav button:hover{background:#254577;color:white}.side small{color:#bfcee5}.main{min-width:0}.top{background:white;border-bottom:1px solid var(--line);padding:17px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}.content{max-width:1400px;margin:auto;padding:22px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat strong{display:block;font-size:27px}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar>*{flex:1}.toolbar button{flex:0 0 auto}.section{display:none}.section.active{display:block}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:650px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);background:#f8fafc}.tag{display:inline-block;border-radius:20px;padding:3px 8px;background:#eaf0ff;color:#244ca0;font-size:12px}.tag.green{background:#dcfce7;color:#166534}.tag.red{background:#fee2e2;color:#991b1b}.question{padding:13px;border:1px solid var(--line);border-radius:10px;margin:10px 0}.question p{margin:7px 0}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{padding:7px 10px}.modalback{position:fixed;inset:0;background:#0f172a88;display:grid;place-items:center;padding:15px;z-index:10}.modal{background:white;border-radius:14px;padding:20px;width:min(680px,100%);max-height:90vh;overflow:auto}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.full{grid-column:1/-1}.empty{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side{padding:12px}.side nav{display:flex;overflow:auto;gap:5px}.side nav button{white-space:nowrap;width:auto}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:13px}.top{padding:13px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="login" class="auth">
+ <div class="panel">
+  <div class="brand"><div class="logo">CINPS</div><div><b>ExamSphere</b><div class="note">EXAMINATION MANAGEMENT</div></div></div>
+  <h2>Sign in</h2><p class="muted">Use your authorised CINPS Google account. Your access is determined by your existing CINPS profile and ExamSphere permissions.</p>
+  <div id="loginMsg" class="status hidden"></div>
+  <button id="signIn" class="primary" style="width:100%">Continue with Google</button>
+  <p class="note">If your account has no active CINPS profile, access will be denied. Contact the authorised administrator.</p>
+ </div>
+</div>
+<div id="app" class="layout hidden">
+ <aside class="side">
+  <div class="brand"><div class="logo">CINPS</div><div><b>ExamSphere</b><br><small>ACADEMIC INTELLIGENCE</small></div></div>
+  <nav id="nav"></nav>
+  <div style="margin-top:auto"><small id="roleInfo"></small><br><button id="signOut" class="plain" style="margin-top:10px">Sign out</button></div>
+ </aside>
+ <main class="main">
+  <header class="top"><div><b id="pageTitle">Overview</b><div class="note" id="identity"></div></div><span class="tag">CINPS Core System</span></header>
+  <div class="content">
+   <div id="notice" class="status hidden"></div>
+   <section id="overview" class="section active">
+    <h2>Overview</h2><div class="grid">
+     <div class="stat"><span class="muted">Courses</span><strong id="sCourses">0</strong></div>
+     <div class="stat"><span class="muted">Questions</span><strong id="sQuestions">0</strong></div>
+     <div class="stat"><span class="muted">Examinations</span><strong id="sExams">0</strong></div>
+     <div class="stat"><span class="muted">Submissions</span><strong id="sSubs">0</strong></div>
+    </div>
+    <div class="panel"><h3>ExamSphere workflow</h3><ol><li>Authorised instructors create questions within their assigned course scope.</li><li>Instructors create, assemble and publish examinations independently within their assigned courses; no Admin pre-approval step is required.</li><li>Students take published examinations and submit once.</li><li>Instructors review submissions, enter marks and publish results.</li></ol><p class="note">The browser timer is a convenience, not a tamper-proof server clock. This version uses instructor-authorised grading; no answer key is sent to student devices.</p></div>
+   </section>
+   <section id="courses" class="section"><div class="toolbar"><div><h2>Courses</h2><div class="muted">Course codes must match student_access.course exactly (example: OTT).</div></div><button id="addCourse" class="primary">Add course</button></div><div class="panel tablewrap"><table><thead><tr><th>Code</th><th>Course</th><th>Subjects / chapters</th><th>Status</th></tr></thead><tbody id="courseRows"></tbody></table></div></section>
+   <section id="access" class="section"><div class="toolbar"><div><h2>Instructor access</h2><div class="muted">Assign course codes independently of legacy instructor profiles.</div></div><button id="addAccess" class="primary">Assign instructor</button></div><div class="panel tablewrap"><table><thead><tr><th>Instructor UID</th><th>Assigned courses</th><th>Status</th><th>Action</th></tr></thead><tbody id="accessRows"></tbody></table></div></section>
+   <section id="questions" class="section"><div class="toolbar"><div><h2>Question bank</h2><div class="muted">Correct answers remain in the private question bank.</div></div><button id="addQuestion" class="primary">Add MCQ</button></div><div class="panel"><div class="toolbar"><input id="qSearch" placeholder="Search questions"><select id="qCourse"><option value="">All courses</option></select></div><div id="questionList"></div></div></section>
+   <section id="exams" class="section"><div class="toolbar"><div><h2>Examinations</h2><div class="muted">Create, publish and close exams within your authorised scope.</div></div><button id="addExam" class="primary">Create examination</button></div><div class="panel tablewrap"><table><thead><tr><th>Exam</th><th>Course</th><th>Questions</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead><tbody id="examRows"></tbody></table></div></section>
+   <section id="student" class="section"><h2>Available examinations</h2><p class="muted">Only published examinations for your registered course are shown.</p><div id="studentExams"></div></section>
+   <section id="results" class="section"><h2>Submissions & results</h2><p class="muted">Review submitted answers and enter the authorised final score before publishing.</p><div class="panel tablewrap"><table><thead><tr><th>Student</th><th>Exam</th><th>Submitted</th><th>Score</th><th>Result</th><th>Action</th></tr></thead><tbody id="resultRows"></tbody></table></div></section>
+  </div>
+ </main>
+</div>
+<div id="modalBack" class="modalback hidden"><div class="modal"><div class="toolbar"><h3 id="modalTitle" style="margin:0;flex:1">Form</h3><button id="modalClose" class="plain">Close</button></div><div id="modalBody"></div><div class="actions" style="margin-top:18px"><button id="modalSave" class="primary">Save</button></div></div></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,doc,getDoc,collection,getDocs,query,where,addDoc,setDoc,updateDoc,serverTimestamp,writeBatch} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",authDomain:"cinps.org",projectId:"cinps-core-system",storageBucket:"cinps-core-system.firebasestorage.app",messagingSenderId:"1026808169095",appId:"1:1026808169095:web:4929f0cbfdde3a9a876e22"};
+const appFirebase=initializeApp(firebaseConfig),auth=getAuth(appFirebase),db=getFirestore(appFirebase),provider=new GoogleAuthProvider();
+const $=id=>document.getElementById(id), C=n=>collection(db,n), D=(n,id)=>doc(db,n,id);
+let user=null,role="",profile=null,courses=[],accesses=[],questions=[],exams=[],published=[],subs=[],results=[],currentPage="overview";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>user?.uid||"", isAdmin=()=>role==="admin"||role==="superAdmin", isSuper=()=>role==="superAdmin", isInstructor=()=>role==="instructor", isStudent=()=>role==="student";
+function notice(msg,error=false){$("notice").textContent=msg;$("notice").className="status "+(error?"error":"ok");}
+function showLogin(msg,error=false){$("login").classList.remove("hidden");$("app").classList.add("hidden");$("loginMsg").textContent=msg||"";$("loginMsg").className=msg?"status "+(error?"error":""):"status hidden";}
+function navItems(){let a=[["overview","Overview"]];if(isAdmin())a.push(["courses","Courses"]);if(isSuper())a.push(["access","Instructor access"]);if(!isStudent())a.push(["questions","Question bank"],["exams","Examinations"],["results","Submissions & results"]);if(isStudent())a.push(["student","Available exams"],["results","My results"]);return a;}
+function renderNav(){ $("nav").innerHTML=navItems().map(([id,t])=>`<button data-page="${id}" class="${id===currentPage?"active":""}">${t}</button>`).join("");$("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));}
+function showPage(id){currentPage=id;document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));$("pageTitle").textContent=navItems().find(x=>x[0]===id)?.[1]||id;renderNav();}
+function assignedCodes(){return accesses.find(a=>a.id===uid())?.courseCodes||[];}
+function inScope(code){return isAdmin()||assignedCodes().includes(code);}
+async function identify(u){
+ const em=(u.email||"").toLowerCase();
+ let a=await getDoc(D("admins",u.uid));
+ if(a.exists()){let p=a.data();if(p.active===true&&String(p.email||"").toLowerCase()===em&&["admin","superAdmin"].includes(p.role)){role=p.role;profile=p;return;}}
+ let i=await getDoc(D("instructors",u.uid));
+ if(i.exists()){let p=i.data();if(p.active===true&&String(p.email||"").toLowerCase()===em){role="instructor";profile=p;return;}}
+ let s=await getDoc(D("student_access",u.uid));
+ if(s.exists()){let p=s.data();if(p.active===true&&u.emailVerified&&String(p.email||"").toLowerCase()===em&&p.name&&p.studentId&&p.course&&p.branch){role="student";profile=p;return;}}
+ throw new Error("No matching active CINPS role profile was found for this Google account.");
+}
+async function loadData(){
+ // Firestore Rules are not filters. Every instructor list query is explicitly
+ // constrained to the instructor's assigned course codes.
+ if(isAdmin()){
+  const [c,a]=await Promise.all([getDocs(C("examsphere_courses")),getDocs(C("examsphere_instructor_access"))]);
+  courses=c.docs.map(x=>({id:x.id,...x.data()}));accesses=a.docs.map(x=>({id:x.id,...x.data()}));
+  const [q,e,ss,rr]=await Promise.all([getDocs(C("examsphere_questions")),getDocs(C("examsphere_exams")),getDocs(C("examsphere_submissions")),getDocs(C("examsphere_results"))]);
+  questions=q.docs.map(x=>({id:x.id,...x.data()}));exams=e.docs.map(x=>({id:x.id,...x.data()}));subs=ss.docs.map(x=>({id:x.id,...x.data()}));results=rr.docs.map(x=>({id:x.id,...x.data()}));
+ } else if(isInstructor()){
+  const a=await getDoc(D("examsphere_instructor_access",uid()));
+  accesses=a.exists()?[{id:a.id,...a.data()}]:[];
+  const codes=assignedCodes();
+  const courseDocs=await Promise.all(codes.map(code=>getDoc(D("examsphere_courses",code))));
+  courses=courseDocs.filter(x=>x.exists()).map(x=>({id:x.id,...x.data()}));
+  const batches=await Promise.all(codes.map(async code=>{
+   const [q,e,ss,rr]=await Promise.all([
+    getDocs(query(C("examsphere_questions"),where("courseCode","==",code))),
+    getDocs(query(C("examsphere_exams"),where("courseCode","==",code))),
+    getDocs(query(C("examsphere_submissions"),where("courseCode","==",code))),
+    getDocs(query(C("examsphere_results"),where("courseCode","==",code)))
+   ]);
+   return {q,e,ss,rr};
+  }));
+  questions=batches.flatMap(x=>x.q.docs.map(d=>({id:d.id,...d.data()})));
+  exams=batches.flatMap(x=>x.e.docs.map(d=>({id:d.id,...d.data()})));
+  subs=batches.flatMap(x=>x.ss.docs.map(d=>({id:d.id,...d.data()})));
+  results=batches.flatMap(x=>x.rr.docs.map(d=>({id:d.id,...d.data()})));
+ } else {
+  const [c,p,r]=await Promise.all([
+   getDoc(D("examsphere_courses",profile.course)),
+   getDocs(query(C("examsphere_published_exams"),where("courseCode","==",profile.course),where("status","==","published"))),
+   getDocs(query(C("examsphere_results"),where("studentUid","==",uid()),where("courseCode","==",profile.course),where("published","==",true)))
+  ]);
+  courses=c.exists()?[{id:c.id,...c.data()}]:[];
+  published=p.docs.map(x=>({id:x.id,...x.data()}));results=r.docs.map(x=>({id:x.id,...x.data()}));
+ }
+ renderAll();
+}
+function renderAll(){
+ $("identity").textContent=`${user.email} · ${role}`;$("roleInfo").textContent=role.toUpperCase();
+ $("sCourses").textContent=courses.length;$("sQuestions").textContent=questions.length;$("sExams").textContent=exams.length;$("sSubs").textContent=subs.length;
+ $("addCourse").classList.toggle("hidden",!isAdmin());$("addAccess").classList.toggle("hidden",!isSuper());$("addQuestion").classList.toggle("hidden",!isInstructor());$("addExam").classList.toggle("hidden",!isInstructor());
+ $("courseRows").innerHTML=courses.map(c=>`<tr><td>${esc(c.code)}</td><td>${esc(c.name)}</td><td>${(c.subjects||[]).map(s=>`${esc(s.name)}: ${(s.chapters||[]).map(x=>esc(x.name)).join(", ")}`).join("<br>")}</td><td>${c.active?"Active":"Inactive"}</td></tr>`).join("")||emptyRow(4);
+ $("accessRows").innerHTML=accesses.map(a=>`<tr><td>${esc(a.id)}</td><td>${(a.courseCodes||[]).map(esc).join(", ")}</td><td>${a.active?"Active":"Inactive"}</td><td><button class="plain" data-access="${esc(a.id)}">Edit</button></td></tr>`).join("")||emptyRow(4);
+ const filter=$("qCourse");filter.innerHTML='<option value="">All courses</option>'+courses.filter(c=>inScope(c.code)).map(c=>`<option value="${esc(c.code)}">${esc(c.code)} — ${esc(c.name)}</option>`).join("");
+ const qf=filter.value,term=$("qSearch").value.toLowerCase();
+ $("questionList").innerHTML=questions.filter(q=>inScope(q.courseCode)&&(!qf||q.courseCode===qf)&&(`${q.text} ${q.subjectName||""} ${q.chapterName||""}`).toLowerCase().includes(term)).map(q=>`<div class="question"><b>${esc(q.courseCode)} · ${esc(q.subjectName)} / ${esc(q.chapterName)}</b><p>${esc(q.text)}</p><div class="note">Question ID: <code>${esc(q.id)}</code> · Private answer key: ${"ABCD"[q.correctIndex]||"?"}</div></div>`).join("")||'<div class="empty">No questions found.</div>';
+ $("examRows").innerHTML=exams.filter(e=>inScope(e.courseCode)).map(e=>`<tr><td>${esc(e.title)}</td><td>${esc(e.courseCode)}</td><td>${(e.questionIds||[]).length}</td><td>${esc(e.durationMinutes)} min</td><td><span class="tag">${esc(e.status)}</span></td><td><div class="actions">${e.status==="draft"&&isInstructor()?`<button class="plain" data-publish="${esc(e.id)}">Publish</button>`:""}${e.status==="published"&&(isInstructor()||isAdmin())?`<button class="plain" data-close="${esc(e.id)}">Close</button>`:""}${e.status==="draft"&&!isInstructor()?"Instructor publishes":""}${e.status==="closed"?"Closed":""}</div></td></tr>`).join("")||emptyRow(6);
+ $("studentExams").innerHTML=published.map(e=>`<div class="question"><b>${esc(e.title)}</b><p>${esc(e.courseCode)} · ${esc(e.durationMinutes)} minutes · ${esc(e.totalMarks)} marks</p><button class="primary" data-take="${esc(e.id)}">Start examination</button></div>`).join("")||'<div class="empty">No published examinations for your course.</div>';
+ $("resultRows").innerHTML=(isStudent()?results:subs.filter(s=>inScope(s.courseCode))).map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted")}</td><td>${(r?.score??s.score)==null?"Pending":esc(r?.score??s.score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${r?.published?"Published":r?"Graded — awaiting publication":"Pending grading"}</td><td>${isStudent()?"View only":`<button class="plain" data-grade="${esc(s.id)}">${r?.published?"View result":r?"Publish result":"Review & grade"}</button>`}</td></tr>`}).join("")||emptyRow(6);
+ $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
+}
+function emptyRow(n){return `<tr><td colspan="${n}" class="empty">No records available.</td></tr>`;}
+function modal(title,body,save){$("modalSave").textContent="Save";$("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalBack").classList.remove("hidden");$("modalSave").onclick=async()=>{try{await save();$("modalBack").classList.add("hidden");await loadData();notice("Saved successfully.");}catch(e){notice(e.message,true);}};}
+function closeModal(){$("modalBack").classList.add("hidden");}
+$("modalClose").onclick=closeModal;
+$("addCourse").onclick=()=>modal("Add course",`<label>Course code</label><input id="fc" placeholder="OTT"><label>Course name</label><input id="fn"><label>Subjects and chapters</label><textarea id="fs" placeholder="Anatomy | Chapter 1, Chapter 2"></textarea><p class="note">One subject per line: Subject | Chapter 1, Chapter 2</p>`,async()=>{let code=$("fc").value.trim().toUpperCase(),name=$("fn").value.trim();if(!/^[A-Z0-9_-]{2,15}$/.test(code)||!name)throw Error("Enter a valid course code and name.");let subjects=$("fs").value.split(/\n/).map(x=>x.trim()).filter(Boolean).map(line=>{let [n,ch=""] = line.split("|");return {id:crypto.randomUUID(),name:n.trim(),chapters:ch.split(",").map(t=>({id:crypto.randomUUID(),name:t.trim()})).filter(t=>t.name)}});await setDoc(D("examsphere_courses",code),{code,name,active:true,subjects,createdAt:serverTimestamp(),createdBy:uid(),updatedAt:serverTimestamp(),updatedBy:uid()});});
+$("addAccess").onclick=()=>modal("Assign instructor",`<label>Instructor Firebase UID</label><input id="iu"><label>Course codes (comma separated)</label><input id="ic" placeholder="OTT, MLT"><p class="note">The UID must already have an active record in instructors/{UID}.</p>`,async()=>{let id=$("iu").value.trim(),codes=$("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean);if(!id||!codes.length)throw Error("UID and at least one course code are required.");let ins=await getDoc(D("instructors",id));if(!ins.exists()||ins.data().active!==true)throw Error("No active instructor profile found for this UID.");await setDoc(D("examsphere_instructor_access",id),{instructorUid:id,active:true,courseCodes:codes,updatedAt:serverTimestamp(),updatedBy:uid()});});
+$("accessRows").addEventListener("click",e=>{let b=e.target.closest("[data-access]");if(!b)return;let a=accesses.find(x=>x.id===b.dataset.access);modal("Edit instructor access",`<label>Course codes</label><input id="ic" value="${esc((a.courseCodes||[]).join(", "))}"><label><input id="ia" type="checkbox" ${a.active?"checked":""} style="width:auto"> Active</label>`,async()=>{let codes=$("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean);await updateDoc(D("examsphere_instructor_access",a.id),{courseCodes:codes,active:$("ia").checked,updatedAt:serverTimestamp(),updatedBy:uid()});});});
+$("addQuestion").onclick=()=>modal("Add MCQ",`<label>Course</label><select id="qc">${courses.filter(c=>inScope(c.code)).map(c=>`<option value="${esc(c.code)}">${esc(c.code)} — ${esc(c.name)}</option>`).join("")}</select><label>Subject</label><input id="qs"><label>Chapter</label><input id="qch"><label>Question</label><textarea id="qt"></textarea><div class="formgrid">${[0,1,2,3].map(i=>`<div><label>Option ${"ABCD"[i]}</label><input id="qo${i}"></div>`).join("")}</div><label>Correct option</label><select id="qcorrect"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select><label>Marks</label><input id="qm" type="number" min="1" value="1">`,async()=>{let courseCode=$("qc").value,text=$("qt").value.trim(),options=[0,1,2,3].map(i=>$("qo"+i).value.trim()),marks=Number($("qm").value);let subjectName=$("qs").value.trim(),chapterName=$("qch").value.trim();if(!courseCode||!text||!subjectName||!chapterName||options.some(x=>!x)||!Number.isInteger(marks)||marks<1)throw Error("Complete the course, subject, chapter, question, four options and valid marks.");await addDoc(C("examsphere_questions"),{courseCode,subjectName,chapterName,text,options,correctIndex:Number($("qcorrect").value),marks,active:true,createdBy:uid(),updatedBy:uid(),createdAt:serverTimestamp(),updatedAt:serverTimestamp()});});
+$("addExam").onclick=()=>{let allowed=questions.filter(q=>inScope(q.courseCode));modal("Create examination",`<label>Exam title</label><input id="et"><label>Course</label><select id="ec">${courses.filter(c=>inScope(c.code)).map(c=>`<option value="${esc(c.code)}">${esc(c.code)}</option>`).join("")}</select><label>Question IDs (comma separated)</label><input id="eq" placeholder="Paste question document IDs"><label>Duration (minutes)</label><input id="ed" type="number" min="1" value="30"><label>Pass percentage</label><input id="ep" type="number" min="0" max="100" value="40"><p class="note">Available question IDs are listed in the question bank only to authorised staff. The system validates every selected question belongs to the chosen course.</p>`,async()=>{let title=$("et").value.trim(),courseCode=$("ec").value,questionIds=$("eq").value.split(",").map(x=>x.trim()).filter(Boolean),durationMinutes=Number($("ed").value),passPercent=Number($("ep").value),chosen=questionIds.map(id=>questions.find(q=>q.id===id));if(!title||!questionIds.length||chosen.some(q=>!q||q.courseCode!==courseCode)||!Number.isInteger(durationMinutes)||durationMinutes<1||durationMinutes>600||!Number.isFinite(passPercent)||passPercent<0||passPercent>100)throw Error("Check title, question IDs, course scope, duration (1–600 minutes) and pass percentage (0–100).");let totalMarks=chosen.reduce((n,q)=>n+Number(q.marks||1),0);await addDoc(C("examsphere_exams"),{title,courseCode,questionIds,durationMinutes,passPercent,totalMarks,status:"draft",ownerUid:uid(),createdBy:uid(),createdAt:serverTimestamp(),updatedAt:serverTimestamp()});});};
+$("examRows").addEventListener("click",async e=>{let p=e.target.closest("[data-publish]"),c=e.target.closest("[data-close]");try{if(c){let ex=exams.find(x=>x.id===c.dataset.close);if(!ex)throw Error("Exam not found.");if(ex.status!=="published")throw Error("Only a published examination can be closed.");const batch=writeBatch(db);batch.update(D("examsphere_exams",ex.id),{status:"closed",updatedAt:serverTimestamp()});batch.update(D("examsphere_published_exams",ex.id),{status:"closed",closedAt:serverTimestamp()});await batch.commit();await loadData();return;}if(p){let ex=exams.find(x=>x.id===p.dataset.publish);if(!ex)throw Error("Exam not found.");let qs=ex.questionIds.map(id=>questions.find(q=>q.id===id));if(qs.some(q=>!q||q.courseCode!==ex.courseCode))throw Error("One or more question records are missing or outside course scope.");const batch=writeBatch(db),pub=D("examsphere_published_exams",ex.id);batch.set(pub,{examId:ex.id,title:ex.title,courseCode:ex.courseCode,questionIds:ex.questionIds,durationMinutes:ex.durationMinutes,totalMarks:ex.totalMarks,passPercent:ex.passPercent,status:"published",publishedAt:serverTimestamp(),publishedBy:uid()});qs.forEach((q,i)=>{batch.set(doc(pub,"questions",String(i+1).padStart(4,"0")),{questionId:q.id,order:i+1,text:q.text,options:q.options,marks:q.marks,subjectName:q.subjectName||"",chapterName:q.chapterName||""});});batch.update(D("examsphere_exams",ex.id),{status:"published",publishedAt:serverTimestamp(),updatedAt:serverTimestamp()});await batch.commit();await loadData();notice("Exam published. Student-safe question projection was written without answer keys.");}}catch(err){notice(err.message,true);}});
+$("studentExams").addEventListener("click",e=>{let b=e.target.closest("[data-take]");if(b)startExam(b.dataset.take);});
+async function startExam(examId){
+ try{
+  const pubSnap=await getDoc(D("examsphere_published_exams",examId));if(!pubSnap.exists())throw Error("Published examination not found.");
+  const pub=pubSnap.data();
+  const attemptId=`${examId}_${uid()}`,attemptRef=D("examsphere_attempts",attemptId),subRef=D("examsphere_submissions",attemptId),workRef=D("examsphere_attempt_work",attemptId);
+  let attemptSnap=await getDoc(attemptRef);
+  if(pub.status!=="published"&&!(pub.status==="closed"&&attemptSnap.exists()&&attemptSnap.data().status==="inProgress"))throw Error("This examination is closed. Only an attempt started before closure can be resumed.");
+  if(attemptSnap.exists()&&attemptSnap.data().status!=="inProgress")throw Error("This examination has already been submitted.");
+  const q=await getDocs(collection(db,"examsphere_published_exams",examId,"questions")),items=q.docs.map(x=>({id:x.id,...x.data()})).sort((a,b)=>a.order-b.order);
+  if(!items.length)throw Error("This examination has no published questions.");
+  if(!attemptSnap.exists()){
+    await setDoc(attemptRef,{examId,studentUid:uid(),studentId:profile.studentId,studentName:profile.name,courseCode:profile.course,status:"inProgress",startedAt:serverTimestamp()});
+    attemptSnap=await getDoc(attemptRef);
+  }
+  let workSnap=await getDoc(workRef),answers=workSnap.exists()?(workSnap.data().answers||{}):{};
+  const allowed=new Set(items.map(x=>x.questionId));
+  answers=Object.fromEntries(Object.entries(answers).filter(([qid,v])=>allowed.has(qid)&&Number.isInteger(v)&&v>=0&&v<=3));
+  if(!workSnap.exists())await setDoc(workRef,{examId,studentUid:uid(),courseCode:profile.course,answers,updatedAt:serverTimestamp()});
+  const started=attemptSnap.data().startedAt?.toDate?attemptSnap.data().startedAt.toDate():new Date();
+  const deadline=new Date(started.getTime()+Number(pub.durationMinutes)*60000);
+  const remaining=Math.max(0,Math.ceil((deadline.getTime()-Date.now())/1000));
+  const body=items.map((x,i)=>`<div class="question"><b>Q${i+1}. ${esc(x.text)}</b><p>${x.marks} mark(s)</p>${x.options.map((op,j)=>`<label style="font-weight:400"><input type="radio" name="ans${i}" value="${j}" ${answers[x.questionId]===j?"checked":""} style="width:auto"> ${"ABCD"[j]}. ${esc(op)}</label>`).join("")}</div>`).join("");
+  const timer=`<p class="note" id="examTimer">Time remaining (advisory): ${Math.floor(remaining/60)}:${String(remaining%60).padStart(2,"0")}. Your answers are saved as you select them; you can resume after reconnecting.</p>`;
+  modal(`Examination: ${pub.title}`,`${timer}${body}<p class="note">Do not close the examination until you submit. The countdown is browser-based and is not a tamper-proof deadline.</p>`,async()=>{
+    items.forEach((x,i)=>{let v=document.querySelector(`input[name="ans${i}"]:checked`);if(v)answers[x.questionId]=Number(v.value);});
+    if(Object.keys(answers).length!==items.length)throw Error("Answer every question before submission.");
+    await updateDoc(workRef,{answers,updatedAt:serverTimestamp()});
+    const batch=writeBatch(db);
+    batch.update(attemptRef,{status:"submitted",submittedAt:serverTimestamp()});
+    batch.set(subRef,{examId,examTitle:pub.title,studentUid:uid(),studentId:profile.studentId,studentName:profile.name,courseCode:profile.course,answers,totalMarks:pub.totalMarks,status:"submitted",submittedAt:serverTimestamp()});
+    await batch.commit();
+  });
+  // Persist each answer immediately; a failed save leaves the selection visible
+  // and displays an error rather than pretending it was saved.
+  items.forEach((x,i)=>document.querySelectorAll(`input[name="ans${i}"]`).forEach(el=>{
+    el.addEventListener("change",async()=>{
+      const selected=document.querySelector(`input[name="ans${i}"]:checked`);
+      if(selected)answers[x.questionId]=Number(selected.value);
+      try{await updateDoc(workRef,{answers,updatedAt:serverTimestamp()});}
+      catch(err){notice("Answer could not be saved. Check your connection and try again: "+err.message,true);}
+    });
+  }));
+ }catch(e){notice(e.message,true);}
+}
+$("resultRows").addEventListener("click",async e=>{
+ const b=e.target.closest("[data-grade]");if(!b)return;
+ const s=subs.find(x=>x.id===b.dataset.grade);if(!s)return;
+ const ex=exams.find(x=>x.id===s.examId),resultRef=D("examsphere_results",s.id);
+ try{
+  const existing=await getDoc(resultRef);
+  const answerMarkup=Object.entries(s.answers||{}).map(([qid,answer])=>{const q=questions.find(x=>x.id===qid);return `<div class="question"><b>${esc(q?.text||qid)}</b><p>Student selected: ${"ABCD"[answer]||"—"}. ${esc(q?.options?.[answer]||"")}</p><p class="note">Correct answer (authorised staff only): ${"ABCD"[q?.correctIndex]||"Not available"}</p></div>`}).join("");
+  const header=`<p><b>${esc(s.studentName||s.studentId)}</b> · ${esc(s.examTitle||s.examId)}</p><p>Total marks: <b>${esc(s.totalMarks)}</b></p><h4>Submitted answers</h4>${answerMarkup}`;
+  if(existing.exists()){
+   const r=existing.data();
+   if(r.published){modal("Published result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><p class="tag">This result is already published and cannot be changed.</p>`,async()=>{});$("modalSave").textContent="Close";$("modalSave").onclick=closeModal;return;}
+   modal("Publish graded result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><label><input id="publishResult" type="checkbox" style="width:auto"> Confirm publication to the student</label>`,async()=>{if(!$("publishResult").checked)throw Error("Tick the confirmation box to publish this result.");await updateDoc(resultRef,{published:true,publishedAt:serverTimestamp()});});
+   $("modalSave").textContent="Publish result";return;
+  }
+  if(s.status==="graded")throw Error("The submission is graded but its result document is missing. Please ask the Super Admin to investigate before retrying.");
+  modal("Review and grade submission",`${header}<label>Final marks awarded</label><input id="finalScore" type="number" min="0" max="${Number(s.totalMarks)||0}" step="0.5" value="${Number(s.score??0)}"><label><input id="publishResult" type="checkbox" style="width:auto"> Publish this result to the student now</label>`,async()=>{
+   const score=Number($("finalScore").value),publish=$("publishResult").checked;
+   if(!Number.isFinite(score)||score<0||score>Number(s.totalMarks))throw Error("Enter a valid score within the total marks.");
+   const passPercent=Number(ex?.passPercent??40),pct=Number(s.totalMarks)?score/Number(s.totalMarks)*100:0,gradedAt=serverTimestamp();
+   const batch=writeBatch(db);
+   batch.update(D("examsphere_submissions",s.id),{score,gradedBy:uid(),gradedAt,status:"graded"});
+   batch.set(resultRef,{examId:s.examId,examTitle:s.examTitle,studentUid:s.studentUid,studentId:s.studentId,studentName:s.studentName,courseCode:s.courseCode,score,totalMarks:s.totalMarks,passPercent,result:pct>=passPercent?"Pass":"Needs Improvement",published:publish,publishedAt:publish?serverTimestamp():null,gradedBy:uid(),gradedAt});
+   await batch.commit();
+  });
+ }catch(err){notice(err.message,true);}
+});
+$("qSearch").oninput=renderAll;$("qCourse").onchange=renderAll;
+$("signIn").onclick=()=>signInWithRedirect(auth,provider);$("signOut").onclick=()=>signOut(auth);$("modalBack").addEventListener("click",e=>{if(e.target===$("modalBack"))closeModal();});
+try{await getRedirectResult(auth);}catch(e){showLogin("Google sign-in could not be completed: "+e.message,true);}
+onAuthStateChanged(auth,async u=>{user=u;if(!u){role="";showLogin();return;}try{await identify(u);await loadData();$("login").classList.add("hidden");$("app").classList.remove("hidden");renderNav();showPage(isStudent()?"student":"overview");}catch(e){await signOut(auth);showLogin(e.message,true);}});
+</script>
+</body>
+</html>
