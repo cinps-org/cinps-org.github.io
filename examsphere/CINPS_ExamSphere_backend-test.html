@@ -79,16 +79,35 @@ verifyButton.addEventListener("click",async()=>{
     const response=await fetch(BACKEND_URL,{
       method:"POST",
       headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action:"verifyIdentity",idToken}),
+     body: JSON.stringify({action:"verifySuperAdmin",idToken}),
       redirect:"follow",
       credentials:"omit"
     });
     const result=await response.json();
-    if(!response.ok||result.success!==true)throw new Error(result.error||"Backend rejected the identity.");
-    if(result.identity?.uid!==user.uid||String(result.identity?.email).toLowerCase()!==String(user.email).toLowerCase()){
-      throw new Error("Backend identity does not match the currently signed-in account.");
-    }
-    showStatus("SUCCESS — Firebase identity verified by the grading backend. UID and email match the signed-in account. The ID token was not displayed.","ok");
+   if(!response.ok||result.success!==true) {
+  throw new Error(result.error||"Super Admin authorization failed.");
+}
+
+const admin = result.authorization;
+
+if(
+  admin?.uid !== user.uid ||
+  String(admin?.email).toLowerCase() !== String(user.email).toLowerCase() ||
+  admin?.role !== "superAdmin" ||
+  admin?.active !== true ||
+  admin?.authorized !== true
+) {
+  throw new Error("Super Admin authorization verification failed.");
+}
+
+showStatus(
+  "SUCCESS — Super Admin authorization confirmed.\\n" +
+  "Role: " + admin.role + "\\n" +
+  "Active: Yes\\n" +
+  "Firestore authorization: Passed.\\n" +
+  "ID token was not displayed.",
+  "ok"
+);
   }catch(error){
     showStatus("Verification request did not complete.\n"+error.message+"\n\nIf this is a CORS or network error, the browser may be blocking the Apps Script response. Do not share an ID token; we will use a safer test route.","err");
   }finally{verifyButton.disabled=false;}
