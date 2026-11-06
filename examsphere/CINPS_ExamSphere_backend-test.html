@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CINPS ExamSphere — Backend Identity Test</title>
+<style>
+:root{color-scheme:light;--navy:#102a56;--blue:#245de8;--bg:#f3f6fb;--ink:#182338;--muted:#64748b;--line:#dce4ef}
+*{box-sizing:border-box}body{margin:0;padding:24px;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,sans-serif}
+main{max-width:680px;margin:7vh auto}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 8px 30px #102a5610}
+h1{margin:0 0 6px;color:var(--navy);font-size:23px}.muted{color:var(--muted)}
+.status{margin:16px 0;padding:12px 14px;border-radius:9px;background:#eff6ff;color:#1d4ed8;white-space:pre-wrap;overflow-wrap:anywhere}
+.status.ok{background:#dcfce7;color:#166534}.status.err{background:#fee2e2;color:#991b1b}
+button{border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
+button:disabled{opacity:.55;cursor:not-allowed}.identity{border:1px solid var(--line);border-radius:9px;padding:12px;margin:14px 0}
+.identity div{margin:4px 0;overflow-wrap:anywhere}.label{color:var(--muted);display:inline-block;min-width:110px}
+code{overflow-wrap:anywhere}.warning{font-size:13px;color:var(--muted);margin-top:18px}
+</style>
+</head>
+<body>
+<main><section class="card">
+<h1>CINPS ExamSphere</h1>
+<div class="muted">Temporary grading-backend identity verification test</div>
+<div id="status" class="status">Checking the existing Firebase sign-in session…</div>
+<div id="identity" class="identity" hidden>
+<div><span class="label">Account</span><strong id="email">—</strong></div>
+<div><span class="label">Firebase UID</span><code id="uid">—</code></div>
+<div><span class="label">Email verified</span><strong id="verified">—</strong></div>
+</div>
+<button id="verify" disabled>Verify identity with grading backend</button>
+<p class="warning">This page never displays or stores the Firebase ID token. It sends the token directly from the browser to the configured backend. Do not share authentication tokens or private credentials. Delete this temporary page after testing.</p>
+</section></main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,getRedirectResult} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+  authDomain:"cinps.org",
+  projectId:"cinps-core-system",
+  storageBucket:"cinps-core-system.firebasestorage.app",
+  messagingSenderId:"1026808169095",
+  appId:"1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
+
+// Configure this only after the Apps Script web app is deployed.
+const BACKEND_URL="PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const statusBox=document.getElementById("status");
+const verifyButton=document.getElementById("verify");
+const identityBox=document.getElementById("identity");
+function showStatus(message,type=""){statusBox.textContent=message;statusBox.className="status"+(type?" "+type:"");}
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+try{await getRedirectResult(auth);}catch(error){showStatus("Google sign-in redirect check failed: "+error.message,"err");}
+
+onAuthStateChanged(auth,user=>{
+  if(!user){
+    identityBox.hidden=true;verifyButton.disabled=true;
+    showStatus("No signed-in Firebase session was found on this page. Return to the official ExamSphere page, sign in, then reload this test page.");
+    return;
+  }
+  document.getElementById("email").textContent=user.email||"(no email)";
+  document.getElementById("uid").textContent=user.uid;
+  document.getElementById("verified").textContent=user.emailVerified?"Yes":"No";
+  identityBox.hidden=false;verifyButton.disabled=false;
+  showStatus("Firebase session detected. Confirm this is the intended Super Admin account, then click the verification button.","ok");
+});
+
+verifyButton.addEventListener("click",async()=>{
+  const user=auth.currentUser;
+  if(!user){showStatus("No signed-in Firebase user is available. Reload and sign in again.","err");return;}
+  if(BACKEND_URL==="PASTE_APPS_SCRIPT_WEB_APP_URL_HERE"){
+    showStatus("Backend URL has not been configured yet. First deploy the Apps Script web app and insert its URL into BACKEND_URL. Do not deploy this HTML page as an Apps Script project.","err");return;
+  }
+  verifyButton.disabled=true;showStatus("Requesting Firebase ID token and contacting the grading backend…");
+  try{
+    const idToken=await user.getIdToken(true);
+    const response=await fetch(BACKEND_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({action:"verifyIdentity",idToken}),
+      redirect:"follow",
+      credentials:"omit"
+    });
+    const result=await response.json();
+    if(!response.ok||result.success!==true)throw new Error(result.error||"Backend rejected the identity.");
+    if(result.identity?.uid!==user.uid||String(result.identity?.email).toLowerCase()!==String(user.email).toLowerCase()){
+      throw new Error("Backend identity does not match the currently signed-in account.");
+    }
+    showStatus("SUCCESS — Firebase identity verified by the grading backend. UID and email match the signed-in account. The ID token was not displayed.","ok");
+  }catch(error){
+    showStatus("Verification request did not complete.\n"+error.message+"\n\nIf this is a CORS or network error, the browser may be blocking the Apps Script response. Do not share an ID token; we will use a safer test route.","err");
+  }finally{verifyButton.disabled=false;}
+});
+</script>
+</body>
+</html>
