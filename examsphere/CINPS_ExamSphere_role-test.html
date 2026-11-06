@@ -2,43 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CINPS ExamSphere — Role Authorization Test</title>
 <style>
-:root{color-scheme:light;--navy:#102a56;--blue:#245de8;--bg:#f3f6fb;--ink:#182338;--muted:#64748b;--line:#dce4ef}
-*{box-sizing:border-box}body{margin:0;padding:24px;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,sans-serif}
-main{max-width:720px;margin:7vh auto}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 8px 30px #102a5610}
-h1{margin:0 0 6px;color:var(--navy);font-size:23px}.muted{color:var(--muted)}
-.status{margin:16px 0;padding:12px 14px;border-radius:9px;background:#eff6ff;color:#1d4ed8;white-space:pre-wrap;overflow-wrap:anywhere}
-.status.ok{background:#dcfce7;color:#166534}.status.err{background:#fee2e2;color:#991b1b}
-.identity{border:1px solid var(--line);border-radius:9px;padding:12px;margin:14px 0}
-.identity div{margin:4px 0;overflow-wrap:anywhere}.label{color:var(--muted);display:inline-block;min-width:125px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-button{border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
-button.secondary{background:#e8eefb;color:var(--navy)}button:disabled{opacity:.55;cursor:not-allowed}
-.warning{font-size:13px;color:var(--muted);margin-top:18px}
-@media(max-width:520px){body{padding:14px}.card{padding:18px}.actions button{width:100%}}
+:root{--navy:#102a56;--blue:#245de8;--bg:#f3f6fb;--ink:#182338;--muted:#64748b;--line:#dce4ef}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,Segoe UI,Arial,sans-serif;padding:28px 14px}
+main{max-width:720px;margin:5vh auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 8px 30px #102a5610}
+h1{font-size:23px;color:var(--navy);margin:0 0 4px}
+.muted{color:var(--muted)}
+.status{margin:16px 0;padding:13px;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.info{background:#eff6ff;color:#1d4ed8}.ok{background:#dcfce7;color:#166534}.err{background:#fee2e2;color:#991b1b}
+.identity{border:1px solid var(--line);border-radius:10px;padding:14px;margin:16px 0;display:grid;grid-template-columns:120px 1fr;gap:5px 12px}
+.identity span{color:var(--muted)}.identity strong{overflow-wrap:anywhere}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+button{border:0;border-radius:9px;padding:11px 16px;font-weight:650;cursor:pointer;background:#e8eefb;color:var(--navy)}
+button.primary{background:var(--blue);color:#fff}
+button:disabled{opacity:.55;cursor:not-allowed}
+.note{font-size:13px;color:var(--muted);margin-top:20px}
+@media(max-width:520px){main{padding:20px}.identity{grid-template-columns:1fr;gap:2px}.identity strong{margin-bottom:8px}}
 </style>
 </head>
 <body>
-<main><section class="card">
+<main>
 <h1>CINPS ExamSphere</h1>
-<div class="muted">Temporary backend role-authorization test</div>
-<div id="status" class="status">Checking the existing Firebase sign-in session…</div>
+<div class="muted">Temporary Stage 4 — Student and role authorization test</div>
+<div id="status" class="status info">Checking the existing Firebase sign-in session…</div>
 <div id="identity" class="identity" hidden>
-<div><span class="label">Account</span><strong id="email">—</strong></div>
-<div><span class="label">Firebase UID</span><code id="uid">—</code></div>
-<div><span class="label">Email verified</span><strong id="verified">—</strong></div>
+<span>Account</span><strong id="email"></strong>
+<span>Firebase UID</span><strong id="uid"></strong>
+<span>Email verified</span><strong id="verified"></strong>
 </div>
 <div class="actions">
-<button id="verifyInstructor" disabled>Verify instructor access</button>
-<button id="verifySuperAdmin" class="secondary" disabled>Verify Super Admin access</button>
+<button id="studentBtn" class="primary" disabled>Verify student access</button>
+<button id="instructorBtn" disabled>Verify instructor access</button>
+<button id="adminBtn" disabled>Verify Super Admin access</button>
 </div>
-<p class="warning">Temporary test page. The Firebase ID token is sent directly to the configured backend and is never displayed. Use only an authorised test account. Do not share authentication tokens or private credentials. Delete this page after testing.</p>
-</section></main>
+<div class="note">Temporary test page. It sends the Firebase ID token directly to the configured backend and never displays the token. Use only authorised test accounts. Do not share authentication tokens or private credentials. Delete this page after testing.</div>
+</main>
+
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,onAuthStateChanged,getRedirectResult} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,onAuthStateChanged,GoogleAuthProvider,signInWithRedirect,getRedirectResult,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
@@ -48,63 +53,75 @@ const firebaseConfig={
   messagingSenderId:"1026808169095",
   appId:"1:1026808169095:web:4929f0cbfdde3a9a876e22"
 };
+
 const BACKEND_URL="https://script.google.com/macros/s/AKfycbxHRNfrEDQDJd5qqH5PZ2Lk681it-uSnuttScmf3r_X0k2jzf6QoLj_wYTBAXm3ui3oUg/exec";
-const statusBox=document.getElementById("status");
-const instructorButton=document.getElementById("verifyInstructor");
-const adminButton=document.getElementById("verifySuperAdmin");
-const identityBox=document.getElementById("identity");
-function showStatus(message,type=""){statusBox.textContent=message;statusBox.className="status"+(type?" "+type:"");}
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
-try{await getRedirectResult(auth);}catch(error){showStatus("Google sign-in redirect check failed: "+error.message,"err");}
+const $=id=>document.getElementById(id);
+let currentUser=null;
 
-onAuthStateChanged(auth,user=>{
-  if(!user){
-    identityBox.hidden=true;instructorButton.disabled=true;adminButton.disabled=true;
-    showStatus("No signed-in Firebase session was found. Open the official ExamSphere page, sign in with the account you want to test, then return here and reload.");
-    return;
-  }
-  document.getElementById("email").textContent=user.email||"(no email)";
-  document.getElementById("uid").textContent=user.uid;
-  document.getElementById("verified").textContent=user.emailVerified?"Yes":"No";
-  identityBox.hidden=false;instructorButton.disabled=false;adminButton.disabled=false;
-  showStatus("Firebase session detected. Confirm that this is the account you intend to test.","ok");
-});
-
-async function verifyRole(action){
-  const user=auth.currentUser;
-  if(!user){showStatus("No signed-in Firebase user is available. Sign in and reload this page.","err");return;}
-  instructorButton.disabled=true;adminButton.disabled=true;
-  showStatus("Verifying account authorization with the grading backend…");
+function showStatus(message,type="info"){
+  $("status").textContent=message;
+  $("status").className="status "+type;
+}
+function setButtons(enabled){
+  ["studentBtn","instructorBtn","adminBtn"].forEach(id=>$(id).disabled=!enabled);
+}
+async function verify(action){
+  if(!currentUser){showStatus("No signed-in Firebase account was detected.","err");return;}
+  setButtons(false);
+  showStatus("Checking "+action+" authorization…");
   try{
-    const idToken=await user.getIdToken(true);
+    const idToken=await currentUser.getIdToken(true);
     const response=await fetch(BACKEND_URL,{
       method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify({action,idToken}),
-      redirect:"follow",
-      credentials:"omit"
+      headers:{"Content-Type":"text/plain;charset=UTF-8"},
+      body:JSON.stringify({action:action,idToken:idToken})
     });
-    const result=await response.json();
-    if(!response.ok||result.success!==true)throw new Error(result.error||"Backend rejected the authorization request.");
-    const authz=result.authorization;
-    if(!authz||authz.uid!==user.uid||String(authz.email).toLowerCase()!==String(user.email).toLowerCase()||authz.authorized!==true)
-      throw new Error("Backend authorization does not match the signed-in account.");
-    if(action==="verifyInstructor"&&authz.role!=="instructor")throw new Error("The backend did not return instructor authorization.");
-    if(action==="verifySuperAdmin"&&authz.role!=="superAdmin")throw new Error("The backend did not return Super Admin authorization.");
-    let message="SUCCESS — "+authz.role+" authorization confirmed.\n";
-    message+="Account: "+authz.email+"\nActive: "+authz.active+"\n";
-    if(action==="verifyInstructor"){
-      message+="Instructor: "+(authz.name||"")+"\nAssigned courses: "+(authz.courseCodes||[]).join(", ");
-    }else{message+="Firestore authorization: Passed.";}
-    message+="\nID token was not displayed.";
-    showStatus(message,"ok");
-  }catch(error){showStatus("Authorization test failed.\n"+error.message,"err");}
-  finally{instructorButton.disabled=false;adminButton.disabled=false;}
+    const raw=await response.text();
+    let data;
+    try{data=JSON.parse(raw);}catch(e){throw new Error("Backend returned a non-JSON response. Check deployment URL and web-app access settings.");}
+    if(!response.ok||data.success!==true){
+      showStatus("Authorization denied.\n"+(data.error||"The backend did not authorize this account."),"err");
+      return;
+    }
+    const a=data.authorization||data.identity||{};
+    let lines=["SUCCESS — "+action+" authorization confirmed.","Account: "+(a.email||currentUser.email),"Role: "+(a.role||"identity verified"),"Active: "+(a.active===true?"Yes":"Not applicable")];
+    if(a.name)lines.push("Name: "+a.name);
+    if(a.studentId)lines.push("Student ID: "+a.studentId);
+    if(a.course)lines.push("Course: "+a.course);
+    if(a.branch)lines.push("Branch: "+a.branch);
+    if(Array.isArray(a.courseCodes))lines.push("Assigned courses: "+a.courseCodes.join(", "));
+    lines.push("ID token was not displayed.");
+    showStatus(lines.join("\n"),"ok");
+  }catch(error){
+    showStatus("Request did not complete.\n"+(error.message||"Network or CORS error.")+"\nIf this is a browser CORS error, do not share your ID token; report the exact message.","err");
+  }finally{
+    setButtons(!!currentUser);
+  }
 }
-instructorButton.addEventListener("click",()=>verifyRole("verifyInstructor"));
-adminButton.addEventListener("click",()=>verifyRole("verifySuperAdmin"));
+
+$("studentBtn").addEventListener("click",()=>verify("verifyStudent"));
+$("instructorBtn").addEventListener("click",()=>verify("verifyInstructor"));
+$("adminBtn").addEventListener("click",()=>verify("verifySuperAdmin"));
+
+getRedirectResult(auth).catch(error=>showStatus("Sign-in redirect error: "+error.message,"err"));
+onAuthStateChanged(auth,user=>{
+  currentUser=user;
+  if(!user){
+    $("identity").hidden=true;
+    setButtons(false);
+    showStatus("No active Firebase session. Sign in to ExamSphere first, then reopen this test page.","err");
+    return;
+  }
+  $("identity").hidden=false;
+  $("email").textContent=user.email||"(no email)";
+  $("uid").textContent=user.uid;
+  $("verified").textContent=user.emailVerified?"Yes":"No";
+  setButtons(true);
+  showStatus("Firebase session detected. Confirm that this is the account you intend to test, then select the matching role test.","ok");
+});
 </script>
 </body>
 </html>
