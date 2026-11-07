@@ -240,11 +240,11 @@ $("resultRows").addEventListener("click",async e=>{
  const s=subs.find(x=>x.id===b.dataset.grade);if(!s)return;
  const ex=exams.find(x=>x.id===s.examId),resultRef=D("examsphere_results",s.id);
  try{
-  const existing=await getDoc(resultRef);
+  const existing=results.find(x=>x.id===s.id);
   const answerMarkup=Object.entries(s.answers||{}).map(([qid,answer])=>{const q=questions.find(x=>x.id===qid);return `<div class="question"><b>${esc(q?.text||qid)}</b><p>Student selected: ${"ABCD"[answer]||"—"}. ${esc(q?.options?.[answer]||"")}</p><p class="note">Correct answer (authorised staff only): ${"ABCD"[q?.correctIndex]||"Not available"}</p></div>`}).join("");
   const header=`<p><b>${esc(s.studentName||s.studentId)}</b> · ${esc(s.examTitle||s.examId)}</p><p>Total marks: <b>${esc(s.totalMarks)}</b></p><h4>Submitted answers</h4>${answerMarkup}`;
-  if(existing.exists()){
-   const r=existing.data();
+  if(existing){
+   const r=existing;
    if(r.published){modal("Published result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><p class="tag">This result is already published and cannot be changed.</p>`,async()=>{});$("modalSave").textContent="Close";$("modalSave").onclick=closeModal;return;}
    modal("Publish graded result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><label><input id="publishResult" type="checkbox" style="width:auto"> Confirm publication to the student</label>`,async()=>{if(!$("publishResult").checked)throw Error("Tick the confirmation box to publish this result.");await updateDoc(resultRef,{published:true,publishedAt:serverTimestamp()});});
    $("modalSave").textContent="Publish result";return;
