@@ -208,6 +208,136 @@
         @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+
+        /* ================= HEADER QUICK ACTIONS ================= */
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+        .header-tool {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 9px 12px;
+            border: 1px solid rgba(13,59,142,.18);
+            border-radius: 10px;
+            background: #f5f8ff;
+            color: var(--brand-blue);
+            font: 600 13px 'Poppins', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .2s ease, transform .2s ease;
+        }
+        .header-tool:hover { background: #e8efff; transform: translateY(-1px); }
+        .header-tool:focus-visible { outline: 3px solid rgba(31,87,184,.28); outline-offset: 2px; }
+        .header-tool.home-tool { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
+        .header-tool.home-tool:hover { background: var(--light-blue); color: #fff; }
+
+        /* More consistent form hierarchy and readable spacing */
+        .main-content > .container { width: 100%; max-width: 760px; }
+        .page-header { width: 100%; max-width: 760px; }
+        .page-header p { max-width: 580px; margin: 0 auto; }
+        .card h3 { display: flex; align-items: center; gap: 10px; }
+        .form-group { min-width: 0; }
+        input, select, textarea { min-height: 48px; }
+        textarea { min-height: 132px; }
+        .time-row { min-width: 0; }
+        .time-row select { min-width: 0; }
+
+        /* Dark mode */
+        body.dark-mode {
+            background: #0b1220;
+            color: #e5edf8;
+            --muted: #a8b5c8;
+            --border-color: #2b3b52;
+            --input-bg: #17253a;
+            --accent-blue: #1c3150;
+            --shadow: 0 10px 30px rgba(0,0,0,.28);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,.38);
+        }
+        body.dark-mode .site-header { background: rgba(15,27,45,.97); }
+        body.dark-mode .logo-wrap,
+        body.dark-mode .nav-menu a,
+        body.dark-mode .nav-toggle { color: #c7dcff; }
+        body.dark-mode .brand-text .subtitle { color: #a8b5c8; }
+        body.dark-mode .main-content {
+            background-color: #0b1220;
+            background-image: radial-gradient(#26364d 1px, transparent 1px);
+        }
+        body.dark-mode .page-header h1,
+        body.dark-mode .card h3 { color: #b8d1ff; }
+        body.dark-mode .login-box,
+        body.dark-mode .card,
+        body.dark-mode .popup-card,
+        body.dark-mode #cinps-chat-box { background: #142238; border-color: #2b3b52; color: #e5edf8; }
+        body.dark-mode .login-box p,
+        body.dark-mode label { color: #d2deef; }
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea,
+        body.dark-mode #cinps-chat-input,
+        body.dark-mode #cinps-chat-messages { background: #17283f !important; color: #e5edf8 !important; border-color: #3a4d67 !important; }
+        body.dark-mode input[readonly] { background: #202f45 !important; color: #a8b5c8 !important; }
+        body.dark-mode .header-tool { background: #1b2d46; color: #d3e2ff; border-color: #3b5272; }
+        body.dark-mode .header-tool.home-tool { background: #2456a3; color: #fff; }
+        body.dark-mode .mobile-drawer { background: #142238; }
+        body.dark-mode .drawer-header,
+        body.dark-mode .drawer-cta { border-color: #2b3b52; }
+        body.dark-mode .drawer-links a,
+        body.dark-mode .drawer-header { color: #c7dcff; }
+        body.dark-mode .drawer-links a:hover { background: #203653; }
+        body.dark-mode .chat-bubble.bot { background: #203653; color: #e5edf8; }
+        body.dark-mode .site-footer { background: #071a38; }
+
+        @media (max-width: 980px) {
+            .header-inner { flex-wrap: wrap; gap: 10px; }
+            .nav { margin-left: auto; }
+            .header-tools { order: 3; width: 100%; margin: 0; justify-content: flex-end; }
+        }
+        @media (max-width: 600px) {
+            .container { width: 94%; }
+            .header-inner { padding: 10px 0; }
+            .logo { height: 36px; }
+            .header-tools {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 6px;
+            }
+            .header-tool {
+                min-width: 0;
+                min-height: 42px;
+                padding: 8px 4px;
+                font-size: 11px;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.2;
+            }
+            .main-content { padding: 28px 12px; }
+            .page-header { margin-bottom: 24px; }
+            .page-header h1 { font-size: clamp(22px, 6vw, 28px); }
+            .page-header p { font-size: 14px; }
+            .card { padding: 22px 16px; margin-bottom: 16px; }
+            .card h3 { font-size: 18px; margin-bottom: 18px; }
+            .login-box { padding: 24px 16px; }
+            .form-row { gap: 0; margin-bottom: 8px; }
+            .form-group { margin-bottom: 16px; }
+            input, select, textarea { font-size: 16px; }
+            .time-row { gap: 8px; }
+            .time-row select { padding: 12px 6px; }
+            .btn-submit { min-height: 50px; }
+            .site-footer { padding: 32px 16px 22px; }
+            #cinps-chat-btn { bottom: 16px; right: 14px; }
+            #cinps-chat-box { bottom: 82px; right: 10px; width: calc(100% - 20px); }
+        }
+        @media (max-width: 360px) {
+            .header-tool { font-size: 10px; }
+            .brand-text .title { font-size: 14px; }
+        }
+
         /* ================= RESPONSIVE ================= */
         @media (max-width: 980px) {
             .nav-menu { display: none; } .nav-toggle { display: block; }
@@ -253,6 +383,12 @@
                 </ul>
                 <button class="nav-toggle" id="navToggle" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open mobile menu">☰</button>
             </nav>
+            <div class="header-tools" aria-label="Quick actions">
+                <a class="header-tool home-tool" href="https://cinps.org/">← Back to home</a>
+                <button class="header-tool" id="refreshPageBtn" type="button" title="Reload this page">↻ Refresh</button>
+                <a class="header-tool" href="https://cinps.org/examsphere/">Exams</a>
+                <button class="header-tool" id="darkModeToggle" type="button" aria-pressed="false">☾ Dark mode</button>
+            </div>
         </div>
     </header>
 
@@ -273,6 +409,10 @@
             <a href="/contact">Contact</a>
             <a href="https://cinps-org.github.io/portal/student-corner.html" target="_blank" rel="noopener noreferrer">Student Corner</a>
             <a href="https://cinps-org.github.io/instructor-hub.html" aria-current="page">Instructor Hub</a>
+            <a href="https://cinps.org/">← Back to home</a>
+            <a href="https://cinps.org/examsphere/">Exams</a>
+            <a href="#" id="drawerRefreshLink">↻ Refresh page</a>
+            <a href="#" id="drawerDarkModeLink">☾ Toggle dark mode</a>
         </nav>
         <div class="drawer-cta">
             <a href="https://cinps-org.github.io/admission-form" target="_blank" rel="noopener noreferrer" class="btn btn-blue" style="width:100%; padding:14px; text-align:center; border-radius:10px;">Apply Now</a>
@@ -418,6 +558,41 @@
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- Header quick actions ---
+        const refreshPageBtn = document.getElementById('refreshPageBtn');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const drawerRefreshLink = document.getElementById('drawerRefreshLink');
+        const drawerDarkModeLink = document.getElementById('drawerDarkModeLink');
+
+        refreshPageBtn?.addEventListener('click', () => window.location.reload());
+        drawerRefreshLink?.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.location.reload();
+        });
+
+        function setDarkMode(enabled) {
+            document.body.classList.toggle('dark-mode', enabled);
+            if (darkModeToggle) {
+                darkModeToggle.textContent = enabled ? '☀ Light mode' : '☾ Dark mode';
+                darkModeToggle.setAttribute('aria-pressed', String(enabled));
+            }
+            if (drawerDarkModeLink) {
+                drawerDarkModeLink.textContent = enabled ? '☀ Switch to light mode' : '☾ Switch to dark mode';
+            }
+        }
+
+        let darkModeEnabled = localStorage.getItem('cinpsInstructorHubTheme') === 'dark';
+        setDarkMode(darkModeEnabled);
+
+        function toggleDarkMode(event) {
+            if (event) event.preventDefault();
+            darkModeEnabled = !darkModeEnabled;
+            setDarkMode(darkModeEnabled);
+            localStorage.setItem('cinpsInstructorHubTheme', darkModeEnabled ? 'dark' : 'light');
+        }
+        darkModeToggle?.addEventListener('click', toggleDarkMode);
+        drawerDarkModeLink?.addEventListener('click', toggleDarkMode);
 
         // --- Navigation Drawer Logic ---
         const navToggle = document.getElementById('navToggle');
