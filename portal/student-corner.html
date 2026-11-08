@@ -30,6 +30,43 @@
   --radius-md: 10px;
 }
 
+body.dark-mode {
+  --bg-color: #0b1220;
+  --card-bg: #142033;
+  --text-main: #e8eef8;
+  --text-muted: #a8b5c8;
+  --border-color: #2b3b52;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.22);
+  --shadow-md: 0 8px 16px rgba(0,0,0,0.24);
+  --shadow-lg: 0 12px 24px rgba(0,0,0,0.32);
+}
+
+body.dark-mode .profile-details,
+body.dark-mode .list-item {
+  background: #1b2a40;
+}
+
+body.dark-mode .card h3,
+body.dark-mode .profile h2 {
+  color: #a9c7ff;
+}
+
+body.dark-mode .btn-outline {
+  color: #c4d8ff;
+  border-color: #7fa8ed;
+}
+
+body.dark-mode .btn-outline:hover {
+  background: #244574;
+  color: #fff;
+}
+
+body.dark-mode .google-btn {
+  background: #1b2a40;
+  color: #e8eef8;
+  border-color: #3a4b63;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -44,14 +81,47 @@ body {
 header {
   background: linear-gradient(135deg, var(--brand-primary) 0%, #0a2a66 100%);
   color: #fff;
-  padding: 16px 5%;
+  padding: 14px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-action-btn {
+  min-height: 42px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.13);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+
+.header-action-btn:hover,
+.header-action-btn:focus-visible {
+  background: rgba(255,255,255,0.25);
+  outline: 2px solid rgba(255,255,255,0.45);
+  outline-offset: 2px;
+}
+
+.exams-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 header h2 {
@@ -363,9 +433,44 @@ button {
   .action-cards-grid { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 600px) {
+  header {
+    padding: 12px 14px;
+    align-items: stretch;
+    gap: 10px;
+  }
+  header h2 {
+    width: 100%;
+    font-size: 1.05rem;
+  }
+  .header-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 7px;
+  }
+  .header-action-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px 5px;
+    font-size: 0.78rem;
+  }
+  #logoutBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-action-btn {
+    font-size: 0.7rem;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+}
+
 @media (max-width: 480px) {
-  header { padding: 16px 20px; }
-  header h2 { font-size: 1.1rem; }
   .dashboard { width: 95%; margin: 20px auto; }
   .card, .profile { padding: 20px 16px; }
   .stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -378,7 +483,12 @@ button {
 
 <header>
   <h2>CINPS Portal</h2>
-  <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+  <div class="header-actions" aria-label="Portal actions">
+    <button id="refreshBtn" class="header-action-btn" type="button" title="Reload this page">↻ Refresh</button>
+    <a class="header-action-btn exams-link" href="https://cinps.org/examsphere/" aria-label="Open ExamSphere">Exams</a>
+    <button id="darkModeBtn" class="header-action-btn" type="button" aria-pressed="false">☾ Dark mode</button>
+    <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+  </div>
 </header>
 
 <div id="guestView" class="login-screen">
@@ -505,6 +615,26 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const guestView = document.getElementById("guestView");
 const dashboard = document.getElementById("dashboard");
+const refreshBtn = document.getElementById("refreshBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
+
+// Header actions
+refreshBtn.addEventListener("click", () => window.location.reload());
+
+function applyDarkMode(enabled) {
+  document.body.classList.toggle("dark-mode", enabled);
+  darkModeBtn.textContent = enabled ? "☀ Light mode" : "☾ Dark mode";
+  darkModeBtn.setAttribute("aria-pressed", String(enabled));
+}
+
+const savedTheme = localStorage.getItem("cinpsStudentCornerTheme");
+applyDarkMode(savedTheme === "dark");
+
+darkModeBtn.addEventListener("click", () => {
+  const enabled = !document.body.classList.contains("dark-mode");
+  applyDarkMode(enabled);
+  localStorage.setItem("cinpsStudentCornerTheme", enabled ? "dark" : "light");
+});
 
 // ===== COLLAPSIBLE WIDGET LOGIC =====
 function setupExpandToggle(btnId, wrapperId, expandText, collapseText) {
