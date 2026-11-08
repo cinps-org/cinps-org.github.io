@@ -8,20 +8,36 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}.primary{background:var(--blue);color:#fff}.plain{background:#fff;border:1px solid var(--line);color:var(--ink)}.danger{background:#fee2e2;color:#991b1b}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white}textarea{min-height:90px}label{display:block;font-weight:650;margin:12px 0 5px}.hidden{display:none!important}.auth{max-width:460px;margin:9vh auto;padding:22px}.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;margin-bottom:15px}.brand{display:flex;gap:12px;align-items:center;color:var(--navy)}.logo{background:var(--navy);color:#fff;padding:11px;border-radius:10px;font-weight:900}.muted,.note{color:var(--muted)}.note{font-size:12px}.status{padding:11px;border-radius:8px;background:#eff6ff;color:#1d4ed8;margin:12px 0}.status.error{background:#fee2e2;color:#991b1b}.status.ok{background:#dcfce7;color:#166534}.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.side{background:var(--navy);color:white;padding:18px;display:flex;flex-direction:column;gap:18px}.side .logo{background:white;color:var(--navy)}nav button{width:100%;text-align:left;background:transparent;color:#dbeafe;margin:3px 0}nav button.active,nav button:hover{background:#254577;color:white}.side small{color:#bfcee5}.main{min-width:0}.top{background:white;border-bottom:1px solid var(--line);padding:17px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}.content{max-width:1400px;margin:auto;padding:22px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat strong{display:block;font-size:27px}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar>*{flex:1}.toolbar button{flex:0 0 auto}.section{display:none}.section.active{display:block}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:650px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);background:#f8fafc}.tag{display:inline-block;border-radius:20px;padding:3px 8px;background:#eaf0ff;color:#244ca0;font-size:12px}.tag.green{background:#dcfce7;color:#166534}.tag.red{background:#fee2e2;color:#991b1b}.question{padding:13px;border:1px solid var(--line);border-radius:10px;margin:10px 0}.question p{margin:7px 0}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{padding:7px 10px}.modalback{position:fixed;inset:0;background:#0f172a88;display:grid;place-items:center;padding:15px;z-index:10}.modal{background:white;border-radius:14px;padding:20px;width:min(680px,100%);max-height:90vh;overflow:auto}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.full{grid-column:1/-1}.empty{text-align:center;color:var(--muted);padding:25px}
 @media(max-width:850px){.layout{grid-template-columns:1fr}.side{padding:12px}.side nav{display:flex;overflow:auto;gap:5px}.side nav button{white-space:nowrap;width:auto}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:13px}.top{padding:13px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}}
 
-/* Dashboard polish and theme system */
 :root{color-scheme:light}
-button{transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease,border-color .16s ease}
+button{transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease,border-color .16s ease,opacity .16s ease}
 button:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(16,42,86,.14)}
 button:active{transform:translateY(0);box-shadow:none}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(36,93,232,.28);outline-offset:2px}
-.top-title{min-width:0}.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.overview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.overview-heading h2{margin-bottom:2px}.overview-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:14px}.chart-list{display:grid;gap:13px;margin-top:15px}.chart-row{display:grid;grid-template-columns:minmax(90px,1fr) minmax(70px,2fr) 34px;gap:9px;align-items:center;font-size:12px}.chart-track{height:10px;background:#e8eef8;border-radius:20px;overflow:hidden}.chart-fill{height:100%;background:linear-gradient(90deg,var(--blue),#67a1ff);border-radius:20px;min-width:0}.activity-list{display:grid;gap:8px}.activity-item{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.activity-item:last-child{border-bottom:0}.activity-item strong{font-size:13px}.activity-meta{font-size:12px;color:var(--muted);text-align:right}.stat{min-width:0}.stat strong{font-variant-numeric:tabular-nums}
-body.dark{color-scheme:dark;--bg:#0b1220;--ink:#e5edf8;--muted:#9aabc2;--line:#27364b;--white:#111c2e;background:var(--bg);color:var(--ink)}
-body.dark .top,body.dark .panel,body.dark .stat,body.dark .modal,body.dark .plain,body.dark input,body.dark select,body.dark textarea{background:#111c2e;color:var(--ink);border-color:var(--line)}
-body.dark .top{border-color:var(--line)}body.dark th{background:#17243a;color:#b7c5d9}body.dark .chart-track{background:#26354b}body.dark .tag{background:#1e355d;color:#cfe0ff}body.dark .tag.green{background:#123b2a;color:#9be4b6}body.dark .tag.red{background:#4b2027;color:#ffb7c0}body.dark .status{background:#172b49;color:#cfe0ff}body.dark .status.ok{background:#123b2a;color:#9be4b6}body.dark .status.error{background:#4b2027;color:#ffb7c0}body.dark .danger{background:#4b2027;color:#ffb7c0}body.dark .question{border-color:var(--line);background:#111c2e}body.dark .side{background:#081a36}body.dark .plain:hover{background:#1c2c43}body.dark .chart-fill{background:linear-gradient(90deg,#4f83ff,#82b5ff)}
-body.dark .status.error{border:1px solid #79323d}body.dark .status.ok{border:1px solid #1e6343}
-@media(max-width:850px){.overview-grid{grid-template-columns:1fr}.top-actions{justify-content:flex-start}.top{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.top-actions button{flex:1 1 auto}.top-actions .tag{margin-left:auto}}
-@media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat{padding:13px}.stat strong{font-size:23px}.content{padding:11px}.side{gap:10px}.side nav{padding-bottom:3px}.side nav button{min-height:42px;padding:9px 12px}.top-actions button{min-height:42px;padding:9px 10px}.top-actions .tag{display:none}.panel{padding:14px}.modalback{padding:0;align-items:end}.modal{width:100%;max-height:94dvh;border-radius:16px 16px 0 0;padding:16px}.question{padding:14px}.question label{display:flex!important;align-items:flex-start;gap:10px;padding:10px 8px;margin:5px 0;border:1px solid var(--line);border-radius:9px;min-height:46px;line-height:1.4}.question label input[type=radio]{width:20px!important;height:20px;flex:0 0 20px;margin-top:1px}table{min-width:600px}.activity-item{align-items:flex-start}.activity-meta{max-width:42%}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.overview-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.overview-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,1fr);gap:14px;margin-top:14px}
+.chart-row{display:grid;grid-template-columns:110px 1fr 38px;gap:9px;align-items:center;margin:12px 0}
+.chart-track{height:10px;background:#e8eef8;border-radius:99px;overflow:hidden}
+.chart-fill{height:100%;background:linear-gradient(90deg,#245de8,#60a5fa);border-radius:99px}
+.role-steps{display:grid;gap:10px}
+.role-step{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.55)}
+.role-step b{display:block}
+.metric-note{font-size:12px;color:var(--muted)}
+.activity-list{display:grid;gap:8px}
+.activity-item{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+body.dark{--bg:#0b1220;--ink:#e5edf8;--muted:#9aabc2;--line:#26364d;--white:#111c2e;background:var(--bg);color:var(--ink);color-scheme:dark}
+body.dark .panel,body.dark .stat,body.dark .top,body.dark .modal,body.dark .auth .panel{background:#111c2e;border-color:var(--line);color:var(--ink)}
+body.dark input,body.dark select,body.dark textarea{background:#0b1525;color:var(--ink);border-color:#34465f}
+body.dark th{background:#17263b;color:#aebed3}
+body.dark .plain{background:#17263b;color:var(--ink);border-color:#34465f}
+body.dark .role-step{background:#132137}
+body.dark .chart-track{background:#26364d}
+body.dark .side{background:#07152d}
+body.dark .status{background:#172c4c;color:#bfdbfe}
+body.dark .status.error{background:#451a1a;color:#fecaca}
+body.dark .status.ok{background:#123524;color:#bbf7d0}
+@media(max-width:850px){.overview-grid{grid-template-columns:1fr}.top{align-items:flex-start}.top-actions{justify-content:flex-end}}
+@media(max-width:560px){.top{display:block}.top-actions{justify-content:flex-start;margin-top:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{padding:13px}.stat strong{font-size:23px}.content{padding:10px}.question{padding:11px}.question label{padding:7px 2px;line-height:1.55}.modalback{padding:7px}.modal{padding:14px;max-height:94vh}.actions button{min-height:42px}.chart-row{grid-template-columns:88px 1fr 30px;font-size:12px}}
 
 </style>
 </head>
@@ -42,19 +58,25 @@ body.dark .status.error{border:1px solid #79323d}body.dark .status.ok{border:1px
   <div style="margin-top:auto"><small id="roleInfo"></small><br><button id="signOut" class="plain" style="margin-top:10px">Sign out</button></div>
  </aside>
  <main class="main">
-  <header class="top"><div class="top-title"><b id="pageTitle">Overview</b><div class="note" id="identity"></div></div><div class="top-actions"><button id="refreshBtn" class="plain" type="button" title="Reload dashboard data">↻ Refresh</button><button id="exportBtn" class="plain" type="button" title="Download accessible report as CSV">⇩ Export report</button><button id="themeToggle" class="plain" type="button" aria-pressed="false">☾ Dark mode</button><span class="tag">CINPS Core System</span></div></header>
+  <header class="top"><div><b id="pageTitle">Overview</b><div class="note" id="identity"></div></div><div class="top-actions"><span class="tag">CINPS Core System</span><button id="refreshBtn" class="plain" type="button">↻ Refresh</button><button id="exportBtn" class="plain" type="button">↓ Export report</button><button id="themeBtn" class="plain" type="button" aria-label="Toggle dark mode">◐ Theme</button></div></header>
   <div class="content">
    <div id="notice" class="status hidden"></div>
    <section id="overview" class="section active">
-    <div class="overview-heading"><div><h2 id="overviewTitle">Overview</h2><p class="muted" id="overviewSubtitle">Your ExamSphere workspace at a glance.</p></div></div>
-    <div class="grid" id="overviewStats">
-     <div class="stat"><span class="muted" id="statLabel1">Courses</span><strong id="sCourses">0</strong></div>
-     <div class="stat"><span class="muted" id="statLabel2">Questions</span><strong id="sQuestions">0</strong></div>
-     <div class="stat"><span class="muted" id="statLabel3">Examinations</span><strong id="sExams">0</strong></div>
-     <div class="stat"><span class="muted" id="statLabel4">Submissions</span><strong id="sSubs">0</strong></div>
+    <div class="overview-intro"><div><h2 id="overviewHeading">Overview</h2><p class="muted" id="overviewSubheading">Your ExamSphere workspace at a glance.</p></div></div>
+    <div class="grid">
+     <div class="stat"><span class="muted" id="metricLabel1">Courses</span><strong id="sCourses">0</strong><span class="metric-note" id="metricNote1">Available in your scope</span></div>
+     <div class="stat"><span class="muted" id="metricLabel2">Questions</span><strong id="sQuestions">0</strong><span class="metric-note" id="metricNote2">In your question bank</span></div>
+     <div class="stat"><span class="muted" id="metricLabel3">Examinations</span><strong id="sExams">0</strong><span class="metric-note" id="metricNote3">Created or available</span></div>
+     <div class="stat"><span class="muted" id="metricLabel4">Submissions</span><strong id="sSubs">0</strong><span class="metric-note" id="metricNote4">Received to date</span></div>
     </div>
-    <div class="overview-grid"><div class="panel"><h3 id="workflowTitle">Your workflow</h3><div id="roleWorkflow"></div></div><div class="panel"><h3 id="chartTitle">Exam activity</h3><p class="note">Based on records currently accessible to your account.</p><div id="overviewChart" class="chart-list"></div></div></div>
-    <div class="panel"><div class="toolbar"><h3 style="margin:0">Recent activity</h3><span class="note" id="activityScope">Latest accessible examination records</span></div><div id="recentActivity"></div></div>
+    <div class="overview-grid">
+     <div class="panel"><h3 id="chartTitle">Academic activity</h3><div id="activityChart" aria-live="polite"></div></div>
+     <div class="panel"><h3 id="statusTitle">Examination status</h3><div id="statusChart"></div></div>
+    </div>
+    <div class="overview-grid">
+     <div class="panel"><h3 id="workflowTitle">Your workflow</h3><div id="roleWorkflow" class="role-steps"></div></div>
+     <div class="panel"><h3>Recent activity</h3><div id="recentActivity" class="activity-list"></div></div>
+    </div>
    </section>
    <section id="courses" class="section"><div class="toolbar"><div><h2>Courses</h2><div class="muted">Course codes must match student_access.course exactly. Import the official syllabus CSV to create structured subjects, units and topics.</div></div><button id="addCourse" class="primary">Add course</button></div><div class="panel tablewrap"><table><thead><tr><th>Code</th><th>Course</th><th>Academic structure</th><th>Status</th><th>Action</th></tr></thead><tbody id="courseRows"></tbody></table></div></section>
    <section id="access" class="section"><div class="toolbar"><div><h2>Instructor access</h2><div class="muted">Assign course codes independently of legacy instructor profiles.</div></div><button id="addAccess" class="primary">Assign instructor</button></div><div class="panel tablewrap"><table><thead><tr><th>Instructor UID</th><th>Assigned courses</th><th>Status</th><th>Action</th></tr></thead><tbody id="accessRows"></tbody></table></div></section>
@@ -131,59 +153,50 @@ async function loadData(){
  }
  renderAll();
 }
-function roleOverview(){
- const title=$("overviewTitle"),sub=$("overviewSubtitle"),workflowTitle=$("workflowTitle"),workflow=$("roleWorkflow"),chartTitle=$("chartTitle"),activityScope=$("activityScope");
- let stats=[];
- if(isSuper()){
-  title.textContent="Super Admin Overview";sub.textContent="System-wide examination operations, access and academic activity.";workflowTitle.textContent="Governance & oversight";
-  workflow.innerHTML='<ol><li>Monitor institute-wide courses, question banks, examinations and submissions.</li><li>Manage administrator and instructor access within authorised permissions.</li><li>Review examination activity and publication status across assigned operations.</li><li>Use oversight and authorised correction capabilities without interrupting instructor independence.</li></ol>';
-  stats=[courses.length,questions.length,exams.length,subs.length];["Courses","Question bank","Examinations","Submissions"].forEach((x,i)=>$("statLabel"+(i+1)).textContent=x);
-  chartTitle.textContent="System examination status";activityScope.textContent="Latest examination activity across accessible records";
+function chartBar(label,value,max,colorClass=""){
+ const pct=max?Math.max(0,Math.min(100,value/max*100)):0;
+ return `<div class="chart-row"><span>${esc(label)}</span><div class="chart-track"><div class="chart-fill ${colorClass}" style="width:${pct}%"></div></div><b>${value}</b></div>`;
+}
+function renderOverview(){
+ const submitted=subs.length,graded=results.filter(r=>r.published===false).length,pubResults=results.filter(r=>r.published===true).length;
+ const drafts=exams.filter(e=>e.status==="draft").length,live=exams.filter(e=>e.status==="published").length,closed=exams.filter(e=>e.status==="closed").length;
+ const student=isStudent(),instructor=isInstructor(),superAdmin=isSuper();
+ const title=superAdmin?"System administration":role==="admin"?"Academic administration":instructor?"Instructor workspace":"Student learning dashboard";
+ $("overviewHeading").textContent=title;
+ $("overviewSubheading").textContent=student?`Welcome, ${profile?.name||"Student"}. Here is your learning and examination status.`:instructor?"Monitor your assigned courses, examinations and student submissions.": "Monitor the academic activity available within your authorised access.";
+ let labels,values,notes,workflow;
+ if(superAdmin){
+  labels=["Courses","Questions","Examinations","Submissions"];values=[courses.length,questions.length,exams.length,subs.length];notes=["Across the institute","In the question bank","Across all accessible courses","Received by the system"];
+  workflow=["Manage course structures and instructor access.","Monitor academic activity and examination status.","Review system-level records and authorised exceptions.","Maintain oversight while instructors operate independently within their assigned scope."];
  }else if(role==="admin"){
-  title.textContent="Admin Overview";sub.textContent="Operational view of academic delivery and examination progress.";workflowTitle.textContent="Administrative responsibilities";
-  workflow.innerHTML='<ol><li>Maintain course and syllabus information.</li><li>Monitor question-bank and examination activity.</li><li>Track student submissions and result-publication progress.</li><li>Support instructors while respecting their independent examination authority.</li></ol>';
-  stats=[courses.length,questions.length,exams.length,subs.length];["Courses","Questions","Examinations","Submissions"].forEach((x,i)=>$("statLabel"+(i+1)).textContent=x);
-  chartTitle.textContent="Examination status";activityScope.textContent="Latest examination activity in your operational view";
- }else if(isInstructor()){
-  const graded=results.length,pending=Math.max(0,subs.length-graded);
-  title.textContent="Instructor Overview";sub.textContent="Your assigned course scope, examinations and student result workflow.";workflowTitle.textContent="Your examination workflow";
-  workflow.innerHTML='<ol><li>Create and maintain questions for your assigned courses.</li><li>Create, publish and close examinations independently within your assigned course scope.</li><li>Review student submissions and complete the authorised grading workflow.</li><li>Publish results when your review is complete; students see results only after publication.</li></ol>';
-  stats=[courses.length,questions.length,exams.length,pending];["Assigned courses","Questions","Examinations","Awaiting review"].forEach((x,i)=>$("statLabel"+(i+1)).textContent=x);
-  chartTitle.textContent="Your examination status";activityScope.textContent="Latest activity in your assigned course scope";
+  labels=["Courses","Questions","Examinations","Submissions"];values=[courses.length,questions.length,exams.length,subs.length];notes=["Available courses","Question bank records","Created examinations","Student submissions"];
+  workflow=["Monitor course and academic structure.","Review examination activity and submission progress.","Coordinate operational support for instructors.","Instructors retain independent authority to create and publish exams in their assigned scope."];
+ }else if(instructor){
+  labels=["Assigned courses","Questions","Examinations","Submissions"];values=[courses.length,questions.length,exams.length,subs.length];notes=["Your assigned scope","Questions in your courses","Your course examinations","Awaiting review or publication"];
+  workflow=["Create and maintain questions in assigned courses.","Create, assemble and publish examinations independently.","Review student submissions and assess answers.","Publish results when review is complete; no pre-approval is required."];
  }else{
-  title.textContent="Student Overview";sub.textContent="Your available examinations and published academic results.";workflowTitle.textContent="Your student journey";
-  workflow.innerHTML='<ol><li>Open examinations published for your registered course.</li><li>Read each question carefully and select your answer.</li><li>Your answers are saved as you work; submit the examination when complete.</li><li>Check your results after the assigned instructor has reviewed and published them.</li></ol>';
-  stats=[courses.length,published.length,results.length,results.filter(r=>r.result==="Pass").length];["My course","Available exams","Published results","Passed results"].forEach((x,i)=>$("statLabel"+(i+1)).textContent=x);
-  chartTitle.textContent="My result summary";activityScope.textContent="Your published result records only";
+  labels=["My course","Available exams","Published results","Completed results"];values=[courses.length,published.length,results.length,results.length];notes=[profile?.course||"Registered course","Ready to attempt","Visible after instructor publication","Results released to you"];
+  workflow=["Open an available examination for your registered course.","Read each question carefully and select your answer.","Your answers are saved as you work; submit when finished.","Check published results in My Results. Unpublished results remain private."];
  }
- ["sCourses","sQuestions","sExams","sSubs"].forEach((id,i)=>$(id).textContent=stats[i]??0);
- const counts=isStudent()?[{label:"Available",value:published.length},{label:"Published results",value:results.length},{label:"Passed",value:results.filter(r=>r.result==="Pass").length},{label:"Needs improvement",value:results.filter(r=>r.result!=="Pass").length}]:[
-  {label:"Draft exams",value:exams.filter(x=>x.status==="draft").length},{label:"Published exams",value:exams.filter(x=>x.status==="published").length},{label:"Closed exams",value:exams.filter(x=>x.status==="closed").length},{label:"Graded results",value:results.length}
- ];
- const max=Math.max(1,...counts.map(x=>x.value));
- $("overviewChart").innerHTML=counts.map(x=>`<div class="chart-row"><span>${esc(x.label)}</span><div class="chart-track"><div class="chart-fill" style="width:${Math.max(0,x.value/max*100)}%"></div></div><b>${x.value}</b></div>`).join("");
- const activity=(isStudent()?results.map(r=>({title:r.examTitle||r.examId,meta:`${r.score??"—"} / ${r.totalMarks??"—"} · ${r.result||"Published"}`})):exams.map(e=>({title:e.title||"Untitled examination",meta:`${e.courseCode||"—"} · ${e.status||"Unknown status"}`}))).slice(-5).reverse();
- $("recentActivity").innerHTML=activity.length?`<div class="activity-list">${activity.map(a=>`<div class="activity-item"><strong>${esc(a.title)}</strong><span class="activity-meta">${esc(a.meta)}</span></div>`).join("")}</div>`:'<div class="empty">No activity records are available yet.</div>';
+ for(let i=0;i<4;i++){ $("metricLabel"+(i+1)).textContent=labels[i];$("metricNote"+(i+1)).textContent=notes[i];$("s"+["Courses","Questions","Exams","Subs"][i]).textContent=values[i];}
+ $("chartTitle").textContent=student?"Your learning activity":"Academic records";
+ const activityData=student?[["Available exams",published.length],["Published results",results.length]]:[["Courses",courses.length],["Questions",questions.length],["Examinations",exams.length],["Submissions",subs.length]];
+ const maxActivity=Math.max(1,...activityData.map(x=>x[1]));
+ $("activityChart").innerHTML=activityData.map(x=>chartBar(x[0],x[1],maxActivity)).join("")||'<div class="empty">No activity data available.</div>';
+ $("statusTitle").textContent=student?"Result visibility":"Examination and result status";
+ const statusData=student?[["Published results",results.length],["Available exams",published.length]]:[["Draft exams",drafts],["Published exams",live],["Closed exams",closed],["Graded · unpublished",graded],["Published results",pubResults]];
+ const maxStatus=Math.max(1,...statusData.map(x=>x[1]));
+ $("statusChart").innerHTML=statusData.map(x=>chartBar(x[0],x[1],maxStatus)).join("");
+ $("workflowTitle").textContent=student?"How to use ExamSphere":instructor?"Instructor responsibilities":"Your responsibilities";
+ $("roleWorkflow").innerHTML=workflow.map((x,i)=>`<div class="role-step"><span class="tag">${i+1}</span><div>${esc(x)}</div></div>`).join("");
+ let activity=[];
+ if(student){activity=[...results.slice(-5).reverse().map(r=>({label:r.examTitle||r.examId,state:"Result published",time:r.publishedAt})),...published.slice(-3).reverse().map(e=>({label:e.title,state:"Available examination"}))];}
+ else {activity=[...subs.slice(-5).reverse().map(x=>({label:x.studentName||x.studentId||"Student submission",state:results.some(r=>r.id===x.id&&r.published)?"Result published":results.some(r=>r.id===x.id)?"Graded · awaiting publication":"Awaiting grading",time:x.submittedAt})),...exams.slice(-3).reverse().map(e=>({label:e.title,state:`Exam ${e.status}`}))];}
+ $("recentActivity").innerHTML=activity.length?activity.slice(0,7).map(x=>`<div class="activity-item"><span>${esc(x.label)}</span><span class="tag">${esc(x.state)}</span></div>`).join(""):'<div class="empty">No recent activity is available in your accessible records.</div>';
 }
-function csvCell(v){const s=String(v??"");return '"'+s.replace(/"/g,'""')+'"';}
-function exportReportCSV(){
- const rows=[["Record type","Name / title","Course","Status","Score","Total marks","Result / details"]];
- if(isStudent()){
-  published.forEach(x=>rows.push(["Available examination",x.title,x.courseCode,x.status,"","",`${x.durationMinutes||""} minutes`]));
-  results.forEach(x=>rows.push(["Published result",x.examTitle||x.examId,x.courseCode,"Published",x.score,x.totalMarks,x.result||""]));
- }else{
-  courses.forEach(x=>rows.push(["Course",x.name,x.code,x.active?"Active":"Inactive","","",`${(x.subjects||[]).length} subjects`]));
-  exams.forEach(x=>rows.push(["Examination",x.title,x.courseCode,x.status,"","",`${(x.questionIds||[]).length} questions; ${x.durationMinutes||""} minutes`]));
-  subs.forEach(x=>{const r=results.find(y=>y.id===x.id);rows.push(["Submission",x.studentName||x.studentId,x.courseCode,x.status||"submitted",r?.score??x.score??"",r?.totalMarks??x.totalMarks??"",r?.published?"Published":r?"Graded — awaiting publication":"Awaiting grading"]);});
- }
- const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
- const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`CINPS-ExamSphere-Report-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
- notice("CSV report generated from records accessible to your account.");
-}
-function setTheme(theme){document.body.classList.toggle("dark",theme==="dark");const dark=theme==="dark";$("themeToggle").textContent=dark?"☀ Light mode":"☾ Dark mode";$("themeToggle").setAttribute("aria-pressed",String(dark));try{localStorage.setItem("cinps-examsphere-theme",theme);}catch(e){}}
 function renderAll(){
  $("identity").textContent=`${user.email} · ${role}`;$("roleInfo").textContent=role.toUpperCase();
- $("sCourses").textContent=courses.length;$("sQuestions").textContent=questions.length;$("sExams").textContent=exams.length;$("sSubs").textContent=subs.length;
+ renderOverview();
  $("addCourse").classList.toggle("hidden",!isAdmin());$("addAccess").classList.toggle("hidden",!isSuper());$("addQuestion").classList.toggle("hidden",!isInstructor());$("addExam").classList.toggle("hidden",!isInstructor());
  $("courseRows").innerHTML=courses.map(c=>{const ss=c.subjects||[],chapterCount=ss.reduce((n,x)=>n+(x.chapters||[]).length,0),topicCount=ss.reduce((n,x)=>n+(x.chapters||[]).reduce((m,ch)=>m+(ch.topics||[]).length,0),0);return `<tr><td><b>${esc(c.code)}</b></td><td>${esc(c.name)}</td><td>${ss.length} subjects · ${chapterCount} units · ${topicCount} topics</td><td>${c.active?"Active":"Inactive"}</td><td><button class="plain" data-import-syllabus="${esc(c.code)}">Import / update syllabus</button></td></tr>`}).join("")||emptyRow(5);
  $("accessRows").innerHTML=accesses.map(a=>`<tr><td>${esc(a.id)}</td><td>${(a.courseCodes||[]).map(esc).join(", ")}</td><td>${a.active?"Active":"Inactive"}</td><td><button class="plain" data-access="${esc(a.id)}">Edit</button></td></tr>`).join("")||emptyRow(4);
@@ -199,7 +212,6 @@ function renderAll(){
  $("studentExams").innerHTML=published.map(e=>`<div class="question"><b>${esc(e.title)}</b><p>${esc(e.courseCode)} · ${esc(e.durationMinutes)} minutes · ${esc(e.totalMarks)} marks</p><button class="primary" data-take="${esc(e.id)}">Start examination</button></div>`).join("")||'<div class="empty">No published examinations for your course.</div>';
  $("resultRows").innerHTML=(isStudent()?results:subs.filter(s=>inScope(s.courseCode))).map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted")}</td><td>${(r?.score??s.score)==null?"Pending":esc(r?.score??s.score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${r?.published?"Published":r?"Graded — awaiting publication":"Pending grading"}</td><td>${isStudent()?"View only":`<button class="plain" data-grade="${esc(s.id)}">${r?.published?"View result":r?"Publish result":"Review & grade"}</button>`}</td></tr>`}).join("")||emptyRow(6);
  $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
- roleOverview();
 }
 function emptyRow(n){return `<tr><td colspan="${n}" class="empty">No records available.</td></tr>`;}
 function modal(title,body,save){$("modalSave").textContent="Save";$("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalBack").classList.remove("hidden");$("modalSave").onclick=async()=>{try{await save();$("modalBack").classList.add("hidden");await loadData();notice("Saved successfully.");}catch(e){notice(e.message,true);}};}
@@ -292,7 +304,6 @@ async function startExam(examId){
     batch.set(subRef,{examId,examTitle:pub.title,studentUid:uid(),studentId:profile.studentId,studentName:profile.name,courseCode:profile.course,answers,totalMarks:pub.totalMarks,status:"submitted",submittedAt:serverTimestamp()});
     await batch.commit();
   });
-  $("modalSave").textContent="Submit examination";
   // Persist each answer immediately; a failed save leaves the selection visible
   // and displays an error rather than pretending it was saved.
   items.forEach((x,i)=>document.querySelectorAll(`input[name="ans${i}"]`).forEach(el=>{
@@ -331,11 +342,27 @@ $("resultRows").addEventListener("click",async e=>{
   });
  }catch(err){notice(err.message,true);}
 });
+function downloadCsv(){
+ const rows=[["Record type","ID","Title / Name","Course","Status","Score","Total marks","Published"]];
+ if(isStudent()){
+  published.forEach(x=>rows.push(["Available exam",x.id,x.title||"",x.courseCode||"",x.status||"", "",x.totalMarks??"", ""]));
+  results.forEach(x=>rows.push(["Result",x.id,x.examTitle||x.examId||"",x.courseCode||"",x.result||"",x.score??"",x.totalMarks??"",x.published?"Yes":"No"]));
+ }else{
+  courses.forEach(x=>rows.push(["Course",x.id,x.name||"",x.code||"",x.active?"Active":"Inactive","","",""]));
+  exams.forEach(x=>rows.push(["Examination",x.id,x.title||"",x.courseCode||"",x.status||"","","",""]));
+  subs.forEach(x=>{const r=results.find(y=>y.id===x.id);rows.push(["Submission",x.id,x.examTitle||x.examId||"",x.courseCode||"",r?.published?"Published":r?"Graded — awaiting publication":x.status||"Pending",r?.score??x.score??"",r?.totalMarks??x.totalMarks??"",r?.published?"Yes":"No"]);});
+ }
+ const csv=rows.map(row=>row.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+ const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=`CINPS-ExamSphere-Report-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ notice("CSV report downloaded.");
+}
+$("refreshBtn").onclick=async()=>{const b=$("refreshBtn");b.disabled=true;b.textContent="Refreshing…";try{await loadData();notice("Dashboard refreshed from the records you are authorised to access.");}catch(e){notice("Refresh failed: "+e.message,true);}finally{b.disabled=false;b.textContent="↻ Refresh";}};
+$("exportBtn").onclick=downloadCsv;
+function applyTheme(){const dark=localStorage.getItem("cinps-examsphere-theme")==="dark";document.body.classList.toggle("dark",dark);$("themeBtn").textContent=dark?"☀ Light mode":"◐ Dark mode";}
+$("themeBtn").onclick=()=>{localStorage.setItem("cinps-examsphere-theme",document.body.classList.contains("dark")?"light":"dark");applyTheme();};
+applyTheme();
 $("qSearch").oninput=renderAll;$("qCourse").onchange=renderAll;
-$("refreshBtn").onclick=async()=>{const b=$("refreshBtn");b.disabled=true;b.textContent="Refreshing…";try{await loadData();notice("Dashboard data refreshed.");}catch(e){notice("Refresh failed: "+e.message,true);}finally{b.disabled=false;b.textContent="↻ Refresh";}};
-$("exportBtn").onclick=exportReportCSV;
-$("themeToggle").onclick=()=>setTheme(document.body.classList.contains("dark")?"light":"dark");
-try{setTheme(localStorage.getItem("cinps-examsphere-theme")==="dark"?"dark":"light");}catch(e){setTheme("light");}
 $("signIn").onclick=()=>signInWithRedirect(auth,provider);$("signOut").onclick=()=>signOut(auth);$("modalBack").addEventListener("click",e=>{if(e.target===$("modalBack"))closeModal();});
 try{await getRedirectResult(auth);}catch(e){showLogin("Google sign-in could not be completed: "+e.message,true);}
 onAuthStateChanged(auth,async u=>{user=u;if(!u){role="";showLogin();return;}try{await identify(u);await loadData();$("login").classList.add("hidden");$("app").classList.remove("hidden");renderNav();showPage(isStudent()?"student":"overview");}catch(e){await signOut(auth);showLogin(e.message,true);}});
