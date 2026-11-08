@@ -83,7 +83,7 @@ body.dark .status.ok{background:#123524;color:#bbf7d0}
    <section id="questions" class="section"><div class="toolbar"><div><h2>Question bank</h2><div class="muted">Correct answers remain in the private question bank.</div></div><button id="addQuestion" class="primary">Add MCQ</button></div><div class="panel"><div class="toolbar"><input id="qSearch" placeholder="Search questions"><select id="qCourse"><option value="">All courses</option></select></div><div id="questionList"></div></div></section>
    <section id="exams" class="section"><div class="toolbar"><div><h2>Examinations</h2><div class="muted">Create, publish and close exams within your authorised scope.</div></div><button id="addExam" class="primary">Create examination</button></div><div class="panel tablewrap"><table><thead><tr><th>Exam</th><th>Course</th><th>Questions</th><th>Duration</th><th>Status</th><th>Actions</th></tr></thead><tbody id="examRows"></tbody></table></div></section>
    <section id="student" class="section"><h2>Available examinations</h2><p class="muted">Only published examinations for your registered course are shown.</p><div id="studentExams"></div></section>
-   <section id="results" class="section"><h2>Submissions & results</h2><p class="muted">Review submitted answers and enter the authorised final score before publishing.</p><div class="panel tablewrap"><table><thead><tr><th>Student</th><th>Exam</th><th>Submitted</th><th>Score</th><th>Result</th><th>Action</th></tr></thead><tbody id="resultRows"></tbody></table></div></section>
+   <section id="results" class="section"><h2>Submissions & results</h2><p class="muted">Apps Script calculates preliminary MCQ marks. The assigned instructor reviews the marks, may correct them with a reason, and publishes the final result.</p><div class="panel tablewrap"><table><thead><tr><th>Student</th><th>Exam</th><th>Submitted</th><th>Score</th><th>Result</th><th>Action</th></tr></thead><tbody id="resultRows"></tbody></table></div></section>
   </div>
  </main>
 </div>
@@ -194,6 +194,15 @@ function renderOverview(){
  else {activity=[...subs.slice(-5).reverse().map(x=>({label:x.studentName||x.studentId||"Student submission",state:results.some(r=>r.id===x.id&&r.published)?"Result published":results.some(r=>r.id===x.id)?"Graded · awaiting publication":"Awaiting grading",time:x.submittedAt})),...exams.slice(-3).reverse().map(e=>({label:e.title,state:`Exam ${e.status}`}))];}
  $("recentActivity").innerHTML=activity.length?activity.slice(0,7).map(x=>`<div class="activity-item"><span>${esc(x.label)}</span><span class="tag">${esc(x.state)}</span></div>`).join(""):'<div class="empty">No recent activity is available in your accessible records.</div>';
 }
+function submissionTime_(record){
+ const value=record?.submittedAt||record?.gradedAt||record?.publishedAt||record?.startedAt;
+ if(value?.toMillis)return value.toMillis();
+ if(value?.toDate)return value.toDate().getTime();
+ if(value instanceof Date)return value.getTime();
+ if(typeof value==="number")return value;
+ if(typeof value==="string"){const parsed=Date.parse(value);return Number.isFinite(parsed)?parsed:0;}
+ return 0;
+}
 function renderAll(){
  $("identity").textContent=`${user.email} · ${role}`;$("roleInfo").textContent=role.toUpperCase();
  renderOverview();
@@ -210,7 +219,8 @@ function renderAll(){
  $("questionList").innerHTML=questions.filter(q=>inScope(q.courseCode)&&(!qf||q.courseCode===qf)&&(`${q.text} ${q.subjectName||""} ${q.subjectCode||""} ${q.unitName||""} ${q.topicName||""} ${q.chapterName||""}`).toLowerCase().includes(term)).map(q=>`<div class="question"><b>${esc(q.courseCode)} · ${esc(q.subjectName)}</b><div class="note">${esc(q.unitName||q.chapterName||"")}${q.topicName?` · ${esc(q.topicName)}`:""}</div><p>${esc(q.text)}</p><div class="note">Question ID: <code>${esc(q.id)}</code> · Private answer key: ${"ABCD"[q.correctIndex]||"?"}</div></div>`).join("")||'<div class="empty">No questions found.</div>';
  $("examRows").innerHTML=exams.filter(e=>inScope(e.courseCode)).map(e=>`<tr><td>${esc(e.title)}</td><td>${esc(e.courseCode)}</td><td>${(e.questionIds||[]).length}</td><td>${esc(e.durationMinutes)} min</td><td><span class="tag">${esc(e.status)}</span></td><td><div class="actions">${e.status==="draft"&&isInstructor()?`<button class="plain" data-publish="${esc(e.id)}">Publish</button>`:""}${e.status==="published"&&(isInstructor()||isAdmin())?`<button class="plain" data-close="${esc(e.id)}">Close</button>`:""}${e.status==="draft"&&!isInstructor()?"Instructor publishes":""}${e.status==="closed"?"Closed":""}</div></td></tr>`).join("")||emptyRow(6);
  $("studentExams").innerHTML=published.map(e=>`<div class="question"><b>${esc(e.title)}</b><p>${esc(e.courseCode)} · ${esc(e.durationMinutes)} minutes · ${esc(e.totalMarks)} marks</p><button class="primary" data-take="${esc(e.id)}">Start examination</button></div>`).join("")||'<div class="empty">No published examinations for your course.</div>';
- $("resultRows").innerHTML=(isStudent()?results:subs.filter(s=>inScope(s.courseCode))).map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted")}</td><td>${(r?.score??s.score)==null?"Pending":esc(r?.score??s.score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${r?.published?"Published":r?"Graded — awaiting publication":"Pending grading"}</td><td>${isStudent()?"View only":`<button class="plain" data-grade="${esc(s.id)}">${r?.published?"View result":r?"Publish result":"Review & grade"}</button>`}</td></tr>`}).join("")||emptyRow(6);
+ const resultRecords=(isStudent()?results:subs.filter(s=>inScope(s.courseCode))).slice().sort((a,b)=>submissionTime_(b)-submissionTime_(a));
+ $("resultRows").innerHTML=resultRecords.map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);const score=r?.score;const state=r?.published?"Published":r?"Graded — awaiting instructor review":"Awaiting automatic grading";const action=isStudent()?"View only":r?.published?`<button class="plain" data-grade="${esc(s.id)}">View result</button>`:r?`<button class="plain" data-grade="${esc(s.id)}">Review & publish</button>`:`<span class="note">Awaiting Apps Script grading</span>`;const submitted=s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted";return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(submitted)}</td><td>${score==null?"Awaiting":esc(score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${state}</td><td>${action}</td></tr>`}).join("")||emptyRow(6);
  $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
 }
 function emptyRow(n){return `<tr><td colspan="${n}" class="empty">No records available.</td></tr>`;}
@@ -304,6 +314,7 @@ async function startExam(examId){
     batch.set(subRef,{examId,examTitle:pub.title,studentUid:uid(),studentId:profile.studentId,studentName:profile.name,courseCode:profile.course,answers,totalMarks:pub.totalMarks,status:"submitted",submittedAt:serverTimestamp()});
     await batch.commit();
   });
+  $("modalSave").textContent="Submit";
   // Persist each answer immediately; a failed save leaves the selection visible
   // and displays an error rather than pretending it was saved.
   items.forEach((x,i)=>document.querySelectorAll(`input[name="ans${i}"]`).forEach(el=>{
@@ -319,27 +330,16 @@ async function startExam(examId){
 $("resultRows").addEventListener("click",async e=>{
  const b=e.target.closest("[data-grade]");if(!b)return;
  const s=subs.find(x=>x.id===b.dataset.grade);if(!s)return;
- const ex=exams.find(x=>x.id===s.examId),resultRef=D("examsphere_results",s.id);
+ const resultRef=D("examsphere_results",s.id);
  try{
   const existing=results.find(x=>x.id===s.id);
+  if(!existing){notice("This submission is waiting for Apps Script automatic grading. Refresh after the grading queue runs.");return;}
+  const r=existing;
   const answerMarkup=Object.entries(s.answers||{}).map(([qid,answer])=>{const q=questions.find(x=>x.id===qid);return `<div class="question"><b>${esc(q?.text||qid)}</b><p>Student selected: ${"ABCD"[answer]||"—"}. ${esc(q?.options?.[answer]||"")}</p><p class="note">Correct answer (authorised staff only): ${"ABCD"[q?.correctIndex]||"Not available"}</p></div>`}).join("");
-  const header=`<p><b>${esc(s.studentName||s.studentId)}</b> · ${esc(s.examTitle||s.examId)}</p><p>Total marks: <b>${esc(s.totalMarks)}</b></p><h4>Submitted answers</h4>${answerMarkup}`;
-  if(existing){
-   const r=existing;
-   if(r.published){modal("Published result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><p class="tag">This result is already published and cannot be changed.</p>`,async()=>{});$("modalSave").textContent="Close";$("modalSave").onclick=closeModal;return;}
-   modal("Publish graded result",`${header}<p>Score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><label><input id="publishResult" type="checkbox" style="width:auto"> Confirm publication to the student</label>`,async()=>{if(!$("publishResult").checked)throw Error("Tick the confirmation box to publish this result.");await updateDoc(resultRef,{published:true,publishedAt:serverTimestamp()});});
-   $("modalSave").textContent="Publish result";return;
-  }
-  if(s.status==="graded")throw Error("The submission is graded but its result document is missing. Please ask the Super Admin to investigate before retrying.");
-  modal("Review and grade submission",`${header}<label>Final marks awarded</label><input id="finalScore" type="number" min="0" max="${Number(s.totalMarks)||0}" step="0.5" value="${Number(s.score??0)}"><label><input id="publishResult" type="checkbox" style="width:auto"> Publish this result to the student now</label>`,async()=>{
-   const score=Number($("finalScore").value),publish=$("publishResult").checked;
-   if(!Number.isFinite(score)||score<0||score>Number(s.totalMarks))throw Error("Enter a valid score within the total marks.");
-   const passPercent=Number(ex?.passPercent??40),pct=Number(s.totalMarks)?score/Number(s.totalMarks)*100:0,gradedAt=serverTimestamp();
-   const batch=writeBatch(db);
-   batch.update(D("examsphere_submissions",s.id),{score,gradedBy:uid(),gradedAt,status:"graded"});
-   batch.set(resultRef,{examId:s.examId,examTitle:s.examTitle,studentUid:s.studentUid,studentId:s.studentId,studentName:s.studentName,courseCode:s.courseCode,score,totalMarks:s.totalMarks,passPercent,result:pct>=passPercent?"Pass":"Needs Improvement",published:publish,publishedAt:publish?serverTimestamp():null,gradedBy:uid(),gradedAt});
-   await batch.commit();
-  });
+  const header=`<p><b>${esc(s.studentName||s.studentId)}</b> · ${esc(s.examTitle||s.examId)}</p><p>Total marks: <b>${esc(r.totalMarks)}</b></p><h4>Submitted answers</h4>${answerMarkup}`;
+  if(r.published){modal("Published result",`${header}<p>Final result: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><p class="tag green">Published</p>`,async()=>{});$("modalSave").textContent="Close";$("modalSave").onclick=closeModal;return;}
+  modal("Review preliminary marks",`${header}<div class="status">Apps Script automatic score: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></div><p>Review the submitted answers and the automatically calculated marks. If the marks are correct, confirm publication below.</p><label><input id="publishResult" type="checkbox" style="width:auto"> I have reviewed the marks and confirm publication to the student</label><p class="note">This result remains private until you publish it.</p>`,async()=>{if(!$("publishResult").checked)throw Error("Review the marks and tick the publication confirmation.");await updateDoc(resultRef,{published:true,publishedAt:serverTimestamp()});});
+  $("modalSave").textContent="Publish result";
  }catch(err){notice(err.message,true);}
 });
 function downloadCsv(){
