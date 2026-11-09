@@ -1,102 +1,840 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CINPS Academic Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINPS Academic Intelligence Portal</title>
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#103b82;--blue:#1769e0;--blue-dark:#0d4fb5;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323;--surface:#fff;--bg:#f4f7fc;--shadow:0 8px 28px rgba(16,59,130,.065)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}header{background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);padding:16px clamp(16px,4vw,56px);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #163f7108}.brand{display:flex;align-items:center;gap:13px;min-width:230px}.logo{background:linear-gradient(145deg,var(--navy),var(--blue));color:#fff;font-weight:900;letter-spacing:.5px;border-radius:13px;padding:13px 12px;box-shadow:0 5px 14px #1769e033}h1{font-size:clamp(18px,2vw,22px);line-height:1.2;margin:0;font-weight:800;letter-spacing:-.35px}.sub{font-size:10px;letter-spacing:1px;font-weight:700;color:var(--muted);margin-top:5px}.header-right{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}#accountArea{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#accountArea .user-label{color:var(--muted);font-size:12px;padding:0 5px;max-width:220px;overflow-wrap:anywhere}button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;transition:background .16s,transform .16s,box-shadow .16s;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}button:hover{background:var(--blue-dark);box-shadow:0 4px 12px #1769e026}button:active{transform:translateY(1px)}button:disabled{opacity:.55;cursor:wait;box-shadow:none}button.secondary{background:#e7effc;color:var(--navy)}button.secondary:hover{background:#d9e8ff}button.outline{background:#fff;color:var(--navy);border:1px solid var(--line)}button.outline:hover{background:#f4f8ff}button.success{background:#e8f6ee;color:#146b42}button.success:hover{background:#d8efdf}button .btn-icon{font-size:16px;line-height:1}main{max-width:1380px;margin:26px auto;padding:0 clamp(14px,2.4vw,30px)}.page-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:0 2px 18px;flex-wrap:wrap}.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--blue);font-weight:800;margin-bottom:5px}.page-intro h2{font-size:25px;letter-spacing:-.6px;margin:0}.page-intro p{margin:5px 0 0}.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,24px);margin-bottom:18px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:17px;letter-spacing:-.2px;margin:0 0 6px;font-weight:800}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.panel-head p{margin:5px 0 0}.muted{color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:linear-gradient(145deg,#f8fbff,#eef5ff);border:1px solid #dce8f8;border-radius:13px;padding:17px 18px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:60px;height:60px;border-radius:50%;background:#1769e00b;right:-16px;top:-18px}.stat label{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.1px}.stat strong{display:block;font-size:clamp(25px,2.4vw,32px);line-height:1.2;margin-top:8px;color:var(--navy);letter-spacing:-.8px}.stat .stat-note{font-size:11px;color:var(--muted);margin-top:6px}.columns{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:18px;align-items:start}form{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:750;color:#34445d}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd8ea;border-radius:9px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}input:focus,select:focus,textarea:focus{border-color:#6aa1f4;box-shadow:0 0 0 3px #1769e018}textarea{min-height:96px;resize:vertical}.form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.status{padding:12px 14px;border-radius:10px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.status.error{background:#fff0f0;color:var(--red)}.hidden{display:none!important}.table-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 13px}.table-tools input{flex:1;min-width:190px}.table-tools select{width:auto;min-width:155px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:680px}.record-panel .panel-head{margin-bottom:12px}.record-panel table{min-width:720px}.record-panel tbody tr:nth-child(even){background:#fbfdff}th,td{text-align:left;padding:12px 13px;border-bottom:1px solid #e8eef7;vertical-align:top}th{background:#f5f8fd;color:#52647e;font-size:11px;text-transform:uppercase;letter-spacing:.55px;font-weight:800;position:sticky;top:0}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#f8fbff}td{overflow-wrap:anywhere}.record-type{display:inline-flex;padding:4px 8px;border-radius:20px;background:#edf4ff;color:#174e9e;font-size:11px;font-weight:750}.barrow{display:grid;grid-template-columns:minmax(90px,120px) minmax(50px,1fr) 30px;gap:10px;align-items:center;margin:17px 0;font-size:12px}.barrow span{color:#455873}.barrow strong{text-align:right;color:var(--navy)}.track{height:9px;background:#e8eff9;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#1769e0,#58a0ff);width:0;border-radius:10px;transition:width .35s}.chart-empty{padding:24px;text-align:center;background:#f7faff;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}.overview-status{display:flex;align-items:center;gap:8px;font-size:12px;margin-top:15px}.status-dot{width:7px;height:7px;border-radius:50%;background:#16a267;display:inline-block;flex:none}footer{text-align:center;color:var(--muted);padding:24px 16px;font-size:11px}#welcome{max-width:760px;margin:55px auto;padding:32px}#welcome h2{font-size:24px}#welcome .welcome-mark{display:inline-flex;background:#edf4ff;color:var(--navy);padding:10px;border-radius:12px;margin-bottom:15px}.small-note{font-size:11px;color:var(--muted)}
-@media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}.header-right{width:100%;justify-content:flex-start}header{position:static}}
-@media(max-width:560px){header{padding:13px}.brand{min-width:0}.logo{padding:11px;font-size:13px}.sub{font-size:9px;letter-spacing:.5px}.header-right,#accountArea{width:100%;justify-content:flex-start}#accountArea button{flex:1}.user-label{width:100%}main{margin:16px auto;padding:0 12px}.page-intro h2{font-size:22px}.grid{gap:9px}.stat{padding:13px}.stat strong{font-size:25px}.stat label{font-size:11px}.panel{padding:15px;border-radius:13px}form{grid-template-columns:1fr}.field.full{grid-column:auto}.table-tools input,.table-tools select{width:100%;min-width:0}.barrow{grid-template-columns:95px minmax(40px,1fr) 24px;gap:7px}.form-actions button{width:100%}}
+/* CSS Reset & Dynamic Theme Variables */
+:root {
+  --font-main: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Light Theme Variables */
+  --bg-app: #f4f7fc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f8fafc;
+  --bg-subtle: #edf3fc;
+  --border-color: #dbe4f0;
+  --border-color-light: #eff4fa;
+  
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  
+  --brand-navy: #0f2b5c;
+  --brand-blue: #1d68d8;
+  --brand-blue-hover: #1552b0;
+  --brand-light: #eef4ff;
+
+  --emerald-main: #059669;
+  --emerald-bg: #ecfdf5;
+  --emerald-border: #a7f3d0;
+  
+  --amber-main: #d97706;
+  --amber-bg: #fffbeeb;
+  --amber-border: #fde68a;
+  
+  --rose-main: #dc2626;
+  --rose-bg: #fef2f2;
+  --rose-border: #fecaca;
+  
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
+  --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.1);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+[data-theme="dark"] {
+  --bg-app: #0b0f19;
+  --bg-surface: #111827;
+  --bg-surface-elevated: #1f2937;
+  --bg-subtle: #182235;
+  --border-color: #243044;
+  --border-color-light: #1e293b;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  
+  --brand-navy: #1e3a8a;
+  --brand-blue: #3b82f6;
+  --brand-blue-hover: #2563eb;
+  --brand-light: #1e293b;
+
+  --emerald-main: #10b981;
+  --emerald-bg: #064e3b;
+  --emerald-border: #047857;
+  
+  --amber-main: #f59e0b;
+  --amber-bg: #78350f;
+  --amber-border: #b45309;
+  
+  --rose-main: #ef4444;
+  --rose-bg: #7f1d1d;
+  --rose-border: #b91c1c;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header & Navigation Bar */
+header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.header-wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-badge {
+  background: linear-gradient(135deg, #1d68d8, #0f2b5c);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 10px rgba(29, 104, 216, 0.3);
+}
+.brand-title h1 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: var(--text-main);
+}
+.brand-title .tagline {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Controls & Buttons */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 13px;
+}
+button {
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+button.btn-primary {
+  background-color: var(--brand-blue);
+  color: #ffffff;
+}
+button.btn-primary:hover {
+  background-color: var(--brand-blue-hover);
+  box-shadow: 0 4px 12px rgba(29, 104, 216, 0.25);
+}
+button.btn-secondary {
+  background-color: var(--bg-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+button.btn-secondary:hover {
+  background-color: var(--border-color);
+}
+button.btn-outline {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+button.btn-outline:hover {
+  background-color: var(--bg-subtle);
+}
+button.btn-success {
+  background-color: var(--emerald-main);
+  color: #ffffff;
+}
+button.btn-success:hover {
+  filter: brightness(0.95);
+}
+button.btn-danger {
+  background-color: var(--rose-main);
+  color: #ffffff;
+}
+button.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+/* Theme Toggle Button */
+.theme-btn {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* Toast Floating Notifications */
+#toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 380px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: var(--shadow-lg);
+  border-left: 4px solid var(--brand-blue);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast.success { border-left-color: var(--emerald-main); }
+.toast.error { border-left-color: var(--rose-main); }
+.toast.warning { border-left-color: var(--amber-main); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Layout Main Grid */
+main {
+  max-width: 1440px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+.hidden { display: none !important; }
+
+/* Panels & Cards */
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.panel-head h2 {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text-main);
+  letter-spacing: -0.2px;
+}
+.panel-head p {
+  margin: 2px 0 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.muted { color: var(--text-muted); }
+
+/* Welcome Screen */
+#welcome {
+  max-width: 580px;
+  margin: 80px auto;
+  text-align: center;
+  padding: 40px 32px;
+}
+.welcome-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--brand-light);
+  color: var(--brand-blue);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px auto;
+}
+
+/* Analytics Stats Grid */
+.grid-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.stat-card {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  margin-top: 6px;
+  color: var(--text-main);
+  line-height: 1;
+}
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 6px;
+}
+
+/* Attendance Analytics Progress Bar */
+.attendance-gauge {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-top: 16px;
+}
+.gauge-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.gauge-bar-track {
+  height: 12px;
+  background: var(--bg-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+}
+.gauge-segment {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+.segment-present { background: var(--emerald-main); }
+.segment-absent { background: var(--rose-main); }
+.segment-late { background: var(--amber-main); }
+.segment-leave { background: var(--brand-blue); }
+
+.gauge-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Columns Split Layout */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Form Controls */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.field.full { grid-column: 1 / -1; }
+label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+input, select, textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(29, 104, 216, 0.15);
+}
+textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+/* Draft Alert Banner */
+.draft-alert {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  color: var(--amber-main);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Collection Bar Visualizer */
+.barrow {
+  display: grid;
+  grid-template-columns: 120px 1fr 40px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+.barrow span { font-weight: 600; color: var(--text-muted); }
+.barrow strong { text-align: right; color: var(--text-main); font-weight: 700; }
+.track {
+  height: 10px;
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-blue), #38bdf8);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+/* Multi-Criteria Toolbar */
+.directory-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  background: var(--bg-surface-elevated);
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 140px;
+}
+.filter-item.search-wide {
+  flex: 2;
+  min-width: 220px;
+}
+.filter-item label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Category Tabs */
+.tab-row {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.tab-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.tab-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+}
+.tab-btn.active {
+  color: var(--brand-blue);
+  border-bottom-color: var(--brand-blue);
+  background: var(--brand-light);
+}
+
+/* Tables Structure */
+.tablewrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+th {
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-color-light);
+  color: var(--text-main);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background-color: var(--bg-surface-elevated); }
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.badge-blue { background: var(--brand-light); color: var(--brand-blue); }
+.badge-emerald { background: var(--emerald-bg); color: var(--emerald-main); border: 1px solid var(--emerald-border); }
+.badge-rose { background: var(--rose-bg); color: var(--rose-main); border: 1px solid var(--rose-border); }
+.badge-amber { background: var(--amber-bg); color: var(--amber-main); border: 1px solid var(--amber-border); }
+
+/* Quick Action Links */
+.action-link {
+  color: var(--brand-blue);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+}
+.action-link:hover { text-decoration: underline; }
+
+/* Status Message Box */
+.status-box {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  margin-top: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.status-box.error { background: var(--rose-bg); color: var(--rose-main); border: 1px solid var(--rose-border); }
+.status-box.success { background: var(--emerald-bg); color: var(--emerald-main); border: 1px solid var(--emerald-border); }
+
+/* Footer */
+footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 30px 20px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 40px;
+}
+
+/* Print Optimizations */
+@media print {
+  header, .directory-toolbar, .tab-row, #studentApprovalPanel, #recordForm, .header-actions, button, #toastContainer {
+    display: none !important;
+  }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .panel { border: none; box-shadow: none; padding: 0; margin: 0; }
+  table { width: 100%; border: 1px solid #ccc; }
+  th, td { border: 1px solid #ccc; padding: 6px; }
+}
+
+@media(max-width: 1024px) {
+  .grid-stats { grid-template-columns: repeat(2, 1fr); }
+  .grid-2col { grid-template-columns: 1fr; }
+}
+@media(max-width: 640px) {
+  .grid-stats { grid-template-columns: 1fr; }
+  form { grid-template-columns: 1fr; }
+  .header-wrap { flex-direction: column; align-items: flex-start; }
+  .header-actions { width: 100%; justify-content: flex-start; }
+  .directory-toolbar { flex-direction: column; }
+  .filter-item { width: 100%; }
+}
 </style>
 </head>
 <body>
+
+<!-- Toast Notification Container -->
+<div id="toastContainer"></div>
+
+<!-- Header Navigation -->
 <header>
-  <div class="brand">
-    <div class="logo">CINPS</div>
-    <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
+  <div class="header-wrap">
+    <div class="brand-group">
+      <div class="brand-badge">CINPS</div>
+      <div class="brand-title">
+        <h1>Academic Intelligence</h1>
+        <div class="tagline">Paramedical &amp; Allied Healthcare Education</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggleBtn" class="theme-btn" title="Toggle Theme" aria-label="Toggle Light/Dark Theme">☀️</button>
+      <div id="accountArea">
+        <button id="loginBtn" class="btn-primary">Sign in with Google</button>
+      </div>
+    </div>
   </div>
-  <div class="header-right"><div id="accountArea"><button id="loginBtn">Continue with Google</button></div></div>
 </header>
 
 <main>
+  <!-- Welcome / Sign-in View -->
   <section class="panel" id="welcome">
-    <h2>Academic Intelligence Dashboard</h2>
-    <p class="muted">Secure academic records, attendance, instructor updates and institutional insights in one place.</p>
-    <p class="muted">Sign in with an active CINPS administrator account to continue.</p>
-    <div id="welcomeStatus" class="muted"></div>
+    <div class="welcome-icon">🎓</div>
+    <h2>CINPS Administrator Portal</h2>
+    <p class="muted">Access institutional academic records, attendance logs, and student approvals. Please sign in with an authorized CINPS administrator Google account.</p>
+    <div id="welcomeStatus" style="margin-top:16px;"></div>
   </section>
 
+  <!-- Main Authenticated App Workspace -->
   <section id="app" class="hidden">
-    <div class="page-intro">
-      <div><div class="eyebrow">CINPS · Academic administration</div><h2>Academic overview</h2><p class="muted">A consolidated view of the records currently stored in your academic database.</p></div>
-      <div class="small-note">Live data from Firestore</div>
-    </div>
+    
+    <!-- Snapshot Metrics & Analytics -->
     <div class="panel">
-      <div class="panel-head"><div><h2>Academic snapshot</h2><p class="muted">Figures below reflect the current records in this Firebase project.</p></div></div>
-      <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
-      <div class="grid">
-        <div class="stat"><label>STUDENTS</label><strong id="nStudents">0</strong><div class="stat-note">Student records</div></div>
-        <div class="stat"><label>INSTRUCTORS</label><strong id="nInstructors">0</strong><div class="stat-note">Instructor records</div></div>
-        <div class="stat"><label>ATTENDANCE RECORDS</label><strong id="nAttendance">0</strong><div class="stat-note">Attendance entries</div></div>
-        <div class="stat"><label>CLASS UPDATES</label><strong id="nClasses">0</strong><div class="stat-note">Class submissions</div></div>
+      <div class="panel-head">
+        <div>
+          <h2>Academic Snapshot &amp; Analytics</h2>
+          <p>Real-time database statistics calculated directly from Cloud Firestore</p>
+        </div>
+        <span id="overviewStatus" class="muted" style="font-size:11px;">Loading live records...</span>
       </div>
-      <div id="overviewStatus" class="overview-status muted"><span class="status-dot"></span>Loading academic data…</div>
+      
+      <div class="grid-stats">
+        <div class="stat-card">
+          <div class="stat-label">Students</div>
+          <div class="stat-value" id="nStudents">0</div>
+          <div class="stat-sub">Active profiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Instructors</div>
+          <div class="stat-value" id="nInstructors">0</div>
+          <div class="stat-sub">Faculty profiles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Attendance Entries</div>
+          <div class="stat-value" id="nAttendance">0</div>
+          <div class="stat-sub">Student logs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Class Updates</div>
+          <div class="stat-value" id="nClasses">0</div>
+          <div class="stat-sub">Academic reports</div>
+        </div>
+      </div>
+
+      <!-- Attendance Percentage Gauge -->
+      <div class="attendance-gauge">
+        <div class="gauge-title">
+          <span>Overall Attendance Metric Breakdown</span>
+          <span id="attendanceRateText">0% Present</span>
+        </div>
+        <div class="gauge-bar-track">
+          <div id="gaugePresent" class="gauge-segment segment-present" style="width: 0%" title="Present"></div>
+          <div id="gaugeAbsent" class="gauge-segment segment-absent" style="width: 0%" title="Absent"></div>
+          <div id="gaugeLate" class="gauge-segment segment-late" style="width: 0%" title="Late"></div>
+          <div id="gaugeLeave" class="gauge-segment segment-leave" style="width: 0%" title="Leave"></div>
+        </div>
+        <div class="gauge-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--emerald-main)"></span> Present: <strong id="cntPresent">0</strong></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--rose-main)"></span> Absent: <strong id="cntAbsent">0</strong></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--amber-main)"></span> Late: <strong id="cntLate">0</strong></div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--brand-blue)"></span> Leave: <strong id="cntLeave">0</strong></div>
+        </div>
+      </div>
     </div>
 
+    <!-- Batch Approval Pipeline Panel -->
     <section class="panel" id="studentApprovalPanel">
       <div class="panel-head">
         <div>
-          <h2>Student registration approvals</h2>
-          <p class="muted">Review Google sign-ins waiting for CINPS verification. Assign the official student ID, course and branch before approval.</p>
+          <h2>Student Registration Approvals</h2>
+          <p>Review self-registered students. Assign official Student ID, Course, and Branch before authorizing access.</p>
         </div>
-        <span id="pendingStudentCount" class="record-type">0 pending</span>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span id="pendingStudentCount" class="badge badge-amber">0 pending</span>
+          <button id="batchApproveBtn" class="btn-success btn-sm" disabled>Approve Selected (0)</button>
+        </div>
       </div>
+
       <div class="tablewrap">
-        <table style="min-width:900px">
-          <thead><tr><th>Registered name / email</th><th>Requested</th><th>Student ID</th><th>Course</th><th>Branch</th><th>Action</th></tr></thead>
-          <tbody id="pendingStudentRows"><tr><td colspan="6">Loading pending registrations…</td></tr></tbody>
+        <table style="min-width: 900px;">
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center;"><input type="checkbox" id="selectAllPending" aria-label="Select all pending"></th>
+              <th>Applicant Name &amp; Email</th>
+              <th>Requested Date</th>
+              <th>Student ID</th>
+              <th>Course</th>
+              <th>Branch</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="pendingStudentRows">
+            <tr><td colspan="7" class="muted">Loading pending registration requests...</td></tr>
+          </tbody>
         </table>
       </div>
-      <p class="small-note" style="margin-top:10px">Approval activates the student's access and creates or updates the matching record in the students collection. Existing records are merged, not replaced.</p>
       <div id="approvalStatus" class="hidden"></div>
     </section>
 
-    <div class="columns">
+    <!-- Entry Form & Distribution Columns -->
+    <div class="grid-2col">
       <section class="panel">
-        <div class="panel-head"><div><h2>Register an academic update</h2><p class="muted">Add a student, instructor, attendance, class, clinical or internship record.</p></div></div>
+        <div class="panel-head">
+          <div>
+            <h2>Register Academic Update</h2>
+            <p>Log a student, instructor, class update, attendance, or clinical entry</p>
+          </div>
+        </div>
+
+        <!-- Form Draft Notification -->
+        <div id="draftAlert" class="draft-alert hidden">
+          <span>📝 Restored saved draft from your previous browser session.</span>
+          <button type="button" id="clearDraftBtn" class="btn-secondary btn-sm">Clear Draft</button>
+        </div>
+
         <form id="recordForm">
           <div class="field full">
-            <label for="recordType">Record type</label>
-            <select id="recordType" name="recordType" aria-label="Record type" required>
-              <option value="students">Student registration</option>
-              <option value="instructors">Instructor registration</option>
-              <option value="attendance">Student attendance</option>
-              <option value="class_updates">Class update</option>
-              <option value="clinical_updates">Clinical update</option>
-              <option value="internship_updates">Internship update</option>
+            <label for="recordType">Record Category</label>
+            <select id="recordType" name="recordType" required>
+              <option value="students">Student Registration</option>
+              <option value="instructors">Instructor Registration</option>
+              <option value="attendance">Student Attendance</option>
+              <option value="class_updates">Class Update</option>
+              <option value="clinical_updates">Clinical Update</option>
+              <option value="internship_updates">Internship Update</option>
             </select>
           </div>
           <div class="field">
-            <label for="personName">Student / instructor name</label>
-            <input id="personName" name="personName" aria-label="Student or instructor name" maxlength="120" required>
+            <label for="personName" id="personNameLabel">Student / Instructor Name</label>
+            <input id="personName" name="personName" maxlength="120" placeholder="Full Name" required>
           </div>
           <div class="field">
-            <label for="personId">Student / staff ID (optional)</label>
-            <input id="personId" name="personId" aria-label="Student or staff ID" maxlength="80">
+            <label for="personId">Student / Staff ID (Optional)</label>
+            <input id="personId" name="personId" maxlength="80" placeholder="e.g. CINPS-042">
           </div>
           <div class="field">
-            <label for="course">Course</label>
-            <input id="course" name="course" aria-label="Course name" maxlength="120" placeholder="e.g. DMLT" required>
+            <label for="course">Course Code</label>
+            <input id="course" name="course" maxlength="120" placeholder="e.g. DMLT / OTT / BPT" required>
           </div>
           <div class="field">
-            <label for="recordDate">Record date</label>
-            <input id="recordDate" name="recordDate" aria-label="Record date" type="date" required>
+            <label for="recordDate">Record Date</label>
+            <input id="recordDate" name="recordDate" type="date" required>
           </div>
           <div class="field" id="attendanceField">
-            <label for="attendanceStatus">Attendance status</label>
-            <select id="attendanceStatus" name="attendanceStatus" aria-label="Attendance status">
+            <label for="attendanceStatus">Attendance Status</label>
+            <select id="attendanceStatus" name="attendanceStatus">
               <option value="Present">Present</option>
               <option value="Absent">Absent</option>
               <option value="Late">Late</option>
@@ -104,483 +842,1082 @@
             </select>
           </div>
           <div class="field" id="topicField">
-            <label for="topic">Subject / topic</label>
-            <input id="topic" name="topic" aria-label="Subject or topic" maxlength="180" placeholder="Class or activity">
+            <label for="topic">Subject / Topic</label>
+            <input id="topic" name="topic" maxlength="180" placeholder="Topic or activity details">
           </div>
           <div class="field full">
-            <label for="notes">Details / update</label>
-            <textarea id="notes" name="notes" aria-label="Details and update notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
+            <label for="notes">Update Notes &amp; Details</label>
+            <textarea id="notes" name="notes" maxlength="3000" placeholder="Enter factual details, class summary, or clinical notes..."></textarea>
           </div>
           <div class="field full">
-            <div class="form-actions"><button id="saveBtn" type="submit">Save new record</button><button id="resetFormBtn" class="outline" type="button">Clear form</button></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button id="saveBtn" class="btn-primary" type="submit">Save Record</button>
+              <button id="resetFormBtn" class="btn-outline" type="button">Clear Form</button>
+            </div>
           </div>
         </form>
         <div id="formStatus" class="hidden"></div>
       </section>
 
+      <!-- Collection Breakdown Chart -->
       <section class="panel">
-        <h2>Academic activity</h2>
-        <p class="muted">Record counts across the six connected collections.</p>
-        <div id="activityChart"></div>
-        <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
+        <div class="panel-head">
+          <div>
+            <h2>Collection Distribution</h2>
+            <p>Total record counts per database collection</p>
+          </div>
+        </div>
+        <div id="activityChart" style="margin-top:10px;"></div>
       </section>
     </div>
 
+    <!-- Data Explorer Directory with Multi-Criteria Filters -->
     <section class="panel">
-      <div class="panel-head"><div><h2>Academic Records</h2><p class="muted">Records are separated by activity type for easier review. Use the search box to filter all tables.</p></div></div>
-      <div class="table-tools"><input id="recordSearch" type="search" placeholder="Search name, course, details or ID across all tables…" aria-label="Search academic records"><span id="recordCount" class="small-note">0 records</span></div>
+      <div class="panel-head">
+        <div>
+          <h2>Academic Records Directory</h2>
+          <p>Filter, search, inspect, and export all stored project records</p>
+        </div>
+        <span id="recordCount" class="badge badge-blue">0 matching records</span>
+      </div>
+
+      <!-- Advanced Filters Toolbar -->
+      <div class="directory-toolbar">
+        <div class="filter-item search-wide">
+          <label for="recordSearch">Keyword Search</label>
+          <input id="recordSearch" type="search" placeholder="Search name, ID, course, topic, notes...">
+        </div>
+        <div class="filter-item">
+          <label for="courseFilter">Course Filter</label>
+          <select id="courseFilter">
+            <option value="">All Courses</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="startDate">Start Date</label>
+          <input id="startDate" type="date">
+        </div>
+        <div class="filter-item">
+          <label for="endDate">End Date</label>
+          <input id="endDate" type="date">
+        </div>
+        <div class="filter-item" style="justify-content: flex-end; min-width: auto;">
+          <button id="clearFiltersBtn" class="btn-secondary btn-sm" style="height:36px;">Clear Filters</button>
+        </div>
+      </div>
+
+      <!-- Category Navigation Tabs -->
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="all">All Records</button>
+        <button class="tab-btn" data-tab="class_updates">Class Updates</button>
+        <button class="tab-btn" data-tab="attendance">Attendance</button>
+        <button class="tab-btn" data-tab="internship_updates">Internship Updates</button>
+        <button class="tab-btn" data-tab="clinical_updates">Clinical Updates</button>
+        <button class="tab-btn" data-tab="people">Registrations</button>
+      </div>
+
+      <!-- Main Directory Table -->
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Name &amp; ID</th>
+              <th>Course</th>
+              <th>Topic / Status</th>
+              <th>Quick Actions</th>
+              <th>Details &amp; Notes</th>
+            </tr>
+          </thead>
+          <tbody id="recordsDirectoryRows">
+            <tr><td colspan="7" class="muted">Loading directory records...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
-    <section class="panel record-panel"><div class="panel-head"><div><h2>Class Updates</h2><p class="muted">Instructor-submitted class activity and teaching records.</p></div><span id="count-class_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Subject / Topic</th><th>Details</th></tr></thead><tbody id="rows-class_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
-    <section class="panel record-panel"><div class="panel-head"><div><h2>Attendance</h2><p class="muted">Student attendance entries and recorded class times.</p></div><span id="count-attendance" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Course</th><th>Attendance</th><th>Details</th></tr></thead><tbody id="rows-attendance"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
-    <section class="panel record-panel"><div class="panel-head"><div><h2>Internship Updates</h2><p class="muted">Internship placement, shift, hospital, and supervisor updates.</p></div><span id="count-internship_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Placement / Department</th><th>Details</th></tr></thead><tbody id="rows-internship_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
-    <section class="panel record-panel"><div class="panel-head"><div><h2>Clinical Updates</h2><p class="muted">Clinical training and related academic updates.</p></div><span id="count-clinical_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Activity</th><th>Details</th></tr></thead><tbody id="rows-clinical_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
-    <section class="panel record-panel"><div class="panel-head"><div><h2>Student & Instructor Records</h2><p class="muted">Registration records for students and instructors.</p></div><span id="count-people" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Record Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead><tbody id="rows-people"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
-    <div id="appError" class="status error hidden"></div>
+
+    <div id="appError" class="status-box error hidden"></div>
   </section>
 </main>
-<footer>CINPS Academic Intelligence · Firebase Authentication & Cloud Firestore</footer>
 
+<footer>
+  CINPS Academic Intelligence System &bull; Chandidas Institute of Nursing &amp; Paramedical Science
+</footer>
+
+<!-- Firebase v10 SDK Modules -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
-  onAuthStateChanged
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, collection, addDoc, getDocs, setDoc, writeBatch,
-  serverTimestamp
+  getFirestore, doc, getDoc, collection, addDoc, getDocs, setDoc, writeBatch, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// Firebase Project Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
-    authDomain: "cinps-core-system.firebaseapp.com",
-    projectId: "cinps-core-system",
-    storageBucket: "cinps-core-system.firebasestorage.app",
-    messagingSenderId: "1026808169095",
-    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
-  };
+  apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+  authDomain: "cinps-core-system.firebaseapp.com",
+  projectId: "cinps-core-system",
+  storageBucket: "cinps-core-system.firebasestorage.app",
+  messagingSenderId: "1026808169095",
+  appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({prompt:"select_account"});
+provider.setCustomParameters({ prompt: "select_account" });
 
 const types = {
-  students:"Student",
-  instructors:"Instructor",
-  attendance:"Attendance",
-  class_updates:"Class update",
-  clinical_updates:"Clinical update",
-  internship_updates:"Internship update"
+  students: "Student Profile",
+  instructors: "Instructor Profile",
+  attendance: "Attendance Entry",
+  class_updates: "Class Update",
+  clinical_updates: "Clinical Update",
+  internship_updates: "Internship Update"
 };
+
 const $ = id => document.getElementById(id);
+
 let currentUser = null;
 let refreshInProgress = false;
 let authFailureMessage = "";
 let loadedRecords = {};
-let allRecentRows = [];
+let activeTab = "all";
+let selectedPendingIds = new Set();
 
-function showStatus(id, message, error=false) {
+// Floating Toast Notification Engine
+function showToast(message, type = "info", duration = 4000) {
+  const container = $("toastContainer");
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${message}</span><span style="cursor:pointer; opacity:0.6;" onclick="this.parentElement.remove()">✕</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-10px)';
+    toast.style.transition = 'all 0.2s ease';
+    setTimeout(() => toast.remove(), 200);
+  }, duration);
+}
+
+function showStatus(id, message, isError = false) {
   const el = $(id);
+  if (!el) return;
   el.textContent = message;
-  el.classList.remove("hidden","error");
-  if(error) el.classList.add("error");
+  el.className = `status-box ${isError ? 'error' : 'success'}`;
+  el.classList.remove("hidden");
 }
-function hideStatus(id){$(id).classList.add("hidden")}
-function safeText(value) {
-  return value == null ? "" : String(value);
+
+function hideStatus(id) {
+  const el = $(id);
+  if (el) el.classList.add("hidden");
 }
-function formatDate(value) {
-  if(!value) return "—";
-  if(typeof value === "string") return value;
-  if(value.toDate) return value.toDate().toLocaleDateString();
+
+// Formatters & Utility Functions
+function safeText(val) { return val == null ? "" : String(val); }
+
+function formatDate(val) {
+  if (!val) return "—";
+  if (typeof val === "string") return val;
+  if (val.toDate && typeof val.toDate === "function") return val.toDate().toLocaleDateString();
   return "—";
 }
-function dateSortValue(value) {
-  if(!value) return 0;
-  if(typeof value === "object" && typeof value.toMillis === "function") return value.toMillis();
-  if(typeof value === "object" && typeof value.toDate === "function") return value.toDate().getTime();
-  const text=String(value).trim();
-  let match=text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-  if(match) return new Date(Number(match[1]),Number(match[2])-1,Number(match[3])).getTime();
-  match=text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
-  if(match) return new Date(Number(match[3]),Number(match[2])-1,Number(match[1])).getTime();
-  const parsed=Date.parse(text);
+
+function dateSortValue(val) {
+  if (!val) return 0;
+  if (typeof val === "object" && typeof val.toMillis === "function") return val.toMillis();
+  if (typeof val === "object" && typeof val.toDate === "function") return val.toDate().getTime();
+  const text = String(val).trim();
+  let match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])).getTime();
+  match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+  if (match) return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1])).getTime();
+  const parsed = Date.parse(text);
   return Number.isNaN(parsed) ? 0 : parsed;
 }
+
 function recordSortValue(item) {
   return dateSortValue(item.recordDate || item.date) || item.createdAt?.toMillis?.() || item.submittedAt?.toMillis?.() || 0;
 }
-function formatTime(value) {
-  if(value == null || String(value).trim() === "") return "";
-  const text = String(value).trim();
-  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
-  if(twelveHour) {
-    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
-    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
+
+function formatTime(val) {
+  if (val == null || String(val).trim() === "") return "";
+  const text = String(val).trim();
+  const t12 = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
+  if (t12) {
+    const hour = Math.max(1, Math.min(12, Number(t12[1])));
+    return `${String(hour).padStart(2, "0")}:${t12[2]} ${t12[3].toUpperCase()}`;
   }
-  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
-  if(twentyFourHour) {
-    const hours = Number(twentyFourHour[1]);
-    if(hours >= 0 && hours <= 23) {
+  const t24 = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (t24) {
+    const hours = Number(t24[1]);
+    if (hours >= 0 && hours <= 23) {
       const suffix = hours >= 12 ? "PM" : "AM";
-      const hour12 = hours % 12 || 12;
-      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
+      const h12 = hours % 12 || 12;
+      return `${String(h12).padStart(2, "0")}:${t24[2]} ${suffix}`;
     }
   }
   return text;
 }
-function setSignedOut(message) {
+
+// Dark / Light Theme Engine
+function initTheme() {
+  const saved = localStorage.getItem("cinps_theme") || "light";
+  document.documentElement.setAttribute("data-theme", saved);
+  updateThemeIcon(saved);
+}
+
+function updateThemeIcon(theme) {
+  $("themeToggleBtn").textContent = theme === "dark" ? "🌙" : "☀️";
+}
+
+$("themeToggleBtn").addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("cinps_theme", next);
+  updateThemeIcon(next);
+  showToast(`Switched to ${next} mode`, "info", 2000);
+});
+
+// Draft Auto-Save Engine
+const DRAFT_KEY = "cinps_form_draft";
+
+function saveDraft() {
+  const draft = {
+    recordType: $("recordType").value,
+    personName: $("personName").value,
+    personId: $("personId").value,
+    course: $("course").value,
+    recordDate: $("recordDate").value,
+    attendanceStatus: $("attendanceStatus").value,
+    topic: $("topic").value,
+    notes: $("notes").value
+  };
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+}
+
+function checkDraft() {
+  const raw = localStorage.getItem(DRAFT_KEY);
+  if (!raw) return;
+  try {
+    const draft = JSON.parse(raw);
+    if (draft.personName || draft.notes || draft.topic) {
+      $("recordType").value = draft.recordType || "students";
+      $("personName").value = draft.personName || "";
+      $("personId").value = draft.personId || "";
+      $("course").value = draft.course || "";
+      if (draft.recordDate) $("recordDate").value = draft.recordDate;
+      $("attendanceStatus").value = draft.attendanceStatus || "Present";
+      $("topic").value = draft.topic || "";
+      $("notes").value = draft.notes || "";
+      $("recordType").dispatchEvent(new Event("change"));
+      $("draftAlert").classList.remove("hidden");
+    }
+  } catch (e) {
+    console.error("Draft parsing failed", e);
+  }
+}
+
+$("clearDraftBtn").addEventListener("click", () => {
+  localStorage.removeItem(DRAFT_KEY);
+  $("draftAlert").classList.add("hidden");
+  $("recordForm").reset();
+  $("recordDate").value = new Date().toISOString().split("T")[0];
+  $("recordType").dispatchEvent(new Event("change"));
+  showToast("Form draft cleared", "info");
+});
+
+$("recordForm").addEventListener("input", saveDraft);
+$("recordForm").addEventListener("change", saveDraft);
+
+// Authentication Logic
+function setSignedOut(msg) {
   currentUser = null;
-  message = message || authFailureMessage || "Please sign in with your CINPS administrator account.";
+  msg = msg || authFailureMessage || "Please sign in with your CINPS administrator account.";
   $("app").classList.add("hidden");
   $("welcome").classList.remove("hidden");
   $("accountArea").replaceChildren();
-  const btn=document.createElement("button");
-  btn.id="loginBtn"; btn.textContent="Continue with Google";
-  btn.addEventListener("click",login);
+  
+  const btn = document.createElement("button");
+  btn.id = "loginBtn";
+  btn.className = "btn-primary";
+  btn.textContent = "Sign in with Google";
+  btn.addEventListener("click", login);
   $("accountArea").append(btn);
-  $("welcomeStatus").textContent=message;
+  $("welcomeStatus").textContent = msg;
 }
 
 async function login() {
   const button = $("loginBtn");
-  if(button) button.disabled = true;
+  if (button) button.disabled = true;
   authFailureMessage = "";
-  $("welcomeStatus").textContent = "Opening Google sign-in…";
+  $("welcomeStatus").textContent = "Opening Google Sign-In...";
   try {
     await signInWithPopup(auth, provider);
-  } catch(error) {
-    console.error("Google popup sign-in failed:", error);
-    authFailureMessage = `${error.code || "Sign-in error"}: ${error.message || "Google sign-in could not be completed."}`;
+  } catch (error) {
+    console.error("Google Popup Auth Error:", error);
+    authFailureMessage = `${error.code || "Auth Error"}: ${error.message || "Google popup sign-in could not be completed."}`;
     showStatus("welcomeStatus", authFailureMessage, true);
-    if(button) button.disabled = false;
+    if (button) button.disabled = false;
   }
 }
 
-$("loginBtn").addEventListener("click",login);
-
 async function authorize(user) {
-  const adminRef=doc(db,"admins",user.uid);
-  const adminSnap=await getDoc(adminRef);
-  if(!adminSnap.exists()) throw new Error("This Google account is not registered as a CINPS administrator.");
-  const data=adminSnap.data();
-  if(data.active !== true || !["superAdmin","admin"].includes(data.role)) {
-    throw new Error("This administrator account is inactive or has no valid role.");
+  const adminRef = doc(db, "admins", user.uid);
+  const adminSnap = await getDoc(adminRef);
+  if (!adminSnap.exists()) throw new Error("This Google account is not registered in the CINPS admins collection.");
+  const data = adminSnap.data();
+  if (data.active !== true || !["superAdmin", "admin"].includes(data.role)) {
+    throw new Error("This administrator account is inactive or lacks valid authorization privileges.");
   }
   return data;
 }
 
 onAuthStateChanged(auth, async user => {
-  if(!user) { setSignedOut(); return; }
-  $("welcomeStatus").textContent="Verifying administrator permissions…";
+  if (!user) { setSignedOut(); return; }
+  $("welcomeStatus").textContent = "Verifying administrator permissions...";
   try {
-    const admin=await authorize(user);
-    currentUser=user;
+    const admin = await authorize(user);
+    currentUser = user;
     $("welcome").classList.add("hidden");
     $("app").classList.remove("hidden");
     $("accountArea").replaceChildren();
-    const who=document.createElement("span");
-    who.className="user-label";
-    who.textContent=`${user.displayName || user.email} · ${admin.role}`;
-    const refreshBtn=document.createElement("button");
-    refreshBtn.className="outline";refreshBtn.id="refreshDataBtn";refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';
-    refreshBtn.addEventListener("click",()=>refreshDashboard(true));
-    const downloadBtn=document.createElement("button");
-    downloadBtn.className="success";downloadBtn.id="downloadReportBtn";downloadBtn.innerHTML='<span class="btn-icon">⇩</span> Download Report';
-    downloadBtn.addEventListener("click",downloadCsvReport);
-    const feeBtn=document.createElement("button");
-    feeBtn.className="secondary";feeBtn.id="feeReminderBtn";feeBtn.innerHTML='<span class="btn-icon">₹</span> Fee Reminder';
-    feeBtn.addEventListener("click",()=>{window.location.href="https://cinps.org/portal/fee-reminders.html";});
-    const out=document.createElement("button");
-    out.className="secondary";out.textContent="Sign out";
-    out.addEventListener("click",()=>signOut(auth));
-    $("accountArea").append(who,refreshBtn,downloadBtn,feeBtn,out);
+    
+    const who = document.createElement("span");
+    who.className = "badge badge-blue";
+    who.style.padding = "6px 12px";
+    who.textContent = `${user.displayName || user.email} (${admin.role})`;
+    
+    const refreshBtn = document.createElement("button");
+    refreshBtn.className = "btn-outline";
+    refreshBtn.id = "refreshDataBtn";
+    refreshBtn.innerHTML = '↻ Refresh';
+    refreshBtn.addEventListener("click", () => refreshDashboard(true));
+
+    const feeBtn = document.createElement("button");
+    feeBtn.className = "btn-outline";
+    feeBtn.innerHTML = '₹ Fee Reminders';
+    feeBtn.addEventListener("click", () => window.location.href = "https://cinps.org/portal/fee-reminders.html");
+
+    const printBtn = document.createElement("button");
+    printBtn.className = "btn-outline";
+    printBtn.innerHTML = '🖨️ Print / PDF';
+    printBtn.addEventListener("click", () => window.print());
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.className = "btn-secondary";
+    downloadBtn.innerHTML = '⇩ Export CSV';
+    downloadBtn.addEventListener("click", downloadCsvReport);
+    
+    const outBtn = document.createElement("button");
+    outBtn.className = "btn-secondary";
+    outBtn.textContent = "Sign Out";
+    outBtn.addEventListener("click", () => signOut(auth));
+
+    $("accountArea").append(who, refreshBtn, feeBtn, printBtn, downloadBtn, outBtn);
+    showToast(`Welcome back, ${user.displayName || 'Administrator'}`, "success");
+    checkDraft();
     await refreshDashboard();
-  } catch(error) {
-    console.error("Administrator authorization failed:", error);
-    authFailureMessage = `${error.code ? error.code + ": " : ""}${error.message || "Administrator verification failed."}`;
-    try { await signOut(auth); }
-    catch(signOutError) { console.error("Sign-out after authorization failure failed:", signOutError); }
+  } catch (error) {
+    console.error("Authorization Error:", error);
+    authFailureMessage = `${error.code ? error.code + ": " : ""}${error.message || "Authorization failed."}`;
+    try { await signOut(auth); } catch (e) {}
     setSignedOut(authFailureMessage);
   }
 });
 
-$("recordType").addEventListener("change",()=>{
-  const type=$("recordType").value;
-  $("attendanceField").classList.toggle("hidden",type!=="attendance");
-  $("topicField").classList.toggle("hidden",type==="students"||type==="instructors");
-  $("personName").previousElementSibling.textContent =
-    type==="instructors" ? "Instructor name" : type==="students" ? "Student name" : "Student / instructor name";
+// Dynamic Form Control Listeners
+$("recordType").addEventListener("change", () => {
+  const type = $("recordType").value;
+  $("attendanceField").classList.toggle("hidden", type !== "attendance");
+  $("topicField").classList.toggle("hidden", type === "students" || type === "instructors");
+  $("personNameLabel").textContent =
+    type === "instructors" ? "Instructor Name" : type === "students" ? "Student Name" : "Student / Instructor Name";
 });
+$("recordDate").value = new Date().toISOString().split("T")[0];
 
-$("recordDate").value=new Date().toLocaleDateString("en-CA");
-
+// Firestore Data Loading Engine
 async function readCollection(name) {
-  const snap=await getDocs(collection(db,name));
-  return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
+  const snap = await getDocs(collection(db, name));
+  return snap.docs.map(d => ({ id: d.id, ...d.data(), _collection: name }));
 }
-async function refreshDashboard(manual=false) {
-  if(!currentUser || refreshInProgress) return;
-  refreshInProgress=true;
-  const refreshBtn=$("refreshDataBtn");
-  if(refreshBtn){refreshBtn.disabled=true;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refreshing…';}
-  $("overviewStatus").textContent="Loading current records…";
+
+async function refreshDashboard(manual = false) {
+  if (!currentUser || refreshInProgress) return;
+  refreshInProgress = true;
+  const refreshBtn = $("refreshDataBtn");
+  if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Refreshing...'; }
+  $("overviewStatus").textContent = "Syncing with Cloud Firestore...";
   hideStatus("appError");
+
   try {
-    const names=Object.keys(types);
-    const [results, accessResult]=await Promise.all([
+    const names = Object.keys(types);
+    const [results, accessResult] = await Promise.all([
       Promise.all(names.map(readCollection)),
-      getDocs(collection(db,"student_access"))
-        .then(snap=>({ok:true,records:snap.docs.map(d=>({id:d.id,...d.data()}))}))
-        .catch(error=>({ok:false,error}))
+      getDocs(collection(db, "student_access"))
+        .then(snap => ({ ok: true, records: snap.docs.map(d => ({ id: d.id, ...d.data() })) }))
+        .catch(error => ({ ok: false, error }))
     ]);
-    const data={};
-    names.forEach((name,i)=>data[name]=results[i]);
-    data.student_access=accessResult.ok ? accessResult.records : [];
-    loadedRecords=data;
+
+    const data = {};
+    names.forEach((name, i) => data[name] = results[i]);
+    data.student_access = accessResult.ok ? accessResult.records : [];
+    loadedRecords = data;
+
     renderPendingStudents(data.student_access);
-    if(!accessResult.ok) {
-      showStatus("approvalStatus",`Could not load pending registrations: ${accessResult.error.message}. The existing academic dashboard is still available; check student_access read permissions.`,true);
+    if (!accessResult.ok) {
+      showStatus("approvalStatus", `Could not load student access queue: ${accessResult.error.message}`, true);
     } else {
       hideStatus("approvalStatus");
     }
-    $("nStudents").textContent=data.students.length;
-    $("nInstructors").textContent=data.instructors.length;
-    $("nAttendance").textContent=data.attendance.length;
-    $("nClasses").textContent=data.class_updates.length;
-    const total=names.reduce((sum,n)=>sum+data[n].length,0);
-    $("overviewStatus").textContent=`${manual ? "Refreshed" : "Loaded"} ${total} records from six Firestore collections · ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
+
+    $("nStudents").textContent = data.students.length;
+    $("nInstructors").textContent = data.instructors.length;
+    $("nAttendance").textContent = data.attendance.length;
+    $("nClasses").textContent = data.class_updates.length;
+
+    const total = names.reduce((sum, n) => sum + data[n].length, 0);
+    $("overviewStatus").textContent = `${manual ? "Refreshed" : "Loaded"} ${total} records &bull; ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
+    populateCourseDropdown(data);
+    renderAttendanceMetrics(data.attendance);
     renderChart(data);
-    renderRecent(data);
-  } catch(error) {
-    console.error(error);
-    showStatus("appError",`Could not load academic records: ${error.message}. Check Firestore rules and network access.`,true);
-    $("overviewStatus").textContent="Some data could not be loaded.";
+    applyRecordFilters();
+
+    if (manual) showToast("Dashboard data updated from Firestore", "success");
+  } catch (error) {
+    console.error("Dashboard refresh failed:", error);
+    showStatus("appError", `Database fetch error: ${error.message}. Check network connection and Firestore rules.`, true);
+    $("overviewStatus").textContent = "Data loading failed.";
   } finally {
-    refreshInProgress=false;
-    if(refreshBtn){refreshBtn.disabled=false;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';}
+    refreshInProgress = false;
+    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.innerHTML = '↻ Refresh'; }
   }
 }
-function renderPendingStudents(records) {
-  const pending=(records||[]).filter(item=>item.active!==true);
-  $("pendingStudentCount").textContent=`${pending.length} pending`;
-  const body=$("pendingStudentRows");
-  body.replaceChildren();
-  if(!pending.length) {
-    const tr=document.createElement("tr"),td=document.createElement("td");
-    td.colSpan=6;td.textContent="No pending student registrations.";
-    tr.append(td);body.append(tr);return;
+
+// Attendance Analytics Gauge
+function renderAttendanceMetrics(attendanceRecords) {
+  const present = attendanceRecords.filter(r => (r.attendanceStatus || r.status) === "Present").length;
+  const absent = attendanceRecords.filter(r => (r.attendanceStatus || r.status) === "Absent").length;
+  const late = attendanceRecords.filter(r => (r.attendanceStatus || r.status) === "Late").length;
+  const leave = attendanceRecords.filter(r => (r.attendanceStatus || r.status) === "Leave").length;
+  const total = attendanceRecords.length;
+
+  $("cntPresent").textContent = present;
+  $("cntAbsent").textContent = absent;
+  $("cntLate").textContent = late;
+  $("cntLeave").textContent = leave;
+
+  if (total > 0) {
+    const pctPresent = Math.round((present / total) * 100);
+    const pctAbsent = Math.round((absent / total) * 100);
+    const pctLate = Math.round((late / total) * 100);
+    const pctLeave = Math.round((leave / total) * 100);
+
+    $("gaugePresent").style.width = `${pctPresent}%`;
+    $("gaugeAbsent").style.width = `${pctAbsent}%`;
+    $("gaugeLate").style.width = `${pctLate}%`;
+    $("gaugeLeave").style.width = `${pctLeave}%`;
+
+    $("attendanceRateText").textContent = `${pctPresent}% Present Rate (${total} total logged)`;
+  } else {
+    $("gaugePresent").style.width = `0%`;
+    $("gaugeAbsent").style.width = `0%`;
+    $("gaugeLate").style.width = `0%`;
+    $("gaugeLeave").style.width = `0%`;
+    $("attendanceRateText").textContent = `No attendance records logged`;
   }
-  pending.sort((a,b)=>dateSortValue(b.requestedAt)-dateSortValue(a.requestedAt)).forEach(item=>{
-    const tr=document.createElement("tr");
-    const identity=document.createElement("td");
-    const strong=document.createElement("strong");strong.textContent=item.name||"Name not provided";
-    const email=document.createElement("div");email.className="small-note";email.textContent=item.email||"Email not available";
-    identity.append(strong,email);
-    const requested=document.createElement("td");requested.textContent=formatDate(item.requestedAt);
-    const studentId=document.createElement("td");
-    const idInput=document.createElement("input");idInput.type="text";idInput.placeholder="e.g. CINPS-001";idInput.maxLength=80;idInput.value=item.studentId||"";idInput.setAttribute("aria-label","Official student ID");
-    studentId.append(idInput);
-    const courseCell=document.createElement("td");
-    const courseInput=document.createElement("input");courseInput.type="text";courseInput.placeholder="e.g. OTT";courseInput.maxLength=120;courseInput.value=item.course||"";courseInput.setAttribute("aria-label","Student course");
-    courseCell.append(courseInput);
-    const branchCell=document.createElement("td");
-    const branchInput=document.createElement("input");branchInput.type="text";branchInput.placeholder="e.g. Nanoor";branchInput.maxLength=120;branchInput.value=item.branch||"";branchInput.setAttribute("aria-label","Student branch");
-    branchCell.append(branchInput);
-    const action=document.createElement("td");
-    const approve=document.createElement("button");approve.className="success";approve.textContent="Approve";
-    approve.addEventListener("click",()=>approveStudent(item,idInput.value.trim(),courseInput.value.trim(),branchInput.value.trim(),approve));
-    action.append(approve);
-    tr.append(identity,requested,studentId,courseCell,branchCell,action);
+}
+
+// Auto-Populate Filter Dropdowns
+function populateCourseDropdown(data) {
+  const courses = new Set();
+  Object.keys(types).forEach(k => {
+    (data[k] || []).forEach(item => {
+      if (item.course && String(item.course).trim() !== "") {
+        courses.add(String(item.course).trim().toUpperCase());
+      }
+    });
+  });
+
+  const select = $("courseFilter");
+  const currentVal = select.value;
+  select.replaceChildren();
+
+  const optAll = document.createElement("option");
+  optAll.value = "";
+  optAll.textContent = "All Courses";
+  select.appendChild(optAll);
+
+  Array.from(courses).sort().forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+  select.value = currentVal;
+}
+
+// Batch Student Approval Pipeline
+function renderPendingStudents(records) {
+  const pending = (records || []).filter(item => item.active !== true);
+  $("pendingStudentCount").textContent = `${pending.length} pending`;
+  selectedPendingIds.clear();
+  updateBatchButtonState();
+
+  const body = $("pendingStudentRows");
+  body.replaceChildren();
+
+  if (!pending.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.className = "muted";
+    td.textContent = "No student registration requests awaiting verification.";
+    tr.append(td);
+    body.append(tr);
+    $("selectAllPending").checked = false;
+    $("selectAllPending").disabled = true;
+    return;
+  }
+  $("selectAllPending").disabled = false;
+
+  pending.sort((a, b) => dateSortValue(b.requestedAt) - dateSortValue(a.requestedAt)).forEach(item => {
+    const tr = document.createElement("tr");
+    
+    // Select Checkbox
+    const tdCheck = document.createElement("td");
+    tdCheck.style.textAlign = "center";
+    const chk = document.createElement("input");
+    chk.type = "checkbox";
+    chk.className = "pending-chk";
+    chk.value = item.id;
+    chk.addEventListener("change", (e) => {
+      if (e.target.checked) selectedPendingIds.add(item.id);
+      else selectedPendingIds.delete(item.id);
+      updateBatchButtonState();
+    });
+    tdCheck.append(chk);
+
+    // Identity
+    const tdIdentity = document.createElement("td");
+    const strong = document.createElement("strong");
+    strong.textContent = item.name || "Name Not Provided";
+    const email = document.createElement("div");
+    email.className = "muted";
+    email.style.fontSize = "11px";
+    email.textContent = item.email || "No Email";
+    tdIdentity.append(strong, email);
+
+    // Requested Date
+    const tdReq = document.createElement("td");
+    tdReq.textContent = formatDate(item.requestedAt);
+
+    // Editable Inputs
+    const tdId = document.createElement("td");
+    const inputId = document.createElement("input");
+    inputId.type = "text";
+    inputId.id = `id_${item.id}`;
+    inputId.placeholder = "e.g. CINPS-001";
+    inputId.value = item.studentId || "";
+    tdId.append(inputId);
+
+    const tdCourse = document.createElement("td");
+    const inputCourse = document.createElement("input");
+    inputCourse.type = "text";
+    inputCourse.id = `course_${item.id}`;
+    inputCourse.placeholder = "e.g. OTT";
+    inputCourse.value = item.course || "";
+    tdCourse.append(inputCourse);
+
+    const tdBranch = document.createElement("td");
+    const inputBranch = document.createElement("input");
+    inputBranch.type = "text";
+    inputBranch.id = `branch_${item.id}`;
+    inputBranch.placeholder = "e.g. Nanoor";
+    inputBranch.value = item.branch || "";
+    tdBranch.append(inputBranch);
+
+    // Action Button
+    const tdAction = document.createElement("td");
+    const btnApprove = document.createElement("button");
+    btnApprove.className = "btn-success btn-sm";
+    btnApprove.textContent = "Approve";
+    btnApprove.addEventListener("click", () => {
+      approveSingleStudent(item, inputId.value.trim(), inputCourse.value.trim(), inputBranch.value.trim(), btnApprove);
+    });
+    tdAction.append(btnApprove);
+
+    tr.append(tdCheck, tdIdentity, tdReq, tdId, tdCourse, tdBranch, tdAction);
     body.append(tr);
   });
 }
 
-async function approveStudent(student,idValue,courseValue,branchValue,button) {
-  if(!currentUser) {showStatus("approvalStatus","Your administrator session has expired. Sign in again.",true);return;}
-  if(!student.id||!student.email||!student.name||!idValue||!courseValue||!branchValue) {
-    showStatus("approvalStatus","Complete the student's name, email, official student ID, course and branch before approval.",true);return;
+function updateBatchButtonState() {
+  const btn = $("batchApproveBtn");
+  btn.disabled = selectedPendingIds.size === 0;
+  btn.textContent = `Approve Selected (${selectedPendingIds.size})`;
+}
+
+$("selectAllPending").addEventListener("change", (e) => {
+  const isChecked = e.target.checked;
+  document.querySelectorAll(".pending-chk").forEach(chk => {
+    chk.checked = isChecked;
+    if (isChecked) selectedPendingIds.add(chk.value);
+    else selectedPendingIds.delete(chk.value);
+  });
+  updateBatchButtonState();
+});
+
+async function approveSingleStudent(student, idVal, courseVal, branchVal, btn) {
+  if (!currentUser) { showToast("Authentication expired", "error"); return; }
+  if (!student.id || !student.email || !student.name || !idVal || !courseVal || !branchVal) {
+    showStatus("approvalStatus", "Missing fields: Ensure Student ID, Course, and Branch are supplied.", true);
+    return;
   }
-  button.disabled=true;button.textContent="Approving…";
+
+  btn.disabled = true;
+  btn.textContent = "Approving...";
+
   try {
-    const batch=writeBatch(db);
-    const studentData={
-      uid:student.id,
-      name:student.name,
-      personName:student.name,
-      email:student.email,
-      studentId:idValue,
-      course:courseValue,
-      branch:branchValue,
-      active:true,
-      status:"Active",
-      approvedAt:serverTimestamp(),
-      approvedBy:currentUser.uid
+    const batch = writeBatch(db);
+    const studentData = {
+      uid: student.id,
+      name: student.name,
+      personName: student.name,
+      email: student.email,
+      studentId: idVal,
+      course: courseVal,
+      branch: branchVal,
+      active: true,
+      status: "Active",
+      approvedAt: serverTimestamp(),
+      approvedBy: currentUser.uid
     };
-    batch.set(doc(db,"students",student.id),{
-      ...studentData,
-      createdAt:serverTimestamp()
-    },{merge:true});
-    batch.set(doc(db,"student_access",student.id),{
-      active:true,
-      studentId:idValue,
-      course:courseValue,
-      branch:branchValue,
-      name:student.name,
-      email:student.email,
-      approvedAt:serverTimestamp(),
-      approvedBy:currentUser.uid
-    },{merge:true});
+
+    batch.set(doc(db, "students", student.id), { ...studentData, createdAt: serverTimestamp() }, { merge: true });
+    batch.set(doc(db, "student_access", student.id), {
+      active: true,
+      studentId: idVal,
+      course: courseVal,
+      branch: branchVal,
+      name: student.name,
+      email: student.email,
+      approvedAt: serverTimestamp(),
+      approvedBy: currentUser.uid
+    }, { merge: true });
+
     await batch.commit();
-    showStatus("approvalStatus",`${student.name} has been approved. Their student record is now active.`);
+    showToast(`Approved student ${student.name}`, "success");
     await refreshDashboard(true);
-  } catch(error) {
-    console.error("Student approval failed:",error);
-    showStatus("approvalStatus",`Approval failed: ${error.message}. Check the Firestore rules for student_access and students.`,true);
-    button.disabled=false;button.textContent="Approve";
+  } catch (error) {
+    console.error("Single approval error:", error);
+    showStatus("approvalStatus", `Approval failed: ${error.message}`, true);
+    btn.disabled = false;
+    btn.textContent = "Approve";
   }
 }
 
+// Batch Approval Handler
+$("batchApproveBtn").addEventListener("click", async () => {
+  if (selectedPendingIds.size === 0) return;
+  const btn = $("batchApproveBtn");
+  btn.disabled = true;
+  btn.textContent = "Processing Batch...";
+
+  const pendingList = loadedRecords.student_access.filter(i => selectedPendingIds.has(i.id));
+  let approvedCount = 0;
+
+  try {
+    const batch = writeBatch(db);
+    for (const student of pendingList) {
+      const idVal = ($(`id_${student.id}`)?.value || student.studentId || "").trim();
+      const courseVal = ($(`course_${student.id}`)?.value || student.course || "").trim();
+      const branchVal = ($(`branch_${student.id}`)?.value || student.branch || "").trim();
+
+      if (!idVal || !courseVal || !branchVal) {
+        throw new Error(`Please complete Student ID, Course, and Branch for ${student.name} before batch approving.`);
+      }
+
+      const studentData = {
+        uid: student.id,
+        name: student.name,
+        personName: student.name,
+        email: student.email,
+        studentId: idVal,
+        course: courseVal,
+        branch: branchVal,
+        active: true,
+        status: "Active",
+        approvedAt: serverTimestamp(),
+        approvedBy: currentUser.uid
+      };
+
+      batch.set(doc(db, "students", student.id), { ...studentData, createdAt: serverTimestamp() }, { merge: true });
+      batch.set(doc(db, "student_access", student.id), {
+        active: true,
+        studentId: idVal,
+        course: courseVal,
+        branch: branchVal,
+        name: student.name,
+        email: student.email,
+        approvedAt: serverTimestamp(),
+        approvedBy: currentUser.uid
+      }, { merge: true });
+      approvedCount++;
+    }
+
+    await batch.commit();
+    showToast(`Successfully batch approved ${approvedCount} students`, "success");
+    await refreshDashboard(true);
+  } catch (err) {
+    console.error("Batch Approval Error:", err);
+    showStatus("approvalStatus", `Batch approval halted: ${err.message}`, true);
+    updateBatchButtonState();
+  }
+});
+
+// Collection Bar Visualizer Render
 function renderChart(data) {
-  const chart=$("activityChart");
+  const chart = $("activityChart");
   chart.replaceChildren();
-  const counts=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));
-  const max=Math.max(1,...counts.map(x=>x.count));
-  counts.forEach(item=>{
-    const row=document.createElement("div");row.className="barrow";
-    const label=document.createElement("span");label.textContent=item.label;
-    const track=document.createElement("div");track.className="track";
-    const fill=document.createElement("div");fill.className="fill";
-    fill.style.width=`${item.count/max*100}%`;track.append(fill);
-    const count=document.createElement("strong");count.textContent=item.count;
-    row.append(label,track,count);chart.append(row);
+  const counts = Object.keys(types).map(key => ({ key, label: types[key], count: data[key]?.length || 0 }));
+  const max = Math.max(1, ...counts.map(x => x.count));
+
+  counts.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "barrow";
+
+    const label = document.createElement("span");
+    label.textContent = item.label;
+
+    const track = document.createElement("div");
+    track.className = "track";
+
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    fill.style.width = `${(item.count / max) * 100}%`;
+    track.append(fill);
+
+    const count = document.createElement("strong");
+    count.textContent = item.count;
+
+    row.append(label, track, count);
+    chart.append(row);
   });
 }
-function renderRecent(data) {
-  allRecentRows=Object.values(data).flat().sort((a,b)=>{
-    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
-    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
-    return tb-ta;
-  }).slice(0,100);
-  applyRecordFilters();
-}
+
+// Row Notes & Extra Formatting
 function rowDetails(item) {
-  const isAttendance=item._collection==="attendance";
-  let notes=item.notes || "";
-  if(isAttendance && item.startTime && item.endTime) {
-    const timeRange=`Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
-    if(/Class time:\s*[^.;]+/i.test(notes)) notes=notes.replace(/Class time:\s*[^.;]+/i,timeRange);
-    else notes=`${notes}${notes ? "; " : ""}${timeRange}.`;
+  const isAttendance = item._collection === "attendance";
+  let notes = item.notes || "";
+  
+  if (isAttendance && item.startTime && item.endTime) {
+    const timeRange = `Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+    if (/Class time:\s*[^.;]+/i.test(notes)) notes = notes.replace(/Class time:\s*[^.;]+/i, timeRange);
+    else notes = `${notes}${notes ? "; " : ""}${timeRange}.`;
   }
-  const topicAlreadyShown = ["class_updates","clinical_updates","internship_updates"].includes(item._collection);
-  return [notes,(!isAttendance && !topicAlreadyShown) ? item.topic : "",isAttendance ? "" : item.status,isAttendance ? "" : item.attendanceStatus,item.courseType,item.mode,!isAttendance&&item.startTime?`Start: ${formatTime(item.startTime)}`:"",!isAttendance&&item.endTime?`End: ${formatTime(item.endTime)}`:""].filter(value=>value!=null&&String(value).trim()!=="").join(" · ") || "—";
-}
-function applyRecordFilters() {
-  const query=($("recordSearch")?.value || "").trim().toLowerCase();
-  const collections=["class_updates","attendance","internship_updates","clinical_updates"];
-  let visibleTotal=0;
-  function matches(item){
-    const haystack=[item.id,item.personName,item.name,item.instructorName,item.studentName,item.course,rowDetails(item),item.personId,item.studentId,item.instructorId,types[item._collection]].map(safeText).join(" ").toLowerCase();
-    return !query || haystack.includes(query);
-  }
-  function draw(collectionName, bodyId, countId, colspan=5){
-    const source=(loadedRecords[collectionName]||[]).filter(matches).sort((a,b)=>recordSortValue(b)-recordSortValue(a));
-    visibleTotal+=source.length;
-    const count=$(countId); if(count) count.textContent=`${source.length} record${source.length===1?"":"s"}`;
-    const body=$(bodyId); body.replaceChildren();
-    if(!source.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=colspan;td.textContent=query?"No records match your search.":"No records available in this category yet.";tr.append(td);body.append(tr);return;}
-    source.forEach(item=>{
-      const tr=document.createElement("tr");
-      const name=item.personName||item.name||item.instructorName||item.studentName||"—";
-      let fourth="—";
-      if(collectionName==="attendance") fourth=item.attendanceStatus||item.status||"—";
-      else fourth=item.topic||item.department||item.hospital||item.activity||item.mode||"—";
-      const details=rowDetails(item);
-      const values=collectionName==="people"?[formatDate(item.recordDate||item.date),types[item._collection]||item._collection,name,item.course||"—",details]:[formatDate(item.recordDate||item.date),name,item.course||"—",fourth,details];
-      values.forEach((value,index)=>{const td=document.createElement("td");td.textContent=safeText(value);if(index===1&&collectionName==="people"){const badge=document.createElement("span");badge.className="record-type";badge.textContent=safeText(value);td.textContent="";td.append(badge);}tr.append(td);});body.append(tr);
-    });
-  }
-  collections.forEach(name=>draw(name,`rows-${name}`,`count-${name}`));
-  const people=[...(loadedRecords.students||[]),...(loadedRecords.instructors||[])].filter(matches);
-  visibleTotal+=people.length;
-  $("count-people").textContent=`${people.length} record${people.length===1?"":"s"}`;
-  const body=$("rows-people");body.replaceChildren();
-  if(!people.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent=query?"No records match your search.":"No student or instructor registrations available yet.";tr.append(td);body.append(tr);}
-  else people.sort((a,b)=>recordSortValue(b)-recordSortValue(a)).forEach(item=>{const tr=document.createElement("tr");[formatDate(item.recordDate||item.date),types[item._collection]||item._collection,item.personName||item.name||item.instructorName||item.studentName||"—",item.course||"—",rowDetails(item)].forEach((value,index)=>{const td=document.createElement("td");td.textContent=safeText(value);if(index===1){const badge=document.createElement("span");badge.className="record-type";badge.textContent=safeText(value);td.textContent="";td.append(badge);}tr.append(td);});body.append(tr);});
-  $("recordCount").textContent=`${visibleTotal} matching records across all tables`;
+
+  const topicAlreadyShown = ["class_updates", "clinical_updates", "internship_updates"].includes(item._collection);
+  return [
+    notes,
+    (!isAttendance && !topicAlreadyShown) ? item.topic : "",
+    isAttendance ? "" : item.status,
+    item.courseType,
+    item.mode,
+    !isAttendance && item.startTime ? `Start: ${formatTime(item.startTime)}` : "",
+    !isAttendance && item.endTime ? `End: ${formatTime(item.endTime)}` : ""
+  ].filter(val => val != null && String(val).trim() !== "").join(" &bull; ") || "—";
 }
 
-function csvCell(value) {
-  let text= value==null ? "" : String(value);
-  // Prevent spreadsheet formula execution in exported cells.
-  if(/^[\s]*[=+@]/.test(text) || /^[\s]*-[0-9]/.test(text)) text="'"+text;
-  return '"'+text.replace(/"/g,'""')+'"';
-}
-function downloadCsvReport() {
-  if(!currentUser){showStatus("appError","Please sign in to download the report.",true);return;}
-  const names=Object.keys(types);
-  if(!Object.keys(loadedRecords).length){showStatus("appError","Academic data has not loaded yet. Use Refresh Data and try again.",true);return;}
-  const rows=[["CINPS Academic Intelligence — Academic Report"],["Generated at",new Date().toLocaleString()],["Generated by",currentUser.email||currentUser.uid],["Collection","Record count"],...names.map(name=>[types[name],(loadedRecords[name]||[]).length]),[],["Record ID","Collection","Record Type","Record Date","Name","Person ID","Course","Topic","Attendance Status","Status","Start Time","End Time","Mode","Course Type","Details","Created By","Created By Email","Created At"]];
-  names.forEach(name=>(loadedRecords[name]||[]).forEach(item=>{
-    rows.push([item.id,name,types[name],item.recordDate||item.date||"",item.personName||item.name||item.instructorName||item.studentName||"",item.personId||item.studentId||item.instructorId||"",item.course||"",item.topic||"",item.attendanceStatus||"",item.status||"",item.startTime||"",item.endTime||"",item.mode||"",item.courseType||"",item.notes||"",item.createdBy||"",item.createdByEmail||"",formatDate(item.createdAt||item.submittedAt)]);
-  }));
-  const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url=URL.createObjectURL(blob);const link=document.createElement("a");
-  link.href=url;link.download=`CINPS_Academic_Report_${new Date().toISOString().slice(0,10)}.csv`;
-  document.body.append(link);link.click();link.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-  showStatus("appError","CSV report downloaded successfully.",false);
-}
-$("recordForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!currentUser) {showStatus("formStatus","Sign in again to continue.",true);return}
-  const type=$("recordType").value;
-  const personName=$("personName").value.trim();
-  const course=$("course").value.trim();
-  const recordDate=$("recordDate").value;
-  if(!personName||!course||!recordDate) {
-    showStatus("formStatus","Please complete the name, course and date.",true);return;
+// Multi-Criteria Directory Renderer
+function applyRecordFilters() {
+  const query = ($("recordSearch")?.value || "").trim().toLowerCase();
+  const courseSel = ($("courseFilter")?.value || "").trim().toUpperCase();
+  const startMs = $("startDate")?.value ? new Date($("startDate").value).getTime() : 0;
+  const endMs = $("endDate")?.value ? new Date($("endDate").value + "T23:59:59").getTime() : Infinity;
+
+  const body = $("recordsDirectoryRows");
+  body.replaceChildren();
+
+  let masterList = [];
+  Object.keys(types).forEach(k => {
+    if (loadedRecords[k]) masterList.push(...loadedRecords[k]);
+  });
+
+  const filtered = masterList.filter(item => {
+    // 1. Tab Filter
+    if (activeTab === "people") {
+      if (item._collection !== "students" && item._collection !== "instructors") return false;
+    } else if (activeTab !== "all" && item._collection !== activeTab) {
+      return false;
+    }
+
+    // 2. Course Filter
+    if (courseSel) {
+      const itemCourse = String(item.course || "").trim().toUpperCase();
+      if (itemCourse !== courseSel) return false;
+    }
+
+    // 3. Date Range Filter
+    const recTime = recordSortValue(item);
+    if (startMs > 0 && recTime < startMs) return false;
+    if (endMs < Infinity && recTime > endMs) return false;
+
+    // 4. Multi-Field Keyword Search
+    const haystack = [
+      item.id, item.personName, item.name, item.instructorName, item.studentName,
+      item.course, rowDetails(item), item.personId, item.studentId, item.instructorId,
+      types[item._collection], item.topic, item.attendanceStatus, item.department, item.hospital
+    ].map(safeText).join(" ").toLowerCase();
+
+    return !query || haystack.includes(query);
+  });
+
+  filtered.sort((a, b) => recordSortValue(b) - recordSortValue(a));
+
+  $("recordCount").textContent = `${filtered.length} matching record${filtered.length === 1 ? '' : 's'}`;
+
+  if (!filtered.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.className = "muted";
+    td.textContent = (query || courseSel || startMs > 0) ? "No records match your specific filter criteria." : "No records registered in this view.";
+    tr.append(td);
+    body.append(tr);
+    return;
   }
-  const record={
+
+  filtered.forEach(item => {
+    const tr = document.createElement("tr");
+
+    // 1. Date
+    const tdDate = document.createElement("td");
+    tdDate.textContent = formatDate(item.recordDate || item.date);
+
+    // 2. Category Tag
+    const tdCategory = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "badge badge-blue";
+    badge.textContent = types[item._collection] || item._collection;
+    tdCategory.append(badge);
+
+    // 3. Name & ID
+    const tdName = document.createElement("td");
+    const nameStr = item.personName || item.name || item.instructorName || item.studentName || "—";
+    const idStr = item.personId || item.studentId || item.instructorId;
+    tdName.innerHTML = `<strong>${safeText(nameStr)}</strong>${idStr ? `<div style="font-size:11px; color:var(--text-muted);">${safeText(idStr)}</div>` : ''}`;
+
+    // 4. Course
+    const tdCourse = document.createElement("td");
+    tdCourse.textContent = safeText(item.course || "—");
+
+    // 5. Topic / Status
+    const tdTopicStatus = document.createElement("td");
+    if (item._collection === "attendance") {
+      const attBadge = document.createElement("span");
+      const status = item.attendanceStatus || item.status || "—";
+      let bClass = "badge-blue";
+      if (status === "Present") bClass = "badge-emerald";
+      else if (status === "Absent") bClass = "badge-rose";
+      else if (status === "Late" || status === "Leave") bClass = "badge-amber";
+      attBadge.className = `badge ${bClass}`;
+      attBadge.textContent = status;
+      tdTopicStatus.append(attBadge);
+    } else {
+      tdTopicStatus.textContent = safeText(item.topic || item.department || item.hospital || item.activity || item.mode || "—");
+    }
+
+    // 6. Quick Action Links
+    const tdActions = document.createElement("td");
+    const emailVal = item.email || item.createdByEmail;
+    if (emailVal) {
+      const mailLink = document.createElement("a");
+      mailLink.className = "action-link";
+      mailLink.href = `mailto:${emailVal}?subject=CINPS%20Academic%20Update`;
+      mailLink.title = `Send email to ${emailVal}`;
+      mailLink.innerHTML = "✉️ Email";
+      tdActions.append(mailLink);
+    }
+    const phoneVal = item.phone || item.mobile || item.whatsapp;
+    if (phoneVal) {
+      const waLink = document.createElement("a");
+      waLink.className = "action-link";
+      const cleanPhone = String(phoneVal).replace(/\D/g, "");
+      waLink.href = `https://wa.me/${cleanPhone}`;
+      waLink.target = "_blank";
+      waLink.rel = "noopener noreferrer";
+      waLink.title = "Open WhatsApp conversation";
+      waLink.innerHTML = "💬 WhatsApp";
+      tdActions.append(waLink);
+    }
+    if (!emailVal && !phoneVal) {
+      tdActions.textContent = "—";
+    }
+
+    // 7. Details
+    const tdDetails = document.createElement("td");
+    tdDetails.innerHTML = rowDetails(item);
+
+    tr.append(tdDate, tdCategory, tdName, tdCourse, tdTopicStatus, tdActions, tdDetails);
+    body.append(tr);
+  });
+}
+
+// Category Tab Switchers
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", e => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    activeTab = e.target.getAttribute("data-tab");
+    applyRecordFilters();
+  });
+});
+
+// Clear Filters Handler
+$("clearFiltersBtn").addEventListener("click", () => {
+  $("recordSearch").value = "";
+  $("courseFilter").value = "";
+  $("startDate").value = "";
+  $("endDate").value = "";
+  applyRecordFilters();
+  showToast("Directory filters reset", "info");
+});
+
+// CSV Exporter with Formula Guardrails
+function csvCell(val) {
+  let text = val == null ? "" : String(val);
+  // Mitigate formula execution attacks
+  if (/^[\s]*[=+@]/.test(text) || /^[\s]*-[0-9]/.test(text)) text = "'" + text;
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function downloadCsvReport() {
+  if (!currentUser) { showToast("Sign in to export reports", "error"); return; }
+  const names = Object.keys(types);
+  if (!Object.keys(loadedRecords).length) { showToast("Data not loaded yet", "warning"); return; }
+
+  const rows = [
+    ["CINPS Academic Intelligence — Master Academic Report"],
+    ["Export Date", new Date().toLocaleString()],
+    ["Exported By", currentUser.email || currentUser.uid],
+    [],
+    ["Collection Summary", "Record Count"],
+    ...names.map(name => [types[name], (loadedRecords[name] || []).length]),
+    [],
+    ["Record ID", "Collection", "Type Label", "Record Date", "Name", "ID Code", "Course", "Topic/Activity", "Attendance Status", "Status", "Start Time", "End Time", "Notes", "Created By Email", "Created At"]
+  ];
+
+  names.forEach(name => (loadedRecords[name] || []).forEach(item => {
+    rows.push([
+      item.id,
+      name,
+      types[name],
+      item.recordDate || item.date || "",
+      item.personName || item.name || item.instructorName || item.studentName || "",
+      item.personId || item.studentId || item.instructorId || "",
+      item.course || "",
+      item.topic || item.department || item.hospital || item.activity || "",
+      item.attendanceStatus || "",
+      item.status || "",
+      item.startTime || "",
+      item.endTime || "",
+      item.notes || "",
+      item.createdByEmail || "",
+      formatDate(item.createdAt || item.submittedAt)
+    ]);
+  }));
+
+  const csv = "\uFEFF" + rows.map(r => r.map(csvCell).join(",")).join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `CINPS_Academic_Report_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast("CSV report generated and downloaded", "success");
+}
+
+// Form Submission Pipeline
+$("recordForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!currentUser) { showToast("Sign in required to save entries", "error"); return; }
+
+  const type = $("recordType").value;
+  const personName = $("personName").value.trim();
+  const course = $("course").value.trim();
+  const recordDate = $("recordDate").value;
+
+  if (!personName || !course || !recordDate) {
+    showStatus("formStatus", "Please fill in all required fields (Name, Course, Record Date).", true);
+    return;
+  }
+
+  const record = {
     personName,
-    personId:$("personId").value.trim(),
+    personId: $("personId").value.trim(),
     course,
     recordDate,
-    notes:$("notes").value.trim(),
-    topic:$("topic").value.trim(),
-    createdBy:currentUser.uid,
-    createdByEmail:currentUser.email || "",
-    createdAt:serverTimestamp()
+    notes: $("notes").value.trim(),
+    topic: $("topic").value.trim(),
+    createdBy: currentUser.uid,
+    createdByEmail: currentUser.email || "",
+    createdAt: serverTimestamp()
   };
-  if(type==="attendance") record.attendanceStatus=$("attendanceStatus").value;
-  $("saveBtn").disabled=true;
-  $("saveBtn").textContent="Saving…";
+
+  if (type === "attendance") record.attendanceStatus = $("attendanceStatus").value;
+
+  const saveBtn = $("saveBtn");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving...";
+
   try {
-    await addDoc(collection(db,type),record);
-    showStatus("formStatus",`${types[type]} record saved successfully.`);
+    await addDoc(collection(db, type), record);
+    showToast(`${types[type]} saved to Firestore`, "success");
+    localStorage.removeItem(DRAFT_KEY);
+    $("draftAlert").classList.add("hidden");
     $("recordForm").reset();
-    $("recordDate").value=new Date().toLocaleDateString("en-CA");
+    $("recordDate").value = new Date().toISOString().split("T")[0];
     $("recordType").dispatchEvent(new Event("change"));
-    await refreshDashboard();
-  } catch(error) {
-    console.error(error);
-    showStatus("formStatus",`Record not saved: ${error.message}`,true);
+    hideStatus("formStatus");
+    await refreshDashboard(true);
+  } catch (error) {
+    console.error("Form submission error:", error);
+    showStatus("formStatus", `Failed to save record: ${error.message}`, true);
+    showToast("Failed to save entry", "error");
   } finally {
-    $("saveBtn").disabled=false;
-    $("saveBtn").textContent="Save new record";
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save Record";
   }
 });
-$("recordType").dispatchEvent(new Event("change"));
-$("recordSearch").addEventListener("input",applyRecordFilters);
-$("resetFormBtn").addEventListener("click",()=>{
+
+// Filter Listener Registrations
+$("recordSearch").addEventListener("input", applyRecordFilters);
+$("courseFilter").addEventListener("change", applyRecordFilters);
+$("startDate").addEventListener("change", applyRecordFilters);
+$("endDate").addEventListener("change", applyRecordFilters);
+
+$("resetFormBtn").addEventListener("click", () => {
   $("recordForm").reset();
-  $("recordDate").value=new Date().toLocaleDateString("en-CA");
+  $("recordDate").value = new Date().toISOString().split("T")[0];
   $("recordType").dispatchEvent(new Event("change"));
+  localStorage.removeItem(DRAFT_KEY);
+  $("draftAlert").classList.add("hidden");
   hideStatus("formStatus");
+  showToast("Form cleared", "info");
 });
+
+// App Startup Initializations
+initTheme();
 </script>
 </body>
 </html>
