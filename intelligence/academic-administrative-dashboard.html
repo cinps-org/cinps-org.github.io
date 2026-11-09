@@ -3,876 +3,583 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CINPS Academic Intelligence Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>CINPS Academic Intelligence</title>
 <style>
-/* Theme Variables */
-:root {
-  --bg-color: #f1f5f9;
-  --surface: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --success: #059669;
-  --success-bg: #ecfdf5;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --warning: #d97706;
-  --warning-bg: #fffbeb;
-  --shadow: 0 1px 3px rgba(15,23,42,0.1);
-  --radius: 10px;
-}
-
-[data-theme="dark"] {
-  --bg-color: #0f172a;
-  --surface: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --border: #334155;
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.1);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.1);
-  --shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-* { box-sizing: border-box; }
-body {
-  margin: 0; background-color: var(--bg-color); color: var(--text-main);
-  font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-/* Header */
-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 24px; position: sticky; top: 0; z-index: 50;
-  display: flex; justify-content: space-between; align-items: center;
-  transition: background-color 0.3s;
-}
-.brand { display: flex; align-items: center; gap: 12px; }
-.logo {
-  background: linear-gradient(135deg, var(--primary), #1e3a8a);
-  color: #fff; font-weight: 800; padding: 8px 12px; border-radius: var(--radius);
-}
-.brand h1 { font-size: 17px; margin: 0; }
-.header-right { display: flex; align-items: center; gap: 12px; }
-
-/* Buttons */
-button {
-  font-family: inherit; font-size: 13px; font-weight: 600;
-  padding: 8px 14px; border: none; border-radius: 6px;
-  cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
-}
-button.primary { background: var(--primary); color: #fff; }
-button.primary:hover { background: var(--primary-hover); }
-button.outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
-button.outline:hover { background: var(--bg-color); }
-button.success { background: var(--success); color: #fff; }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
-.icon-btn { background: transparent; color: var(--text-muted); font-size: 18px; padding: 4px; border-radius: 50%; }
-.icon-btn:hover { background: var(--bg-color); color: var(--text-main); }
-
-/* Main Layout */
-main { max-width: 1400px; margin: 24px auto; padding: 0 20px; }
-.hidden { display: none !important; }
-.panel {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.panel-head h2 { margin: 0; font-size: 16px; }
-.muted { color: var(--text-muted); font-size: 12px; }
-
-/* Grid & Cards */
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.stat-card {
-  border: 1px solid var(--border); border-radius: 8px; padding: 16px;
-  background: var(--bg-color);
-}
-.stat-card .val { font-size: 24px; font-weight: 800; margin-top: 8px; }
-
-/* Forms & Inputs */
-.columns-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;}
-.field.full { grid-column: 1 / -1; }
-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
-input, select, textarea {
-  width: 100%; padding: 8px 12px; border: 1px solid var(--border);
-  border-radius: 6px; background: var(--surface); color: var(--text-main);
-  font-family: inherit;
-}
-input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
-
-/* Tables */
-.tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
-table { width: 100%; border-collapse: collapse; text-align: left; }
-th { background: var(--bg-color); color: var(--text-muted); padding: 10px 14px; font-size: 11px; text-transform: uppercase; }
-td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
-tbody tr:hover { background: var(--bg-color); }
-.badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-.badge-blue { background: rgba(37,99,235,0.1); color: var(--primary); }
-.badge-green { background: var(--success-bg); color: var(--success); }
-.badge-red { background: var(--danger-bg); color: var(--danger); }
-
-/* Tabs */
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 16px; overflow-x: auto;}
-.tab-btn {
-  background: transparent; color: var(--text-muted); border-radius: 8px 8px 0 0;
-  border-bottom: 2px solid transparent; padding: 10px 16px;
-}
-.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--bg-color); }
-
-/* Filters */
-.filters { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;}
-.filters input, .filters select { width: auto; min-width: 150px; }
-
-/* Toast */
-#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-.toast {
-  background: var(--surface); color: var(--text-main); padding: 12px 20px;
-  border-left: 4px solid var(--primary); border-radius: 6px; box-shadow: var(--shadow);
-  animation: slideIn 0.3s ease-out; display: flex; align-items: center; gap: 10px;
-}
-@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-/* Batch Actions */
-.batch-bar {
-  background: var(--warning-bg); border: 1px solid var(--warning); padding: 10px 16px;
-  border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
-}
-
-@media (max-width: 900px) {
-  main { padding: 0 14px; margin: 16px auto; }
-  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .columns-2 { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  header { padding: 10px 12px; gap: 8px; }
-  .brand { gap: 8px; min-width: 0; }
-  .brand h1 { font-size: 14px; }
-  .brand .muted { font-size: 10px; }
-  .logo { padding: 7px 9px; font-size: 12px; }
-  .header-right { gap: 6px; }
-  main { padding: 0 10px; margin: 12px auto; }
-  .panel { padding: 13px; margin-bottom: 12px; }
-  .panel-head { align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-  .panel-head h2 { font-size: 15px; }
-  .grid-4 { gap: 8px; }
-  .stat-card { padding: 11px; }
-  .stat-card .val { font-size: 20px; }
-  .filters { gap: 8px; }
-  .filters input, .filters select { width: 100%; min-width: 0; }
-  .tabs { gap: 2px; }
-  .tab-btn { padding: 9px 11px; white-space: nowrap; }
-  #recordForm { grid-template-columns: 1fr !important; }
-  #recordForm .field.full { grid-column: auto; }
-  #recordForm .field[style*="flex-direction: row"] { flex-wrap: wrap; }
-  #welcome { padding: 42px 14px !important; }
-  #toast-container { left: 10px; right: 10px; bottom: 10px; }
-}
+:root{--navy:#103b82;--blue:#1769e0;--blue-dark:#0d4fb5;--pale:#eef5ff;--ink:#15253e;--muted:#63748b;--line:#d8e5f6;--green:#16794b;--red:#b42323;--surface:#fff;--bg:#f4f7fc;--shadow:0 8px 28px rgba(16,59,130,.065)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}header{background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);padding:16px clamp(16px,4vw,56px);display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #163f7108}.brand{display:flex;align-items:center;gap:13px;min-width:230px}.logo{background:linear-gradient(145deg,var(--navy),var(--blue));color:#fff;font-weight:900;letter-spacing:.5px;border-radius:13px;padding:13px 12px;box-shadow:0 5px 14px #1769e033}h1{font-size:clamp(18px,2vw,22px);line-height:1.2;margin:0;font-weight:800;letter-spacing:-.35px}.sub{font-size:10px;letter-spacing:1px;font-weight:700;color:var(--muted);margin-top:5px}.header-right{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}#accountArea{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#accountArea .user-label{color:var(--muted);font-size:12px;padding:0 5px;max-width:220px;overflow-wrap:anywhere}button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;transition:background .16s,transform .16s,box-shadow .16s;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}button:hover{background:var(--blue-dark);box-shadow:0 4px 12px #1769e026}button:active{transform:translateY(1px)}button:disabled{opacity:.55;cursor:wait;box-shadow:none}button.secondary{background:#e7effc;color:var(--navy)}button.secondary:hover{background:#d9e8ff}button.outline{background:#fff;color:var(--navy);border:1px solid var(--line)}button.outline:hover{background:#f4f8ff}button.success{background:#e8f6ee;color:#146b42}button.success:hover{background:#d8efdf}button .btn-icon{font-size:16px;line-height:1}main{max-width:1380px;margin:26px auto;padding:0 clamp(14px,2.4vw,30px)}.page-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:0 2px 18px;flex-wrap:wrap}.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--blue);font-weight:800;margin-bottom:5px}.page-intro h2{font-size:25px;letter-spacing:-.6px;margin:0}.page-intro p{margin:5px 0 0}.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,24px);margin-bottom:18px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:17px;letter-spacing:-.2px;margin:0 0 6px;font-weight:800}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.panel-head p{margin:5px 0 0}.muted{color:var(--muted);line-height:1.6}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{background:linear-gradient(145deg,#f8fbff,#eef5ff);border:1px solid #dce8f8;border-radius:13px;padding:17px 18px;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:60px;height:60px;border-radius:50%;background:#1769e00b;right:-16px;top:-18px}.stat label{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.1px}.stat strong{display:block;font-size:clamp(25px,2.4vw,32px);line-height:1.2;margin-top:8px;color:var(--navy);letter-spacing:-.8px}.stat .stat-note{font-size:11px;color:var(--muted);margin-top:6px}.columns{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:18px;align-items:start}form{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:750;color:#34445d}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd8ea;border-radius:9px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}input:focus,select:focus,textarea:focus{border-color:#6aa1f4;box-shadow:0 0 0 3px #1769e018}textarea{min-height:96px;resize:vertical}.form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.status{padding:12px 14px;border-radius:10px;background:#eaf7ef;color:var(--green);margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.status.error{background:#fff0f0;color:var(--red)}.hidden{display:none!important}.table-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 13px}.table-tools input{flex:1;min-width:190px}.table-tools select{width:auto;min-width:155px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:680px}.record-panel .panel-head{margin-bottom:12px}.record-panel table{min-width:720px}.record-panel tbody tr:nth-child(even){background:#fbfdff}th,td{text-align:left;padding:12px 13px;border-bottom:1px solid #e8eef7;vertical-align:top}th{background:#f5f8fd;color:#52647e;font-size:11px;text-transform:uppercase;letter-spacing:.55px;font-weight:800;position:sticky;top:0}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#f8fbff}td{overflow-wrap:anywhere}.record-type{display:inline-flex;padding:4px 8px;border-radius:20px;background:#edf4ff;color:#174e9e;font-size:11px;font-weight:750}.barrow{display:grid;grid-template-columns:minmax(90px,120px) minmax(50px,1fr) 30px;gap:10px;align-items:center;margin:17px 0;font-size:12px}.barrow span{color:#455873}.barrow strong{text-align:right;color:var(--navy)}.track{height:9px;background:#e8eff9;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#1769e0,#58a0ff);width:0;border-radius:10px;transition:width .35s}.chart-empty{padding:24px;text-align:center;background:#f7faff;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}.overview-status{display:flex;align-items:center;gap:8px;font-size:12px;margin-top:15px}.status-dot{width:7px;height:7px;border-radius:50%;background:#16a267;display:inline-block;flex:none}footer{text-align:center;color:var(--muted);padding:24px 16px;font-size:11px}#welcome{max-width:760px;margin:55px auto;padding:32px}#welcome h2{font-size:24px}#welcome .welcome-mark{display:inline-flex;background:#edf4ff;color:var(--navy);padding:10px;border-radius:12px;margin-bottom:15px}.small-note{font-size:11px;color:var(--muted)}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.columns{grid-template-columns:1fr}.header-right{width:100%;justify-content:flex-start}header{position:static}}
+@media(max-width:560px){header{padding:13px}.brand{min-width:0}.logo{padding:11px;font-size:13px}.sub{font-size:9px;letter-spacing:.5px}.header-right,#accountArea{width:100%;justify-content:flex-start}#accountArea button{flex:1}.user-label{width:100%}main{margin:16px auto;padding:0 12px}.page-intro h2{font-size:22px}.grid{gap:9px}.stat{padding:13px}.stat strong{font-size:25px}.stat label{font-size:11px}.panel{padding:15px;border-radius:13px}form{grid-template-columns:1fr}.field.full{grid-column:auto}.table-tools input,.table-tools select{width:100%;min-width:0}.barrow{grid-template-columns:95px minmax(40px,1fr) 24px;gap:7px}.form-actions button{width:100%}}
 </style>
 </head>
 <body>
-
 <header>
   <div class="brand">
     <div class="logo">CINPS</div>
-    <div><h1>Academic Intelligence</h1><div class="muted">Admin Portal</div></div>
+    <div><h1>Academic Intelligence</h1><div class="sub">PARAMEDICAL & ALLIED HEALTHCARE EDUCATION</div></div>
   </div>
-  <div class="header-right">
-    <button id="themeToggle" class="icon-btn" title="Toggle Theme">🌙</button>
-    <div id="authArea"><button id="loginBtn" class="primary">Sign In</button></div>
-  </div>
+  <div class="header-right"><div id="accountArea"><button id="loginBtn">Continue with Google</button></div></div>
 </header>
 
-<main id="welcome" style="text-align:center; padding: 60px 20px; max-width: 500px;">
-  <h2>Administrator Access Required</h2>
-  <p class="muted">Sign in with your authorized CINPS Google account.</p>
-  <div id="loginStatus" style="margin-top: 10px; color: var(--danger);"></div>
-</main>
+<main>
+  <section class="panel" id="welcome">
+    <h2>Academic Intelligence Dashboard</h2>
+    <p class="muted">Secure academic records, attendance, instructor updates and institutional insights in one place.</p>
+    <p class="muted">Sign in with an active CINPS administrator account to continue.</p>
+    <div id="welcomeStatus" class="muted"></div>
+  </section>
 
-<main id="app" class="hidden">
-  
-  <!-- Stats -->
-  <div class="panel">
-    <div class="panel-head">
-      <div><h2>System Statistics</h2><p class="muted">Live Firestore database tally</p></div>
-      <button class="outline" id="refreshBtn">↻ Refresh Data</button>
+  <section id="app" class="hidden">
+    <div class="page-intro">
+      <div><div class="eyebrow">CINPS · Academic administration</div><h2>Academic overview</h2><p class="muted">A consolidated view of the records currently stored in your academic database.</p></div>
+      <div class="small-note">Live data from Firestore</div>
     </div>
-    <div class="grid-4">
-      <div class="stat-card"><div class="muted">STUDENTS</div><div class="val" id="statStudents">0</div></div>
-      <div class="stat-card"><div class="muted">INSTRUCTORS</div><div class="val" id="statInstructors">0</div></div>
-      <div class="stat-card"><div class="muted">ATTENDANCE</div><div class="val" id="statAttendance">0</div></div>
-      <div class="stat-card"><div class="muted">CLASS UPDATES</div><div class="val" id="statClasses">0</div></div>
-    </div>
-  </div>
-
-  <!-- Pending Approvals (Batch Processing) -->
-  <div class="panel" id="approvalPanel">
-    <div class="panel-head">
-      <div><h2>Pending Registrations</h2><p class="muted">Assign details and approve student access</p></div>
-      <span class="badge badge-blue" id="pendingCount">0 Pending</span>
-    </div>
-    
-    <div class="batch-bar hidden" id="batchBar">
-      <span style="font-weight: 600; color: var(--warning);"><span id="selCount">0</span> selected</span>
-      <button class="success" id="batchApproveBtn">Approve Selected</button>
-    </div>
-
-    <div class="tablewrap">
-      <table style="min-width: 900px;">
-        <thead>
-          <tr>
-            <th style="width: 40px;"><input type="checkbox" id="selectAllCb"></th>
-            <th>Applicant</th>
-            <th>Requested</th>
-            <th>Official ID</th>
-            <th>Course</th>
-            <th>Branch</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="pendingRows">
-          <tr><td colspan="7" class="muted">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="columns-2">
-    <!-- Entry Form -->
     <div class="panel">
+      <div class="panel-head"><div><h2>Academic snapshot</h2><p class="muted">Figures below reflect the current records in this Firebase project.</p></div></div>
+      <p class="muted">These figures are calculated from records currently stored in this Firebase project. New database means historical spreadsheet records are not included.</p>
+      <div class="grid">
+        <div class="stat"><label>STUDENTS</label><strong id="nStudents">0</strong><div class="stat-note">Student records</div></div>
+        <div class="stat"><label>INSTRUCTORS</label><strong id="nInstructors">0</strong><div class="stat-note">Instructor records</div></div>
+        <div class="stat"><label>ATTENDANCE RECORDS</label><strong id="nAttendance">0</strong><div class="stat-note">Attendance entries</div></div>
+        <div class="stat"><label>CLASS UPDATES</label><strong id="nClasses">0</strong><div class="stat-note">Class submissions</div></div>
+      </div>
+      <div id="overviewStatus" class="overview-status muted"><span class="status-dot"></span>Loading academic data…</div>
+    </div>
+
+    <section class="panel" id="studentApprovalPanel">
       <div class="panel-head">
-        <div><h2>Register Entry</h2><p class="muted">Auto-saves to browser draft</p></div>
-        <span class="badge badge-green hidden" id="draftBadge">Draft Restored</span>
+        <div>
+          <h2>Student registration approvals</h2>
+          <p class="muted">Review Google sign-ins waiting for CINPS verification. Assign the official student ID, course and branch before approval.</p>
+        </div>
+        <span id="pendingStudentCount" class="record-type">0 pending</span>
       </div>
-      <form id="recordForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <div class="field full">
-          <label>Category</label>
-          <select id="f_type" required>
-            <option value="students">Student Profile</option>
-            <option value="instructors">Instructor Profile</option>
-            <option value="attendance">Student Attendance</option>
-            <option value="class_updates">Class Update</option>
-            <option value="clinical_updates">Clinical Update</option>
-            <option value="internship_updates">Internship Update</option>
-          </select>
-        </div>
-        <div class="field"><label id="l_name">Name</label><input id="f_name" required></div>
-        <div class="field"><label>ID (Optional)</label><input id="f_id"></div>
-        <div class="field"><label>Course</label><input id="f_course" required></div>
-        <div class="field"><label>Date</label><input type="date" id="f_date" required></div>
-        
-        <div class="field hidden" id="wrap_attendance">
-          <label>Status</label>
-          <select id="f_status"><option>Present</option><option>Absent</option><option>Late</option><option>Leave</option></select>
-        </div>
-        <div class="field" id="wrap_topic">
-          <label>Topic / Activity</label><input id="f_topic">
-        </div>
-        <div class="field full">
-          <label>Notes</label><textarea id="f_notes"></textarea>
-        </div>
-        <div class="field full" style="flex-direction: row; gap: 10px;">
-          <button type="submit" class="primary" id="saveBtn">Save to Database</button>
-          <button type="button" class="outline" id="clearDraftBtn">Clear Draft</button>
-        </div>
-      </form>
-    </div>
-    
-    <!-- Analytics -->
-    <div class="panel">
-      <div class="panel-head"><div><h2>Attendance Analytics</h2><p class="muted">Current database aggregate</p></div></div>
-      <div id="attStats" style="margin-top: 20px;">
-        <div class="muted">Loading analytics...</div>
+      <div class="tablewrap">
+        <table style="min-width:900px">
+          <thead><tr><th>Registered name / email</th><th>Requested</th><th>Student ID</th><th>Course</th><th>Branch</th><th>Action</th></tr></thead>
+          <tbody id="pendingStudentRows"><tr><td colspan="6">Loading pending registrations…</td></tr></tbody>
+        </table>
       </div>
-    </div>
-  </div>
+      <p class="small-note" style="margin-top:10px">Approval activates the student's access and creates or updates the matching record in the students collection. Existing records are merged, not replaced.</p>
+      <div id="approvalStatus" class="hidden"></div>
+    </section>
 
-  <!-- Data Directory -->
-  <div class="panel">
-    <div class="panel-head">
-      <div><h2>Records Directory</h2><p class="muted">Browse and filter all academic records</p></div>
-      <button class="outline" id="exportBtn">⇩ Export CSV</button>
+    <div class="columns">
+      <section class="panel">
+        <div class="panel-head"><div><h2>Register an academic update</h2><p class="muted">Add a student, instructor, attendance, class, clinical or internship record.</p></div></div>
+        <form id="recordForm">
+          <div class="field full">
+            <label for="recordType">Record type</label>
+            <select id="recordType" name="recordType" aria-label="Record type" required>
+              <option value="students">Student registration</option>
+              <option value="instructors">Instructor registration</option>
+              <option value="attendance">Student attendance</option>
+              <option value="class_updates">Class update</option>
+              <option value="clinical_updates">Clinical update</option>
+              <option value="internship_updates">Internship update</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="personName">Student / instructor name</label>
+            <input id="personName" name="personName" aria-label="Student or instructor name" maxlength="120" required>
+          </div>
+          <div class="field">
+            <label for="personId">Student / staff ID (optional)</label>
+            <input id="personId" name="personId" aria-label="Student or staff ID" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="course">Course</label>
+            <input id="course" name="course" aria-label="Course name" maxlength="120" placeholder="e.g. DMLT" required>
+          </div>
+          <div class="field">
+            <label for="recordDate">Record date</label>
+            <input id="recordDate" name="recordDate" aria-label="Record date" type="date" required>
+          </div>
+          <div class="field" id="attendanceField">
+            <label for="attendanceStatus">Attendance status</label>
+            <select id="attendanceStatus" name="attendanceStatus" aria-label="Attendance status">
+              <option value="Present">Present</option>
+              <option value="Absent">Absent</option>
+              <option value="Late">Late</option>
+              <option value="Leave">Leave</option>
+            </select>
+          </div>
+          <div class="field" id="topicField">
+            <label for="topic">Subject / topic</label>
+            <input id="topic" name="topic" aria-label="Subject or topic" maxlength="180" placeholder="Class or activity">
+          </div>
+          <div class="field full">
+            <label for="notes">Details / update</label>
+            <textarea id="notes" name="notes" aria-label="Details and update notes" maxlength="3000" placeholder="Enter factual academic details"></textarea>
+          </div>
+          <div class="field full">
+            <div class="form-actions"><button id="saveBtn" type="submit">Save new record</button><button id="resetFormBtn" class="outline" type="button">Clear form</button></div>
+          </div>
+        </form>
+        <div id="formStatus" class="hidden"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Academic activity</h2>
+        <p class="muted">Record counts across the six connected collections.</p>
+        <div id="activityChart"></div>
+        <p class="muted">Charts update when the dashboard reloads or new records are saved.</p>
+      </section>
     </div>
 
-    <!-- Filters -->
-    <div class="filters">
-      <input type="search" id="searchQ" placeholder="Search names, topics, IDs...">
-      <select id="filterCourse"><option value="">All Courses</option></select>
-      <input type="date" id="filterStart" title="Start Date">
-      <input type="date" id="filterEnd" title="End Date">
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="all">All Entries</button>
-      <button class="tab-btn" data-tab="class_updates">Classes</button>
-      <button class="tab-btn" data-tab="attendance">Attendance</button>
-      <button class="tab-btn" data-tab="internship_updates">Internships</button>
-      <button class="tab-btn" data-tab="clinical_updates">Clinical</button>
-      <button class="tab-btn" data-tab="students">Students</button>
-      <button class="tab-btn" data-tab="instructors">Instructors</button>
-    </div>
-
-    <div class="tablewrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Name & ID</th>
-            <th>Course</th>
-            <th>Status / Topic</th>
-            <th>Details</th>
-            <th>Contact</th>
-          </tr>
-        </thead>
-        <tbody id="directoryRows">
-          <tr><td colspan="7" class="muted">Loading records...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    <section class="panel">
+      <div class="panel-head"><div><h2>Academic Records</h2><p class="muted">Records are separated by activity type for easier review. Use the search box to filter all tables.</p></div></div>
+      <div class="table-tools"><input id="recordSearch" type="search" placeholder="Search name, course, details or ID across all tables…" aria-label="Search academic records"><span id="recordCount" class="small-note">0 records</span></div>
+    </section>
+    <section class="panel record-panel"><div class="panel-head"><div><h2>Class Updates</h2><p class="muted">Instructor-submitted class activity and teaching records.</p></div><span id="count-class_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Subject / Topic</th><th>Details</th></tr></thead><tbody id="rows-class_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
+    <section class="panel record-panel"><div class="panel-head"><div><h2>Attendance</h2><p class="muted">Student attendance entries and recorded class times.</p></div><span id="count-attendance" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Course</th><th>Attendance</th><th>Details</th></tr></thead><tbody id="rows-attendance"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
+    <section class="panel record-panel"><div class="panel-head"><div><h2>Internship Updates</h2><p class="muted">Internship placement, shift, hospital, and supervisor updates.</p></div><span id="count-internship_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Placement / Department</th><th>Details</th></tr></thead><tbody id="rows-internship_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
+    <section class="panel record-panel"><div class="panel-head"><div><h2>Clinical Updates</h2><p class="muted">Clinical training and related academic updates.</p></div><span id="count-clinical_updates" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Name</th><th>Course</th><th>Activity</th><th>Details</th></tr></thead><tbody id="rows-clinical_updates"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
+    <section class="panel record-panel"><div class="panel-head"><div><h2>Student & Instructor Records</h2><p class="muted">Registration records for students and instructors.</p></div><span id="count-people" class="record-type">0 records</span></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Record Type</th><th>Name</th><th>Course</th><th>Details</th></tr></thead><tbody id="rows-people"><tr><td colspan="5">Loading records…</td></tr></tbody></table></div></section>
+    <div id="appError" class="status error hidden"></div>
+  </section>
 </main>
-
-<div id="toast-container"></div>
+<footer>CINPS Academic Intelligence · Firebase Authentication & Cloud Firestore</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, addDoc, getDocs, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, collection, addDoc, getDocs, setDoc, writeBatch,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
-  authDomain: "cinps-core-system.firebaseapp.com",
-  projectId: "cinps-core-system",
-  storageBucket: "cinps-core-system.firebasestorage.app",
-  messagingSenderId: "1026808169095",
-  appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
-};
+    apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
+    authDomain: "cinps-core-system.firebaseapp.com",
+    projectId: "cinps-core-system",
+    storageBucket: "cinps-core-system.firebasestorage.app",
+    messagingSenderId: "1026808169095",
+    appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+  };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+provider.setCustomParameters({prompt:"select_account"});
 
+const types = {
+  students:"Student",
+  instructors:"Instructor",
+  attendance:"Attendance",
+  class_updates:"Class update",
+  clinical_updates:"Clinical update",
+  internship_updates:"Internship update"
+};
 const $ = id => document.getElementById(id);
 let currentUser = null;
-let loadedData = Object.fromEntries(
-  ['students','instructors','attendance','class_updates','clinical_updates','internship_updates']
-    .map(key => [key, []])
-);
-let activeTab = 'all';
+let refreshInProgress = false;
+let authFailureMessage = "";
+let loadedRecords = {};
+let allRecentRows = [];
 
-function escapeHTML(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  })[char]);
+function showStatus(id, message, error=false) {
+  const el = $(id);
+  el.textContent = message;
+  el.classList.remove("hidden","error");
+  if(error) el.classList.add("error");
 }
-function localDateString(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+function hideStatus(id){$(id).classList.add("hidden")}
+function safeText(value) {
+  return value == null ? "" : String(value);
 }
-const types = { students:"Student", instructors:"Instructor", attendance:"Attendance", class_updates:"Class Update", clinical_updates:"Clinical", internship_updates:"Internship" };
-
-/* --- Theme Engine --- */
-function toggleTheme() {
-  const isDark = document.body.getAttribute('data-theme') === 'dark';
-  const newTheme = isDark ? 'light' : 'dark';
-  document.body.setAttribute('data-theme', newTheme);
-  try { localStorage.setItem('cinps_theme', newTheme); } catch (_) {}
-  $('themeToggle').textContent = isDark ? '🌙' : '☀️';
+function formatDate(value) {
+  if(!value) return "—";
+  if(typeof value === "string") return value;
+  if(value.toDate) return value.toDate().toLocaleDateString();
+  return "—";
 }
-try {
-  if (localStorage.getItem('cinps_theme') === 'dark') {
-    document.body.setAttribute('data-theme', 'dark');
-    $('themeToggle').textContent = '☀️';
+function dateSortValue(value) {
+  if(!value) return 0;
+  if(typeof value === "object" && typeof value.toMillis === "function") return value.toMillis();
+  if(typeof value === "object" && typeof value.toDate === "function") return value.toDate().getTime();
+  const text=String(value).trim();
+  let match=text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if(match) return new Date(Number(match[1]),Number(match[2])-1,Number(match[3])).getTime();
+  match=text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+  if(match) return new Date(Number(match[3]),Number(match[2])-1,Number(match[1])).getTime();
+  const parsed=Date.parse(text);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+function recordSortValue(item) {
+  return dateSortValue(item.recordDate || item.date) || item.createdAt?.toMillis?.() || item.submittedAt?.toMillis?.() || 0;
+}
+function formatTime(value) {
+  if(value == null || String(value).trim() === "") return "";
+  const text = String(value).trim();
+  const twelveHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)$/i);
+  if(twelveHour) {
+    const hour = Math.max(1, Math.min(12, Number(twelveHour[1])));
+    return `${String(hour).padStart(2, "0")}:${twelveHour[2]} ${twelveHour[3].toUpperCase()}`;
   }
-} catch (_) {}
-$('themeToggle').addEventListener('click', toggleTheme);
-
-/* --- Toasts --- */
-function showToast(msg, type='success') {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.style.borderLeftColor = type==='error'?'var(--danger)':type==='warning'?'var(--warning)':'var(--primary)';
-  const message = document.createElement('span');
-  message.textContent = String(msg ?? '');
-  t.appendChild(message);
-  $('toast-container').appendChild(t);
-  setTimeout(()=>t.remove(), 4000);
+  const twentyFourHour = text.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if(twentyFourHour) {
+    const hours = Number(twentyFourHour[1]);
+    if(hours >= 0 && hours <= 23) {
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const hour12 = hours % 12 || 12;
+      return `${String(hour12).padStart(2, "0")}:${twentyFourHour[2]} ${suffix}`;
+    }
+  }
+  return text;
+}
+function setSignedOut(message) {
+  currentUser = null;
+  message = message || authFailureMessage || "Please sign in with your CINPS administrator account.";
+  $("app").classList.add("hidden");
+  $("welcome").classList.remove("hidden");
+  $("accountArea").replaceChildren();
+  const btn=document.createElement("button");
+  btn.id="loginBtn"; btn.textContent="Continue with Google";
+  btn.addEventListener("click",login);
+  $("accountArea").append(btn);
+  $("welcomeStatus").textContent=message;
 }
 
-/* --- Auth --- */
-$('authArea').addEventListener('click', async event => {
-  if (!event.target.closest('#loginBtn')) return;
+async function login() {
+  const button = $("loginBtn");
+  if(button) button.disabled = true;
+  authFailureMessage = "";
+  $("welcomeStatus").textContent = "Opening Google sign-in…";
   try {
-    $('loginStatus').textContent = '';
-    await signInWithRedirect(auth, provider);
-  } catch (e) {
-    $('loginStatus').textContent = e.message || 'Sign-in failed.';
+    await signInWithPopup(auth, provider);
+  } catch(error) {
+    console.error("Google popup sign-in failed:", error);
+    authFailureMessage = `${error.code || "Sign-in error"}: ${error.message || "Google sign-in could not be completed."}`;
+    showStatus("welcomeStatus", authFailureMessage, true);
+    if(button) button.disabled = false;
   }
-});
+}
 
-getRedirectResult(auth).catch(error => {
-  $('loginStatus').textContent = error.message || 'Google sign-in could not be completed.';
-});
+$("loginBtn").addEventListener("click",login);
+
+async function authorize(user) {
+  const adminRef=doc(db,"admins",user.uid);
+  const adminSnap=await getDoc(adminRef);
+  if(!adminSnap.exists()) throw new Error("This Google account is not registered as a CINPS administrator.");
+  const data=adminSnap.data();
+  if(data.active !== true || !["superAdmin","admin"].includes(data.role)) {
+    throw new Error("This administrator account is inactive or has no valid role.");
+  }
+  return data;
+}
 
 onAuthStateChanged(auth, async user => {
-  if(!user) {
-    $('app').classList.add('hidden');
-    $('welcome').classList.remove('hidden');
-    $('authArea').innerHTML = `<button id="loginBtn" class="primary">Sign In</button>`;
-    currentUser = null;
-    return;
-  }
+  if(!user) { setSignedOut(); return; }
+  $("welcomeStatus").textContent="Verifying administrator permissions…";
   try {
-    const adminDoc = await getDoc(doc(db, "admins", user.uid));
-    const adminData = adminDoc.exists() ? adminDoc.data() : null;
-    if (!adminData || adminData.active !== true ||
-        !['superAdmin', 'admin'].includes(adminData.role)) {
-      throw new Error("This Google account is not an active CINPS administrator.");
-    }
-    currentUser = user;
-    $('welcome').classList.add('hidden'); $('app').classList.remove('hidden');
-    $('authArea').innerHTML = `
-      <span class="muted" style="margin-right:10px">${user.email}</span>
-      <button id="logoutBtn" class="outline">Logout</button>
-    `;
-    $('logoutBtn').addEventListener('click', () => signOut(auth));
-    fetchData();
-    loadDraft();
-  } catch(e) {
-    signOut(auth);
-    $('loginStatus').textContent = "Access denied: Not an active administrator.";
+    const admin=await authorize(user);
+    currentUser=user;
+    $("welcome").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("accountArea").replaceChildren();
+    const who=document.createElement("span");
+    who.className="user-label";
+    who.textContent=`${user.displayName || user.email} · ${admin.role}`;
+    const refreshBtn=document.createElement("button");
+    refreshBtn.className="outline";refreshBtn.id="refreshDataBtn";refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';
+    refreshBtn.addEventListener("click",()=>refreshDashboard(true));
+    const downloadBtn=document.createElement("button");
+    downloadBtn.className="success";downloadBtn.id="downloadReportBtn";downloadBtn.innerHTML='<span class="btn-icon">⇩</span> Download Report';
+    downloadBtn.addEventListener("click",downloadCsvReport);
+    const feeBtn=document.createElement("button");
+    feeBtn.className="secondary";feeBtn.id="feeReminderBtn";feeBtn.innerHTML='<span class="btn-icon">₹</span> Fee Reminder';
+    feeBtn.addEventListener("click",()=>{window.location.href="https://cinps.org/portal/fee-reminders.html";});
+    const out=document.createElement("button");
+    out.className="secondary";out.textContent="Sign out";
+    out.addEventListener("click",()=>signOut(auth));
+    $("accountArea").append(who,refreshBtn,downloadBtn,feeBtn,out);
+    await refreshDashboard();
+  } catch(error) {
+    console.error("Administrator authorization failed:", error);
+    authFailureMessage = `${error.code ? error.code + ": " : ""}${error.message || "Administrator verification failed."}`;
+    try { await signOut(auth); }
+    catch(signOutError) { console.error("Sign-out after authorization failure failed:", signOutError); }
+    setSignedOut(authFailureMessage);
   }
 });
 
-/* --- Data Fetching --- */
-async function fetchData() {
-  if (!currentUser) return;
-  $('refreshBtn').disabled = true;
-  const keys = Object.keys(types);
-  const errors = [];
+$("recordType").addEventListener("change",()=>{
+  const type=$("recordType").value;
+  $("attendanceField").classList.toggle("hidden",type!=="attendance");
+  $("topicField").classList.toggle("hidden",type==="students"||type==="instructors");
+  $("personName").previousElementSibling.textContent =
+    type==="instructors" ? "Instructor name" : type==="students" ? "Student name" : "Student / instructor name";
+});
 
+$("recordDate").value=new Date().toLocaleDateString("en-CA");
+
+async function readCollection(name) {
+  const snap=await getDocs(collection(db,name));
+  return snap.docs.map(d=>({id:d.id,...d.data(),_collection:name}));
+}
+async function refreshDashboard(manual=false) {
+  if(!currentUser || refreshInProgress) return;
+  refreshInProgress=true;
+  const refreshBtn=$("refreshDataBtn");
+  if(refreshBtn){refreshBtn.disabled=true;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refreshing…';}
+  $("overviewStatus").textContent="Loading current records…";
+  hideStatus("appError");
   try {
-    const results = await Promise.all(
-      [...keys, 'student_access'].map(async key => {
-        try {
-          const snapshot = await getDocs(collection(db, key));
-          return { key, docs: snapshot.docs, error: null };
-        } catch (error) {
-          return { key, docs: [], error };
-        }
-      })
-    );
-
-    for (const result of results) {
-      if (result.error) {
-        errors.push(`${result.key}: ${result.error.code || result.error.message}`);
-        if (result.key === 'student_access') loadedData.student_access = [];
-        else loadedData[result.key] = [];
-        continue;
-      }
-      loadedData[result.key] = result.docs.map(d => ({
-        ...d.data(),
-        id: d.id,
-        ...(result.key === 'student_access' ? {} : { _col: result.key })
-      }));
-    }
-
-    updateDashboard();
-    if (errors.length) {
-      showToast(`Some collections could not be read: ${errors.join(' | ')}`, 'warning');
+    const names=Object.keys(types);
+    const [results, accessResult]=await Promise.all([
+      Promise.all(names.map(readCollection)),
+      getDocs(collection(db,"student_access"))
+        .then(snap=>({ok:true,records:snap.docs.map(d=>({id:d.id,...d.data()}))}))
+        .catch(error=>({ok:false,error}))
+    ]);
+    const data={};
+    names.forEach((name,i)=>data[name]=results[i]);
+    data.student_access=accessResult.ok ? accessResult.records : [];
+    loadedRecords=data;
+    renderPendingStudents(data.student_access);
+    if(!accessResult.ok) {
+      showStatus("approvalStatus",`Could not load pending registrations: ${accessResult.error.message}. The existing academic dashboard is still available; check student_access read permissions.`,true);
     } else {
-      showToast("Data synced with Firestore");
+      hideStatus("approvalStatus");
     }
-  } catch (error) {
-    showToast("Failed to sync data: " + (error.message || 'Unknown Firestore error'), "error");
+    $("nStudents").textContent=data.students.length;
+    $("nInstructors").textContent=data.instructors.length;
+    $("nAttendance").textContent=data.attendance.length;
+    $("nClasses").textContent=data.class_updates.length;
+    const total=names.reduce((sum,n)=>sum+data[n].length,0);
+    $("overviewStatus").textContent=`${manual ? "Refreshed" : "Loaded"} ${total} records from six Firestore collections · ${new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
+    renderChart(data);
+    renderRecent(data);
+  } catch(error) {
+    console.error(error);
+    showStatus("appError",`Could not load academic records: ${error.message}. Check Firestore rules and network access.`,true);
+    $("overviewStatus").textContent="Some data could not be loaded.";
   } finally {
-    $('refreshBtn').disabled = false;
+    refreshInProgress=false;
+    if(refreshBtn){refreshBtn.disabled=false;refreshBtn.innerHTML='<span class="btn-icon">↻</span> Refresh Data';}
   }
 }
-$('refreshBtn').addEventListener('click', fetchData);
-
-function updateDashboard() {
-  $('statStudents').textContent = loadedData.students.length;
-  $('statInstructors').textContent = loadedData.instructors.length;
-  $('statAttendance').textContent = loadedData.attendance.length;
-  $('statClasses').textContent = loadedData.class_updates.length;
-  
-  updateAttendanceAnalytics();
-  renderPending();
-  updateCourseDropdown();
-  renderDirectory();
-}
-
-function updateAttendanceAnalytics() {
-  const att = loadedData.attendance || [];
-  if(!att.length) { $('attStats').innerHTML = '<div class="muted">No attendance data.</div>'; return; }
-  let counts = { Present:0, Absent:0, Late:0, Leave:0 };
-  att.forEach(a => { if(counts[a.attendanceStatus] !== undefined) counts[a.attendanceStatus]++; });
-  const total = att.length;
-  
-  $('attStats').innerHTML = `
-    <div style="display:flex; height:12px; border-radius:6px; overflow:hidden; margin-bottom:15px; background:var(--border);">
-      <div style="width:${(counts.Present/total)*100}%; background:var(--success);" title="Present"></div>
-      <div style="width:${(counts.Late/total)*100}%; background:var(--warning);" title="Late"></div>
-      <div style="width:${(counts.Leave/total)*100}%; background:var(--primary);" title="Leave"></div>
-      <div style="width:${(counts.Absent/total)*100}%; background:var(--danger);" title="Absent"></div>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px;">
-      <div><span style="color:var(--success)">●</span> Present: ${counts.Present} (${Math.round(counts.Present/total*100)}%)</div>
-      <div><span style="color:var(--danger)">●</span> Absent: ${counts.Absent} (${Math.round(counts.Absent/total*100)}%)</div>
-      <div><span style="color:var(--warning)">●</span> Late: ${counts.Late}</div>
-      <div><span style="color:var(--primary)">●</span> Leave: ${counts.Leave}</div>
-    </div>
-  `;
-}
-
-/* --- Batch Approvals --- */
-function renderPending() {
-  const pending = loadedData.student_access.filter(s => s.active !== true);
-  $('pendingCount').textContent = `${pending.length} Pending`;
-  const tb = $('pendingRows'); tb.innerHTML = '';
-  
+function renderPendingStudents(records) {
+  const pending=(records||[]).filter(item=>item.active!==true);
+  $("pendingStudentCount").textContent=`${pending.length} pending`;
+  const body=$("pendingStudentRows");
+  body.replaceChildren();
   if(!pending.length) {
-    tb.innerHTML = '<tr><td colspan="7" class="muted">No pending registrations.</td></tr>';
-    $('selectAllCb').disabled = true; $('batchBar').classList.add('hidden');
-    return;
+    const tr=document.createElement("tr"),td=document.createElement("td");
+    td.colSpan=6;td.textContent="No pending student registrations.";
+    tr.append(td);body.append(tr);return;
   }
-  $('selectAllCb').disabled = false;
-  
-  pending.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><input type="checkbox" class="batch-cb"></td>
-      <td><strong>${escapeHTML(p.name || 'No Name')}</strong><div class="muted">${escapeHTML(p.email || '')}</div></td>
-      <td>${escapeHTML(p.requestedAt?.toDate ? p.requestedAt.toDate().toLocaleDateString() : '—')}</td>
-      <td><input type="text" class="i-id" value="${escapeHTML(p.studentId || '')}" placeholder="ID"></td>
-      <td><input type="text" class="i-course" value="${escapeHTML(p.course || '')}" placeholder="Course"></td>
-      <td><input type="text" class="i-branch" value="${escapeHTML(p.branch || '')}" placeholder="Branch"></td>
-      <td><button class="success btn-approve">Approve</button></td>
-    `;
-    // Keep the Firestore document ID in a DOM property, not interpolated HTML.
-    tr.querySelector('.batch-cb').dataset.id = p.id;
-    tr.querySelector('.btn-approve').addEventListener('click', () => processApproval([tr], p));
-    tb.appendChild(tr);
+  pending.sort((a,b)=>dateSortValue(b.requestedAt)-dateSortValue(a.requestedAt)).forEach(item=>{
+    const tr=document.createElement("tr");
+    const identity=document.createElement("td");
+    const strong=document.createElement("strong");strong.textContent=item.name||"Name not provided";
+    const email=document.createElement("div");email.className="small-note";email.textContent=item.email||"Email not available";
+    identity.append(strong,email);
+    const requested=document.createElement("td");requested.textContent=formatDate(item.requestedAt);
+    const studentId=document.createElement("td");
+    const idInput=document.createElement("input");idInput.type="text";idInput.placeholder="e.g. CINPS-001";idInput.maxLength=80;idInput.value=item.studentId||"";idInput.setAttribute("aria-label","Official student ID");
+    studentId.append(idInput);
+    const courseCell=document.createElement("td");
+    const courseInput=document.createElement("input");courseInput.type="text";courseInput.placeholder="e.g. OTT";courseInput.maxLength=120;courseInput.value=item.course||"";courseInput.setAttribute("aria-label","Student course");
+    courseCell.append(courseInput);
+    const branchCell=document.createElement("td");
+    const branchInput=document.createElement("input");branchInput.type="text";branchInput.placeholder="e.g. Nanoor";branchInput.maxLength=120;branchInput.value=item.branch||"";branchInput.setAttribute("aria-label","Student branch");
+    branchCell.append(branchInput);
+    const action=document.createElement("td");
+    const approve=document.createElement("button");approve.className="success";approve.textContent="Approve";
+    approve.addEventListener("click",()=>approveStudent(item,idInput.value.trim(),courseInput.value.trim(),branchInput.value.trim(),approve));
+    action.append(approve);
+    tr.append(identity,requested,studentId,courseCell,branchCell,action);
+    body.append(tr);
   });
 }
 
-$('selectAllCb').addEventListener('change', e => {
-  document.querySelectorAll('.batch-cb').forEach(cb => cb.checked = e.target.checked);
-  updateBatchUI();
-});
-$('pendingRows').addEventListener('change', updateBatchUI);
-
-function updateBatchUI() {
-  const count = document.querySelectorAll('.batch-cb:checked').length;
-  $('selCount').textContent = count;
-  $('batchBar').classList.toggle('hidden', count === 0);
-}
-
-$('batchApproveBtn').addEventListener('click', async () => {
-  const rows = Array.from(document.querySelectorAll('.batch-cb:checked')).map(cb => cb.closest('tr'));
-  if(!rows.length) return;
-  await processApproval(rows);
-});
-
-async function processApproval(rows, singleObj = null) {
-  if (!currentUser) {
-    showToast('Your administrator session has expired. Please sign in again.', 'error');
-    return;
+async function approveStudent(student,idValue,courseValue,branchValue,button) {
+  if(!currentUser) {showStatus("approvalStatus","Your administrator session has expired. Sign in again.",true);return;}
+  if(!student.id||!student.email||!student.name||!idValue||!courseValue||!branchValue) {
+    showStatus("approvalStatus","Complete the student's name, email, official student ID, course and branch before approval.",true);return;
   }
-
-  const approvals = [];
-  for (const tr of rows) {
-    const cb = tr.querySelector('.batch-cb');
-    if (!cb) continue;
-    const pid = cb.dataset.id;
-    const idVal = tr.querySelector('.i-id')?.value.trim() || '';
-    const courseVal = tr.querySelector('.i-course')?.value.trim() || '';
-    const branchVal = tr.querySelector('.i-branch')?.value.trim() || '';
-    const srcObj = singleObj || loadedData.student_access.find(x => x.id === pid);
-
-    if (!srcObj) {
-      showToast('Registration record not found. Refresh and try again.', 'error');
-      continue;
-    }
-    if (!idVal || !courseVal || !branchVal) {
-      showToast(`Complete ID, course and branch for ${srcObj.name || srcObj.email || pid}.`, 'warning');
-      continue;
-    }
-
-    approvals.push({
-      pid, idVal, courseVal, branchVal,
-      name: srcObj.name || srcObj.fullName || '',
-      email: srcObj.email || ''
-    });
-  }
-
-  if (!approvals.length) return;
-
-  const approveButtons = [ $('batchApproveBtn'), ...Array.from(document.querySelectorAll('.btn-approve')) ];
-  approveButtons.forEach(button => { button.disabled = true; });
-
+  button.disabled=true;button.textContent="Approving…";
   try {
-    // Each student needs two writes; 200 students per batch stays comfortably below 500 writes.
-    for (let offset = 0; offset < approvals.length; offset += 200) {
-      const chunk = approvals.slice(offset, offset + 200);
-      const batch = writeBatch(db);
-
-      for (const item of chunk) {
-        const sharedData = {
-          active: true,
-          studentId: item.idVal,
-          course: item.courseVal,
-          branch: item.branchVal,
-          approvedAt: serverTimestamp(),
-          approvedBy: currentUser.uid
-        };
-
-        batch.set(doc(db, 'students', item.pid), {
-          uid: item.pid,
-          name: item.name,
-          personName: item.name,
-          email: item.email,
-          status: 'Active',
-          createdAt: serverTimestamp(),
-          ...sharedData
-        }, { merge: true });
-
-        batch.set(doc(db, 'student_access', item.pid), {
-          name: item.name,
-          email: item.email,
-          ...sharedData
-        }, { merge: true });
-      }
-
-      await batch.commit();
-    }
-
-    showToast(`Successfully approved ${approvals.length} student(s).`);
-    await fetchData();
-  } catch (error) {
-    showToast("Approval failed: " + (error.message || 'Unknown Firestore error'), 'error');
-    await fetchData();
-  } finally {
-    approveButtons.forEach(button => { button.disabled = false; });
+    const batch=writeBatch(db);
+    const studentData={
+      uid:student.id,
+      name:student.name,
+      personName:student.name,
+      email:student.email,
+      studentId:idValue,
+      course:courseValue,
+      branch:branchValue,
+      active:true,
+      status:"Active",
+      approvedAt:serverTimestamp(),
+      approvedBy:currentUser.uid
+    };
+    batch.set(doc(db,"students",student.id),{
+      ...studentData,
+      createdAt:serverTimestamp()
+    },{merge:true});
+    batch.set(doc(db,"student_access",student.id),{
+      active:true,
+      studentId:idValue,
+      course:courseValue,
+      branch:branchValue,
+      name:student.name,
+      email:student.email,
+      approvedAt:serverTimestamp(),
+      approvedBy:currentUser.uid
+    },{merge:true});
+    await batch.commit();
+    showStatus("approvalStatus",`${student.name} has been approved. Their student record is now active.`);
+    await refreshDashboard(true);
+  } catch(error) {
+    console.error("Student approval failed:",error);
+    showStatus("approvalStatus",`Approval failed: ${error.message}. Check the Firestore rules for student_access and students.`,true);
+    button.disabled=false;button.textContent="Approve";
   }
 }
 
-/* --- Form Draft Auto-Save --- */
-const formFields = ['f_type','f_name','f_id','f_course','f_date','f_status','f_topic','f_notes'];
-formFields.forEach(id => $(id).addEventListener('input', saveDraft));
-
-function saveDraft() {
-  const draft = {};
-  formFields.forEach(id => draft[id] = $(id).value);
-  try { localStorage.setItem('cinps_form_draft', JSON.stringify(draft)); } catch (_) {}
+function renderChart(data) {
+  const chart=$("activityChart");
+  chart.replaceChildren();
+  const counts=Object.keys(types).map(key=>({key,label:types[key],count:data[key].length}));
+  const max=Math.max(1,...counts.map(x=>x.count));
+  counts.forEach(item=>{
+    const row=document.createElement("div");row.className="barrow";
+    const label=document.createElement("span");label.textContent=item.label;
+    const track=document.createElement("div");track.className="track";
+    const fill=document.createElement("div");fill.className="fill";
+    fill.style.width=`${item.count/max*100}%`;track.append(fill);
+    const count=document.createElement("strong");count.textContent=item.count;
+    row.append(label,track,count);chart.append(row);
+  });
 }
-function loadDraft() {
-  let d = null;
-  try { d = JSON.parse(localStorage.getItem('cinps_form_draft') || 'null'); } catch (_) {}
-  if(d && (d.f_name || d.f_notes)) {
-    formFields.forEach(id => {
-      if(d[id] !== undefined && d[id] !== '') $(id).value = d[id];
+function renderRecent(data) {
+  allRecentRows=Object.values(data).flat().sort((a,b)=>{
+    const ta=a.createdAt?.toMillis?.() || a.submittedAt?.toMillis?.() || 0;
+    const tb=b.createdAt?.toMillis?.() || b.submittedAt?.toMillis?.() || 0;
+    return tb-ta;
+  }).slice(0,100);
+  applyRecordFilters();
+}
+function rowDetails(item) {
+  const isAttendance=item._collection==="attendance";
+  let notes=item.notes || "";
+  if(isAttendance && item.startTime && item.endTime) {
+    const timeRange=`Class time: ${formatTime(item.startTime)}–${formatTime(item.endTime)}`;
+    if(/Class time:\s*[^.;]+/i.test(notes)) notes=notes.replace(/Class time:\s*[^.;]+/i,timeRange);
+    else notes=`${notes}${notes ? "; " : ""}${timeRange}.`;
+  }
+  const topicAlreadyShown = ["class_updates","clinical_updates","internship_updates"].includes(item._collection);
+  return [notes,(!isAttendance && !topicAlreadyShown) ? item.topic : "",isAttendance ? "" : item.status,isAttendance ? "" : item.attendanceStatus,item.courseType,item.mode,!isAttendance&&item.startTime?`Start: ${formatTime(item.startTime)}`:"",!isAttendance&&item.endTime?`End: ${formatTime(item.endTime)}`:""].filter(value=>value!=null&&String(value).trim()!=="").join(" · ") || "—";
+}
+function applyRecordFilters() {
+  const query=($("recordSearch")?.value || "").trim().toLowerCase();
+  const collections=["class_updates","attendance","internship_updates","clinical_updates"];
+  let visibleTotal=0;
+  function matches(item){
+    const haystack=[item.id,item.personName,item.name,item.instructorName,item.studentName,item.course,rowDetails(item),item.personId,item.studentId,item.instructorId,types[item._collection]].map(safeText).join(" ").toLowerCase();
+    return !query || haystack.includes(query);
+  }
+  function draw(collectionName, bodyId, countId, colspan=5){
+    const source=(loadedRecords[collectionName]||[]).filter(matches).sort((a,b)=>recordSortValue(b)-recordSortValue(a));
+    visibleTotal+=source.length;
+    const count=$(countId); if(count) count.textContent=`${source.length} record${source.length===1?"":"s"}`;
+    const body=$(bodyId); body.replaceChildren();
+    if(!source.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=colspan;td.textContent=query?"No records match your search.":"No records available in this category yet.";tr.append(td);body.append(tr);return;}
+    source.forEach(item=>{
+      const tr=document.createElement("tr");
+      const name=item.personName||item.name||item.instructorName||item.studentName||"—";
+      let fourth="—";
+      if(collectionName==="attendance") fourth=item.attendanceStatus||item.status||"—";
+      else fourth=item.topic||item.department||item.hospital||item.activity||item.mode||"—";
+      const details=rowDetails(item);
+      const values=collectionName==="people"?[formatDate(item.recordDate||item.date),types[item._collection]||item._collection,name,item.course||"—",details]:[formatDate(item.recordDate||item.date),name,item.course||"—",fourth,details];
+      values.forEach((value,index)=>{const td=document.createElement("td");td.textContent=safeText(value);if(index===1&&collectionName==="people"){const badge=document.createElement("span");badge.className="record-type";badge.textContent=safeText(value);td.textContent="";td.append(badge);}tr.append(td);});body.append(tr);
     });
-    if (!$('f_date').value) $('f_date').value = localDateString();
-    $('draftBadge').classList.remove('hidden');
-    $('f_type').dispatchEvent(new Event('change'));
-  } else {
-    $('f_date').value = localDateString();
   }
+  collections.forEach(name=>draw(name,`rows-${name}`,`count-${name}`));
+  const people=[...(loadedRecords.students||[]),...(loadedRecords.instructors||[])].filter(matches);
+  visibleTotal+=people.length;
+  $("count-people").textContent=`${people.length} record${people.length===1?"":"s"}`;
+  const body=$("rows-people");body.replaceChildren();
+  if(!people.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent=query?"No records match your search.":"No student or instructor registrations available yet.";tr.append(td);body.append(tr);}
+  else people.sort((a,b)=>recordSortValue(b)-recordSortValue(a)).forEach(item=>{const tr=document.createElement("tr");[formatDate(item.recordDate||item.date),types[item._collection]||item._collection,item.personName||item.name||item.instructorName||item.studentName||"—",item.course||"—",rowDetails(item)].forEach((value,index)=>{const td=document.createElement("td");td.textContent=safeText(value);if(index===1){const badge=document.createElement("span");badge.className="record-type";badge.textContent=safeText(value);td.textContent="";td.append(badge);}tr.append(td);});body.append(tr);});
+  $("recordCount").textContent=`${visibleTotal} matching records across all tables`;
 }
-$('clearDraftBtn').addEventListener('click', () => {
-  $('recordForm').reset();
-  try { localStorage.removeItem('cinps_form_draft'); } catch (_) {}
-  $('draftBadge').classList.add('hidden');
-  $('f_date').value = localDateString();
-  $('f_type').dispatchEvent(new Event('change'));
-});
 
-$('f_type').addEventListener('change', e => {
-  const t = e.target.value;
-  $('wrap_attendance').classList.toggle('hidden', t !== 'attendance');
-  $('wrap_topic').classList.toggle('hidden', ['students','instructors'].includes(t));
-  $('l_name').textContent = t === 'instructors' ? 'Instructor Name' : 'Student / Name';
-});
-
-$('recordForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  $('saveBtn').disabled = true; $('saveBtn').textContent = "Saving...";
-  
-  const type = $('f_type').value;
-  const payload = {
-    personName: $('f_name').value.trim(),
-    personId: $('f_id').value.trim(),
-    course: $('f_course').value.trim(),
-    recordDate: $('f_date').value,
-    notes: $('f_notes').value.trim(),
-    topic: $('f_topic').value.trim(),
-    createdBy: currentUser.uid, createdByEmail: currentUser.email,
-    createdAt: serverTimestamp()
+function csvCell(value) {
+  let text= value==null ? "" : String(value);
+  // Prevent spreadsheet formula execution in exported cells.
+  if(/^[\s]*[=+@]/.test(text) || /^[\s]*-[0-9]/.test(text)) text="'"+text;
+  return '"'+text.replace(/"/g,'""')+'"';
+}
+function downloadCsvReport() {
+  if(!currentUser){showStatus("appError","Please sign in to download the report.",true);return;}
+  const names=Object.keys(types);
+  if(!Object.keys(loadedRecords).length){showStatus("appError","Academic data has not loaded yet. Use Refresh Data and try again.",true);return;}
+  const rows=[["CINPS Academic Intelligence — Academic Report"],["Generated at",new Date().toLocaleString()],["Generated by",currentUser.email||currentUser.uid],["Collection","Record count"],...names.map(name=>[types[name],(loadedRecords[name]||[]).length]),[],["Record ID","Collection","Record Type","Record Date","Name","Person ID","Course","Topic","Attendance Status","Status","Start Time","End Time","Mode","Course Type","Details","Created By","Created By Email","Created At"]];
+  names.forEach(name=>(loadedRecords[name]||[]).forEach(item=>{
+    rows.push([item.id,name,types[name],item.recordDate||item.date||"",item.personName||item.name||item.instructorName||item.studentName||"",item.personId||item.studentId||item.instructorId||"",item.course||"",item.topic||"",item.attendanceStatus||"",item.status||"",item.startTime||"",item.endTime||"",item.mode||"",item.courseType||"",item.notes||"",item.createdBy||"",item.createdByEmail||"",formatDate(item.createdAt||item.submittedAt)]);
+  }));
+  const csv="\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);const link=document.createElement("a");
+  link.href=url;link.download=`CINPS_Academic_Report_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  showStatus("appError","CSV report downloaded successfully.",false);
+}
+$("recordForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!currentUser) {showStatus("formStatus","Sign in again to continue.",true);return}
+  const type=$("recordType").value;
+  const personName=$("personName").value.trim();
+  const course=$("course").value.trim();
+  const recordDate=$("recordDate").value;
+  if(!personName||!course||!recordDate) {
+    showStatus("formStatus","Please complete the name, course and date.",true);return;
+  }
+  const record={
+    personName,
+    personId:$("personId").value.trim(),
+    course,
+    recordDate,
+    notes:$("notes").value.trim(),
+    topic:$("topic").value.trim(),
+    createdBy:currentUser.uid,
+    createdByEmail:currentUser.email || "",
+    createdAt:serverTimestamp()
   };
-  if(type==='attendance') payload.attendanceStatus = $('f_status').value;
-
+  if(type==="attendance") record.attendanceStatus=$("attendanceStatus").value;
+  $("saveBtn").disabled=true;
+  $("saveBtn").textContent="Saving…";
   try {
-    await addDoc(collection(db, type), payload);
-    showToast(`${types[type]} saved successfully.`);
-    $('clearDraftBtn').click();
-    fetchData();
-  } catch(err) {
-    showToast("Save failed: "+err.message, "error");
+    await addDoc(collection(db,type),record);
+    showStatus("formStatus",`${types[type]} record saved successfully.`);
+    $("recordForm").reset();
+    $("recordDate").value=new Date().toLocaleDateString("en-CA");
+    $("recordType").dispatchEvent(new Event("change"));
+    await refreshDashboard();
+  } catch(error) {
+    console.error(error);
+    showStatus("formStatus",`Record not saved: ${error.message}`,true);
   } finally {
-    $('saveBtn').disabled = false; $('saveBtn').textContent = "Save to Database";
+    $("saveBtn").disabled=false;
+    $("saveBtn").textContent="Save new record";
   }
 });
-
-/* --- Directory & Filters --- */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    activeTab = e.target.getAttribute('data-tab');
-    renderDirectory();
-  });
-});
-
-['searchQ','filterCourse','filterStart','filterEnd'].forEach(id => {
-  $(id).addEventListener('input', renderDirectory);
-});
-
-function updateCourseDropdown() {
-  const courses = new Set();
-  Object.keys(loadedData).forEach(k => {
-    if(k==='student_access') return;
-    loadedData[k].forEach(item => { if(item.course) courses.add(item.course.toUpperCase()); });
-  });
-  const sel = $('filterCourse');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">All Courses</option>';
-  Array.from(courses).sort().forEach(c => {
-    sel.innerHTML += `<option value="${c}">${c}</option>`;
-  });
-  sel.value = cur;
-}
-
-function renderDirectory() {
-  const sq = $('searchQ').value.toLowerCase();
-  const sc = $('filterCourse').value.toUpperCase();
-  const sStart = $('filterStart').value ? new Date($('filterStart').value).getTime() : 0;
-  // End date logic: push to end of the day
-  const sEnd = $('filterEnd').value ? new Date($('filterEnd').value).getTime() + 86400000 : Infinity;
-  
-  let master = [];
-  Object.keys(types).forEach(k => master.push(...(loadedData[k]||[])));
-  
-  // Tab Filter
-  if(activeTab !== 'all') master = master.filter(m => m._col === activeTab);
-  
-  // Custom Multi-Criteria Filter
-  const filtered = master.filter(m => {
-    const name = String(m.personName || m.name || m.instructorName || m.studentName || '').toLowerCase();
-    const c = String(m.course || '').toUpperCase();
-    const idStr = String(m.personId || m.studentId || m.instructorId || '').toLowerCase();
-    const topic = String(m.topic || m.department || m.hospital || '').toLowerCase();
-    const notes = String(m.notes || '').toLowerCase();
-    
-    if(sq && !(name.includes(sq) || idStr.includes(sq) || topic.includes(sq) || notes.includes(sq))) return false;
-    if(sc && c !== sc) return false;
-    
-    // Date filtering using recordSortValue equivalent logic
-    const dVal = m.recordDate
-      ? new Date(`${m.recordDate}T00:00:00`).getTime()
-      : (m.createdAt?.toMillis ? m.createdAt.toMillis() : 0);
-    if ((sStart || sEnd !== Infinity) && (!dVal || dVal < sStart || dVal >= sEnd)) return false;
-    
-    return true;
-  });
-
-  filtered.sort((a,b) => (b.recordDate?new Date(b.recordDate).getTime():0) - (a.recordDate?new Date(a.recordDate).getTime():0));
-
-  const tb = $('directoryRows'); tb.innerHTML = '';
-  if(!filtered.length) {
-    tb.innerHTML = '<tr><td colspan="7" class="muted">No matching records found.</td></tr>';
-    return;
-  }
-  
-  filtered.forEach(m => {
-    const tr = document.createElement('tr');
-    
-    const dStr = m.recordDate || (m.createdAt?.toDate ? m.createdAt.toDate().toLocaleDateString() : '—');
-    const name = m.personName || m.name || m.instructorName || m.studentName || '—';
-    const id = m.personId || m.studentId || m.instructorId || '';
-    
-    let topicStat = m.topic || m.department || m.hospital || '—';
-    if(m._col === 'attendance') {
-      const cls = m.attendanceStatus==='Present'?'badge-green':m.attendanceStatus==='Absent'?'badge-red':'badge-blue';
-      topicStat = `<span class="badge ${cls}">${m.attendanceStatus||'—'}</span>`;
-    }
-
-    // Contact Action
-    let contactHtml = '—';
-    if(m.email) contactHtml = `<a href="mailto:${escapeHTML(m.email)}" title="Email" style="text-decoration:none;font-size:18px;">✉️</a>`;
-
-    if (m._col === 'attendance') {
-      const cls = m.attendanceStatus==='Present'?'badge-green':m.attendanceStatus==='Absent'?'badge-red':'badge-blue';
-      topicStat = `<span class="badge ${cls}">${escapeHTML(m.attendanceStatus || '—')}</span>`;
-    } else {
-      topicStat = escapeHTML(topicStat);
-    }
-
-    tr.innerHTML = `
-      <td>${escapeHTML(dStr)}</td>
-      <td><span class="badge badge-blue">${escapeHTML(types[m._col] || m._col || '—')}</span></td>
-      <td><strong>${escapeHTML(name)}</strong><br><span class="muted">${escapeHTML(id)}</span></td>
-      <td>${escapeHTML(m.course || '—')}</td>
-      <td>${topicStat}</td>
-      <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHTML(m.notes || '')}">${escapeHTML(m.notes || '—')}</td>
-      <td style="text-align:center;">${contactHtml}</td>
-    `;
-    tb.appendChild(tr);
-  });
-}
-
-/* --- CSV Export --- */
-$('exportBtn').addEventListener('click', () => {
-  const rows = [["Category","Date","Name","ID","Course","Topic/Status","Notes","Email","CreatedBy"]];
-  const tbRows = $('directoryRows').querySelectorAll('tr');
-  if(!tbRows.length || tbRows[0].cells.length===1) return showToast("No data to export","warning");
-  
-  Object.keys(types).forEach(col => {
-    if(activeTab!=='all' && activeTab!==col) return;
-    (loadedData[col]||[]).forEach(m => {
-      rows.push([
-        types[col], m.recordDate||'', 
-        m.personName||m.name||m.instructorName||m.studentName||'', 
-        m.personId||m.studentId||m.instructorId||'', 
-        m.course||'', m.topic||m.attendanceStatus||m.department||m.hospital||'', 
-        m.notes||'', m.email||'', m.createdByEmail||''
-      ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
-    });
-  });
-  
-  const blob = new Blob(["﻿" + rows.join('\r\n')], {type: 'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url;
-  a.download = `CINPS_Export_${localDateString()}.csv`;
-  a.click(); URL.revokeObjectURL(url);
-  showToast("CSV Exported successfully");
+$("recordType").dispatchEvent(new Event("change"));
+$("recordSearch").addEventListener("input",applyRecordFilters);
+$("resetFormBtn").addEventListener("click",()=>{
+  $("recordForm").reset();
+  $("recordDate").value=new Date().toLocaleDateString("en-CA");
+  $("recordType").dispatchEvent(new Event("change"));
+  hideStatus("formStatus");
 });
 </script>
 </body>
