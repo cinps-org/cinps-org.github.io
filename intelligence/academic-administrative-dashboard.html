@@ -319,7 +319,7 @@ tbody tr:hover { background: var(--bg-color); }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, addDoc, getDocs, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({
@@ -334,8 +334,17 @@ provider.setCustomParameters({ prompt: "select_account" });
 
 const $ = id => document.getElementById(id);
 let currentUser = null;
-let loadedData = {};
+let loadedData = Object.fromEntries(
+  ['students','instructors','attendance','class_updates','clinical_updates','internship_updates']
+    .map(key => [key, []])
+);
 let activeTab = 'all';
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+}
 const types = { students:"Student", instructors:"Instructor", attendance:"Attendance", class_updates:"Class Update", clinical_updates:"Clinical", internship_updates:"Internship" };
 
 /* --- Theme Engine --- */
@@ -346,7 +355,10 @@ function toggleTheme() {
   localStorage.setItem('cinps_theme', newTheme);
   $('themeToggle').textContent = isDark ? '🌙' : '☀️';
 }
-if(localStorage.getItem('cinps_theme') === 'dark') toggleTheme();
+if (localStorage.getItem('cinps_theme') === 'dark') {
+  document.body.setAttribute('data-theme', 'dark');
+  $('themeToggle').textContent = '☀️';
+}
 $('themeToggle').addEventListener('click', toggleTheme);
 
 /* --- Toasts --- */
@@ -360,9 +372,18 @@ function showToast(msg, type='success') {
 }
 
 /* --- Auth --- */
-$('loginBtn').addEventListener('click', async () => {
-  try { await signInWithPopup(auth, provider); } 
-  catch(e) { $('loginStatus').textContent = e.message; }
+$('authArea').addEventListener('click', async event => {
+  if (!event.target.closest('#loginBtn')) return;
+  try {
+    $('loginStatus').textContent = '';
+    await signInWithRedirect(auth, provider);
+  } catch (e) {
+    $('loginStatus').textContent = e.message || 'Sign-in failed.';
+  }
+});
+
+getRedirectResult(auth).catch(error => {
+  $('loginStatus').textContent = error.message || 'Google sign-in could not be completed.';
 });
 
 onAuthStateChanged(auth, async user => {
@@ -373,7 +394,10 @@ onAuthStateChanged(auth, async user => {
   }
   try {
     const adminDoc = await getDoc(doc(db, "admins", user.uid));
-    if(!adminDoc.exists() || !['superAdmin','admin'].includes(adminDoc.data().role)) throw new Error("Unauthorized");
+    const adminData = adminDoc.exists() ? adminDoc.data() : null;
+    if (!adminData || !['superAdmin','admin'].includes(adminData.role)) {
+      throw new Error("Unauthorized");
+    }
     currentUser = user;
     $('welcome').classList.add('hidden'); $('app').classList.remove('hidden');
     $('authArea').innerHTML = `
@@ -407,9 +431,10 @@ async function fetchData() {
     updateDashboard();
     showToast("Data synced with Firestore");
   } catch(e) {
-    showToast("Failed to sync data: " + e.message, "error");
+    showToast("Failed to sync data: " + (e.message || 'Unknown Firestore error'), "error");
+  } finally {
+    $('refreshBtn').disabled = false;
   }
-  $('refreshBtn').disabled = false;
 }
 $('refreshBtn').addEventListener('click', fetchData);
 
@@ -465,11 +490,11 @@ function renderPending() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="checkbox" class="batch-cb" data-id="${p.id}"></td>
-      <td><strong>${p.name||'No Name'}</strong><div class="muted">${p.email||''}</div></td>
-      <td>${p.requestedAt?.toDate ? p.requestedAt.toDate().toLocaleDateString() : '—'}</td>
-      <td><input type="text" class="i-id" value="${p.studentId||''}" placeholder="ID"></td>
-      <td><input type="text" class="i-course" value="${p.course||''}" placeholder="Course"></td>
-      <td><input type="text" class="i-branch" value="${p.branch||''}" placeholder="Branch"></td>
+      <td><strong>${escapeHTML(p.name || 'No Name')}</strong><div class="muted">${escapeHTML(p.email || '')}</div></td>
+      <td>${escapeHTML(p.requestedAt?.toDate ? p.requestedAt.toDate().toLocaleDateString() : '—')}</td>
+      <td><input type="text" class="i-id" value="${escapeHTML(p.studentId || '')}" placeholder="ID"></td>
+      <td><input type="text" class="i-course" value="${escapeHTML(p.course || '')}" placeholder="Course"></td>
+      <td><input type="text" class="i-branch" value="${escapeHTML(p.branch || '')}" placeholder="Branch"></td>
       <td><button class="success btn-approve">Approve</button></td>
     `;
     // Single approve
@@ -531,10 +556,15 @@ async function processApproval(rows, singleObj = null) {
   
   if(validCount > 0) {
     try {
+      $('batchApproveBtn').disabled = true;
       await batch.commit();
       showToast(`Successfully approved ${validCount} student(s)`);
-      fetchData();
-    } catch(e) { showToast("Batch failed: "+e.message, "error"); }
+      await fetchData();
+    } catch(e) {
+      showToast("Approval failed: " + (e.message || 'Unknown Firestore error'), "error");
+    } finally {
+      $('batchApproveBtn').disabled = false;
+    }
   }
 }
 
@@ -550,7 +580,8 @@ function saveDraft() {
 function loadDraft() {
   const d = JSON.parse(localStorage.getItem('cinps_form_draft'));
   if(d && (d.f_name || d.f_notes)) {
-    formFields.forEach(id => { if(d[id]) $(id).value = d[id]; });
+    formFields.forEach(id => { if(d[id] !== undefined && d[id] !== '') $(id).value = d[id]; });
+    if (!$('f_date').value) $('f_date').value = new Date().toISOString().split('T')[0];
     $('draftBadge').classList.remove('hidden');
     $('f_type').dispatchEvent(new Event('change'));
   } else {
@@ -684,15 +715,22 @@ function renderDirectory() {
 
     // Contact Action
     let contactHtml = '—';
-    if(m.email) contactHtml = `<a href="mailto:${m.email}" title="Email" style="text-decoration:none;font-size:18px;">✉️</a>`;
+    if(m.email) contactHtml = `<a href="mailto:${escapeHTML(m.email)}" title="Email" style="text-decoration:none;font-size:18px;">✉️</a>`;
+
+    if (m._col === 'attendance') {
+      const cls = m.attendanceStatus==='Present'?'badge-green':m.attendanceStatus==='Absent'?'badge-red':'badge-blue';
+      topicStat = `<span class="badge ${cls}">${escapeHTML(m.attendanceStatus || '—')}</span>`;
+    } else {
+      topicStat = escapeHTML(topicStat);
+    }
 
     tr.innerHTML = `
-      <td>${dStr}</td>
-      <td><span class="badge badge-blue">${types[m._col]}</span></td>
-      <td><strong>${name}</strong><br><span class="muted">${id}</span></td>
-      <td>${m.course||'—'}</td>
+      <td>${escapeHTML(dStr)}</td>
+      <td><span class="badge badge-blue">${escapeHTML(types[m._col] || m._col || '—')}</span></td>
+      <td><strong>${escapeHTML(name)}</strong><br><span class="muted">${escapeHTML(id)}</span></td>
+      <td>${escapeHTML(m.course || '—')}</td>
       <td>${topicStat}</td>
-      <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${m.notes||''}">${m.notes||'—'}</td>
+      <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHTML(m.notes || '')}">${escapeHTML(m.notes || '—')}</td>
       <td style="text-align:center;">${contactHtml}</td>
     `;
     tb.appendChild(tr);
@@ -718,8 +756,7 @@ $('exportBtn').addEventListener('click', () => {
     });
   });
   
-  const blob = new Blob(["﻿" + rows.join('
-')], {type: 'text/csv;charset=utf-8;'});
+  const blob = new Blob(["﻿" + rows.join('\r\n')], {type: 'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url;
   a.download = `CINPS_Export_${new Date().toISOString().slice(0,10)}.csv`;
