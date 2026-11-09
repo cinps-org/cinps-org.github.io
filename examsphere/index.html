@@ -169,9 +169,18 @@ button{min-height:40px}
 }
 @media (max-width: 560px) {
   .top { grid-template-columns: auto minmax(0, 1fr); }
-  .top-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Keep the global header compact and let active exam dialogs cover it. */
+  .top { padding: 8px 10px; gap: 7px; min-height: 0; }
+  .mobile-menu-btn { min-height: 40px; padding: 8px 10px; }
+  .top-heading { line-height: 1.25; }
+  #pageTitle { font-size: 15px; }
+  #identity { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .top-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
   .top-actions .tag { display: none; }
-  .top-actions button { width: 100%; min-height: 44px; padding: 9px 7px; font-size: 13px; }
+  .top-actions button { width: 100%; min-width: 0; min-height: 38px; padding: 7px 3px; font-size: 11px; white-space: nowrap; }
+  /* The exam modal must sit above the sticky header, not underneath it. */
+  .modalback { z-index: 100; }
+  .modal { max-height: 96dvh; }
   .content { padding: 10px; }
   .overview-intro h2, .section h2 { overflow-wrap: break-word; }
   .toolbar { min-width: 0; }
@@ -180,9 +189,21 @@ button{min-height:40px}
   .auth { width: 100%; max-width: 460px; }
 }
 @media (max-width: 360px) {
-  .top-actions { grid-template-columns: minmax(0, 1fr); }
+  .top-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .top-actions button { font-size: 10px; padding: 7px 2px; }
   .grid { grid-template-columns: minmax(0, 1fr); }
   .tablewrap td { grid-template-columns: minmax(70px, 30%) minmax(0, 1fr); }
+}
+
+/* Mobile-only utility actions live inside the slide-out menu. */
+.mobile-menu-actions { display:none; }
+@media (max-width:850px) {
+  .mobile-menu-actions { display:grid; gap:8px; padding:12px 0; border-top:1px solid rgba(219,234,254,.22); border-bottom:1px solid rgba(219,234,254,.22); }
+  .mobile-menu-actions button { width:100%; min-height:44px; text-align:left; background:rgba(255,255,255,.08); border:1px solid rgba(219,234,254,.24); color:#fff; }
+  .top-actions { display:flex; width:auto; grid-column:1 / -1; grid-row:2; justify-content:flex-start; margin-top:4px; }
+  .top-actions .tag { display:none !important; }
+  #exportBtn, #themeBtn { display:none !important; }
+  #refreshBtn { width:auto; min-width:112px; }
 }
 
 </style>
@@ -201,6 +222,10 @@ button{min-height:40px}
  <div id="mobileNavBackdrop" class="mobile-nav-backdrop" aria-hidden="true"></div>
  <aside class="side" id="appSideNav">
   <div class="brand"><div class="logo">CINPS</div><div><b>ExamSphere</b><br><small>ACADEMIC INTELLIGENCE</small></div></div>
+  <div class="mobile-menu-actions" aria-label="Dashboard actions">
+   <button id="mobileExportBtn" class="plain" type="button">↓ Export report</button>
+   <button id="mobileThemeBtn" class="plain" type="button">◐ Dark mode</button>
+  </div>
   <nav id="nav"></nav>
   <div style="margin-top:auto"><small id="roleInfo"></small><br><button id="signOut" class="plain" style="margin-top:10px">Sign out</button></div>
  </aside>
@@ -263,6 +288,9 @@ async function identify(u){
  throw new Error("No matching active CINPS role profile was found for this Google account.");
 }
 async function loadData(){
+ // Clear the previous authenticated user's in-memory records before loading
+ // the current role's authorised dataset (important on shared devices).
+ courses=[];accesses=[];questions=[];exams=[];published=[];subs=[];results=[];
  // Firestore Rules are not filters. Every instructor list query is explicitly
  // constrained to the instructor's assigned course codes.
  if(isAdmin()){
@@ -367,12 +395,26 @@ function renderAll(){
  $("examRows").innerHTML=exams.filter(e=>inScope(e.courseCode)).map(e=>`<tr><td>${esc(e.title)}</td><td>${esc(e.courseCode)}</td><td>${(e.questionIds||[]).length}</td><td>${esc(e.durationMinutes)} min</td><td><span class="tag">${esc(e.status)}</span></td><td><div class="actions">${e.status==="draft"&&isInstructor()?`<button class="plain" data-publish="${esc(e.id)}">Publish</button>`:""}${e.status==="published"&&(isInstructor()||isAdmin())?`<button class="plain" data-close="${esc(e.id)}">Close</button>`:""}${e.status==="draft"&&!isInstructor()?"Instructor publishes":""}${e.status==="closed"?"Closed":""}</div></td></tr>`).join("")||emptyRow(6);
  $("studentExams").innerHTML=published.map(e=>`<div class="question"><b>${esc(e.title)}</b><p>${esc(e.courseCode)} · ${esc(e.durationMinutes)} minutes · ${esc(e.totalMarks)} marks</p><button class="primary" data-take="${esc(e.id)}">Start examination</button></div>`).join("")||'<div class="empty">No published examinations for your course.</div>';
  const resultRecords=(isStudent()?results:subs.filter(s=>inScope(s.courseCode))).slice().sort((a,b)=>submissionTime_(b)-submissionTime_(a));
- $("resultRows").innerHTML=resultRecords.map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);const score=r?.score;const state=r?.published?"Published":r?"Graded — awaiting instructor review":"Awaiting automatic grading";const action=isStudent()?"View only":r?.published?`<button class="plain" data-grade="${esc(s.id)}">View result</button>`:r?`<button class="plain" data-grade="${esc(s.id)}">Review & publish</button>`:`<span class="note">Awaiting Apps Script grading</span>`;const submitted=s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted";return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(submitted)}</td><td>${score==null?"Awaiting":esc(score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${state}</td><td>${action}</td></tr>`}).join("")||emptyRow(6);
+ $("resultRows").innerHTML=resultRecords.map(s=>{const r=isStudent()?s:results.find(x=>x.id===s.id);const score=r?.score;const state=r?.published?"Published":r?"Graded — awaiting instructor review":"Awaiting automatic grading";const action=isStudent()?"View only":r?.published?`<button class="plain" data-grade="${esc(s.id)}">View result</button>`:r&&isInstructor()?`<button class="plain" data-grade="${esc(s.id)}">Review & publish</button>`:r?`<span class="note">Awaiting assigned instructor review</span>`:`<span class="note">Awaiting Apps Script grading</span>`;const submitted=s.submittedAt?.toDate?s.submittedAt.toDate().toLocaleString():"Submitted";return `<tr><td>${esc(s.studentName||s.studentUid)}</td><td>${esc(s.examTitle||s.examId)}</td><td>${esc(submitted)}</td><td>${score==null?"Awaiting":esc(score)+" / "+esc(r?.totalMarks??s.totalMarks)}</td><td>${state}</td><td>${action}</td></tr>`}).join("")||emptyRow(6);
  $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
 }
 function emptyRow(n){return `<tr><td colspan="${n}" class="empty">No records available.</td></tr>`;}
-function modal(title,body,save){$("modalSave").textContent="Save";$("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalBack").classList.remove("hidden");$("modalSave").onclick=async()=>{try{await save();$("modalBack").classList.add("hidden");await loadData();notice("Saved successfully.");}catch(e){notice(e.message,true);}};}
-function closeModal(){$("modalBack").classList.add("hidden");}
+function modal(title,body,save){
+ stopExamTimer();
+ $("modalSave").textContent="Save";$("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalBack").classList.remove("hidden");
+ $("modalSave").onclick=async()=>{
+  const button=$("modalSave");if(button.disabled)return;button.disabled=true;
+  try{
+   await save();stopExamTimer();$("modalBack").classList.add("hidden");
+   try{await loadData();notice("Saved successfully.");}
+   catch(refreshError){notice("The change was saved, but the dashboard could not refresh: "+(refreshError.message||"Unknown refresh error"),true);}
+  }catch(e){notice(e.message||"The operation could not be completed.",true);}
+  finally{button.disabled=false;}
+ };
+}
+let examTimerInterval=null;
+function stopExamTimer(){if(examTimerInterval!==null){clearInterval(examTimerInterval);examTimerInterval=null;}}
+function closeModal(){stopExamTimer();$("modalBack").classList.add("hidden");}
 $("modalClose").onclick=closeModal;
 let pendingSyllabus=null;
 function parseSyllabusCsv(csvText){
@@ -396,8 +438,8 @@ function bindSyllabusPicker(courseCode){const input=$("syllabusFile"),preview=$(
 function openSyllabusImport(course){pendingSyllabus=null;modal(`Import structured syllabus — ${course.code}`,`<p class="muted">Choose the official CINPS syllabus CSV. The importer groups rows into Subject → Unit → Topic and automatically excludes Subject Code 101T / Computer Science.</p><label>Official syllabus CSV</label><input id="syllabusFile" type="file" accept=".csv,text/csv"><div id="syllabusPreview"></div><p class="note">This updates only the academic structure of this course. It does not delete questions, exams, student records or instructor assignments.</p>`,async()=>{if(!pendingSyllabus)throw Error("Choose a valid syllabus CSV and wait for the preview before saving.");await updateDoc(D("examsphere_courses",course.code),{subjects:pendingSyllabus,updatedAt:serverTimestamp(),updatedBy:uid()});});bindSyllabusPicker(course.code);}
 $("courseRows").addEventListener("click",e=>{const b=e.target.closest("[data-import-syllabus]");if(!b)return;const course=courses.find(c=>c.code===b.dataset.importSyllabus);if(course)openSyllabusImport(course);});
 $("addCourse").onclick=()=>{pendingSyllabus=null;modal("Add course with structured syllabus",`<label>Course code</label><input id="fc" placeholder="OTT"><label>Course name</label><input id="fn"><label>Official syllabus CSV</label><input id="syllabusFile" type="file" accept=".csv,text/csv"><div id="syllabusPreview"></div><p class="note">The CSV is grouped into Subject → Unit → Topic. Computer Science (101T) is excluded automatically.</p>`,async()=>{let code=$("fc").value.trim().toUpperCase(),name=$("fn").value.trim();if(!/^[A-Z0-9_-]{2,15}$/.test(code)||!name)throw Error("Enter a valid course code and name.");if(!pendingSyllabus)throw Error("Choose a valid syllabus CSV and wait for the preview.");if(courses.some(c=>c.code===code))throw Error("This course code already exists. Use Import / update syllabus on the existing course.");await setDoc(D("examsphere_courses",code),{code,name,active:true,subjects:pendingSyllabus,createdAt:serverTimestamp(),createdBy:uid(),updatedAt:serverTimestamp(),updatedBy:uid()});});bindSyllabusPicker("new course");};
-$("addAccess").onclick=()=>modal("Assign instructor",`<label>Instructor Firebase UID</label><input id="iu"><label>Course codes (comma separated)</label><input id="ic" placeholder="OTT, MLT"><p class="note">The UID must already have an active record in instructors/{UID}.</p>`,async()=>{let id=$("iu").value.trim(),codes=$("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean);if(!id||!codes.length)throw Error("UID and at least one course code are required.");let ins=await getDoc(D("instructors",id));if(!ins.exists()||ins.data().active!==true)throw Error("No active instructor profile found for this UID.");await setDoc(D("examsphere_instructor_access",id),{instructorUid:id,active:true,courseCodes:codes,updatedAt:serverTimestamp(),updatedBy:uid()});});
-$("accessRows").addEventListener("click",e=>{let b=e.target.closest("[data-access]");if(!b)return;let a=accesses.find(x=>x.id===b.dataset.access);modal("Edit instructor access",`<label>Course codes</label><input id="ic" value="${esc((a.courseCodes||[]).join(", "))}"><label><input id="ia" type="checkbox" ${a.active?"checked":""} style="width:auto"> Active</label>`,async()=>{let codes=$("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean);await updateDoc(D("examsphere_instructor_access",a.id),{courseCodes:codes,active:$("ia").checked,updatedAt:serverTimestamp(),updatedBy:uid()});});});
+$("addAccess").onclick=()=>modal("Assign instructor",`<label>Instructor Firebase UID</label><input id="iu"><label>Course codes (comma separated)</label><input id="ic" placeholder="OTT, MLT"><p class="note">The UID must already have an active record in instructors/{UID}.</p>`,async()=>{let id=$("iu").value.trim(),codes=$("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean);if(!id||!codes.length)throw Error("UID and at least one course code are required.");let ins=await getDoc(D("instructors",id));if(!ins.exists()||ins.data().active!==true)throw Error("No active instructor profile found for this UID.");let courseDocs=await Promise.all([...new Set(codes)].map(code=>getDoc(D("examsphere_courses",code))));if(courseDocs.some(x=>!x.exists()||x.data().active!==true))throw Error("Every assigned course code must match an existing active ExamSphere course.");await setDoc(D("examsphere_instructor_access",id),{instructorUid:id,active:true,courseCodes:[...new Set(codes)],updatedAt:serverTimestamp(),updatedBy:uid()});});
+$("accessRows").addEventListener("click",e=>{let b=e.target.closest("[data-access]");if(!b)return;let a=accesses.find(x=>x.id===b.dataset.access);modal("Edit instructor access",`<label>Course codes</label><input id="ic" value="${esc((a.courseCodes||[]).join(", "))}"><label><input id="ia" type="checkbox" ${a.active?"checked":""} style="width:auto"> Active</label>`,async()=>{let codes=[...new Set($("ic").value.toUpperCase().split(",").map(x=>x.trim()).filter(Boolean))];let courseDocs=await Promise.all(codes.map(code=>getDoc(D("examsphere_courses",code))));if(courseDocs.some(x=>!x.exists()||x.data().active!==true))throw Error("Every assigned course code must match an existing active ExamSphere course.");await updateDoc(D("examsphere_instructor_access",a.id),{courseCodes:codes,active:$("ia").checked,updatedAt:serverTimestamp(),updatedBy:uid()});});});
 function populateQuestionSubjects(){const course=courses.find(c=>c.code===$("qc").value),subjects=course?.subjects||[];$("qs").innerHTML=subjects.map((s,i)=>`<option value="${i}">${esc(s.year||"")} · ${esc(s.code||"")} · ${esc(s.name)} (${esc(s.type||"")})</option>`).join("");populateQuestionUnits();}
 function populateQuestionUnits(){const course=courses.find(c=>c.code===$("qc").value),subject=course?.subjects?.[Number($("qs").value)],units=subject?.chapters||[];$("qUnit").innerHTML=units.map((unit,i)=>`<option value="${i}">${esc(unit.name||`Unit ${unit.unit||i+1}`)}</option>`).join("");if(!units.length)$("qUnit").innerHTML='<option value="">No units imported</option>';populateQuestionTopics();}
 function populateQuestionTopics(){const course=courses.find(c=>c.code===$("qc").value),subject=course?.subjects?.[Number($("qs").value)],unit=subject?.chapters?.[Number($("qUnit").value)],topics=unit?.topics||[];$("qTopic").innerHTML=topics.map((topic,i)=>`<option value="${i}">${esc(topic)}</option>`).join("");if(!topics.length)$("qTopic").innerHTML='<option value="">No topics imported for this unit</option>';}
@@ -444,6 +486,7 @@ async function startExam(examId){
     attemptSnap=await getDoc(attemptRef);
   }
   let workSnap=await getDoc(workRef),answers=workSnap.exists()?(workSnap.data().answers||{}):{};
+  let answerSaveQueue=Promise.resolve();
   const allowed=new Set(items.map(x=>x.questionId));
   answers=Object.fromEntries(Object.entries(answers).filter(([qid,v])=>allowed.has(qid)&&Number.isInteger(v)&&v>=0&&v<=3));
   if(!workSnap.exists())await setDoc(workRef,{examId,studentUid:uid(),courseCode:profile.course,answers,updatedAt:serverTimestamp()});
@@ -455,7 +498,8 @@ async function startExam(examId){
   modal(`Examination: ${pub.title}`,`${timer}${body}<p class="note">Do not close the examination until you submit. The countdown is browser-based and is not a tamper-proof deadline.</p>`,async()=>{
     items.forEach((x,i)=>{let v=document.querySelector(`input[name="ans${i}"]:checked`);if(v)answers[x.questionId]=Number(v.value);});
     if(Object.keys(answers).length!==items.length)throw Error("Answer every question before submission.");
-    await updateDoc(workRef,{answers,updatedAt:serverTimestamp()});
+    await answerSaveQueue.catch(()=>{});
+    await updateDoc(workRef,{answers:{...answers},updatedAt:serverTimestamp()});
     const batch=writeBatch(db);
     batch.update(attemptRef,{status:"submitted",submittedAt:serverTimestamp()});
     batch.set(subRef,{examId,examTitle:pub.title,studentUid:uid(),studentId:profile.studentId,studentName:profile.name,courseCode:profile.course,answers,totalMarks:pub.totalMarks,status:"submitted",submittedAt:serverTimestamp()});
@@ -465,13 +509,16 @@ async function startExam(examId){
   // Persist each answer immediately; a failed save leaves the selection visible
   // and displays an error rather than pretending it was saved.
   items.forEach((x,i)=>document.querySelectorAll(`input[name="ans${i}"]`).forEach(el=>{
-    el.addEventListener("change",async()=>{
+    el.addEventListener("change",()=>{
       const selected=document.querySelector(`input[name="ans${i}"]:checked`);
       if(selected)answers[x.questionId]=Number(selected.value);
-      try{await updateDoc(workRef,{answers,updatedAt:serverTimestamp()});}
-      catch(err){notice("Answer could not be saved. Check your connection and try again: "+err.message,true);}
+      const snapshot={...answers};
+      answerSaveQueue=answerSaveQueue.catch(()=>{}).then(()=>updateDoc(workRef,{answers:snapshot,updatedAt:serverTimestamp()}));
+      answerSaveQueue.catch(err=>notice("Answer could not be saved. Check your connection and try again: "+err.message,true));
     });
   }));
+  const updateExamTimer=()=>{const el=$("examTimer");if(!el)return;const seconds=Math.max(0,Math.ceil((deadline.getTime()-Date.now())/1000));el.textContent=seconds>0?`Time remaining (advisory): ${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}. Your answers are saved as you select them; you can resume after reconnecting.`:"Scheduled duration has elapsed. Submit your answers if you have completed the examination.";};
+  stopExamTimer();examTimerInterval=setInterval(updateExamTimer,1000);
  }catch(e){notice(e.message,true);}
 }
 $("resultRows").addEventListener("click",async e=>{
@@ -482,6 +529,7 @@ $("resultRows").addEventListener("click",async e=>{
   const existing=results.find(x=>x.id===s.id);
   if(!existing){notice("This submission is waiting for Apps Script automatic grading. Refresh after the grading queue runs.");return;}
   const r=existing;
+  if(!r.published&&(!isInstructor()||!inScope(s.courseCode)))throw Error("Only the assigned instructor may review and publish this result.");
   const answerMarkup=Object.entries(s.answers||{}).map(([qid,answer])=>{const q=questions.find(x=>x.id===qid);return `<div class="question"><b>${esc(q?.text||qid)}</b><p>Student selected: ${"ABCD"[answer]||"—"}. ${esc(q?.options?.[answer]||"")}</p><p class="note">Correct answer (authorised staff only): ${"ABCD"[q?.correctIndex]||"Not available"}</p></div>`}).join("");
   const header=`<p><b>${esc(s.studentName||s.studentId)}</b> · ${esc(s.examTitle||s.examId)}</p><p>Total marks: <b>${esc(r.totalMarks)}</b></p><h4>Submitted answers</h4>${answerMarkup}`;
   if(r.published){modal("Published result",`${header}<p>Final result: <b>${esc(r.score)} / ${esc(r.totalMarks)}</b></p><p class="tag green">Published</p>`,async()=>{});$("modalSave").textContent="Close";$("modalSave").onclick=closeModal;return;}
@@ -499,13 +547,15 @@ function downloadCsv(){
   exams.forEach(x=>rows.push(["Examination",x.id,x.title||"",x.courseCode||"",x.status||"","","",""]));
   subs.forEach(x=>{const r=results.find(y=>y.id===x.id);rows.push(["Submission",x.id,x.examTitle||x.examId||"",x.courseCode||"",r?.published?"Published":r?"Graded — awaiting publication":x.status||"Pending",r?.score??x.score??"",r?.totalMarks??x.totalMarks??"",r?.published?"Yes":"No"]);});
  }
- const csv=rows.map(row=>row.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+ const safeCsvCell=v=>{let value=String(v??"");if(/^[\s\u0000-\u001f]*[=+@-]/.test(value))value="'"+value;return `"${value.replace(/"/g,'""')}"`;};
+ const csv=rows.map(row=>row.map(safeCsvCell).join(",")).join("\r\n");
  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
  a.href=url;a.download=`CINPS-ExamSphere-Report-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
  notice("CSV report downloaded.");
 }
 $("refreshBtn").onclick=async()=>{const b=$("refreshBtn");b.disabled=true;b.textContent="Refreshing…";try{await loadData();notice("Dashboard refreshed from the records you are authorised to access.");}catch(e){notice("Refresh failed: "+e.message,true);}finally{b.disabled=false;b.textContent="↻ Refresh";}};
 $("exportBtn").onclick=downloadCsv;
+$("mobileExportBtn").onclick=()=>{downloadCsv();closeMobileNav();};
 
 // Mobile navigation and responsive table labels. This is presentation-only;
 // it does not change role permissions, queries, or Firestore data.
@@ -520,15 +570,33 @@ labelResponsiveTables();
 const responsiveTableObserver=new MutationObserver(records=>{for(const record of records){const table=record.target.nodeType===1?record.target.closest(".tablewrap table"):null;if(table)labelResponsiveTables(table);for(const node of record.addedNodes){if(node.nodeType===1){labelResponsiveTables(node);const parentTable=node.closest?.(".tablewrap table");if(parentTable)labelResponsiveTables(parentTable);}}}});
 responsiveTableObserver.observe(document.getElementById("app"),{childList:true,subtree:true});
 window.addEventListener("resize",()=>{if(window.innerWidth>850)closeMobileNav();},{passive:true});
-function applyTheme(){const dark=localStorage.getItem("cinps-examsphere-theme")==="dark";document.body.classList.toggle("dark",dark);$("themeBtn").textContent=dark?"☀ Light mode":"◐ Dark mode";}
-$("themeBtn").onclick=()=>{localStorage.setItem("cinps-examsphere-theme",document.body.classList.contains("dark")?"light":"dark");applyTheme();};
+function readThemePreference(){try{return localStorage.getItem("cinps-examsphere-theme")==="dark";}catch(_){return false;}}
+function applyTheme(){
+ const dark=readThemePreference();
+ document.body.classList.toggle("dark",dark);
+ const label=dark?"☀ Light mode":"◐ Dark mode";
+ [$("themeBtn"),$("mobileThemeBtn")].filter(Boolean).forEach(b=>{b.textContent=label;b.setAttribute("aria-label",dark?"Switch to light mode":"Switch to dark mode");});
+}
+function toggleTheme(){const next=document.body.classList.contains("dark")?"light":"dark";try{localStorage.setItem("cinps-examsphere-theme",next);}catch(_){}document.body.classList.toggle("dark",next==="dark");applyTheme();}
+$("themeBtn").onclick=toggleTheme;
+$("mobileThemeBtn").onclick=()=>{toggleTheme();closeMobileNav();};
 applyTheme();
 $("qSearch").oninput=renderAll;$("qCourse").onchange=renderAll;
 let redirectAuthError="";
 $("signIn").onclick=async()=>{const b=$("signIn");b.disabled=true;try{await setPersistence(auth,browserLocalPersistence);await signInWithRedirect(auth,provider);}catch(e){showLogin("Google sign-in could not start: "+e.message,true);b.disabled=false;}};
 $("signOut").onclick=()=>signOut(auth);$("modalBack").addEventListener("click",e=>{if(e.target===$("modalBack"))closeModal();});
-try{await setPersistence(auth,browserLocalPersistence);await getRedirectResult(auth);}catch(e){redirectAuthError=e.message||String(e);}
-onAuthStateChanged(auth,async u=>{user=u;if(!u){role="";showLogin(redirectAuthError?("Google sign-in could not be completed. Open cinps.org directly in Chrome (not an in-app browser), allow site storage/cookies, then try again. Details: "+redirectAuthError):"",!!redirectAuthError);return;}redirectAuthError="";try{await identify(u);await loadData();$("login").classList.add("hidden");$("app").classList.remove("hidden");renderNav();showPage(isStudent()?"student":"overview");}catch(e){await signOut(auth);showLogin(e.message,true);}});
+try{await getRedirectResult(auth);}catch(e){redirectAuthError=e.message||String(e);}
+let authStateRun=0;
+onAuthStateChanged(auth,async u=>{
+ const run=++authStateRun;user=u;
+ if(!u){role="";profile=null;showLogin(redirectAuthError?("Google sign-in could not be completed. Open cinps.org directly in Chrome (not an in-app browser), allow site storage/cookies, then try again. Details: "+redirectAuthError):"",!!redirectAuthError);return;}
+ redirectAuthError="";
+ try{
+  await identify(u);if(run!==authStateRun)return;
+  await loadData();if(run!==authStateRun)return;
+  $("login").classList.add("hidden");$("app").classList.remove("hidden");renderNav();showPage(isStudent()?"student":"overview");
+ }catch(e){if(run!==authStateRun)return;try{await signOut(auth);}catch(signOutError){console.error("Sign-out after access denial failed:",signOutError);}showLogin(e.message||"Unable to load your CINPS profile.",true);}
+});
 </script>
 </body>
 </html>
