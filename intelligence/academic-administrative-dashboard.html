@@ -149,6 +149,36 @@ tbody tr:hover { background: var(--bg-color); }
   background: var(--warning-bg); border: 1px solid var(--warning); padding: 10px 16px;
   border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
 }
+
+@media (max-width: 900px) {
+  main { padding: 0 14px; margin: 16px auto; }
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .columns-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  header { padding: 10px 12px; gap: 8px; }
+  .brand { gap: 8px; min-width: 0; }
+  .brand h1 { font-size: 14px; }
+  .brand .muted { font-size: 10px; }
+  .logo { padding: 7px 9px; font-size: 12px; }
+  .header-right { gap: 6px; }
+  main { padding: 0 10px; margin: 12px auto; }
+  .panel { padding: 13px; margin-bottom: 12px; }
+  .panel-head { align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .panel-head h2 { font-size: 15px; }
+  .grid-4 { gap: 8px; }
+  .stat-card { padding: 11px; }
+  .stat-card .val { font-size: 20px; }
+  .filters { gap: 8px; }
+  .filters input, .filters select { width: 100%; min-width: 0; }
+  .tabs { gap: 2px; }
+  .tab-btn { padding: 9px 11px; white-space: nowrap; }
+  #recordForm { grid-template-columns: 1fr !important; }
+  #recordForm .field.full { grid-column: auto; }
+  #recordForm .field[style*="flex-direction: row"] { flex-wrap: wrap; }
+  #welcome { padding: 42px 14px !important; }
+  #toast-container { left: 10px; right: 10px; bottom: 10px; }
+}
 </style>
 </head>
 <body>
@@ -322,11 +352,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, addDoc, getDocs, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const app = initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyCf5V7j94aNJ8aD7PVxrhSREW9v1mEL9eY",
   authDomain: "cinps-core-system.firebaseapp.com",
-  projectId: "cinps-core-system"
-});
+  projectId: "cinps-core-system",
+  storageBucket: "cinps-core-system.firebasestorage.app",
+  messagingSenderId: "1026808169095",
+  appId: "1:1026808169095:web:4929f0cbfdde3a9a876e22"
+};
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
@@ -345,6 +379,12 @@ function escapeHTML(value) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[char]);
 }
+function localDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 const types = { students:"Student", instructors:"Instructor", attendance:"Attendance", class_updates:"Class Update", clinical_updates:"Clinical", internship_updates:"Internship" };
 
 /* --- Theme Engine --- */
@@ -352,13 +392,15 @@ function toggleTheme() {
   const isDark = document.body.getAttribute('data-theme') === 'dark';
   const newTheme = isDark ? 'light' : 'dark';
   document.body.setAttribute('data-theme', newTheme);
-  localStorage.setItem('cinps_theme', newTheme);
+  try { localStorage.setItem('cinps_theme', newTheme); } catch (_) {}
   $('themeToggle').textContent = isDark ? '🌙' : '☀️';
 }
-if (localStorage.getItem('cinps_theme') === 'dark') {
-  document.body.setAttribute('data-theme', 'dark');
-  $('themeToggle').textContent = '☀️';
-}
+try {
+  if (localStorage.getItem('cinps_theme') === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    $('themeToggle').textContent = '☀️';
+  }
+} catch (_) {}
 $('themeToggle').addEventListener('click', toggleTheme);
 
 /* --- Toasts --- */
@@ -366,7 +408,9 @@ function showToast(msg, type='success') {
   const t = document.createElement('div');
   t.className = 'toast';
   t.style.borderLeftColor = type==='error'?'var(--danger)':type==='warning'?'var(--warning)':'var(--primary)';
-  t.innerHTML = `<span>${msg}</span>`;
+  const message = document.createElement('span');
+  message.textContent = String(msg ?? '');
+  t.appendChild(message);
   $('toast-container').appendChild(t);
   setTimeout(()=>t.remove(), 4000);
 }
@@ -388,15 +432,18 @@ getRedirectResult(auth).catch(error => {
 
 onAuthStateChanged(auth, async user => {
   if(!user) {
-    $('app').classList.add('hidden'); $('welcome').classList.remove('hidden');
+    $('app').classList.add('hidden');
+    $('welcome').classList.remove('hidden');
     $('authArea').innerHTML = `<button id="loginBtn" class="primary">Sign In</button>`;
-    currentUser = null; return;
+    currentUser = null;
+    return;
   }
   try {
     const adminDoc = await getDoc(doc(db, "admins", user.uid));
     const adminData = adminDoc.exists() ? adminDoc.data() : null;
-    if (!adminData || !['superAdmin','admin'].includes(adminData.role)) {
-      throw new Error("Unauthorized");
+    if (!adminData || adminData.active !== true ||
+        !['superAdmin', 'admin'].includes(adminData.role)) {
+      throw new Error("This Google account is not an active CINPS administrator.");
     }
     currentUser = user;
     $('welcome').classList.add('hidden'); $('app').classList.remove('hidden');
@@ -415,23 +462,45 @@ onAuthStateChanged(auth, async user => {
 
 /* --- Data Fetching --- */
 async function fetchData() {
+  if (!currentUser) return;
   $('refreshBtn').disabled = true;
+  const keys = Object.keys(types);
+  const errors = [];
+
   try {
-    const keys = Object.keys(types);
-    const results = await Promise.all([
-      ...keys.map(k => getDocs(collection(db, k))),
-      getDocs(collection(db, "student_access")).catch(()=>({docs:[]})) // Catch rule errors gracefully
-    ]);
-    
-    keys.forEach((k, i) => {
-      loadedData[k] = results[i].docs.map(d => ({id: d.id, _col: k, ...d.data()}));
-    });
-    loadedData.student_access = results[6].docs?.map(d => ({id: d.id, ...d.data()})) || [];
-    
+    const results = await Promise.all(
+      [...keys, 'student_access'].map(async key => {
+        try {
+          const snapshot = await getDocs(collection(db, key));
+          return { key, docs: snapshot.docs, error: null };
+        } catch (error) {
+          return { key, docs: [], error };
+        }
+      })
+    );
+
+    for (const result of results) {
+      if (result.error) {
+        errors.push(`${result.key}: ${result.error.code || result.error.message}`);
+        if (result.key === 'student_access') loadedData.student_access = [];
+        else loadedData[result.key] = [];
+        continue;
+      }
+      loadedData[result.key] = result.docs.map(d => ({
+        ...d.data(),
+        id: d.id,
+        ...(result.key === 'student_access' ? {} : { _col: result.key })
+      }));
+    }
+
     updateDashboard();
-    showToast("Data synced with Firestore");
-  } catch(e) {
-    showToast("Failed to sync data: " + (e.message || 'Unknown Firestore error'), "error");
+    if (errors.length) {
+      showToast(`Some collections could not be read: ${errors.join(' | ')}`, 'warning');
+    } else {
+      showToast("Data synced with Firestore");
+    }
+  } catch (error) {
+    showToast("Failed to sync data: " + (error.message || 'Unknown Firestore error'), "error");
   } finally {
     $('refreshBtn').disabled = false;
   }
@@ -489,7 +558,7 @@ function renderPending() {
   pending.forEach(p => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="checkbox" class="batch-cb" data-id="${p.id}"></td>
+      <td><input type="checkbox" class="batch-cb"></td>
       <td><strong>${escapeHTML(p.name || 'No Name')}</strong><div class="muted">${escapeHTML(p.email || '')}</div></td>
       <td>${escapeHTML(p.requestedAt?.toDate ? p.requestedAt.toDate().toLocaleDateString() : '—')}</td>
       <td><input type="text" class="i-id" value="${escapeHTML(p.studentId || '')}" placeholder="ID"></td>
@@ -497,7 +566,8 @@ function renderPending() {
       <td><input type="text" class="i-branch" value="${escapeHTML(p.branch || '')}" placeholder="Branch"></td>
       <td><button class="success btn-approve">Approve</button></td>
     `;
-    // Single approve
+    // Keep the Firestore document ID in a DOM property, not interpolated HTML.
+    tr.querySelector('.batch-cb').dataset.id = p.id;
     tr.querySelector('.btn-approve').addEventListener('click', () => processApproval([tr], p));
     tb.appendChild(tr);
   });
@@ -522,49 +592,85 @@ $('batchApproveBtn').addEventListener('click', async () => {
 });
 
 async function processApproval(rows, singleObj = null) {
-  const batch = writeBatch(db);
-  let validCount = 0;
-  
-  for(const tr of rows) {
+  if (!currentUser) {
+    showToast('Your administrator session has expired. Please sign in again.', 'error');
+    return;
+  }
+
+  const approvals = [];
+  for (const tr of rows) {
     const cb = tr.querySelector('.batch-cb');
-    const pid = cb.getAttribute('data-id');
-    const idVal = tr.querySelector('.i-id').value.trim();
-    const courseVal = tr.querySelector('.i-course').value.trim();
-    const branchVal = tr.querySelector('.i-branch').value.trim();
+    if (!cb) continue;
+    const pid = cb.dataset.id;
+    const idVal = tr.querySelector('.i-id')?.value.trim() || '';
+    const courseVal = tr.querySelector('.i-course')?.value.trim() || '';
+    const branchVal = tr.querySelector('.i-branch')?.value.trim() || '';
     const srcObj = singleObj || loadedData.student_access.find(x => x.id === pid);
-    
-    if(!idVal || !courseVal || !branchVal) {
-      showToast(`Missing fields for ${srcObj.name}`, 'warning');
+
+    if (!srcObj) {
+      showToast('Registration record not found. Refresh and try again.', 'error');
       continue;
     }
-    
-    const sharedData = {
-      active: true, studentId: idVal, course: courseVal, branch: branchVal,
-      approvedAt: serverTimestamp(), approvedBy: currentUser.uid
-    };
-    
-    batch.set(doc(db, "students", pid), {
-      uid: pid, name: srcObj.name, personName: srcObj.name, email: srcObj.email,
-      status: "Active", createdAt: serverTimestamp(), ...sharedData
-    }, {merge:true});
-    
-    batch.set(doc(db, "student_access", pid), {
-      name: srcObj.name, email: srcObj.email, ...sharedData
-    }, {merge:true});
-    validCount++;
-  }
-  
-  if(validCount > 0) {
-    try {
-      $('batchApproveBtn').disabled = true;
-      await batch.commit();
-      showToast(`Successfully approved ${validCount} student(s)`);
-      await fetchData();
-    } catch(e) {
-      showToast("Approval failed: " + (e.message || 'Unknown Firestore error'), "error");
-    } finally {
-      $('batchApproveBtn').disabled = false;
+    if (!idVal || !courseVal || !branchVal) {
+      showToast(`Complete ID, course and branch for ${srcObj.name || srcObj.email || pid}.`, 'warning');
+      continue;
     }
+
+    approvals.push({
+      pid, idVal, courseVal, branchVal,
+      name: srcObj.name || srcObj.fullName || '',
+      email: srcObj.email || ''
+    });
+  }
+
+  if (!approvals.length) return;
+
+  const approveButtons = [ $('batchApproveBtn'), ...Array.from(document.querySelectorAll('.btn-approve')) ];
+  approveButtons.forEach(button => { button.disabled = true; });
+
+  try {
+    // Each student needs two writes; 200 students per batch stays comfortably below 500 writes.
+    for (let offset = 0; offset < approvals.length; offset += 200) {
+      const chunk = approvals.slice(offset, offset + 200);
+      const batch = writeBatch(db);
+
+      for (const item of chunk) {
+        const sharedData = {
+          active: true,
+          studentId: item.idVal,
+          course: item.courseVal,
+          branch: item.branchVal,
+          approvedAt: serverTimestamp(),
+          approvedBy: currentUser.uid
+        };
+
+        batch.set(doc(db, 'students', item.pid), {
+          uid: item.pid,
+          name: item.name,
+          personName: item.name,
+          email: item.email,
+          status: 'Active',
+          createdAt: serverTimestamp(),
+          ...sharedData
+        }, { merge: true });
+
+        batch.set(doc(db, 'student_access', item.pid), {
+          name: item.name,
+          email: item.email,
+          ...sharedData
+        }, { merge: true });
+      }
+
+      await batch.commit();
+    }
+
+    showToast(`Successfully approved ${approvals.length} student(s).`);
+    await fetchData();
+  } catch (error) {
+    showToast("Approval failed: " + (error.message || 'Unknown Firestore error'), 'error');
+    await fetchData();
+  } finally {
+    approveButtons.forEach(button => { button.disabled = false; });
   }
 }
 
@@ -575,24 +681,27 @@ formFields.forEach(id => $(id).addEventListener('input', saveDraft));
 function saveDraft() {
   const draft = {};
   formFields.forEach(id => draft[id] = $(id).value);
-  localStorage.setItem('cinps_form_draft', JSON.stringify(draft));
+  try { localStorage.setItem('cinps_form_draft', JSON.stringify(draft)); } catch (_) {}
 }
 function loadDraft() {
-  const d = JSON.parse(localStorage.getItem('cinps_form_draft'));
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem('cinps_form_draft') || 'null'); } catch (_) {}
   if(d && (d.f_name || d.f_notes)) {
-    formFields.forEach(id => { if(d[id] !== undefined && d[id] !== '') $(id).value = d[id]; });
-    if (!$('f_date').value) $('f_date').value = new Date().toISOString().split('T')[0];
+    formFields.forEach(id => {
+      if(d[id] !== undefined && d[id] !== '') $(id).value = d[id];
+    });
+    if (!$('f_date').value) $('f_date').value = localDateString();
     $('draftBadge').classList.remove('hidden');
     $('f_type').dispatchEvent(new Event('change'));
   } else {
-    $('f_date').value = new Date().toISOString().split('T')[0];
+    $('f_date').value = localDateString();
   }
 }
 $('clearDraftBtn').addEventListener('click', () => {
   $('recordForm').reset();
-  localStorage.removeItem('cinps_form_draft');
+  try { localStorage.removeItem('cinps_form_draft'); } catch (_) {}
   $('draftBadge').classList.add('hidden');
-  $('f_date').value = new Date().toISOString().split('T')[0];
+  $('f_date').value = localDateString();
   $('f_type').dispatchEvent(new Event('change'));
 });
 
@@ -676,18 +785,20 @@ function renderDirectory() {
   
   // Custom Multi-Criteria Filter
   const filtered = master.filter(m => {
-    const name = (m.personName || m.name || m.instructorName || m.studentName || '').toLowerCase();
-    const c = (m.course || '').toUpperCase();
-    const idStr = (m.personId || m.studentId || m.instructorId || '').toLowerCase();
-    const topic = (m.topic || m.department || m.hospital || '').toLowerCase();
-    const notes = (m.notes || '').toLowerCase();
+    const name = String(m.personName || m.name || m.instructorName || m.studentName || '').toLowerCase();
+    const c = String(m.course || '').toUpperCase();
+    const idStr = String(m.personId || m.studentId || m.instructorId || '').toLowerCase();
+    const topic = String(m.topic || m.department || m.hospital || '').toLowerCase();
+    const notes = String(m.notes || '').toLowerCase();
     
     if(sq && !(name.includes(sq) || idStr.includes(sq) || topic.includes(sq) || notes.includes(sq))) return false;
     if(sc && c !== sc) return false;
     
     // Date filtering using recordSortValue equivalent logic
-    const dVal = m.recordDate ? new Date(m.recordDate).getTime() : (m.createdAt?.toMillis ? m.createdAt.toMillis() : 0);
-    if(dVal && (dVal < sStart || dVal > sEnd)) return false;
+    const dVal = m.recordDate
+      ? new Date(`${m.recordDate}T00:00:00`).getTime()
+      : (m.createdAt?.toMillis ? m.createdAt.toMillis() : 0);
+    if ((sStart || sEnd !== Infinity) && (!dVal || dVal < sStart || dVal >= sEnd)) return false;
     
     return true;
   });
@@ -759,7 +870,7 @@ $('exportBtn').addEventListener('click', () => {
   const blob = new Blob(["﻿" + rows.join('\r\n')], {type: 'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url;
-  a.download = `CINPS_Export_${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `CINPS_Export_${localDateString()}.csv`;
   a.click(); URL.revokeObjectURL(url);
   showToast("CSV Exported successfully");
 });
