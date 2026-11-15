@@ -120,19 +120,23 @@ function callAPI(action, data = {}) {
       callback(value);
     }
 
-    function onMessage(event) {
-      if (event.source !== iframe.contentWindow) return;
+   
+function onMessage(event) {
+  if (
+    !event.origin.endsWith('.googleusercontent.com')
+  ) return;
 
-      const message = event.data;
+  const message = event.data;
 
-      if (
-        !message ||
-        message.channel !== API_CHANNEL ||
-        message.requestId !== requestId
-      ) return;
+  if (
+    !message ||
+    message.channel !== API_CHANNEL ||
+    message.requestId !== requestId
+  ) return;
 
-      finish(resolve, message.result);
-    }
+  finish(resolve, message.result);
+}
+
 
     const timeout = setTimeout(() => {
       finish(
