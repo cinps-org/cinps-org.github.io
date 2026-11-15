@@ -4,250 +4,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b3972">
+  <meta name="theme-color" content="#082f63">
   <title>CINPS Admission CRM</title>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(135deg,#edf5ff,#dceaff);
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      color: #12345b;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 480px;
-      background: white;
-      border: 1px solid #dce7f5;
-      border-radius: 22px;
-      padding: 38px;
-      box-shadow: 0 18px 55px rgba(20,60,110,.10);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 25px;
-      border-bottom: 1px solid #e4ebf5;
-    }
-
-    .logo {
-      width: 58px;
-      height: 58px;
-      border-radius: 15px;
-      background: linear-gradient(145deg,#0876d1,#07356e);
-      color: white;
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    h1 { font-size: 23px; margin: 0 0 5px; }
-    .subtitle { font-size: 10px; letter-spacing: .5px; color: #647b99; }
-
-    .section { margin-top: 32px; }
-    .eyebrow {
-      color: #0874d1;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-    }
-
-    h2 { font-size: 29px; margin: 12px 0; }
-    .description { color: #647b99; line-height: 1.7; font-size: 14px; }
-
-    button {
-      width: 100%;
-      padding: 16px;
-      margin-top: 22px;
-      border: 1px solid #cbd9eb;
-      background: white;
-      border-radius: 11px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #173b68;
-      cursor: pointer;
-    }
-
-    button:hover { background: #f2f7ff; }
-    button:disabled { opacity: .6; cursor: wait; }
-
-    .google { color: #4285f4; font-size: 19px; margin-right: 10px; }
-
-    .notice {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #71839c;
-      line-height: 1.6;
-    }
-
-    .message {
-      display: none;
-      margin-top: 18px;
-      padding: 13px;
-      border-radius: 9px;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .success { display: block; background: #e8f7ee; color: #17643b; }
-    .error { display: block; background: #fff0f0; color: #b42318; }
-
-    .user { display: none; margin-top: 20px; }
-    .user strong { display: block; margin-bottom: 5px; }
-    .footer { text-align: center; margin-top: 25px; color: #71839c; font-size: 12px; }
-
-    @media(max-width:480px) {
-      .card { padding: 25px; }
-      h2 { font-size: 25px; }
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
-  <main class="card">
-    <header class="brand">
-      <div class="logo">CINPS</div>
-      <div>
-        <h1>Admission CRM</h1>
-        <div class="subtitle">
-          CHANDIDAS INSTITUTE OF NURSING & PARAMEDICAL SCIENCE
+  <main class="page-shell">
+    <section class="auth-card">
+
+      <header class="brand">
+        <div class="brand-mark">CINPS</div>
+        <div>
+          <div class="brand-title">Admission CRM</div>
+          <div class="brand-subtitle">
+            CHANDIDAS INSTITUTE OF NURSING &amp;
+            PARAMEDICAL SCIENCE
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <section class="section">
-      <div class="eyebrow">SECURE STAFF ACCESS</div>
-      <h2>Welcome to CINPS CRM</h2>
-      <p class="description">
-        Sign in using your registered CINPS Google account
-        to access the admission management system.
-      </p>
-
-      <button id="loginBtn">
-        <span class="google">G</span>
-        Continue with Google
-      </button>
-
-      <div class="notice">
-        Only active staff accounts registered by the CINPS
-        Super Admin will be permitted to access CRM data.
-      </div>
-
-      <div id="message" class="message"></div>
-
-      <div id="userPanel" class="user">
-        <strong id="userName"></strong>
-        <div id="userEmail"></div>
-        <p class="notice">
-          Google authentication successful.
-          Staff authorization is the next step.
+      <section id="loginPanel">
+        <div class="eyebrow">SECURE STAFF ACCESS</div>
+        <h1>Welcome to CINPS CRM</h1>
+        <p class="intro">
+          Sign in with an authorised CINPS Google account.
         </p>
-        <button id="logoutBtn">Sign out</button>
-      </div>
+        <button id="googleSignIn" class="primary-button" type="button">
+          Continue with Google
+        </button>
+        <p class="privacy-note">
+          Only active staff accounts registered by CINPS
+          can access this CRM.
+        </p>
+      </section>
+
+      <section id="checkingPanel" class="hidden">
+        <div class="spinner"></div>
+        <h2>Verifying your access</h2>
+        <p class="intro">
+          Please wait while CINPS checks your permissions.
+        </p>
+      </section>
+
+      <section id="dashboardPanel" class="hidden">
+        <div class="dashboard-heading">
+          <div>
+            <div class="eyebrow">CINPS MANAGEMENT</div>
+            <h1>Admission Dashboard</h1>
+          </div>
+          <button id="signOut" class="secondary-button" type="button">
+            Sign out
+          </button>
+        </div>
+
+        <div class="profile-card">
+          <strong id="userName">CINPS Staff</strong>
+          <span id="userEmail"></span>
+          <span id="userRole" class="role-pill"></span>
+        </div>
+
+        <div class="section-heading">
+          <h2>Admission Leads</h2>
+          <button id="refreshLeads" class="secondary-button" type="button">
+            Refresh
+          </button>
+        </div>
+
+        <form id="leadForm" class="lead-form">
+          <h3>Add New Lead</h3>
+
+          <label for="leadName">Student Name *</label>
+          <input id="leadName" name="name" required maxlength="120">
+
+          <label for="leadPhone">Phone Number *</label>
+          <input id="leadPhone" name="phone" type="tel"
+                 required maxlength="20">
+
+          <label for="leadEmail">Email</label>
+          <input id="leadEmail" name="email" type="email" maxlength="160">
+
+          <label for="leadCourse">Course Interested In</label>
+          <input id="leadCourse" name="course" maxlength="100">
+
+          <label for="leadBranch">Branch</label>
+          <input id="leadBranch" name="branch" maxlength="100">
+
+          <label for="leadSource">Lead Source</label>
+          <select id="leadSource" name="source">
+            <option value="Facebook">Facebook</option>
+            <option value="Website">Website</option>
+            <option value="Walk-in">Walk-in</option>
+            <option value="Referral">Referral</option>
+            <option value="Phone">Phone Enquiry</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="leadNotes">Notes</label>
+          <textarea id="leadNotes" name="notes"
+                    rows="3" maxlength="2000"></textarea>
+
+          <button class="primary-button" type="submit">
+            Save Lead
+          </button>
+        </form>
+
+        <div id="leadMessage" class="message hidden"></div>
+
+        <div id="leadList" class="lead-list">
+          <p class="empty-state">Loading leads...</p>
+        </div>
+      </section>
+
+      <div id="errorBox" class="error-box hidden" role="alert"></div>
+
     </section>
 
-    <footer class="footer">
-      © 2026 CINPS · Admission Management System
+    <footer>
+      © <span id="year"></span> CINPS · Admission Management System
     </footer>
   </main>
 
-  <script type="module">
-    import { auth, googleProvider }
-      from "../../firebase/firebase-auth.js";
-
-    import {
-      signInWithPopup,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const message = document.getElementById("message");
-    const userPanel = document.getElementById("userPanel");
-
-    function showMessage(text, type) {
-      message.textContent = text;
-      message.className = "message " + type;
-    }
-
-    function friendlyError(error) {
-      const errors = {
-        "auth/unauthorized-domain":
-          "cinps.org is not yet authorised in Firebase Authentication.",
-        "auth/popup-blocked":
-          "Popup blocked. Please allow popups for cinps.org.",
-        "auth/popup-closed-by-user":
-          "Sign-in was cancelled. Please try again.",
-        "auth/operation-not-allowed":
-          "Google Sign-In is not enabled in Firebase."
-      };
-
-      return errors[error.code] ||
-        "Authentication failed: " + error.message;
-    }
-
-    loginBtn.addEventListener("click", async () => {
-      loginBtn.disabled = true;
-      loginBtn.textContent = "Connecting to Google...";
-      message.className = "message";
-
-      try {
-        googleProvider.setCustomParameters({
-          prompt: "select_account"
-        });
-
-        await signInWithPopup(auth, googleProvider);
-      } catch (error) {
-        console.error("CINPS AUTH ERROR:", error);
-        showMessage(friendlyError(error), "error");
-      } finally {
-        loginBtn.disabled = false;
-        loginBtn.innerHTML =
-          '<span class="google">G</span> Continue with Google';
-      }
-    });
-
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        loginBtn.style.display = "none";
-        userPanel.style.display = "block";
-
-        document.getElementById("userName").textContent =
-          user.displayName || "CINPS Staff";
-
-        document.getElementById("userEmail").textContent =
-          user.email || "";
-
-        showMessage(
-          "Google identity verified. Staff authorization is pending.",
-          "success"
-        );
-      } else {
-        loginBtn.style.display = "block";
-        userPanel.style.display = "none";
-      }
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        message.className = "message";
-      } catch (error) {
-        showMessage(error.message, "error");
-      }
-    });
-  </script>
+  <script type="module" src="./scripts.js"></script>
 </body>
 </html>
