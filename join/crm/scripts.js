@@ -16,12 +16,12 @@ import {
 ===================================================== */
 
 const FIREBASE_CONFIG = {
-  apiKey: 'YOUR_EXISTING_FIREBASE_API_KEY',
-  authDomain: 'cinps-student-corner.firebaseapp.com',
-  projectId: 'cinps-student-corner',
-  storageBucket: 'cinps-student-corner.firebasestorage.app',
-  messagingSenderId: '678888220602',
-  appId: '1:678888220602:web:567b074c3e148221f5df83'
+  apiKey: "AIzaSyA-gf_fB9JJGv4Zi6AKCFWZBT3cWAWIUhk",
+  authDomain: "cinps-student-corner.firebaseapp.com",
+  projectId: "cinps-student-corner",
+  storageBucket: "cinps-student-corner.firebasestorage.app",
+  messagingSenderId: "678888220602",
+  appId: "1:678888220602:web:567b074c3e148221f5df83"
 };
 
 const API_URL =
@@ -258,3 +258,462 @@ function callAPI(action, data = {}) {
 
   });
 }
+/* =====================================================
+   6. GOOGLE SIGN-IN
+===================================================== */
+
+if (loginButton) {
+
+  loginButton.addEventListener('click', async () => {
+
+    clearError();
+    loginButton.disabled = true;
+
+    try {
+
+      await signInWithRedirect(auth, provider);
+
+    } catch (error) {
+
+      console.error('CINPS LOGIN ERROR:', error);
+
+      showError(
+        getErrorMessage(
+          error,
+          'Google sign-in failed.'
+        )
+      );
+
+      loginButton.disabled = false;
+    }
+
+  });
+
+}
+
+/* =====================================================
+   7. VERIFY STAFF AUTHORISATION
+===================================================== */
+
+async function verifyAccess() {
+
+  console.log('CINPS: Starting staff authorisation.');
+
+  const result = await callAPI('session.verify');
+
+  console.log('CINPS STAFF VERIFICATION RESULT:', result);
+
+  if (!result || !result.ok || !result.profile) {
+
+    throw new Error(
+      result?.message ||
+      'Your account is not authorised for CINPS CRM.'
+    );
+  }
+
+  currentProfile = result.profile;
+
+  $('userName').textContent =
+    currentProfile.name || 'CINPS Staff';
+
+  $('userEmail').textContent =
+    currentProfile.email || '';
+
+  $('userRole').textContent =
+    String(currentProfile.role || '')
+      .replaceAll('_', ' ');
+
+}
+
+/* =====================================================
+   8. LOAD LEADS
+===================================================== */
+
+async function loadLeads() {
+
+  if (!leadList) return;
+
+  leadList.textContent = 'Loading leads...';
+
+  console.log('CINPS: Requesting admission leads.');
+
+  const result = await callAPI('leads.list');
+
+  console.log('CINPS LEADS RESULT:', result);
+
+  if (!result || !result.ok) {
+
+    throw new Error(
+      result?.message || 'Unable to load leads.'
+    );
+  }
+
+  renderLeads(result.leads || []);
+}
+
+/* =====================================================
+   9. DISPLAY LEADS
+===================================================== */
+
+function renderLeads(leads) {
+
+  if (!leadList) return;
+
+  leadList.replaceChildren();
+
+  if (!leads.length) {
+
+    const empty = document.createElement('p');
+
+    empty.className = 'empty-state';
+    empty.textContent = 'No leads found.';
+
+    leadList.appendChild(empty);
+    return;
+  }
+
+  const statuses = [
+    ['NEW', 'New'],
+    ['CONTACTED', 'Contacted'],
+    ['FOLLOW_UP', 'Follow-up'],
+    ['INTERESTED', 'Interested'],
+    ['ADMITTED', 'Admitted'],
+    ['NOT_INTERESTED', 'Not interested'],
+    ['LOST', 'Lost']
+  ];
+
+  leads.forEach(lead => {
+
+    const card = document.createElement('article');
+    card.className = 'lead-card';
+
+    const title = document.createElement('h3');
+    title.textContent = lead.name || 'Unnamed lead';
+
+    card.appendChild(title);
+
+    const details = [
+      ['Phone', lead.phone],
+      ['Email', lead.email],
+      ['Course', lead.course],
+      ['Branch', lead.branch],
+      ['Source', lead.source]
+    ];
+
+    details.forEach(([label, value]) => {
+
+      const p = document.createElement('p');
+
+      p.textContent =
+        label + ': ' + (value || 'Not specified');
+
+      card.appendChild(p);
+    });
+
+    const statusLabel = document.createElement('p');
+    statusLabel.textContent = 'Lead status';
+
+    const status = document.createElement('select');
+
+    statuses.forEach(([value, label]) => {
+
+      const option = document.createElement('option');
+
+      option.value = value;
+      option.textContent = label;
+
+      status.appendChild(option);
+    });
+
+    const originalStatus = lead.status || 'NEW';
+
+    status.value = originalStatus;
+
+    status.addEventListener('change', async () => {
+
+      const previousStatus = lead.status || 'NEW';
+
+      status.disabled = true;
+      clearError();
+
+      try {
+
+        const result = await callAPI('leads.update', {
+          leadId: lead.leadId,
+          status: status.value
+        });
+
+        if (!result || !result.ok) {
+          throw new Error(
+            result?.message || 'Lead update failed.'
+          );
+        }
+
+        lead.status = status.value;
+
+        showLeadMessage('Lead status updated successfully.');
+
+      } catch (error) {
+
+        status.value = previousStatus;
+
+        showError(
+          getErrorMessage(error, 'Lead update failed.')
+        );
+
+      } finally {
+
+        status.disabled = false;
+      }
+
+    });
+
+    card.appendChild(statusLabel);
+    card.appendChild(status);
+
+    leadList.appendChild(card);
+
+  });
+}
+
+/* =====================================================
+   10. CREATE NEW LEAD
+===================================================== */
+
+if (leadForm) {
+
+  leadForm.addEventListener('submit', async event => {
+
+    event.preventDefault();
+    clearError();
+
+    const button = leadForm.querySelector(
+      'button[type="submit"]'
+    );
+
+    if (button) button.disabled = true;
+
+    const data = {
+      name: $('leadName').value.trim(),
+      phone: $('leadPhone').value.trim(),
+      email: $('leadEmail').value.trim(),
+      course: $('leadCourse').value.trim(),
+      branch: $('leadBranch').value.trim(),
+      source: $('leadSource').value,
+      notes: $('leadNotes').value.trim()
+    };
+
+    try {
+
+      const result = await callAPI('leads.create', data);
+
+      if (!result || !result.ok) {
+
+        throw new Error(
+          result?.message || 'Unable to save lead.'
+        );
+      }
+
+      leadForm.reset();
+
+      showLeadMessage('Lead saved successfully.');
+
+      await loadLeads();
+
+    } catch (error) {
+
+      showError(
+        getErrorMessage(error, 'Unable to save lead.')
+      );
+
+    } finally {
+
+      if (button) button.disabled = false;
+    }
+
+  });
+
+}
+
+/* =====================================================
+   11. REFRESH LEADS
+===================================================== */
+
+const refreshButton = $('refreshLeads');
+
+if (refreshButton) {
+
+  refreshButton.addEventListener('click', async () => {
+
+    refreshButton.disabled = true;
+    clearError();
+
+    try {
+
+      await loadLeads();
+
+      showLeadMessage('Lead list refreshed.');
+
+    } catch (error) {
+
+      showError(
+        getErrorMessage(error, 'Unable to refresh leads.')
+      );
+
+    } finally {
+
+      refreshButton.disabled = false;
+    }
+
+  });
+
+}
+
+/* =====================================================
+   12. SIGN OUT
+===================================================== */
+
+const signOutButton = $('signOut');
+
+if (signOutButton) {
+
+  signOutButton.addEventListener('click', async () => {
+
+    signOutButton.disabled = true;
+
+    try {
+
+      await signOut(auth);
+
+      currentUser = null;
+      currentProfile = null;
+
+      showPanel(loginPanel);
+
+    } catch (error) {
+
+      showError(
+        getErrorMessage(error, 'Sign-out failed.')
+      );
+
+      signOutButton.disabled = false;
+    }
+
+  });
+
+}
+
+/* =====================================================
+   13. APPLICATION START
+===================================================== */
+
+async function startApplication() {
+
+  $('year').textContent = new Date().getFullYear();
+
+  /* Process Google redirect result. */
+
+  try {
+
+    const redirectResult = await getRedirectResult(auth);
+
+    console.log(
+      'CINPS REDIRECT RESULT:',
+      redirectResult
+        ? {
+            uid: redirectResult.user.uid,
+            email: redirectResult.user.email
+          }
+        : 'No redirect result returned'
+    );
+
+  } catch (error) {
+
+    console.error('CINPS REDIRECT ERROR:', error);
+
+    showError(
+      getErrorMessage(
+        error,
+        'Google sign-in could not be completed.'
+      )
+    );
+  }
+
+  if (authListenerStarted) return;
+  authListenerStarted = true;
+
+  onAuthStateChanged(auth, async user => {
+
+    console.log(
+      'CINPS AUTH STATE:',
+      user
+        ? {
+            uid: user.uid,
+            email: user.email
+          }
+        : 'NO USER'
+    );
+
+    clearError();
+
+    currentUser = user;
+    currentProfile = null;
+
+    if (!user) {
+
+      showPanel(loginPanel);
+
+      if (loginButton) {
+        loginButton.disabled = false;
+      }
+
+      return;
+    }
+
+    showPanel(checkingPanel);
+
+    try {
+
+      console.log(
+        'CINPS authenticated user:',
+        user.email
+      );
+
+      await verifyAccess();
+
+      showPanel(dashboardPanel);
+
+      await loadLeads();
+
+    } catch (error) {
+
+      console.error(
+        'CINPS CRM ACCESS ERROR:',
+        error
+      );
+
+      await signOut(auth);
+
+      currentUser = null;
+      currentProfile = null;
+
+      showPanel(loginPanel);
+
+      showError(
+        getErrorMessage(
+          error,
+          'CRM access verification failed.'
+        )
+      );
+
+    }
+
+  });
+
+}
+
+/* =====================================================
+   14. INITIALISE APPLICATION
+===================================================== */
+
+startApplication();
