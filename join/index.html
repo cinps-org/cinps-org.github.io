@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <!-- Google Tag Manager / Google tag -->
-  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WZ4XPB82"></script>
+  <!-- Google Tag Manager -->
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
   </script>
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-WZ4XPB82"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#073b78">
@@ -210,7 +209,7 @@ footer{padding:42px 0 26px}
   <div class="mobile-sticky"><a class="btn" href="#enquiry">ভর্তির তথ্য জানতে Enquiry করুন →</a></div>
 
   <script>
-    // CINPS CRM public lead submission endpoint (Google Apps Script Web App).
+    // CINPS CRM public lead submission endpoint (Cloudflare Worker -> Apps Script).
     const FORM_ENDPOINT = "https://cinps-lead-api.cinpsnotifications.workers.dev/";
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
@@ -305,11 +304,21 @@ footer{padding:42px 0 26px}
           throw new Error("The admission system returned an invalid response.");
         }
 
-        // Apps Script confirms successful storage with { success: true }.
-        if (!response.ok || !result || result.success !== true) {
+        // Accept only the two response codes returned after a row is appended
+        // to the CRM Leads sheet. BOT_IGNORED and all errors must never convert.
+        const savedLeadCodes = new Set([
+          "LEAD_RECEIVED",
+          "LEAD_RECEIVED_POSSIBLE_DUPLICATE"
+        ]);
+        if (
+          !response.ok ||
+          !result ||
+          result.ok !== true ||
+          !savedLeadCodes.has(result.code)
+        ) {
           throw new Error(
             (result && result.message) ||
-            "The CRM did not confirm successful storage."
+            "The CRM did not confirm that the enquiry was saved."
           );
         }
 
