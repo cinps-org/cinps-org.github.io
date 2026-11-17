@@ -305,8 +305,8 @@ footer{padding:42px 0 26px}
           throw new Error("The admission system returned an invalid response.");
         }
 
-        // Apps Script confirms successful storage with { ok: true }.
-        if (!response.ok || !result || result.ok !== true) {
+        // Apps Script confirms successful storage with { success: true }.
+        if (!response.ok || !result || result.success !== true) {
           throw new Error(
             (result && result.message) ||
             "The CRM did not confirm successful storage."
