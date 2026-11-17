@@ -211,7 +211,7 @@ footer{padding:42px 0 26px}
 
   <script>
     // CINPS CRM public lead submission endpoint (Google Apps Script Web App).
-    const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwXusC3I4djuf0_nV-vRFd5b50Ui1XDKfR4dKWLAVZqBAoFDtrjMVBFfdfq0GWc976r/exec";
+    const FORM_ENDPOINT = "https://cinps-lead-api.cinpsnotifications.workers.dev/";
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
     menuToggle.addEventListener("click", () => {
@@ -269,36 +269,87 @@ footer{padding:42px 0 26px}
       event.preventDefault();
       if (!form.reportValidity()) return;
 
-      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(FORM_ENDPOINT)) {
-        showStatus("এই মুহূর্তে enquiry গ্রহণের সংযোগ প্রস্তুত নয়। অনুগ্রহ করে পরে আবার চেষ্টা করুন অথবা ইনস্টিটিউটের সঙ্গে সরাসরি যোগাযোগ করুন।", "error");
+      if (!/^https:\/\/cinps-lead-api\.cinpsnotifications\.workers\.dev\/?$/.test(FORM_ENDPOINT)) {
+        showStatus(
+          "এই মুহূর্তে enquiry গ্রহণের সংযোগ প্রস্তুত নয়। অনুগ্রহ করে পরে আবার চেষ্টা করুন অথবা ইনস্টিটিউটের সঙ্গে সরাসরি যোগাযোগ করুন।",
+          "error"
+        );
         return;
       }
 
       const data = new URLSearchParams(new FormData(form));
       data.set("page", window.location.href);
       data.set("source", document.getElementById("leadSource").value);
+
+      // Keep attribution values before resetting the form.
+      const submittedCourse = document.getElementById("course").value;
+      const submittedSource = document.getElementById("leadSource").value;
+      const submittedCampaign = document.getElementById("leadCampaign").value;
+
       submitBtn.disabled = true;
       submitBtn.textContent = "পাঠানো হচ্ছে...";
 
       try {
-        // Apps Script ContentService does not expose a readable cross-origin response
-        // to this static GitHub Pages origin. no-cors sends the form but returns an
-        // opaque response; therefore the UI says request sent, not database-confirmed.
-        await fetch(FORM_ENDPOINT, { method: "POST", mode: "no-cors", body: data });
-        showStatus("আপনার enquiry জমা দেওয়ার অনুরোধ পাঠানো হয়েছে। অনুগ্রহ করে আপনার ফোন সচল রাখুন—CINPS-এর পক্ষ থেকে যোগাযোগ করা হতে পারে।", "info");
+        // Cloudflare Worker returns the JSON result from Apps Script.
+        const response = await fetch(FORM_ENDPOINT, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-store",
+          body: data
+        });
+
+        let result;
+        try {
+          result = await response.json();
+        } catch (_) {
+          throw new Error("The admission system returned an invalid response.");
+        }
+
+        // Apps Script confirms successful storage with { ok: true }.
+        if (!response.ok || !result || result.ok !== true) {
+          throw new Error(
+            (result && result.message) ||
+            "The CRM did not confirm successful storage."
+          );
+        }
+
+        // Fire the conversion event only after confirmed CRM storage.
+        // Do not send names, phone numbers, or other direct identifiers to GTM.
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "lead",
+          lead_course: submittedCourse,
+          lead_source: submittedSource,
+          lead_campaign: submittedCampaign
+        });
+
+        showStatus(
+          "আপনার enquiry সফলভাবে জমা হয়েছে। CINPS-এর পক্ষ থেকে যোগাযোগ করা হবে।",
+          "success"
+        );
+
         form.reset();
+
+        // Restore timing and campaign attribution after reset.
         document.getElementById("formStartedAt").value = String(Date.now());
-        // Keep campaign attribution fields populated after reset.
         document.getElementById("utmSource").value = utmSource;
         document.getElementById("utmMedium").value = params.get("utm_medium") || "";
         document.getElementById("utmCampaign").value = params.get("utm_campaign") || "";
         document.getElementById("fbclid").value = params.get("fbclid") || "";
-        document.getElementById("leadCampaign").value = params.get("campaign") || params.get("utm_campaign") || "";
-        document.getElementById("leadAdSet").value = params.get("ad_set") || params.get("utm_content") || "";
+        document.getElementById("leadCampaign").value =
+          params.get("campaign") || params.get("utm_campaign") || "";
+        document.getElementById("leadAdSet").value =
+          params.get("ad_set") || params.get("utm_content") || "";
         document.getElementById("leadAdName").value = params.get("ad_name") || "";
-        document.getElementById("leadSource").value = sourceMap[utmSource.toLowerCase()] || (utmSource ? utmSource : "Website");
+        document.getElementById("leadSource").value =
+          sourceMap[utmSource.toLowerCase()] || (utmSource ? utmSource : "Website");
+
       } catch (error) {
-        showStatus("দুঃখিত, এই মুহূর্তে enquiry পাঠানো যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।", "error");
+        console.error("CINPS lead submission failed:", error);
+        showStatus(
+          "দুঃখিত, আপনার enquiry নিশ্চিত করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+          "error"
+        );
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Enquiry জমা দিন <span>→</span>';
