@@ -2,81 +2,517 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CINPS Blog | Paramedical Courses & Career Guidance</title>
-
-  <meta name="description" content="Explore paramedical courses, career guidance, fees, salary and admission details at CINPS.">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>CINPS Blog | Paramedical Courses, Careers & Healthcare Education</title>
+
+  <meta name="description" content="Explore paramedical courses, healthcare career guidance, DMLT, DOTT, ICU technician careers, admission information and allied healthcare education at CINPS.">
+
+  <meta name="keywords" content="paramedical courses, healthcare careers, DMLT, DOTT, ICU technician, paramedical courses after 12th, allied healthcare education, CINPS">
+
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <link rel="canonical" href="https://cinps.org/blog/">
+
+  <meta name="theme-color" content="#0b3765">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CINPS Blog | Paramedical Courses & Career Guidance">
+  <meta property="og:description" content="Discover paramedical courses, healthcare career opportunities and educational guidance from CINPS.">
+  <meta property="og:url" content="https://cinps.org/blog/">
+  <meta property="og:site_name" content="Chandidas Institute of Nursing and Paramedical Science">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CINPS Blog | Healthcare Education">
+  <meta name="twitter:description" content="Paramedical education, course information and healthcare career guidance.">
+
   <style>
+    :root {
+      --primary: #0b3765;
+      --secondary: #1769aa;
+      --text: #263445;
+      --muted: #607080;
+      --background: #f3f6fa;
+      --white: #ffffff;
+      --border: #e1e8f0;
+      --green: #198754;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f5f5f5;
-    }
-
-    h1 {
-      color: #0a3d62;
-    }
-
-    .post {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.7;
     }
 
     a {
+      color: var(--secondary);
       text-decoration: none;
-      color: #1e3799;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.3;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: #e2edf8;
+      font-size: 15px;
+    }
+
+    .nav {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 13px 16px;
+      text-align: center;
+    }
+
+    .nav a {
+      display: inline-block;
+      margin: 4px 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .container {
+      width: min(100% - 32px, 1000px);
+      margin: 30px auto;
+    }
+
+    .intro {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border);
+    }
+
+    .intro h2 {
+      color: var(--primary);
+      margin-top: 0;
+    }
+
+    .section-title {
+      color: var(--primary);
+      font-size: 23px;
+      margin: 30px 0 16px;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .post {
+      background: var(--white);
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .post:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .post h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.45;
+    }
+
+    .post p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 14px;
+    }
+
+    .read-more {
+      font-size: 14px;
       font-weight: bold;
     }
 
     .cta {
-      margin-top: 30px;
-      padding: 20px;
-      background: #dff9fb;
-      border-radius: 10px;
+      margin-top: 35px;
+      padding: 30px 20px;
+      background: #e6f3ff;
+      border: 1px solid #c9e2f8;
+      border-radius: 12px;
       text-align: center;
+    }
+
+    .cta h2 {
+      color: var(--primary);
+      margin-top: 0;
+    }
+
+    .cta p {
+      color: var(--text);
     }
 
     .btn {
       display: inline-block;
-      padding: 10px 20px;
-      background: #27ae60;
+      padding: 12px 25px;
+      background: var(--green);
       color: white;
-      border-radius: 5px;
+      border-radius: 7px;
+      font-weight: bold;
       margin-top: 10px;
     }
+
+    .btn:hover {
+      background: #146c43;
+      text-decoration: none;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding: 25px 16px;
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #ffffff;
+    }
+
+    @media (max-width: 650px) {
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        margin: 18px auto;
+      }
+
+      .intro {
+        padding: 19px;
+      }
+
+      .post {
+        padding: 19px;
+      }
+
+      .nav a {
+        margin: 5px 8px;
+      }
+
+      .section-title {
+        font-size: 21px;
+      }
+    }
   </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "CINPS Blog",
+    "url": "https://cinps.org/blog/",
+    "description": "Paramedical courses, allied healthcare education and career guidance from CINPS.",
+    "inLanguage": "en-IN",
+    "publisher": {
+      "@type": "EducationalOrganization",
+      "name": "Chandidas Institute of Nursing and Paramedical Science",
+      "url": "https://cinps.org/"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "numberOfItems": 8,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "How to Get a Job After a Paramedical Course in India",
+          "url": "https://cinps.org/blog/how-to-get-job-after-paramedical-course.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Top 10 Paramedical Courses After 12th in India",
+          "url": "https://cinps.org/blog/top-paramedical-courses-after-12th-2026-27.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is Paramedical Science?",
+          "url": "https://cinps.org/blog/what-is-paramedical-science.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Medical Laboratory Systems",
+          "url": "https://cinps.org/blog/medical-lab-systems-cinps-2026.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "DMLT Course Details 2026",
+          "url": "https://cinps.org/blog/dmlt-course-2026.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "ICU Technician Career Guide",
+          "url": "https://cinps.org/blog/icu-technician-career-2026.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Paramedical Courses After HS",
+          "url": "https://cinps.org/blog/paramedical-courses-after-hs-2026.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "About Dr. Iman Khan",
+          "url": "https://cinps.org/blog/about-dr-iman-khan.html"
+        }
+      ]
+    }
+  }
+  </script>
 </head>
 
 <body>
 
-<h1>📘 CINPS Blog</h1>
-<p>Latest updates on paramedical courses, career guidance, and admissions.</p>
+<header class="header">
+  <h1>📘 CINPS Blog</h1>
+  <p>Paramedical Education | Healthcare Careers | Student Guidance</p>
+</header>
 
-<div class="post">
-  <a href="dmlt-course-2026.html">DMLT Course Details 2026 | Fees, Salary, Scope</a>
-  <p>Complete guide for students after HS.</p>
-</div>
+<nav class="nav" aria-label="Main navigation">
+  <a href="/">Home</a>
+  <a href="/courses.html">Courses</a>
+  <a href="/admissions.html">Admissions</a>
+  <a href="/blog/">Blog</a>
+  <a href="/contact.html">Contact</a>
+</nav>
 
-<div class="post">
-  <a href="icu-technician-career.html">ICU Technician Career Guide 2026</a>
-  <p>Salary, job roles, and future scope explained.</p>
-</div>
+<main class="container">
 
-<div class="post">
-  <a href="paramedical-after-hs.html">Top Paramedical Courses After HS</a>
-  <p>Best career options for HS pass students.</p>
-</div>
+  <section class="intro">
+    <h2>Welcome to CINPS Blog</h2>
 
-<div class="cta">
-  <h2>🎓 Admission Open 2026</h2>
-  <p>Join CINPS and build your healthcare career.</p>
-  <a class="btn" href="/admission-form.html">Apply Now</a>
-</div>
+    <p>
+      Welcome to the official blog of Chandidas Institute of Nursing
+      and Paramedical Science (CINPS).
+    </p>
+
+    <p>
+      Explore educational articles about paramedical courses,
+      allied healthcare professions, career opportunities,
+      medical laboratory technology, diagnostic services
+      and healthcare education in India.
+    </p>
+
+    <p>
+      Our aim is to help students and parents make informed
+      decisions about healthcare education and career pathways.
+    </p>
+  </section>
+
+  <h2 class="section-title">Latest Articles & Career Guides</h2>
+
+  <section class="blog-grid" aria-label="CINPS blog articles">
+
+    <article class="post">
+      <h3>
+        <a href="how-to-get-job-after-paramedical-course.html">
+          How to Get a Job After a Paramedical Course in India
+        </a>
+      </h3>
+      <p>
+        Explore career opportunities, job roles, hospital employment,
+        salary expectations and practical steps to build your
+        career after completing a paramedical course.
+      </p>
+      <a class="read-more"
+         href="how-to-get-job-after-paramedical-course.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="top-paramedical-courses-after-12th-2026-27.html">
+          Top 10 Paramedical Courses After 12th in India (2026–27)
+        </a>
+      </h3>
+      <p>
+        Discover popular paramedical and allied healthcare
+        study options after Class 12 and learn how to compare
+        courses and eligibility.
+      </p>
+      <a class="read-more"
+         href="top-paramedical-courses-after-12th-2026-27.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="what-is-paramedical-science.html">
+          What Is Paramedical Science?
+        </a>
+      </h3>
+      <p>
+        Understand paramedical science, allied healthcare
+        professions and the important role of healthcare
+        support professionals.
+      </p>
+      <a class="read-more" href="what-is-paramedical-science.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="medical-lab-systems-cinps-2026.html">
+          Medical Laboratory Systems and Technology
+        </a>
+      </h3>
+      <p>
+        Explore medical laboratory systems, diagnostic
+        technology and the role of laboratory professionals
+        in modern healthcare.
+      </p>
+      <a class="read-more" href="medical-lab-systems-cinps-2026.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="dmlt-course-2026.html">
+          DMLT Course Details 2026
+        </a>
+      </h3>
+      <p>
+        Learn about Diploma in Medical Laboratory Technology,
+        course information, laboratory skills and career pathways.
+      </p>
+      <a class="read-more" href="dmlt-course-2026.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="icu-technician-career-2026.html">
+          ICU Technician Career Guide 2026
+        </a>
+      </h3>
+      <p>
+        Learn about intensive care technology, ICU responsibilities,
+        essential skills and career opportunities.
+      </p>
+      <a class="read-more" href="icu-technician-career-2026.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="paramedical-courses-after-hs-2026.html">
+          Top Paramedical Courses After HS
+        </a>
+      </h3>
+      <p>
+        Explore healthcare education options and potential
+        career pathways for students after Higher Secondary.
+      </p>
+      <a class="read-more" href="paramedical-courses-after-hs-2026.html">
+        Read Article →
+      </a>
+    </article>
+
+    <article class="post">
+      <h3>
+        <a href="about-dr-iman-khan.html">
+          About Dr. Iman Khan
+        </a>
+      </h3>
+      <p>
+        Learn about the founder of Chandidas Institute of
+        Nursing and Paramedical Science and the institute's journey.
+      </p>
+      <a class="read-more" href="about-dr-iman-khan.html">
+        Read Article →
+      </a>
+    </article>
+
+  </section>
+
+  <!-- Admission CTA - Separate from article cards -->
+
+  <section class="cta">
+    <h2>🎓 Admissions Open 2026</h2>
+
+    <p>
+      Explore paramedical education opportunities at
+      Chandidas Institute of Nursing and Paramedical Science.
+    </p>
+
+    <p>
+      Contact our admission team for course information,
+      eligibility and admission guidance.
+    </p>
+
+    <a class="btn" href="/admission-form.html">
+      Apply for Admission
+    </a>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>
+    © 2026 Chandidas Institute of Nursing and Paramedical Science.
+    All Rights Reserved.
+  </p>
+
+  <p>
+    <a href="/">Home</a> |
+    <a href="/courses.html">Courses</a> |
+    <a href="/contact.html">Contact</a>
+  </p>
+
+  <p>
+    Nanoor, Birbhum, West Bengal, India – 731301
+  </p>
+</footer>
 
 </body>
 </html>
