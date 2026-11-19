@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
@@ -23,6 +24,10 @@
     <loc>https://cinps.org/join/</loc>
   </url>
   <url>
+    <loc>https://cinps.org/founder/</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+  <url>
     <loc>https://cinps.org/blog/</loc>
   </url>
   <url>
@@ -41,20 +46,21 @@
     <loc>https://cinps.org/blog/top-paramedical-courses-after-12th-2026-27.html</loc>
   </url>
   <url>
-  <loc>https://cinps.org/blog/paramedical-courses-after-hs-2026.html</loc>
+    <loc>https://cinps.org/blog/paramedical-courses-after-hs-2026.html</loc>
   </url>
-    <url>
+  <url>
     <loc>https://cinps.org/blog/how-to-get-job-after-paramedical-course.html</loc>
   </url>
   <url>
-  <loc>https://cinps.org/blog/dott-course-2026-27.html</loc>
-</url>
+    <loc>https://cinps.org/blog/dott-course-2026-27.html</loc>
+  </url>
   <url>
-  <loc>https://cinps.org/blog/paramedical-admission-west-bengal-2026-27.html</loc>
-  <lastmod>2026-11-19</lastmod>
-</url>
+    <loc>https://cinps.org/blog/paramedical-admission-west-bengal-2026-27.html</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
   <url>
-  <loc>https://cinps.org/blog/radiology-imaging-course-2026-27.html</loc>
-  <lastmod>2026-11-19</lastmod>
-</url>
+    <loc>https://cinps.org/blog/radiology-imaging-course-2026-27.html</loc>
+    <lastmod>2026-11-19</lastmod>
+  </url>
+
 </urlset>
